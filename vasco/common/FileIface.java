@@ -4,13 +4,12 @@ package vasco.common;
 import java.util.*;
 
 public interface FileIface {
-	public Vector vectorOut();
+  public Vector vectorOut();
+  public void vectorIn(Vector in);
+  public String[] stringsOut();
 
-	public void vectorIn(Vector in);
-
-	public String[] stringsOut();
-
-	boolean testCoordinates(DPoint c);
-
-	DPoint randomDPoint();
+  boolean testCoordinates(DPoint c);
+  DPoint randomDPoint();
 }
+
+   

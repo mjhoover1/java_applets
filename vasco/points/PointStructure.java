@@ -1,5 +1,4 @@
 package vasco.points;
-
 /* $Id: PointStructure.java,v 1.3 2007/10/28 15:38:18 jagan Exp $ */
 import java.awt.Choice;
 
@@ -13,99 +12,89 @@ import vasco.drawable.Drawable;
 
 abstract public class PointStructure extends SpatialStructure implements CommonConstants {
 
-	final double xf[] = { 0, 0.5, 0, 0.5 };
-	final double yf[] = { 0.5, 0.5, 0, 0 };
+  final double xf[] = {0, 0.5, 0, 0.5};
+  final double yf[] = {0.5, 0.5, 0, 0};
 
-	public PointStructure(DRectangle can, TopInterface ti, RebuildTree r) {
-		super(can, ti, r);
+  public PointStructure(DRectangle can, TopInterface ti, RebuildTree r) {
+    super(can, ti, r);
+  }
+
+  public void reInit(Choice ops) {
+    super.reInit(ops);
+    availOps.addItem("Insert");
+    availOps.addItem("Move");
+    availOps.addItem("Delete");
+    availOps.addItem("Overlap");
+  }
+
+  public boolean Insert(Drawable r) {
+    return Insert((DPoint)r);
+  }
+
+  abstract public boolean Insert(DPoint p);
+
+
+  /* -------------- common utilities ------------------- */
+
+    public class XComparable implements vasco.common.Comparable {
+	DPoint p;
+
+	public XComparable(DPoint p) {
+	    this.p = p;
 	}
-
-	public void reInit(Choice ops) {
-		super.reInit(ops);
-		availOps.addItem("Insert");
-		availOps.addItem("Move");
-		availOps.addItem("Delete");
-		availOps.addItem("Overlap");
+	public double sortBy() {
+	    return p.x;
 	}
+    }
+    public class YComparable implements vasco.common.Comparable {
+	DPoint p;
 
-	public boolean Insert(Drawable r) {
-		return Insert((DPoint) r);
+	public YComparable(DPoint p) {
+	    this.p = p;
 	}
-
-	abstract public boolean Insert(DPoint p);
-
-	/* -------------- common utilities ------------------- */
-
-	public class XComparable implements vasco.common.Comparable {
-		DPoint p;
-
-		public XComparable(DPoint p) {
-			this.p = p;
-		}
-
-		public double sortBy() {
-			return p.x;
-		}
+	public double sortBy() {
+	    return p.y;
 	}
+    }
 
-	public class YComparable implements vasco.common.Comparable {
-		DPoint p;
+    /*
+  double compareToX(DPoint a, DPoint b) {
+    return a.x - b.x;
+  }
 
-		public YComparable(DPoint p) {
-			this.p = p;
-		}
+  double compareToY(DPoint a, DPoint b) {
+    return a.y - b.y;
+  }
+    */
 
-		public double sortBy() {
-			return p.y;
-		}
-	}
+  int OpQuad(int Q) {
+    switch (Q) {
+    case NW: return SE;
+    case NE: return SW;
+    case SW: return NE;
+    case SE: return NW;
+    }
+    return -1;
+  }
+  
+  int CQuad(int Q) {
+    switch(Q) {
+    case NW: return NE;
+    case NE: return SE;
+    case SE: return SW;
+    case SW: return NW;
+    }
+    return -1;
+  }
 
-	/*
-	 * double compareToX(DPoint a, DPoint b) { return a.x - b.x; }
-	 * 
-	 * double compareToY(DPoint a, DPoint b) { return a.y - b.y; }
-	 */
-
-	int OpQuad(int Q) {
-		switch (Q) {
-		case NW:
-			return SE;
-		case NE:
-			return SW;
-		case SW:
-			return NE;
-		case SE:
-			return NW;
-		}
-		return -1;
-	}
-
-	int CQuad(int Q) {
-		switch (Q) {
-		case NW:
-			return NE;
-		case NE:
-			return SE;
-		case SE:
-			return SW;
-		case SW:
-			return NW;
-		}
-		return -1;
-	}
-
-	int CCQuad(int Q) {
-		switch (Q) {
-		case NW:
-			return SW;
-		case NE:
-			return NW;
-		case SE:
-			return NE;
-		case SW:
-			return SE;
-		}
-		return -1;
-	}
+  int CCQuad(int Q) {
+    switch(Q) {
+    case NW: return SW;
+    case NE: return NW;
+    case SE: return NE;
+    case SW: return SE;
+    }
+    return -1;
+  }
 
 }

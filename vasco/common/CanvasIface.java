@@ -5,24 +5,15 @@ import java.awt.*;
 import java.awt.event.*;
 
 public interface CanvasIface extends ItemListener {
-
-	void drawBackground(DrawingTarget g, Color c);
-
-	void drawBackground(DrawingTarget g);
-
-	void drawGrid(DrawingTarget g);
-
-	void drawContents(DrawingTarget g);
-
-	int getDelay();
-
-	int getSuccessMode();
-
-	void reset();
-
-	void setPause();
-
-	void setProgressBar(int step);
-
-	void initProgress(int step);
+  
+  void drawBackground(DrawingTarget g, Color c);
+  void drawBackground(DrawingTarget g);
+  void drawGrid(DrawingTarget g);
+  void drawContents(DrawingTarget g);
+  int getDelay();
+  int getSuccessMode();
+  void reset();
+    void setPause();
+    void setProgressBar(int step);
+    void initProgress(int step);
 }

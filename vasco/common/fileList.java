@@ -7,12 +7,13 @@ import java.lang.*;
 
 class fileList extends List {
 
-	fileList(String datatype) {
-		super(10, false);
+  fileList(String datatype) {
+    super(10, false);
 
-		String[] s = Tools.getDir(datatype);
-		for (int i = 0; i < s.length; i++)
-			addItem(s[i]);
-	}
+    String[] s = Tools.getDir(datatype);
+    for (int i = 0; i < s.length; i++)
+      addItem(s[i]);
+  }
+
 
 }

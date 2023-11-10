@@ -4,17 +4,13 @@ package vasco.common;
 import java.awt.*;
 
 public interface GenElement {
-	public static final int BASIC = 0;
-	public static final int FAIL = 1;
-	public static final int SUCCESS = 2;
+  public static final int BASIC = 0;
+  public static final int FAIL = 1;
+  public static final int SUCCESS = 2;
 
-	void fillElementFirst(DrawingTarget g);
-
-	void fillElementNext(DrawingTarget g);
-
-	void drawElementFirst(DrawingTarget g); /* on top of the event vector */
-
-	void drawElementNext(DrawingTarget g);
-
-	int pauseMode();
+  void fillElementFirst(DrawingTarget g);
+  void fillElementNext(DrawingTarget g);
+  void drawElementFirst(DrawingTarget g); /* on top of the event vector */
+  void drawElementNext(DrawingTarget g); 
+  int pauseMode();
 }

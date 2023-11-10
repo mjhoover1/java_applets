@@ -2,7 +2,6 @@
 package vasco.common;
 
 public interface MaxDecompIface {
-	public void setMaxDecomp(int md);
-
-	public int getMaxDecomp();
+  public void setMaxDecomp(int md);
+  public int getMaxDecomp();
 }

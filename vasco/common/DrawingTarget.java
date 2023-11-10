@@ -5,72 +5,62 @@ import java.awt.*;
 import java.awt.event.*;
 
 public interface DrawingTarget {
-	public void addMouseListener(MouseListener ml);
+    public void addMouseListener(MouseListener ml);
+    public void addMouseMotionListener(MouseMotionListener ml);
+    public void removeMouseListener(MouseListener ml);
+    public void removeMouseMotionListener(MouseMotionListener ml);
 
-	public void addMouseMotionListener(MouseMotionListener ml);
+    public void changeHelp(int mask, String b1, String b2, String b3);
 
-	public void removeMouseListener(MouseListener ml);
+    public Rectangle getView();
+    public Rectangle getOrig();
 
-	public void removeMouseMotionListener(MouseMotionListener ml);
+  public void drawRect(double xx, double yy, double ww, double hh);
+  
 
-	public void changeHelp(int mask, String b1, String b2, String b3);
+  public void fillRect(double xx, double yy, double ww, double hh);
 
-	public Rectangle getView();
+  public void fillPoly(DPolygon p);
 
-	public Rectangle getOrig();
+  public void fillOval(double xx, double yy, int ww, int hh);
 
-	public void drawRect(double xx, double yy, double ww, double hh);
+  public void drawOval(double x, double y, int width, int height);
 
-	public void fillRect(double xx, double yy, double ww, double hh);
+  public void drawArc(double x, double y, double w, double h, int sA, int rA);
+  public void directDrawArc(Color c, double x, double y, double w, double h, 
+			    int sA, int rA);
 
-	public void fillPoly(DPolygon p);
+  public void drawOval(DPoint p, double width, double height);
+  public void fillOval(DPoint p, double width, double height);
+    // real sizable oval
 
-	public void fillOval(double xx, double yy, int ww, int hh);
+  public void drawLine(double x1, double y1, double x2, double y2);
 
-	public void drawOval(double x, double y, int width, int height);
+  public void directRect(Color c, double x, double y, double w, double h);
 
-	public void drawArc(double x, double y, double w, double h, int sA, int rA);
+  public void directThickRect(Color c, double xx, double yy, double ww,
+		              double hh, int thick);
+  public void directFillRect(Color c, double x, double y, double w, double h);
 
-	public void directDrawArc(Color c, double x, double y, double w, double h, int sA, int rA);
+  public void directLine(Color c, double x1, double y1, double x2, double y2);
 
-	public void drawOval(DPoint p, double width, double height);
+  public void directFillOval(Color c, double x, double y, int w, int h);
+  public void directDrawOval(Color c, double x, double y, int w, int h);
 
-	public void fillOval(DPoint p, double width, double height);
-	// real sizable oval
+  public void setColor(Color c);
 
-	public void drawLine(double x1, double y1, double x2, double y2);
+  public void redraw();
+  
+  public void drawString(String s, double x, double y);
+  public void drawString(String s, double x, double y, Font f);
+  public void directDrawString(String s, double x, double y);
 
-	public void directRect(Color c, double x, double y, double w, double h);
+  Point adjustPoint(Point p);
+  DPoint transPointT(Point p);
+  //  DPoint transPointT(int x, int y);
+  Point transPoint(double x, double y);
 
-	public void directThickRect(Color c, double xx, double yy, double ww, double hh, int thick);
-
-	public void directFillRect(Color c, double x, double y, double w, double h);
-
-	public void directLine(Color c, double x1, double y1, double x2, double y2);
-
-	public void directFillOval(Color c, double x, double y, int w, int h);
-
-	public void directDrawOval(Color c, double x, double y, int w, int h);
-
-	public void setColor(Color c);
-
-	public void redraw();
-
-	public void drawString(String s, double x, double y);
-
-	public void drawString(String s, double x, double y, Font f);
-
-	public void directDrawString(String s, double x, double y);
-
-	Point adjustPoint(Point p);
-
-	DPoint transPointT(Point p);
-
-	// DPoint transPointT(int x, int y);
-	Point transPoint(double x, double y);
-
-	boolean visible(DRectangle r);
-
-	boolean visible(Rectangle r);
+  boolean visible(DRectangle r);
+  boolean visible(Rectangle r);
 
 }

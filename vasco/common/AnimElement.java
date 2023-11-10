@@ -5,6 +5,6 @@ import java.awt.*;
 import java.util.*;
 
 public class AnimElement {
-	public GenElement ge;
+  public GenElement ge;
 
 }

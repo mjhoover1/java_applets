@@ -2,13 +2,9 @@
 package vasco.common;
 
 public interface ArealObject {
-	public boolean contains(DPoint p);
-
-	public boolean contains(DLine p);
-
-	public boolean contains(DRectangle p);
-
-	public boolean contains(DPolygon p);
-
-	public boolean contains(DPath p);
+    public boolean contains(DPoint p);
+    public boolean contains(DLine p);
+    public boolean contains(DRectangle p);    
+    public boolean contains(DPolygon p);
+    public boolean contains(DPath p);
 }

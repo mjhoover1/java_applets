@@ -1,5 +1,4 @@
 package vasco.rectangles;
-
 /* $Id: RectangleCanvas.java,v 1.3 2007/10/28 15:38:19 jagan Exp $ */
 import vasco.common.*;
 
@@ -12,266 +11,273 @@ import vasco.drawable.*;
 
 public class RectangleCanvas extends GenericCanvas implements FileIface, ItemListener {
 
-	RectangleStructure[] pstrs;
-	public RectangleStructure pstruct;
+  RectangleStructure[] pstrs;
+  public RectangleStructure pstruct;
 
-	public RectangleCanvas(DRectangle r, DrawingTarget dt, DrawingTarget overview, Panel animp, TopInterface ti) {
-		super(r, dt, overview, animp, ti);
-		pstrs = new RectangleStructure[7];
 
-		opFeature = new OpFeature[13];
-		int index = 0;
-		opFeature[index++] = new OpFeature("Insert", OPFEATURE_INSERT, "Click and drag to insert a new rectangle.",
-				"Insert new rectangle", "", "", InputEvent.BUTTON1_MASK);
+  public RectangleCanvas(DRectangle r, DrawingTarget dt, DrawingTarget overview, Panel animp, TopInterface ti) {
+    super(r, dt, overview, animp, ti);
+    pstrs = new RectangleStructure[7];
 
-		opFeature[index++] = new OpFeature("Move", OPFEATURE_MOVE,
-				"Click and drag to move the closest rectangle to a new location.", "Move existing rectangle", "", "",
-				InputEvent.BUTTON1_MASK);
+    opFeature = new OpFeature[13];
+    int index = 0;
+    opFeature[index++] = new OpFeature("Insert", OPFEATURE_INSERT, 
+			 "Click and drag to insert a new rectangle.",
+			 "Insert new rectangle", "", "", InputEvent.BUTTON1_MASK);
 
-		opFeature[index++] = new OpFeature("Move vertex", OPFEATURE_MOVEVERTEX,
-				"Click near vertex and drag to resize rectangle.", "Move existing vertex", "", "",
-				InputEvent.BUTTON1_MASK);
+    opFeature[index++] = new OpFeature("Move", OPFEATURE_MOVE, 
+			 "Click and drag to move the closest rectangle to a new location.",
+			 "Move existing rectangle", "", "", InputEvent.BUTTON1_MASK);
 
-		opFeature[index++] = new OpFeature("Move edge", OPFEATURE_MOVEEDGE,
-				"Click near edge and drag to resize rectangle.", "Move existing edge", "", "", InputEvent.BUTTON1_MASK);
 
-		opFeature[index++] = new OpFeature("Show bintree", OPFEATURE_BINTREES,
-				"Click near a quadtree node. The binary trees stored in the node will be displayed.",
-				"Show bintree for nearest node", "", "", InputEvent.BUTTON1_MASK);
+    opFeature[index++] = new OpFeature("Move vertex", OPFEATURE_MOVEVERTEX, 
+				 "Click near vertex and drag to resize rectangle.",
+				 "Move existing vertex", "", "", InputEvent.BUTTON1_MASK);
 
-		opFeature[index++] = new OpFeature("Delete", OPFEATURE_DELETE, "Click inside a rectangle to erase it.",
-				"Delete nearest line", "", "", InputEvent.BUTTON1_MASK);
+    opFeature[index++] = new OpFeature("Move edge", OPFEATURE_MOVEEDGE, 
+				 "Click near edge and drag to resize rectangle.",
+				 "Move existing edge", "", "", InputEvent.BUTTON1_MASK);
 
-		OpFeature[] opf = new OpFeature[5];
+    opFeature[index++] = new OpFeature("Show bintree", OPFEATURE_BINTREES,
+				 "Click near a quadtree node. The binary trees stored in the node will be displayed.",
+				 "Show bintree for nearest node", "", "", InputEvent.BUTTON1_MASK);
 
-		opf[0] = new OpFeature("Point", QueryObject.QO_POINT,
-				"Specify a query point to find all items within given distance from it.", "Enter query point", "", "",
-				InputEvent.BUTTON1_MASK);
-		opf[1] = new OpFeature("Rectangle", QueryObject.QO_RECTANGLE,
-				"Specify a query rectangle to find all items within given distance from it.",
-				"Specify a query rectangle", "", "", InputEvent.BUTTON1_MASK);
-		opf[2] = new OpFeature("Polygon", QueryObject.QO_POLYGON,
-				"Click repeatedly to specify vertices of a query polygon.  Click right button to close the polygon.",
-				"Input new query polygon vertex", "", "Input final query polygon vertex",
-				InputEvent.BUTTON1_MASK | InputEvent.BUTTON3_MASK);
-		opf[3] = new OpFeature("Path", QueryObject.QO_PATH,
-				"Click repeatedly to specify vertices of a query path.  Click middle button to snap to the first vertex. Click right button to insert the last vertex.",
-				"Input new query path vertex", "Snap to first vertex", "Input final query path vertex",
-				InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
-		opf[4] = new OpFeature("Sector", QueryObject.QO_SECTOR, "Define a rooted sector as the query object.",
-				"Input root of query sector", "Input starting angle", "Input extent of sector",
-				InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
 
-		opFeature[index++] = new OpFeatures("Overlap", OPFEATURE_WINDOW, opf, withinStats);
-		opFeature[index++] = new OpFeatures("Nearest", OPFEATURE_NEAREST, opf, withinStats);
-		opFeature[index++] = new OpFeatures("Within", OPFEATURE_WITHIN, opf, withinStats);
+    opFeature[index++] = new OpFeature("Delete", OPFEATURE_DELETE, 
+			 "Click inside a rectangle to erase it.",
+			 "Delete nearest line", "", "", InputEvent.BUTTON1_MASK);
 
-		// New Operations for the LOOSE Quadtree
 
-		opFeature[index++] = new OpFeature("Motion Insensitivity", OPFEATURE_MOTIONSENSITIVITY,
-				"Move a rectangle as much as the structure permits ", "Move an existing rectangle", "",
-				"Show containment in next level", InputEvent.BUTTON1_MASK | InputEvent.BUTTON3_MASK);
+    OpFeature[] opf = new OpFeature[5];
 
-		opFeature[index++] = new OpFeature("Show Quadtree", OPFEATURE_SHOWQUAD, "Show containment of a rectangle", "",
-				"", "", 0);
+    opf[0] = new OpFeature("Point", QueryObject.QO_POINT, "Specify a query point to find all items within given distance from it.", "Enter query point", "", "", InputEvent.BUTTON1_MASK);
+    opf[1] = new OpFeature("Rectangle", QueryObject.QO_RECTANGLE, "Specify a query rectangle to find all items within given distance from it.", "Specify a query rectangle", "", "", InputEvent.BUTTON1_MASK);
+    opf[2] = new OpFeature("Polygon", QueryObject.QO_POLYGON, "Click repeatedly to specify vertices of a query polygon.  Click right button to close the polygon.", 
+			   "Input new query polygon vertex", "", "Input final query polygon vertex",
+			   InputEvent.BUTTON1_MASK | InputEvent.BUTTON3_MASK);
+    opf[3] = new OpFeature("Path", QueryObject.QO_PATH, "Click repeatedly to specify vertices of a query path.  Click middle button to snap to the first vertex. Click right button to insert the last vertex.", 
+			   "Input new query path vertex", "Snap to first vertex", "Input final query path vertex",
+			   InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
+    opf[4] = new OpFeature("Sector", QueryObject.QO_SECTOR, "Define a rooted sector as the query object.", 
+			   "Input root of query sector", "Input starting angle", "Input extent of sector",
+			   InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
+
+    opFeature[index++] = new OpFeatures("Overlap", OPFEATURE_WINDOW, opf, withinStats);
+    opFeature[index++] = new OpFeatures("Nearest", OPFEATURE_NEAREST, opf, withinStats);
+    opFeature[index++] = new OpFeatures("Within", OPFEATURE_WITHIN, opf, withinStats);
+
+    // New Operations for the LOOSE Quadtree
+    
+    opFeature[index++] = new OpFeature("Motion Insensitivity",
+	                                OPFEATURE_MOTIONSENSITIVITY,
+			 	       "Move a rectangle as much as the structure permits ",
+			               "Move an existing rectangle", "", "Show containment in next level", InputEvent.BUTTON1_MASK | InputEvent.BUTTON3_MASK );
+
+    opFeature[index++] = new OpFeature("Show Quadtree",
+	                                OPFEATURE_SHOWQUAD,
+			 	       "Show containment of a rectangle",
+			               "", "", "", 0);
+  }
+
+
+  public synchronized void initStructs() {
+    pstrs[0] = new CIFTree(wholeCanvas, 9, topInterface, this);
+    pstrs[1] = new RectTree(wholeCanvas, 9, topInterface, this);
+    pstrs[2] = new BucketRect(wholeCanvas, 9, 3, topInterface, this);
+    pstrs[3] = new PMRRectTree(wholeCanvas, 9, 3, topInterface, this);
+    pstrs[4] = new PMRkd(wholeCanvas, 18, 3, topInterface, this);
+    pstrs[5] = new RectangleRTree(wholeCanvas, topInterface, this);
+    pstrs[6] = new LOOSETree(wholeCanvas, 9, 2.0, topInterface, this);
+  }    
+    public int getAppletType() {
+	return ColorHelp.RECTANGLE_APPLET;
+    }
+
+    public int getStructCount() {
+	return pstrs.length;
+    }
+
+    public String getStructName(int i) {
+	return pstrs[i].getName();
+    }
+
+    public String getCurrentName() {
+	return pstruct.getName();
+    }
+
+    public fileSelector getFileSelector(String op) {
+	return new RectangleFileSelector(this, op, topInterface);
+    }
+
+    public void clear() {
+      super.clear();
+      pstruct.MessageStart();
+      pstruct.Clear();
+      pstruct.MessageEnd();
+    }
+
+    protected String getCurrentOperationName() {
+        return pstruct.getCurrentOperation();
+    }
+
+  /* ------------- file load / save ------------  */
+
+  public Vector vectorOut() {
+    Vector ret = new Vector();
+    for (int i = 0; i < historyList.size(); i++) {
+      DRectangle pt = (DRectangle)historyList.elementAt(i);
+      if (pt instanceof DeleteRectangle) {
+	double[] dist = new double[2];
+	DRectangle min = (DRectangle)ret.elementAt(0);
+	DPoint searchFor = new DPoint(pt.x, pt.y);
+	searchFor.distance(min, dist);
+
+	for (int j = 1; j < ret.size(); j++) {
+	  double[] d = new double[2];
+	  DRectangle p = (DRectangle)ret.elementAt(j);
+	  searchFor.distance(p, d);
+	  if (d[0] < dist[0] || (d[0] == dist[0] && d[1] < dist[1])) {
+	    dist = d;
+	    min = p;
+	  }
 	}
+	ret.removeElement(min);
+      } else
+	ret.addElement(pt);
+    }
+    return ret;
+  }
 
-	public synchronized void initStructs() {
-		pstrs[0] = new CIFTree(wholeCanvas, 9, topInterface, this);
-		pstrs[1] = new RectTree(wholeCanvas, 9, topInterface, this);
-		pstrs[2] = new BucketRect(wholeCanvas, 9, 3, topInterface, this);
-		pstrs[3] = new PMRRectTree(wholeCanvas, 9, 3, topInterface, this);
-		pstrs[4] = new PMRkd(wholeCanvas, 18, 3, topInterface, this);
-		pstrs[5] = new RectangleRTree(wholeCanvas, topInterface, this);
-		pstrs[6] = new LOOSETree(wholeCanvas, 9, 2.0, topInterface, this);
-	}
+  public String[] stringsOut() {
+    Vector in = vectorOut();
+    String[] out = new String[in.size()];
+    for (int i = 0; i < in.size(); i++) {
+      DRectangle er = (DRectangle)in.elementAt(i);
+      out[i] = new String(er.x + " " + er.y + " " + er.width + " " + er.height);
+    }
+    return out;
+  }
 
-	public int getAppletType() {
-		return ColorHelp.RECTANGLE_APPLET;
-	}
+  public void vectorIn(Vector p) { /* vector of extended points */
+    pstruct.MessageStart();
+    pstruct.Clear();
+    historyList = p;
+    for (int i = 0; i < p.size(); i++) {
+      DRectangle pt = (DRectangle)p.elementAt(i);
+      pstruct.Insert(pt);
+    }
+    pstruct.MessageEnd();
+    redraw();
+  }
 
-	public int getStructCount() {
-		return pstrs.length;
-	}
+  /* ----- drawing utilities ----------- */
 
-	public String getStructName(int i) {
-		return pstrs[i].getName();
-	}
+  public void drawContents(DrawingTarget g) {
+    pstruct.drawContents(g, g.getView());
+  }
 
-	public String getCurrentName() {
-		return pstruct.getName();
-	}
+  public void drawGrid(DrawingTarget g) {
+    super.drawGrid(g);
+    if (gridOn)
+      pstruct.drawGrid(g, gridLevel);
+  }
 
-	public fileSelector getFileSelector(String op) {
-		return new RectangleFileSelector(this, op, topInterface);
-	}
+  /* --------------- operations on structures ------------------- */
 
-	public void clear() {
-		super.clear();
-		pstruct.MessageStart();
-		pstruct.Clear();
-		pstruct.MessageEnd();
-	}
+  protected void search(QueryObject s, DrawingTarget[] off) {
+    SearchVector v;
+    v = pstruct.Search(s, searchMode);
+    if (runningThread == null) {
+      runningThread = new SearchThread(v, s, this, off);
+    }
+  }
+  
+  protected void nearest(QueryObject p, double dist, DrawingTarget[] off) {
+    SearchVector v;
+    v = pstruct.Nearest(p, dist);
+    if (runningThread == null) {
+	if (withinStats.getBlend())
+	    runningThread = new NearestThread(v, p, this, dist, off, 255, 0, 0, 0, 255, 0);
+	else
+	    runningThread = new NearestThread(v, p, this, dist, off);
+    }
+  }
 
-	protected String getCurrentOperationName() {
-		return pstruct.getCurrentOperation();
-	}
+    protected int getAllowedOverlapQueryObjects() {
+	return QueryObject.QO_RECTANGLE | QueryObject.QO_POLYGON | 
+	    QueryObject.QO_LINE | QueryObject.QO_PATH | QueryObject.QO_POINT | QueryObject.QO_SECTOR;
+    }
 
-	/* ------------- file load / save ------------ */
+    protected int getSearchModeMask() {
+        return SEARCHMODE_CONTAINS | SEARCHMODE_OVERLAPS | SEARCHMODE_CROSSES | SEARCHMODE_ISCONTAINED;
+    }
 
-	public Vector vectorOut() {
-		Vector ret = new Vector();
-		for (int i = 0; i < historyList.size(); i++) {
-			DRectangle pt = (DRectangle) historyList.elementAt(i);
-			if (pt instanceof DeleteRectangle) {
-				double[] dist = new double[2];
-				DRectangle min = (DRectangle) ret.elementAt(0);
-				DPoint searchFor = new DPoint(pt.x, pt.y);
-				searchFor.distance(min, dist);
 
-				for (int j = 1; j < ret.size(); j++) {
-					double[] d = new double[2];
-					DRectangle p = (DRectangle) ret.elementAt(j);
-					searchFor.distance(p, d);
-					if (d[0] < dist[0] || (d[0] == dist[0] && d[1] < dist[1])) {
-						dist = d;
-						min = p;
-					}
-				}
-				ret.removeElement(min);
-			} else
-				ret.addElement(pt);
-		}
-		return ret;
-	}
+  /* --------------- operations on structures ------------------- */
 
-	public String[] stringsOut() {
-		Vector in = vectorOut();
-		String[] out = new String[in.size()];
-		for (int i = 0; i < in.size(); i++) {
-			DRectangle er = (DRectangle) in.elementAt(i);
-			out[i] = new String(er.x + " " + er.y + " " + er.width + " " + er.height);
-		}
-		return out;
-	}
-
-	public void vectorIn(Vector p) { /* vector of extended points */
-		pstruct.MessageStart();
-		pstruct.Clear();
-		historyList = p;
-		for (int i = 0; i < p.size(); i++) {
-			DRectangle pt = (DRectangle) p.elementAt(i);
-			pstruct.Insert(pt);
-		}
-		pstruct.MessageEnd();
-		redraw();
-	}
-
-	/* ----- drawing utilities ----------- */
-
-	public void drawContents(DrawingTarget g) {
-		pstruct.drawContents(g, g.getView());
-	}
-
-	public void drawGrid(DrawingTarget g) {
-		super.drawGrid(g);
-		if (gridOn)
-			pstruct.drawGrid(g, gridLevel);
-	}
-
-	/* --------------- operations on structures ------------------- */
-
-	protected void search(QueryObject s, DrawingTarget[] off) {
-		SearchVector v;
-		v = pstruct.Search(s, searchMode);
-		if (runningThread == null) {
-			runningThread = new SearchThread(v, s, this, off);
-		}
-	}
-
-	protected void nearest(QueryObject p, double dist, DrawingTarget[] off) {
-		SearchVector v;
-		v = pstruct.Nearest(p, dist);
-		if (runningThread == null) {
-			if (withinStats.getBlend())
-				runningThread = new NearestThread(v, p, this, dist, off, 255, 0, 0, 0, 255, 0);
-			else
-				runningThread = new NearestThread(v, p, this, dist, off);
-		}
-	}
-
-	protected int getAllowedOverlapQueryObjects() {
-		return QueryObject.QO_RECTANGLE | QueryObject.QO_POLYGON | QueryObject.QO_LINE | QueryObject.QO_PATH
-				| QueryObject.QO_POINT | QueryObject.QO_SECTOR;
-	}
-
-	protected int getSearchModeMask() {
-		return SEARCHMODE_CONTAINS | SEARCHMODE_OVERLAPS | SEARCHMODE_CROSSES | SEARCHMODE_ISCONTAINED;
-	}
-
-	/* --------------- operations on structures ------------------- */
-
-	boolean isChange(int index, int[] test) { // to test if element 'i' from 'lines' is in array 'test'
-		if (test == null)
-			return false;
-		for (int i = 0; i < test.length; i++)
-			if (index == test[i])
-				return true;
-		return false;
-	}
-
-	void updateFromParams() {
-		updateFromParams(null);
-	}
-
-	boolean updateFromParams(int[] test) {
-		pstruct.MessageStart();
-		pstruct.Clear();
-		for (int i = 0; i < historyList.size(); i++) {
-			DRectangle p = (DRectangle) historyList.elementAt(i);
-			if (p instanceof DeleteRectangle)
-				pstruct.Delete(((DeleteRectangle) p).getPoint());
-			else {
-				if (!pstruct.Insert(p) && isChange(i, test))
-					return false;
-			}
-		}
-		pstruct.MessageEnd();
+    boolean isChange(int index, int[] test) { // to test if element 'i' from 'lines' is in array 'test'
+	if (test == null)
+	    return false;
+	for (int i = 0; i < test.length; i++)
+	    if (index == test[i])
 		return true;
-	}
+	return false;
+    }
 
-	protected void setHelp() {
-		super.setHelp();
-		String help = "";
-		if (getCurrentOperation() == OPFEATURE_WINDOW) {
-			if (searchMode == 0) {
-				help += "No rectangles are returned.";
-			} else {
-				Vector hs = new Vector();
-				if ((searchMode & SEARCHMODE_CONTAINS) != 0)
-					hs.addElement("completely inside the query area");
-				if ((searchMode & SEARCHMODE_ISCONTAINED) != 0)
-					hs.addElement("completely containing the query area");
-				if ((searchMode & SEARCHMODE_CROSSES) != 0)
-					hs.addElement("intersecting the query area, but no vertex is part of the intersection");
-				if ((searchMode & SEARCHMODE_OVERLAPS) != 0)
-					hs.addElement("intersecting the query area and at least one vertex is part of the intersection");
+    void updateFromParams() {
+	updateFromParams(null);
+    }
 
-				help += "Rectangles that are ";
-				for (int j = 0; j < hs.size(); j++) {
-					help += (String) hs.elementAt(j);
-					if (j < hs.size() - 2)
-						help += ", ";
-					else if (j == hs.size() - 2)
-						help += " or ";
-				}
-				help += " are returned.";
-			}
-			topInterface.getHelpArea().append("\n" + Tools.formatHelp(help, topInterface.getHelpArea().getColumns()));
+    boolean updateFromParams(int[] test) {
+    pstruct.MessageStart();
+    pstruct.Clear();
+    for (int i = 0; i < historyList.size(); i++) {
+      DRectangle p = (DRectangle)historyList.elementAt(i);
+      if (p instanceof DeleteRectangle)
+	pstruct.Delete(((DeleteRectangle)p).getPoint());
+      else {
+	  if (!pstruct.Insert(p) && isChange(i, test))
+	      return false;
+      }
+    }
+    pstruct.MessageEnd();
+    return true;
+  }    
+
+    protected void setHelp() {
+	super.setHelp();
+	String help = "";
+	if (getCurrentOperation() == OPFEATURE_WINDOW) {
+	    if (searchMode == 0) {
+		help += "No rectangles are returned.";
+	    } else {
+		Vector hs = new Vector();
+		if ((searchMode & SEARCHMODE_CONTAINS) != 0)
+		    hs.addElement("completely inside the query area");
+		if ((searchMode & SEARCHMODE_ISCONTAINED) != 0)
+		    hs.addElement("completely containing the query area");
+		if ((searchMode & SEARCHMODE_CROSSES) != 0)
+		    hs.addElement("intersecting the query area, but no vertex is part of the intersection");
+		if ((searchMode & SEARCHMODE_OVERLAPS) != 0)
+		    hs.addElement("intersecting the query area and at least one vertex is part of the intersection");
+		
+		help += "Rectangles that are ";
+		for (int j = 0; j < hs.size(); j++) {
+		    help += (String)hs.elementAt(j);
+		    if (j < hs.size() - 2)
+			help += ", ";
+		    else if (j == hs.size() - 2)
+			help += " or ";
 		}
+		help += " are returned.";
+	    }
+	    topInterface.getHelpArea().append("\n" + Tools.formatHelp(help, 
+								      topInterface.getHelpArea().getColumns()));
 	}
+    }
 
-	public void setTree(int i, Choice ops) {
+
+    public void setTree(int i, Choice ops) {
 		String op = ops.getSelectedItem();
 		pstruct = pstrs[i];
 		System.out.println("pstruct " + pstruct);
@@ -283,627 +289,664 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		System.out.println("pstruct " + pstruct);
 		try {
 			ops.select(op);
-		} catch (Exception e) {
-		}
-		;
+		} catch(Exception e) {};
 		setHelp();
 		rebuild();
+  	}
+
+  public void rebuild() {
+    updateFromParams();
+    if (runningThread != null) {
+      terminate();
+      if ((getCurrentOperation() == OPFEATURE_NEAREST  || getCurrentOperation() == OPFEATURE_WITHIN)
+	  && lastNear != null) 
+	nearest(lastNear, withinStats.getDist(), allDrawingTargets);
+      else if (getCurrentOperation() == OPFEATURE_WINDOW && lastWindow != null)
+	search(lastWindow, allDrawingTargets);
+    }
+    redraw();
+  }
+
+
+  // ---------------- MouseListener && MouseMotionListener -------------
+
+    class moveRectangles {
+	DRectangle rect;  // joint in first vertex
+	int index;   // indeces
+    };
+
+    moveRectangles[] lastMove;
+    Drawable lastDelete;
+    //    DRectangle lastInsert;
+    DPoint lastBintree;
+    DPoint lastMoveVertex;
+
+    DLine lastMoveEdge;
+    int lastMoveEdgeIndex;
+    final static int NORTH = 0;
+    final static int SOUTH = 1;
+    final static int EAST = 2;
+    final static int WEST = 3;
+
+    int lastInsert; // index to rect vector
+    int lastEvent = MOUSE_MOVED;
+
+  public void mouseEntered(MouseEvent me) {
+      super.mouseEntered(me);
+      debugPrint("mouseEntered");
+    lastDelete = null;
+    lastBintree = null;
+  }
+
+  public void mouseExited(MouseEvent me) {
+      super.mouseExited(me);
+      debugPrint("mouseExited");
+      if (lastDelete != null) {
+	  lastDelete.directDraw(Color.red, offscrG);
+      }
+      lastDelete = null;
+  }
+
+  public void mouseMoved(MouseEvent me) {
+    
+    if (lastEvent != MOUSE_RELEASED && lastEvent != MOUSE_MOVED)
+	  return;
+    super.mouseMoved(me);
+
+     
+    debugPrint("mouseMoved");
+
+    lastEvent = MOUSE_MOVED;
+    DPoint p  = offscrG.transPointT(offscrG.adjustPoint(me.getPoint()));
+    int op = getCurrentOperation();
+
+    if (op == OPFEATURE_MOVEEDGE) {
+	lastInsert = -1;
+	DRectangle fP = (DRectangle)pstruct.NearestFirst(new QueryObject(p));
+	if (fP != null) {
+            for (int i = historyList.size() - 1; i >= 0; i--) {
+                if (((DRectangle)(historyList.elementAt(i))).equals(fP))
+                    lastInsert = i;
+            }
+        }       
+ 
+	double d1, d2, d3, d4;
+	d1 = p.distance(fP.Nside());
+	d2 = p.distance(fP.Sside());
+	d3 = p.distance(fP.Wside());
+	d4 = p.distance(fP.Eside());
+	DLine nearest = null;
+	if (d1 <= d2 && d1 <= d3 && d1 <= d4) {
+	    nearest = fP.Nside();
+	    lastMoveEdgeIndex = NORTH;
 	}
-
-	public void rebuild() {
-		updateFromParams();
-		if (runningThread != null) {
-			terminate();
-			if ((getCurrentOperation() == OPFEATURE_NEAREST || getCurrentOperation() == OPFEATURE_WITHIN)
-					&& lastNear != null)
-				nearest(lastNear, withinStats.getDist(), allDrawingTargets);
-			else if (getCurrentOperation() == OPFEATURE_WINDOW && lastWindow != null)
-				search(lastWindow, allDrawingTargets);
-		}
-		redraw();
+	if (d2 <= d1 && d2 <= d3 && d2 <= d4) {
+	    nearest = fP.Sside();
+	    lastMoveEdgeIndex = SOUTH;
 	}
-
-	// ---------------- MouseListener && MouseMotionListener -------------
-
-	class moveRectangles {
-		DRectangle rect; // joint in first vertex
-		int index; // indeces
-	};
-
-	moveRectangles[] lastMove;
-	Drawable lastDelete;
-	// DRectangle lastInsert;
-	DPoint lastBintree;
-	DPoint lastMoveVertex;
-
-	DLine lastMoveEdge;
-	int lastMoveEdgeIndex;
-	final static int NORTH = 0;
-	final static int SOUTH = 1;
-	final static int EAST = 2;
-	final static int WEST = 3;
-
-	int lastInsert; // index to rect vector
-	int lastEvent = MOUSE_MOVED;
-
-	public void mouseEntered(MouseEvent me) {
-		super.mouseEntered(me);
-		debugPrint("mouseEntered");
-		lastDelete = null;
-		lastBintree = null;
+	if (d3 <= d1 && d3 <= d2 && d3 <= d4) {
+	    nearest = fP.Wside();
+	    lastMoveEdgeIndex = WEST;
 	}
-
-	public void mouseExited(MouseEvent me) {
-		super.mouseExited(me);
-		debugPrint("mouseExited");
-		if (lastDelete != null) {
-			lastDelete.directDraw(Color.red, offscrG);
-		}
-		lastDelete = null;
+	if (d4 <= d1 && d4 <= d2 && d4 <= d3) {
+	    nearest = fP.Eside();
+	    lastMoveEdgeIndex = EAST;
 	}
-
-	public void mouseMoved(MouseEvent me) {
-
-		if (lastEvent != MOUSE_RELEASED && lastEvent != MOUSE_MOVED)
-			return;
-		super.mouseMoved(me);
-
-		debugPrint("mouseMoved");
-
-		lastEvent = MOUSE_MOVED;
-		DPoint p = offscrG.transPointT(offscrG.adjustPoint(me.getPoint()));
-		int op = getCurrentOperation();
-
-		if (op == OPFEATURE_MOVEEDGE) {
-			lastInsert = -1;
-			DRectangle fP = (DRectangle) pstruct.NearestFirst(new QueryObject(p));
-			if (fP != null) {
-				for (int i = historyList.size() - 1; i >= 0; i--) {
-					if (((DRectangle) (historyList.elementAt(i))).equals(fP))
-						lastInsert = i;
-				}
-			}
-
-			double d1, d2, d3, d4;
-			d1 = p.distance(fP.Nside());
-			d2 = p.distance(fP.Sside());
-			d3 = p.distance(fP.Wside());
-			d4 = p.distance(fP.Eside());
-			DLine nearest = null;
-			if (d1 <= d2 && d1 <= d3 && d1 <= d4) {
-				nearest = fP.Nside();
-				lastMoveEdgeIndex = NORTH;
-			}
-			if (d2 <= d1 && d2 <= d3 && d2 <= d4) {
-				nearest = fP.Sside();
-				lastMoveEdgeIndex = SOUTH;
-			}
-			if (d3 <= d1 && d3 <= d2 && d3 <= d4) {
-				nearest = fP.Wside();
-				lastMoveEdgeIndex = WEST;
-			}
-			if (d4 <= d1 && d4 <= d2 && d4 <= d3) {
-				nearest = fP.Eside();
-				lastMoveEdgeIndex = EAST;
-			}
-			if (!nearest.equals(lastMoveEdge)) {
-				redraw();
-				nearest.directDraw(Color.orange, offscrG);
-			}
-			lastMoveEdge = nearest;
-		}
-
-		if (op == OPFEATURE_MOVEVERTEX) {
-			lastInsert = -1;
-			DRectangle fP = (DRectangle) pstruct.NearestFirst(new QueryObject(p));
-			if (fP != null) {
-				for (int i = historyList.size() - 1; i >= 0; i--) {
-					if (((DRectangle) (historyList.elementAt(i))).equals(fP))
-						lastInsert = i;
-				}
-			}
-
-			double d1, d2, d3, d4;
-			d1 = p.distance(fP.SWcorner());
-			d2 = p.distance(fP.NWcorner());
-			d3 = p.distance(fP.SEcorner());
-			d4 = p.distance(fP.NEcorner());
-			DPoint nearest = null;
-			if (d1 <= d2 && d1 <= d3 && d1 <= d4) {
-				nearest = fP.SWcorner();
-			}
-			if (d2 <= d1 && d2 <= d3 && d2 <= d4) {
-				nearest = fP.NWcorner();
-			}
-			if (d3 <= d1 && d3 <= d2 && d3 <= d4) {
-				nearest = fP.SEcorner();
-			}
-			if (d4 <= d1 && d4 <= d2 && d4 <= d3) {
-				nearest = fP.NEcorner();
-			}
-			if (!nearest.equals(lastMoveVertex)) {
-				redraw();
-				nearest.directDraw(Color.orange, offscrG);
-			}
-			lastMoveVertex = nearest;
-		}
-
-		if (op == OPFEATURE_DELETE || op == OPFEATURE_MOVE || op == OPFEATURE_MOTIONSENSITIVITY) {
-
-			if (lastDelete != null) {
-				lastDelete.directDraw(Color.red, offscrG);
-				lastDelete = null;
-			}
-
-			Drawable b = pstruct.NearestFirst(new QueryObject(p));
-			if (b != null) {
-				b.directDraw(Color.orange, offscrG);
-				lastDelete = b;
-			} else
-				lastDelete = null;
-		}
-
-		if (op == OPFEATURE_SHOWQUAD) {
-
-			Drawable b = pstruct.NearestFirst(new QueryObject(p));
-
-			if (lastDelete != null && lastDelete.equals((DRectangle) b)) {
-				return;
-			}
-
-			redraw();
-			DRectangle quad = pstruct.EnclosingQuadBlock((DRectangle) b, false);
-
-			if (quad != null) {
-				offscrG.directThickRect(Color.blue, quad.x, quad.y, quad.width, quad.height, 2);
-				quad = pstruct.expand(quad);
-				offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, quad.height, 2);
-			}
-
-			DRectangle nr = (DRectangle) b;
-			offscrG.directThickRect(Color.orange, nr.x, nr.y, nr.width, nr.height, 1);
-			lastDelete = (DRectangle) b;
-		}
-
-		if (op == OPFEATURE_BINTREES && pstruct instanceof CIFTree) {
-			DPoint b = ((CIFTree) pstruct).NearestMXCIF(p);
-			if (b != null) {
-				if (!b.equals(lastBintree)) {
-					offscrG.redraw();
-					b.directDraw(Color.orange, offscrG);
-					lastBintree = b;
-				}
-			} else
-				lastBintree = null;
-		}
+	if (!nearest.equals(lastMoveEdge)) {
+	    redraw();
+	    nearest.directDraw(Color.orange, offscrG);
 	}
+	lastMoveEdge = nearest;
+    }
 
-	public void mouseClicked(MouseEvent me) {
-
-		if ((getCurrentOpFeature().buttonMask & MouseDisplay.getMouseButtons(me)) == 0)
-			return; // operation doesn't use this mouse button
-
-		super.mouseClicked(me);
-
+    if (op == OPFEATURE_MOVEVERTEX) {
+	lastInsert = -1;
+	DRectangle fP = (DRectangle)pstruct.NearestFirst(new QueryObject(p));
+	if (fP != null) {
+            for (int i = historyList.size() - 1; i >= 0; i--) {
+                if (((DRectangle)(historyList.elementAt(i))).equals(fP))
+                    lastInsert = i;
+            }
+        }       
+ 
+	double d1, d2, d3, d4;
+	d1 = p.distance(fP.SWcorner());
+	d2 = p.distance(fP.NWcorner());
+	d3 = p.distance(fP.SEcorner());
+	d4 = p.distance(fP.NEcorner());
+	DPoint nearest = null;
+	if (d1 <= d2 && d1 <= d3 && d1 <= d4) {
+	    nearest = fP.SWcorner();
 	}
-
-	public void mousePressed(MouseEvent me) {
-
-		if (lastEvent != MOUSE_RELEASED && lastEvent != MOUSE_MOVED)
-			return;
-
-		if ((getCurrentOpFeature().buttonMask & MouseDisplay.getMouseButtons(me)) == 0)
-			return; // operation doesn't use this mouse button
-
-		super.mousePressed(me);
-		debugPrint("mousePressed");
-		lastEvent = MOUSE_PRESSED;
-		Point scrCoord = offscrG.adjustPoint(me.getPoint());
-		DPoint p = offscrG.transPointT(scrCoord);
-
-		int op = getCurrentOperation();
-		if (op == OPFEATURE_INSERT) {
-			lastP = scrCoord;
-		}
-
-		if (op == OPFEATURE_DELETE) {
-			pstruct.MessageStart();
-			pstruct.Delete(p);
-			historyList.addElement(new DeleteRectangle(p));
-			lastDelete = null;
-			pstruct.MessageEnd();
-		}
-
-		if (op == OPFEATURE_BINTREES && pstruct instanceof CIFTree) {
-			redraw();
-			((CIFTree) pstruct).drawBintree(p, offscrG);
-			offscrG.redraw();
-			return;
-		}
-
-		if (op == OPFEATURE_MOTIONSENSITIVITY && me.getButton() == me.BUTTON3) {
-
-			Drawable b = pstruct.NearestFirst(new QueryObject(p));
-
-			if (lastDelete == null || !lastDelete.equals((DRectangle) b)) {
-				redraw();
-			}
-
-			if (b != null) {
-				DRectangle quad = pstruct.EnclosingQuadBlock((DRectangle) b, true);
-				if (quad != null) {
-					offscrG.directThickRect(Color.blue, quad.x, quad.y, quad.width, quad.height, 2);
-					quad = pstruct.expand(quad);
-					offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, quad.height, 2);
-				}
-				DRectangle bb = (DRectangle) b;
-				offscrG.directThickRect(Color.orange, bb.x, bb.y, bb.width, bb.height, 2);
-			}
-			lastDelete = null;
-			return;
-		}
-
-		if (op == OPFEATURE_MOVE || op == OPFEATURE_MOTIONSENSITIVITY) {
-
-			lastMove = null;
-			if (lastDelete != null) {
-				DRectangle dr = (DRectangle) lastDelete;
-				lastMove = new moveRectangles[1];
-				lastMove[0] = new moveRectangles();
-				lastMove[0].rect = dr; // lastMove[0] is the moved line
-
-				for (int j = historyList.size() - 1; j >= 0; j--) {
-					if (lastMove[0].rect.equals((DRectangle) historyList.elementAt(j))) {
-						lastMove[0].index = j;
-						break;
-					}
-				}
-			}
-		}
-
-		redraw();
-		mouseDragged(me);
+	if (d2 <= d1 && d2 <= d3 && d2 <= d4) {
+	    nearest = fP.NWcorner();
 	}
-
-	int global_count_1 = 0;
-	int global_count_2 = 0;
-
-	public void opLooseness(DPoint newloc) {
-
-		if (!(pstruct instanceof LOOSETree))
-			return;
-
-		DRectangle nr = new DRectangle(newloc.x - lastMove[0].rect.width / 2, newloc.y - lastMove[0].rect.height / 2,
-				lastMove[0].rect.width, lastMove[0].rect.height);
-
-		if (lastMove[0].rect == null)
-			return;
-
-		global_count_2++;
-
-		if (global_count_2 < 3)
-			return;
-
-		global_count_2 = 0;
-
-		DRectangle quad1 = pstruct.EnclosingQuadBlock(lastMove[0].rect, false);
-		DRectangle quad = pstruct.expand(quad1);
-
-		if (!quad.contains(nr)) {
-
-			if (quad.x > nr.x)
-				nr.x = quad.x;
-			if (quad.y > nr.y)
-				nr.y = quad.y;
-
-			if (quad.x + quad.width < nr.x + nr.width) {
-				nr.x = quad.x + quad.width - nr.width;
-			}
-
-			if (quad.y + quad.height < nr.y + nr.height) {
-				nr.y = quad.y + quad.height - nr.height;
-			}
-
-		}
-
-		if (!(wholeCanvas.contains(nr)))
-			return;
-
-		if (pstruct.ReplaceRectangles(lastMove[0].rect, nr)) {
-			redraw();
-			lastMove[0].rect = nr;
-			offscrG.directThickRect(Color.orange, nr.x, nr.y, nr.width, nr.height, 1);
-			if (quad1 != null && quad != null) {
-
-				offscrG.directThickRect(Color.blue, quad1.x, quad1.y, quad1.width, quad1.height, 2);
-
-				offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, quad.height, 2);
-			}
-		}
-
-		lastDelete = null;
-		historyList.setElementAt(lastMove[0].rect, lastMove[0].index);
-		return;
+	if (d3 <= d1 && d3 <= d2 && d3 <= d4) {
+	    nearest = fP.SEcorner();
 	}
+	if (d4 <= d1 && d4 <= d2 && d4 <= d3) {
+	    nearest = fP.NEcorner();
+	}
+	if (!nearest.equals(lastMoveVertex)) {
+	    redraw();
+	    nearest.directDraw(Color.orange, offscrG);
+	}
+	lastMoveVertex = nearest;
+    }
 
-	private void looseMoveRectangle(DPoint newloc) {
+    if (op == OPFEATURE_DELETE || op == OPFEATURE_MOVE 
+	  || op == OPFEATURE_MOTIONSENSITIVITY) {
 
-		DRectangle nr = new DRectangle(newloc.x - lastMove[0].rect.width / 2, newloc.y - lastMove[0].rect.height / 2,
-				lastMove[0].rect.width, lastMove[0].rect.height);
+      if (lastDelete != null) {
+	  lastDelete.directDraw(Color.red, offscrG);
+	  lastDelete = null;
+      }
 
-		if (!(pstruct instanceof LOOSETree))
-			return;
+      Drawable b = pstruct.NearestFirst(new QueryObject(p));
+      if (b != null) {
+	b.directDraw(Color.orange, offscrG);
+	lastDelete = b;
+      } else
+	lastDelete = null;
+    }
+    
+    if (op == OPFEATURE_SHOWQUAD) {
 
-		if (!(wholeCanvas.contains(nr)))
-			return;
+      Drawable b = pstruct.NearestFirst(new QueryObject(p));
 
-		if (lastMove[0].rect == null)
-			return;
+      if (lastDelete != null && lastDelete.equals((DRectangle) b)) {
+	 return;
+      }
 
-		if (lastMove[0].rect.equals(nr))
-			return;
+      redraw();
+      DRectangle quad = pstruct.EnclosingQuadBlock((DRectangle) b, false);
 
-		global_count_1++;
+      if (quad != null) {
+	   offscrG.directThickRect(Color.blue, quad.x, quad.y, quad.width, 
+		                   quad.height, 2);
+	   quad = pstruct.expand(quad);
+	   offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, 
+			           quad.height, 2);
+      }
+	     
+       DRectangle nr = (DRectangle) b;
+       offscrG.directThickRect(Color.orange, nr.x, nr.y, nr.width, nr.height, 1);
+       lastDelete = (DRectangle) b;
+    }
 
-		if (global_count_1 < 3)
-			return;
+    if (op == OPFEATURE_BINTREES && pstruct instanceof CIFTree ) {
+	DPoint b = ((CIFTree)pstruct).NearestMXCIF(p);
+	if (b != null) {
+	    if (!b.equals(lastBintree)) {
+		offscrG.redraw();
+		b.directDraw(Color.orange, offscrG);
+		lastBintree = b;
+	    }
+	} else
+	    lastBintree = null;
+    }
+  }
 
-		global_count_1 = 0;
+  
+  public void mouseClicked(MouseEvent me) {
 
-		if (!(pstruct.ReplaceRectangles(lastMove[0].rect, nr))) {
-			pstruct.DeleteDirect(lastMove[0].rect);
-			pstruct.Insert(nr);
-		}
+    if ((getCurrentOpFeature().buttonMask & MouseDisplay.getMouseButtons(me)) == 0)
+	return; // operation doesn't use this mouse button
 
-		DRectangle quad = pstruct.EnclosingQuadBlock((DRectangle) nr, false);
-		redraw();
+    super.mouseClicked(me);
+    
+  }
 
-		if (quad != null) {
+  public void mousePressed(MouseEvent me) {
 
-			offscrG.directThickRect(Color.blue, quad.x, quad.y, quad.width, quad.height, 2);
+    if (lastEvent != MOUSE_RELEASED && lastEvent != MOUSE_MOVED)
+	  return;
 
-			quad = pstruct.expand(quad);
+    if ((getCurrentOpFeature().buttonMask & 
+	   MouseDisplay.getMouseButtons(me)) == 0)
+	   return; // operation doesn't use this mouse button
 
-			offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, quad.height, 2);
-		}
 
-		offscrG.directThickRect(Color.orange, nr.x, nr.y, nr.width, nr.height, 1);
+    super.mousePressed(me);
+    debugPrint("mousePressed");
+    lastEvent = MOUSE_PRESSED;
+    Point scrCoord = offscrG.adjustPoint(me.getPoint());
+    DPoint p  = offscrG.transPointT(scrCoord);
 
+    int op = getCurrentOperation();
+    if (op == OPFEATURE_INSERT) {
+      lastP = scrCoord; 
+    }
+
+    if (op == OPFEATURE_DELETE) {
+      pstruct.MessageStart();
+      pstruct.Delete(p);
+      historyList.addElement(new DeleteRectangle(p));
+      lastDelete = null;
+      pstruct.MessageEnd();
+    }
+
+    if (op == OPFEATURE_BINTREES && pstruct instanceof CIFTree ) {
+      redraw();
+      ((CIFTree)pstruct).drawBintree(p, offscrG);
+      offscrG.redraw();
+      return;
+    }   
+    
+    if (op == OPFEATURE_MOTIONSENSITIVITY && 
+	me.getButton() == me.BUTTON3) {
+    
+
+        Drawable b = pstruct.NearestFirst(new QueryObject(p));
+      
+        if (lastDelete == null || !lastDelete.equals((DRectangle) b)) {
+	   redraw();
+        }
+      
+        if (b != null) {
+           DRectangle quad = pstruct.EnclosingQuadBlock((DRectangle) b, true);
+           if (quad != null) {
+	      offscrG.directThickRect(Color.blue, quad.x, quad.y, quad.width, 
+		                    quad.height, 2);
+	      quad = pstruct.expand(quad);
+	      offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, 
+		                    quad.height, 2);
+           } 
+	 DRectangle bb = (DRectangle) b;
+	 offscrG.directThickRect(Color.orange, bb.x, bb.y, bb.width, 
+		                  bb.height, 2);
+        } 
+	 lastDelete = null;
+	 return;
+     }
+
+
+    if (op == OPFEATURE_MOVE || op == OPFEATURE_MOTIONSENSITIVITY) {
+
+	lastMove = null;
+	if (lastDelete != null) {
+	    DRectangle dr = (DRectangle)lastDelete;
+	    lastMove = new moveRectangles[1];
+	    lastMove[0] = new moveRectangles();
+	    lastMove[0].rect = dr;  // lastMove[0] is the moved line
+
+	    for (int j = historyList.size() - 1; j >= 0; j--) {
+	      if (lastMove[0].rect.equals((DRectangle)historyList.elementAt(j))) {
+		    lastMove[0].index = j;
+		    break;
+	      }
+	    }
+	}
+    }
+
+    redraw();
+    mouseDragged(me);
+  }
+  
+  int global_count_1 = 0;
+  int global_count_2 = 0;
+	    
+  public void opLooseness(DPoint newloc)
+  {
+
+     if (!(pstruct instanceof LOOSETree)) return; 
+
+     DRectangle nr = new DRectangle(newloc.x - lastMove[0].rect.width/2, 
+				   newloc.y - lastMove[0].rect.height/2, 
+				   lastMove[0].rect.width, 
+				   lastMove[0].rect.height);
+
+
+     if (lastMove[0].rect == null) return;
+	   
+     global_count_2++;
+
+     if (global_count_2 < 3) return;
+
+     global_count_2 = 0;
+
+     DRectangle quad1 = pstruct.EnclosingQuadBlock(lastMove[0].rect, false); 
+     DRectangle quad = pstruct.expand(quad1);
+
+     if (!quad.contains(nr)) {
+
+	  if (quad.x > nr.x) nr.x = quad.x;
+	  if (quad.y > nr.y) nr.y = quad.y;
+
+	  if (quad.x + quad.width < nr.x + nr.width) {
+	     nr.x = quad.x + quad.width - nr.width;
+	  }
+		  
+	  if (quad.y + quad.height < nr.y + nr.height) {
+	     nr.y = quad.y + quad.height - nr.height;
+	  }
+
+     }
+	    
+    if (!(wholeCanvas.contains(nr))) return;
+
+    if (pstruct.ReplaceRectangles(lastMove[0].rect, nr)) {
+	  redraw();
+          lastMove[0].rect = nr;
+	  offscrG.directThickRect(Color.orange, nr.x, nr.y, nr.width, 
+			          nr.height, 1);
+	  if (quad1 != null && quad != null) {
+
+	     offscrG.directThickRect(Color.blue,  quad1.x, quad1.y, quad1.width, 
+		                    quad1.height, 2);
+
+	     offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, 
+			            quad.height, 2);
+	   }
+    }
+
+     lastDelete = null;
+     historyList.setElementAt(lastMove[0].rect, lastMove[0].index);
+     return;
+  }
+
+  
+  private void looseMoveRectangle(DPoint newloc) {
+
+	   DRectangle nr = new DRectangle(newloc.x - lastMove[0].rect.width/2, 
+					   newloc.y - lastMove[0].rect.height/2, 
+					   lastMove[0].rect.width, 
+					   lastMove[0].rect.height);
+
+
+           if (!(pstruct instanceof LOOSETree)) return; 
+    
+	   if (!(wholeCanvas.contains(nr))) return;
+
+	   if (lastMove[0].rect == null) return;
+
+	   if (lastMove[0].rect.equals(nr)) return;
+
+	   global_count_1++;
+
+	   if (global_count_1 < 3) return;
+
+	   global_count_1 = 0;
+
+           if (!(pstruct.ReplaceRectangles(lastMove[0].rect, nr))) {
+	 	     pstruct.DeleteDirect(lastMove[0].rect);
+	 	     pstruct.Insert(nr);
+           }
+
+           DRectangle quad = pstruct.EnclosingQuadBlock(
+		                             (DRectangle) nr, false);
+	   redraw();
+
+	   if (quad != null) {
+
+	     offscrG.directThickRect(Color.blue, quad.x, quad.y, quad.width, 
+		                    quad.height, 2);
+
+	     quad = pstruct.expand(quad);
+	     
+	     offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, 
+			                    quad.height, 2);
+	   }
+	     
+	   offscrG.directThickRect(Color.orange, nr.x, nr.y, nr.width, 
+			                    nr.height, 1);
+
+	   lastMove[0].rect = nr;
+	   lastDelete = null;
+	   historyList.setElementAt(lastMove[0].rect, lastMove[0].index);
+	   return;
+  }
+
+  private void moveRectangle(DPoint newloc) {
+
+	    DRectangle nr = new DRectangle(newloc.x - lastMove[0].rect.width/2, 
+					   newloc.y - lastMove[0].rect.height/2, 
+					   lastMove[0].rect.width, 
+					   lastMove[0].rect.height);
+
+	    
+	    DRectangle[] oldset = new DRectangle[lastMove.length];
+	    for (int i = 0; i < lastMove.length; i++) 
+		oldset[i] = lastMove[i].rect;
+
+	    if (wholeCanvas.contains(nr)) {
 		lastMove[0].rect = nr;
-		lastDelete = null;
-		historyList.setElementAt(lastMove[0].rect, lastMove[0].index);
-		return;
+		if (!pstruct.orderDependent()) {
+		    pstruct.MessageStart();
+		    for (int i = 0; i < lastMove.length; i++) 
+			pstruct.DeleteDirect(oldset[i]);
+		    for (int i = 0; i < lastMove.length; i++) 
+			if (!pstruct.Insert(lastMove[i].rect)) {
+			    for (int k = i - 1; k >= 0; k--)
+				pstruct.DeleteDirect(lastMove[k].rect);
+			    for (int k = 0; k < lastMove.length; k++) {
+				pstruct.Insert(oldset[k]);
+				lastMove[k].rect = oldset[k];
+			    }
+			    break;
+			}
+		    pstruct.MessageEnd();
+		    for (int i = 0; i < lastMove.length; i++)
+			historyList.setElementAt(lastMove[i].rect, lastMove[i].index);
+		} else {
+		    int[] test = new int[lastMove.length];
+		    for (int i = 0; i < lastMove.length; i++) {
+			historyList.setElementAt(lastMove[i].rect, lastMove[i].index);
+			test[i] = lastMove[i].index;
+		    }
+		    if (!updateFromParams(test)) {
+			for (int i = 0; i < lastMove.length; i++) {
+			    lastMove[i].rect = oldset[i];
+			    historyList.setElementAt(lastMove[i].rect, lastMove[i].index);
+			}
+			updateFromParams();
+		    }
+		}
+		redraw();
+		lastMove[0].rect.directDraw(Color.orange, offscrG);
+		if (pstruct instanceof LOOSETree) { // Draw Centroid 
+		   DRectangle bb = (DRectangle) lastMove[0].rect;
+		   DPoint pnt = new DPoint(bb.x + bb.width/2, bb.y + bb.height/2);
+		   pnt.directDraw(Color.orange, offscrG);
+           	   DRectangle quad = pstruct.EnclosingQuadBlock(
+		                             (DRectangle) lastMove[0].rect, false);
+
+	   	   if (quad != null) {
+
+		     offscrG.directThickRect(Color.blue, quad.x, quad.y,
+			       quad.width, quad.height, 2);
+
+		     quad = pstruct.expand(quad);
+	     
+		     offscrG.directThickRect(Color.green, quad.x, quad.y,
+			   quad.width, quad.height, 2);
+	   	   }
+		} 
+		lastDelete = lastMove[0].rect;
+
+        }
+    }
+
+  public void mouseDragged(MouseEvent me) {
+    
+    debugPrint("mouseDragged");
+    
+    if (lastEvent != MOUSE_DRAGGED && lastEvent != MOUSE_PRESSED)
+	  return;
+    
+    if ((getCurrentOpFeature().buttonMask & MouseDisplay.getMouseButtons(me)) == 0)
+	return; // operation doesn't use this mouse button
+
+
+    super.mouseDragged(me);
+    lastEvent = MOUSE_DRAGGED;
+    int op = getCurrentOperation();
+    Point scrCoord = offscrG.adjustPoint(me.getPoint());
+    DPoint p  = offscrG.transPointT(scrCoord);
+
+    if (op == OPFEATURE_MOVEEDGE) {
+	DRectangle fP = (DRectangle)historyList.elementAt(lastInsert);
+	DRectangle newest = null;
+	if (lastMoveEdgeIndex == NORTH) {
+	    newest = p.y - fP.y > 0 ? 
+		new DRectangle(fP.x, fP.y, fP.width, p.y - fP.y) :
+		fP;
+	}
+	if (lastMoveEdgeIndex == SOUTH) {
+	    newest = fP.height + fP.y -  p.y > 0 ? 
+		new DRectangle(fP.x, p.y, fP.width, fP.height + fP.y -  p.y) :
+		fP;
+	}
+	if (lastMoveEdgeIndex == WEST) {
+	    newest = fP.width + fP.x - p.x > 0 ?
+		new DRectangle(p.x, fP.y, fP.width + fP.x - p.x, fP.height) :
+		fP;
+	}
+	if (lastMoveEdgeIndex == EAST) {
+	    newest = p.x - fP.x > 0 ? 
+		new DRectangle(fP.x, fP.y, p.x - fP.x, fP.height) :
+		fP;
+	}
+            
+	if (pstruct.orderDependent()) {
+	    historyList.setElementAt(newest, lastInsert);
+	    int[] nwst = new int[1];
+	    nwst[0] = lastInsert;
+	    if (!updateFromParams(nwst)) {
+		historyList.setElementAt(fP, lastInsert);
+		updateFromParams();
+	    } else {
+		fP = newest;
+	    }
+	} else {
+	    pstruct.MessageStart();
+	    pstruct.DeleteDirect((DRectangle)historyList.elementAt(lastInsert));
+	    if (!pstruct.Insert(newest)) {
+		pstruct.Insert(fP);
+		fP = (DRectangle)historyList.elementAt(lastInsert);
+	    } else {
+		fP = newest;
+		historyList.setElementAt(fP, lastInsert);
+	    }
+	    pstruct.MessageEnd();
+	}
+	redraw();
+	fP.directDraw(Color.orange, offscrG);
+	lastDelete = fP;
+    }
+
+    if (op == OPFEATURE_MOVEVERTEX) {
+	DRectangle fP = (DRectangle)historyList.elementAt(lastInsert);
+	double d1, d2, d3, d4;
+	d1 = p.distance(fP.SWcorner());
+	d2 = p.distance(fP.NWcorner());
+	d3 = p.distance(fP.SEcorner());
+	d4 = p.distance(fP.NEcorner());
+	DRectangle newest = null;
+	if (d1 <= d2 && d1 <= d3 && d1 <= d4) {
+	    newest = new DRectangle(p.x, p.y, fP.width - p.x + fP.x, fP.height - p.y + fP.y);
+	}
+	if (d2 <= d1 && d2 <= d3 && d2 <= d4) {
+	    newest = new DRectangle(p.x, fP.y, fP.width - p.x + fP.x, p.y - fP.y);
+	}
+	if (d3 <= d1 && d3 <= d2 && d3 <= d4) {
+	    newest = new DRectangle(fP.x, p.y, p.x - fP.x, fP.height - p.y + fP.y);
+	}
+	if (d4 <= d1 && d4 <= d2 && d4 <= d3) {
+	    newest = new DRectangle(fP.x, fP.y, p.x - fP.x, p.y - fP.y);
 	}
 
-	private void moveRectangle(DPoint newloc) {
+	if (pstruct.orderDependent()) {
+	    historyList.setElementAt(newest, lastInsert);
+	    int[] nwst = new int[1];
+	    nwst[0] = lastInsert;
+	    if (!updateFromParams(nwst)) {
+		historyList.setElementAt(fP, lastInsert);
+		updateFromParams();
+	    } else {
+		fP = newest;
+	    }
+	} else {
+	    pstruct.MessageStart();
+	    pstruct.DeleteDirect((DRectangle)historyList.elementAt(lastInsert));
+	    if (!pstruct.Insert(newest)) {
+		pstruct.Insert(fP);
+		fP = (DRectangle)historyList.elementAt(lastInsert);
+	    } else {
+		fP = newest;
+		historyList.setElementAt(fP, lastInsert);
+	    }
+	    pstruct.MessageEnd();
+	}
+	redraw();
+	fP.directDraw(Color.orange, offscrG);
+	lastDelete = fP;
+    }
 
-		DRectangle nr = new DRectangle(newloc.x - lastMove[0].rect.width / 2, newloc.y - lastMove[0].rect.height / 2,
-				lastMove[0].rect.width, lastMove[0].rect.height);
+    if (op == OPFEATURE_INSERT) {
+	DPoint last = offscrG.transPointT(lastP);
 
-		DRectangle[] oldset = new DRectangle[lastMove.length];
-		for (int i = 0; i < lastMove.length; i++)
-			oldset[i] = lastMove[i].rect;
+	//    if (tree.runningThread != null)
+	//      return true;
 
-		if (wholeCanvas.contains(nr)) {
-			lastMove[0].rect = nr;
-			if (!pstruct.orderDependent()) {
-				pstruct.MessageStart();
-				for (int i = 0; i < lastMove.length; i++)
-					pstruct.DeleteDirect(oldset[i]);
-				for (int i = 0; i < lastMove.length; i++)
-					if (!pstruct.Insert(lastMove[i].rect)) {
-						for (int k = i - 1; k >= 0; k--)
-							pstruct.DeleteDirect(lastMove[k].rect);
-						for (int k = 0; k < lastMove.length; k++) {
-							pstruct.Insert(oldset[k]);
-							lastMove[k].rect = oldset[k];
-						}
-						break;
-					}
-				pstruct.MessageEnd();
-				for (int i = 0; i < lastMove.length; i++)
-					historyList.setElementAt(lastMove[i].rect, lastMove[i].index);
-			} else {
-				int[] test = new int[lastMove.length];
-				for (int i = 0; i < lastMove.length; i++) {
-					historyList.setElementAt(lastMove[i].rect, lastMove[i].index);
-					test[i] = lastMove[i].index;
-				}
-				if (!updateFromParams(test)) {
-					for (int i = 0; i < lastMove.length; i++) {
-						lastMove[i].rect = oldset[i];
-						historyList.setElementAt(lastMove[i].rect, lastMove[i].index);
-					}
-					updateFromParams();
-				}
-			}
-			redraw();
-			lastMove[0].rect.directDraw(Color.orange, offscrG);
-			if (pstruct instanceof LOOSETree) { // Draw Centroid
-				DRectangle bb = (DRectangle) lastMove[0].rect;
-				DPoint pnt = new DPoint(bb.x + bb.width / 2, bb.y + bb.height / 2);
-				pnt.directDraw(Color.orange, offscrG);
-				DRectangle quad = pstruct.EnclosingQuadBlock((DRectangle) lastMove[0].rect, false);
+	offscrG.redraw();
+	offscrG.directRect(Color.orange, Math.min(last.x, p.x),
+	                   Math.min(last.y, p.y), Math.abs(p.x - last.x),
+			   Math.abs(last.y - p.y));
+    }
 
-				if (quad != null) {
 
-					offscrG.directThickRect(Color.blue, quad.x, quad.y, quad.width, quad.height, 2);
+    if (op == OPFEATURE_MOTIONSENSITIVITY && 
+	  lastMove != null && lastMove.length != 0) {
+	looseMoveRectangle(p);
+    }
 
-					quad = pstruct.expand(quad);
+    if (op == OPFEATURE_MOVE && lastMove != null && lastMove.length != 0) {
+	moveRectangle(p);
+    }
 
-					offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, quad.height, 2);
-				}
-			}
-			lastDelete = lastMove[0].rect;
+  }
 
-		}
+  public void mouseReleased(MouseEvent me) {
+      debugPrint("mouseReleased");
+   
+    if (lastEvent != MOUSE_PRESSED && lastEvent != MOUSE_DRAGGED)
+	  return;
+
+    if (getCurrentOperation() == OPFEATURE_MOVE && 
+	  (pstruct instanceof LOOSETree)) {
+       	  redraw();
+    }
+    
+    if ((getCurrentOpFeature().buttonMask & MouseDisplay.getMouseButtons(me)) == 0)
+	return; // operation doesn't use this mouse button
+      super.mouseReleased(me);
+
+    lastEvent = MOUSE_RELEASED;
+    Point scrCoord = offscrG.adjustPoint(me.getPoint());
+    DPoint p  = offscrG.transPointT(scrCoord);
+    //    if (tree.runningThread != null)
+    //      return true;
+
+    int op = getCurrentOperation();
+    if (op == OPFEATURE_INSERT) {
+	if (lastP.x == scrCoord.x || lastP.y == scrCoord.y) {
+	    redraw();
+	    return;
 	}
 
-	public void mouseDragged(MouseEvent me) {
+            
+    DPoint last = offscrG.transPointT(lastP);
+    DRectangle r = new DRectangle(Math.min(last.x, p.x), Math.min(last.y, p.y), 
+				  Math.max(p.x, last.x) - Math.min(last.x, p.x), 
+				  Math.max(last.y, p.y) - Math.min(last.y, p.y));
+    pstruct.MessageStart();
+    if (pstruct.Insert(r))
+        historyList.addElement(r);
+    pstruct.MessageEnd();
+    redraw();
 
-		debugPrint("mouseDragged");
-
-		if (lastEvent != MOUSE_DRAGGED && lastEvent != MOUSE_PRESSED)
-			return;
-
-		if ((getCurrentOpFeature().buttonMask & MouseDisplay.getMouseButtons(me)) == 0)
-			return; // operation doesn't use this mouse button
-
-		super.mouseDragged(me);
-		lastEvent = MOUSE_DRAGGED;
-		int op = getCurrentOperation();
-		Point scrCoord = offscrG.adjustPoint(me.getPoint());
-		DPoint p = offscrG.transPointT(scrCoord);
-
-		if (op == OPFEATURE_MOVEEDGE) {
-			DRectangle fP = (DRectangle) historyList.elementAt(lastInsert);
-			DRectangle newest = null;
-			if (lastMoveEdgeIndex == NORTH) {
-				newest = p.y - fP.y > 0 ? new DRectangle(fP.x, fP.y, fP.width, p.y - fP.y) : fP;
-			}
-			if (lastMoveEdgeIndex == SOUTH) {
-				newest = fP.height + fP.y - p.y > 0 ? new DRectangle(fP.x, p.y, fP.width, fP.height + fP.y - p.y) : fP;
-			}
-			if (lastMoveEdgeIndex == WEST) {
-				newest = fP.width + fP.x - p.x > 0 ? new DRectangle(p.x, fP.y, fP.width + fP.x - p.x, fP.height) : fP;
-			}
-			if (lastMoveEdgeIndex == EAST) {
-				newest = p.x - fP.x > 0 ? new DRectangle(fP.x, fP.y, p.x - fP.x, fP.height) : fP;
-			}
-
-			if (pstruct.orderDependent()) {
-				historyList.setElementAt(newest, lastInsert);
-				int[] nwst = new int[1];
-				nwst[0] = lastInsert;
-				if (!updateFromParams(nwst)) {
-					historyList.setElementAt(fP, lastInsert);
-					updateFromParams();
-				} else {
-					fP = newest;
-				}
-			} else {
-				pstruct.MessageStart();
-				pstruct.DeleteDirect((DRectangle) historyList.elementAt(lastInsert));
-				if (!pstruct.Insert(newest)) {
-					pstruct.Insert(fP);
-					fP = (DRectangle) historyList.elementAt(lastInsert);
-				} else {
-					fP = newest;
-					historyList.setElementAt(fP, lastInsert);
-				}
-				pstruct.MessageEnd();
-			}
-			redraw();
-			fP.directDraw(Color.orange, offscrG);
-			lastDelete = fP;
-		}
-
-		if (op == OPFEATURE_MOVEVERTEX) {
-			DRectangle fP = (DRectangle) historyList.elementAt(lastInsert);
-			double d1, d2, d3, d4;
-			d1 = p.distance(fP.SWcorner());
-			d2 = p.distance(fP.NWcorner());
-			d3 = p.distance(fP.SEcorner());
-			d4 = p.distance(fP.NEcorner());
-			DRectangle newest = null;
-			if (d1 <= d2 && d1 <= d3 && d1 <= d4) {
-				newest = new DRectangle(p.x, p.y, fP.width - p.x + fP.x, fP.height - p.y + fP.y);
-			}
-			if (d2 <= d1 && d2 <= d3 && d2 <= d4) {
-				newest = new DRectangle(p.x, fP.y, fP.width - p.x + fP.x, p.y - fP.y);
-			}
-			if (d3 <= d1 && d3 <= d2 && d3 <= d4) {
-				newest = new DRectangle(fP.x, p.y, p.x - fP.x, fP.height - p.y + fP.y);
-			}
-			if (d4 <= d1 && d4 <= d2 && d4 <= d3) {
-				newest = new DRectangle(fP.x, fP.y, p.x - fP.x, p.y - fP.y);
-			}
-
-			if (pstruct.orderDependent()) {
-				historyList.setElementAt(newest, lastInsert);
-				int[] nwst = new int[1];
-				nwst[0] = lastInsert;
-				if (!updateFromParams(nwst)) {
-					historyList.setElementAt(fP, lastInsert);
-					updateFromParams();
-				} else {
-					fP = newest;
-				}
-			} else {
-				pstruct.MessageStart();
-				pstruct.DeleteDirect((DRectangle) historyList.elementAt(lastInsert));
-				if (!pstruct.Insert(newest)) {
-					pstruct.Insert(fP);
-					fP = (DRectangle) historyList.elementAt(lastInsert);
-				} else {
-					fP = newest;
-					historyList.setElementAt(fP, lastInsert);
-				}
-				pstruct.MessageEnd();
-			}
-			redraw();
-			fP.directDraw(Color.orange, offscrG);
-			lastDelete = fP;
-		}
-
-		if (op == OPFEATURE_INSERT) {
-			DPoint last = offscrG.transPointT(lastP);
-
-			// if (tree.runningThread != null)
-			// return true;
-
-			offscrG.redraw();
-			offscrG.directRect(Color.orange, Math.min(last.x, p.x), Math.min(last.y, p.y), Math.abs(p.x - last.x),
-					Math.abs(last.y - p.y));
-		}
-
-		if (op == OPFEATURE_MOTIONSENSITIVITY && lastMove != null && lastMove.length != 0) {
-			looseMoveRectangle(p);
-		}
-
-		if (op == OPFEATURE_MOVE && lastMove != null && lastMove.length != 0) {
-			moveRectangle(p);
-		}
-
-	}
-
-	public void mouseReleased(MouseEvent me) {
-		debugPrint("mouseReleased");
-
-		if (lastEvent != MOUSE_PRESSED && lastEvent != MOUSE_DRAGGED)
-			return;
-
-		if (getCurrentOperation() == OPFEATURE_MOVE && (pstruct instanceof LOOSETree)) {
-			redraw();
-		}
-
-		if ((getCurrentOpFeature().buttonMask & MouseDisplay.getMouseButtons(me)) == 0)
-			return; // operation doesn't use this mouse button
-		super.mouseReleased(me);
-
-		lastEvent = MOUSE_RELEASED;
-		Point scrCoord = offscrG.adjustPoint(me.getPoint());
-		DPoint p = offscrG.transPointT(scrCoord);
-		// if (tree.runningThread != null)
-		// return true;
-
-		int op = getCurrentOperation();
-		if (op == OPFEATURE_INSERT) {
-			if (lastP.x == scrCoord.x || lastP.y == scrCoord.y) {
-				redraw();
-				return;
-			}
-
-			DPoint last = offscrG.transPointT(lastP);
-			DRectangle r = new DRectangle(Math.min(last.x, p.x), Math.min(last.y, p.y),
-					Math.max(p.x, last.x) - Math.min(last.x, p.x), Math.max(last.y, p.y) - Math.min(last.y, p.y));
-			pstruct.MessageStart();
-			if (pstruct.Insert(r))
-				historyList.addElement(r);
-			pstruct.MessageEnd();
-			redraw();
-
-		}
+    }
 
 //      if (op.equals("Move")) {
 //  	moveRectangle(p);
@@ -913,7 +956,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 //              redraw();
 //          }
 //      }
-	}
-	// ----------------------
+  }
+  //----------------------
 
 }

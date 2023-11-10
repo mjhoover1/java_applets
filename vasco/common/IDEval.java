@@ -2,5 +2,5 @@
 package vasco.common;
 
 public interface IDEval {
-	public int getValue();
+    public int getValue();
 }
