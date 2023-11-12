@@ -3,10 +3,10 @@ package vasco.rectangles;
 import vasco.common.*;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.applet.*;
-import java.util.*;
-import java.io.*;
+//import java.awt.event.*;
+//import java.applet.*;
+//import java.util.*;
+//import java.io.*;
 
 public class main extends CommonApplet implements GenericMain {
     GenericCanvas drawcanvas;
