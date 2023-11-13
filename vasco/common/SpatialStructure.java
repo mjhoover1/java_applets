@@ -5,134 +5,262 @@ import vasco.drawable.*;
 import java.awt.*;
 import java.util.*;
 
+/**
+ * Abstract base class for spatial structures in the Vasco framework. 
+ * It defines common functionality for spatial data structures and their interaction with the user interface.
+ */
 public abstract class SpatialStructure implements CommonConstants {
 
-  public TopInterface topInterface;
-  public RebuildTree reb;
-  public Choice availOps;
-  public DRectangle wholeCanvas;
-  private SwitchCursor cursorThread;
+	public TopInterface topInterface;
+	public RebuildTree reb;
+	public Choice availOps;
+	public DRectangle wholeCanvas;
+	private SwitchCursor cursorThread;
 
-  public SpatialStructure(DRectangle w, TopInterface topInterface, RebuildTree r) {
-      this.topInterface = topInterface;
-    reb = r;
-    wholeCanvas = w;
-  }
-
-  public void reInit(Choice ops) {
-    Clear();
-    topInterface.getPanel().removeAll();
-    availOps = ops;
-    // if (ops != null) {
-    //   ops.removeAll();
-    // }
-  }
-
-    public abstract boolean orderDependent();
-
-    class SwitchCursor extends Thread {
-	boolean done;
-
-	SwitchCursor() {
-	    done = false;
-	    //System.out.println("run beg");
+    /**
+     * Constructs a new SpatialStructure.
+     *
+     * @param w             The whole canvas area for the spatial structure.
+     * @param topInterface  Interface for interacting with higher-level components.
+     * @param r             RebuildTree instance for rebuilding the spatial structure.
+     */
+	public SpatialStructure(DRectangle w, TopInterface topInterface, RebuildTree r) {
+		this.topInterface = topInterface;
+		reb = r;
+		wholeCanvas = w;
 	}
 
-	public void run() {
-	    try {
-		Thread.sleep(500);
-	    } catch (Exception e) {}
-	    if (!done) {
-		topInterface.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		//		System.out.println("cursor set");
-	    }
-	    //System.out.println("run end");
+    /**
+     * Reinitializes the spatial structure and its operations. Typically used when resetting the structure.
+     *
+     * @param ops The choice component for available operations.
+     */
+	public void reInit(Choice ops) {
+		Clear();
+		topInterface.getPanel().removeAll();
+		availOps = ops;
+		// if (ops != null) {
+		// ops.removeAll();
+		// }
 	}
-	
-	void finish() {
-	    done = true;
+
+    /**
+     * Abstract method to determine if the order of insertion affects the structure.
+     *
+     * @return True if the order of insertion affects the structure, false otherwise.
+     */
+	public abstract boolean orderDependent();
+
+    /**
+     * Inner class to manage cursor state during long-running operations.
+     */
+	class SwitchCursor extends Thread {
+		boolean done;
+
+		SwitchCursor() {
+			done = false;
+			// System.out.println("run beg");
+		}
+
+		public void run() {
+			try {
+				Thread.sleep(500);
+			} catch (Exception e) {
+			}
+			if (!done) {
+				topInterface.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				// System.out.println("cursor set");
+			}
+			// System.out.println("run end");
+		}
+
+		void finish() {
+			done = true;
+		}
 	}
-    }
 
-  public void MessageStart() {
-      //Thread.dumpStack();
-      //System.out.println("Start");
-      cursorThread = new SwitchCursor();
-      cursorThread.start();
-  };
+    /**
+     * Begins a message or operation, starting a cursor change if the operation takes a significant amount of time.
+     */
+	public void MessageStart() {
+		// Thread.dumpStack();
+		// System.out.println("Start");
+		cursorThread = new SwitchCursor();
+		cursorThread.start();
+	};
 
-  public void Clear() {};
+    /**
+     * Clears the spatial structure. This is an abstract method that must be implemented by subclasses.
+     */
+	public void Clear() {
+	};
 
-  public boolean Insert(Point p){
-    return false;
-  }
+    /**
+     * Inserts a point into the spatial structure. This method is not implemented in the abstract class.
+     *
+     * @param p The point to insert.
+     * @return False, as this method is not implemented.
+     */
+	public boolean Insert(Point p) {
+		return false;
+	}
 
-  public boolean Delete(Point p){
-    return false; 
-  }
+    /**
+     * Deletes a point from the spatial structure. This method is not implemented in the abstract class.
+     *
+     * @param p The point to delete.
+     * @return False, as this method is not implemented.
+     */
+	public boolean Delete(Point p) {
+		return false;
+	}
 
-  public abstract boolean Insert(Drawable r);
+    /**
+     * Abstract method to insert a drawable object into the spatial structure.
+     *
+     * @param r The drawable object to insert.
+     * @return True if the insertion was successful, false otherwise.
+     */
+	public abstract boolean Insert(Drawable r);
 
-  public abstract void Delete(DPoint p);
+    /**
+     * Abstract method to delete a drawable object based on a DPoint from the spatial structure.
+     *
+     * @param p The DPoint based on which deletion is to be performed.
+     */
+	public abstract void Delete(DPoint p);
 
-  public abstract void DeleteDirect(Drawable d);
+    /**
+     * Abstract method to directly delete a drawable object from the spatial structure.
+     *
+     * @param d The drawable object to delete.
+     */
+	public abstract void DeleteDirect(Drawable d);
 
-  public void MessageEnd() {
-      //Thread.dumpStack();
-      //System.out.println("End");
-      if(cursorThread!=null)cursorThread.finish();
-      topInterface.setCursor(Cursor.getDefaultCursor());
-  };
+    /**
+     * Ends a message or operation, resetting the cursor to the default state.
+     */
+	public void MessageEnd() {
+		// Thread.dumpStack();
+		// System.out.println("End");
+		if (cursorThread != null)
+			cursorThread.finish();
+		topInterface.setCursor(Cursor.getDefaultCursor());
+	};
 
+    /**
+     * Abstract method for searching within the spatial structure.
+     *
+     * @param r    The query object for the search.
+     * @param mode The mode of the search.
+     * @return A SearchVector containing the search results.
+     */
+	public abstract SearchVector Search(QueryObject r, int mode);
 
+    /**
+     * Abstract method for finding the nearest object to a query point.
+     *
+     * @param p The query object.
+     * @return A SearchVector with the nearest object.
+     */
+	public abstract SearchVector Nearest(QueryObject p);
 
-  public abstract SearchVector Search(QueryObject r, int mode);
+    /**
+     * Abstract method for finding objects within a specified distance from a query point.
+     *
+     * @param p    The query object.
+     * @param dist The distance within which to search.
+     * @return A SearchVector with objects within the specified distance.
+     */
+	public abstract SearchVector Nearest(QueryObject p, double dist);
 
-  public abstract SearchVector Nearest(QueryObject p);
+    /**
+     * Finds the nearest drawable object to a given query point.
+     *
+     * @param p The query object used to find the nearest drawable.
+     * @return The nearest drawable object to the query point.
+     */
+	public abstract Drawable NearestFirst(QueryObject p);
 
-  public abstract SearchVector Nearest(QueryObject p, double dist);
+    /**
+     * Finds all drawable objects within a specified distance from a query point.
+     *
+     * @param p    The query object.
+     * @param dist The maximum distance within which drawable objects are considered.
+     * @return An array of drawable objects within the specified distance of the query point.
+     */
+	public abstract Drawable[] NearestRange(QueryObject p, double dist);
 
-  public abstract Drawable NearestFirst(QueryObject p);
+    /**
+     * Draws the contents of the spatial structure.
+     *
+     * @param g     The drawing target for rendering the structure.
+     * @param view  The rectangular area of the view in which the content is drawn.
+     */
+	public abstract void drawContents(DrawingTarget g, Rectangle view);
 
-  public abstract Drawable[] NearestRange(QueryObject p, double dist);
+    /**
+     * Draws a grid on the drawing target.
+     *
+     * @param g     The drawing target on which the grid is drawn.
+     * @param level The level of detail or zoom level at which the grid is drawn.
+     */
+	public void drawGrid(DrawingTarget g, int level) {
+	};
 
-  public abstract void drawContents(DrawingTarget g, Rectangle view);
+    /**
+     * Retrieves the name of the spatial structure.
+     *
+     * @return The name of the spatial structure.
+     */
+	public abstract String getName();
 
-  public void drawGrid(DrawingTarget g, int level) {};
+    /**
+     * Gets the currently selected operation in the user interface.
+     *
+     * @return The currently selected operation, or null if no operation is selected.
+     */
+	public String getCurrentOperation() {
+		if (availOps == null)
+			return null;
+		return availOps.getSelectedItem();
+	}
 
-  public abstract String getName();
+    /**
+     * Determines how the drawable object relates to the search query and adds it to the search vector.
+     *
+     * @param s             The search query object.
+     * @param cur           The current drawable object being considered.
+     * @param mode          The search mode (e.g., contains, is contained, overlaps).
+     * @param v             The search vector to which the result is added.
+     * @param searchVector  The vector containing search results.
+     */
+	public void drawableInOut(QueryObject s, Drawable cur, int mode, SearchVector v, Vector searchVector) {
+		boolean isBlue = false;
+		if (cur == null || s == null)
+			return;
 
-  public String getCurrentOperation() {
-	  if(availOps==null)return null;
-    return availOps.getSelectedItem();
-  }
+		if ((mode & SEARCHMODE_CONTAINS) != 0) {
+			isBlue = isBlue || s.contains(cur);
+		} // contains
 
-  public void drawableInOut(QueryObject s, Drawable cur, int mode, SearchVector v, Vector searchVector) {
-    boolean isBlue = false;
-    if (cur == null || s == null)
-      return;
+		if ((mode & SEARCHMODE_ISCONTAINED) != 0) {
+			isBlue = isBlue || s.isContained(cur);
+		} // is contained
 
-    if ((mode & SEARCHMODE_CONTAINS) != 0) {
-      isBlue = isBlue || s.contains(cur);
-    } // contains
+		if ((mode & SEARCHMODE_OVERLAPS) != 0) {
+			isBlue = isBlue || s.overlaps(cur);
+			// intersection includes some vertices
+		}
 
-    if ((mode & SEARCHMODE_ISCONTAINED) != 0) {
-      isBlue = isBlue || s.isContained(cur);
-    } // is contained
+		if ((mode & SEARCHMODE_CROSSES) != 0) {
+			isBlue = isBlue || s.crosses(cur);
+			// crosses but not vertices inside one another
+		}
 
-    if ((mode & SEARCHMODE_OVERLAPS) != 0) {
-      isBlue = isBlue || s.overlaps(cur);
-      // intersection includes some vertices
-    }
-
-    if ((mode & SEARCHMODE_CROSSES) != 0) {
-      isBlue = isBlue || s.crosses(cur);
-      // crosses but not vertices inside one another
-    }
-
-    if (isBlue)
-      v.addElement(new SVElement(new DrawableIn(cur), searchVector));
-    else
-      v.addElement(new SVElement(new DrawableOut(cur), searchVector));
-  }
+		if (isBlue)
+			v.addElement(new SVElement(new DrawableIn(cur), searchVector));
+		else
+			v.addElement(new SVElement(new DrawableOut(cur), searchVector));
+	}
 }
