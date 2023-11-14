@@ -777,7 +777,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 
 		if ((op == OPFEATURE_WINDOW || op == OPFEATURE_NEAREST || op == OPFEATURE_WITHIN)
 				&& withinStats.getValue() == QueryObject.QO_SECTOR) {
-			if (me.isMetaDown()) { // button 3
+			if (me.isControlDown()) { // button 3
 				sec.adjustExtent(p);
 			} else if (me.isAltDown()) {
 				sec.adjustStart(p);

@@ -12,7 +12,7 @@ public class MouseDisplay extends Canvas {
     private Image im;
     private static int HGHT = 80;
     private static String middleBut = "[<ALT>+click]";
-    private static String rightBut = "[<META>+click]";
+    private static String rightBut = "[<CTRL>+click]";
 
     String b1, b2, b3;
 
@@ -79,9 +79,9 @@ public class MouseDisplay extends Canvas {
         int ret = 0;
         if (me.isAltDown())
             ret |= InputEvent.BUTTON2_MASK;
-        if (me.isMetaDown())
+        if (me.isControlDown())
             ret |= InputEvent.BUTTON3_MASK;
-        if (!me.isAltDown() && !me.isMetaDown())
+        if (!me.isAltDown() && !me.isControlDown())
             ret |= InputEvent.BUTTON1_MASK;
         return ret;
     }
