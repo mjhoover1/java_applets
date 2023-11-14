@@ -6,8 +6,9 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * Abstract base class for spatial structures in the Vasco framework. 
- * It defines common functionality for spatial data structures and their interaction with the user interface.
+ * Abstract base class for spatial structures in the Vasco framework. It defines
+ * common functionality for spatial data structures and their interaction with
+ * the user interface.
  */
 public abstract class SpatialStructure implements CommonConstants {
 
@@ -17,24 +18,26 @@ public abstract class SpatialStructure implements CommonConstants {
 	public DRectangle wholeCanvas;
 	private SwitchCursor cursorThread;
 
-    /**
-     * Constructs a new SpatialStructure.
-     *
-     * @param w             The whole canvas area for the spatial structure.
-     * @param topInterface  Interface for interacting with higher-level components.
-     * @param r             RebuildTree instance for rebuilding the spatial structure.
-     */
+	/**
+	 * Constructs a new SpatialStructure.
+	 *
+	 * @param w            The whole canvas area for the spatial structure.
+	 * @param topInterface Interface for interacting with higher-level components.
+	 * @param r            RebuildTree instance for rebuilding the spatial
+	 *                     structure.
+	 */
 	public SpatialStructure(DRectangle w, TopInterface topInterface, RebuildTree r) {
 		this.topInterface = topInterface;
 		reb = r;
 		wholeCanvas = w;
 	}
 
-    /**
-     * Reinitializes the spatial structure and its operations. Typically used when resetting the structure.
-     *
-     * @param ops The choice component for available operations.
-     */
+	/**
+	 * Reinitializes the spatial structure and its operations. Typically used when
+	 * resetting the structure.
+	 *
+	 * @param ops The choice component for available operations.
+	 */
 	public void reInit(Choice ops) {
 		Clear();
 		topInterface.getPanel().removeAll();
@@ -44,16 +47,17 @@ public abstract class SpatialStructure implements CommonConstants {
 		// }
 	}
 
-    /**
-     * Abstract method to determine if the order of insertion affects the structure.
-     *
-     * @return True if the order of insertion affects the structure, false otherwise.
-     */
+	/**
+	 * Abstract method to determine if the order of insertion affects the structure.
+	 *
+	 * @return True if the order of insertion affects the structure, false
+	 *         otherwise.
+	 */
 	public abstract boolean orderDependent();
 
-    /**
-     * Inner class to manage cursor state during long-running operations.
-     */
+	/**
+	 * Inner class to manage cursor state during long-running operations.
+	 */
 	class SwitchCursor extends Thread {
 		boolean done;
 
@@ -79,9 +83,10 @@ public abstract class SpatialStructure implements CommonConstants {
 		}
 	}
 
-    /**
-     * Begins a message or operation, starting a cursor change if the operation takes a significant amount of time.
-     */
+	/**
+	 * Begins a message or operation, starting a cursor change if the operation
+	 * takes a significant amount of time.
+	 */
 	public void MessageStart() {
 		// Thread.dumpStack();
 		// System.out.println("Start");
@@ -89,57 +94,62 @@ public abstract class SpatialStructure implements CommonConstants {
 		cursorThread.start();
 	};
 
-    /**
-     * Clears the spatial structure. This is an abstract method that must be implemented by subclasses.
-     */
+	/**
+	 * Clears the spatial structure. This is an abstract method that must be
+	 * implemented by subclasses.
+	 */
 	public void Clear() {
 	};
 
-    /**
-     * Inserts a point into the spatial structure. This method is not implemented in the abstract class.
-     *
-     * @param p The point to insert.
-     * @return False, as this method is not implemented.
-     */
+	/**
+	 * Inserts a point into the spatial structure. This method is not implemented in
+	 * the abstract class.
+	 *
+	 * @param p The point to insert.
+	 * @return False, as this method is not implemented.
+	 */
 	public boolean Insert(Point p) {
 		return false;
 	}
 
-    /**
-     * Deletes a point from the spatial structure. This method is not implemented in the abstract class.
-     *
-     * @param p The point to delete.
-     * @return False, as this method is not implemented.
-     */
+	/**
+	 * Deletes a point from the spatial structure. This method is not implemented in
+	 * the abstract class.
+	 *
+	 * @param p The point to delete.
+	 * @return False, as this method is not implemented.
+	 */
 	public boolean Delete(Point p) {
 		return false;
 	}
 
-    /**
-     * Abstract method to insert a drawable object into the spatial structure.
-     *
-     * @param r The drawable object to insert.
-     * @return True if the insertion was successful, false otherwise.
-     */
+	/**
+	 * Abstract method to insert a drawable object into the spatial structure.
+	 *
+	 * @param r The drawable object to insert.
+	 * @return True if the insertion was successful, false otherwise.
+	 */
 	public abstract boolean Insert(Drawable r);
 
-    /**
-     * Abstract method to delete a drawable object based on a DPoint from the spatial structure.
-     *
-     * @param p The DPoint based on which deletion is to be performed.
-     */
+	/**
+	 * Abstract method to delete a drawable object based on a DPoint from the
+	 * spatial structure.
+	 *
+	 * @param p The DPoint based on which deletion is to be performed.
+	 */
 	public abstract void Delete(DPoint p);
 
-    /**
-     * Abstract method to directly delete a drawable object from the spatial structure.
-     *
-     * @param d The drawable object to delete.
-     */
+	/**
+	 * Abstract method to directly delete a drawable object from the spatial
+	 * structure.
+	 *
+	 * @param d The drawable object to delete.
+	 */
 	public abstract void DeleteDirect(Drawable d);
 
-    /**
-     * Ends a message or operation, resetting the cursor to the default state.
-     */
+	/**
+	 * Ends a message or operation, resetting the cursor to the default state.
+	 */
 	public void MessageEnd() {
 		// Thread.dumpStack();
 		// System.out.println("End");
@@ -148,93 +158,98 @@ public abstract class SpatialStructure implements CommonConstants {
 		topInterface.setCursor(Cursor.getDefaultCursor());
 	};
 
-    /**
-     * Abstract method for searching within the spatial structure.
-     *
-     * @param r    The query object for the search.
-     * @param mode The mode of the search.
-     * @return A SearchVector containing the search results.
-     */
+	/**
+	 * Abstract method for searching within the spatial structure.
+	 *
+	 * @param r    The query object for the search.
+	 * @param mode The mode of the search.
+	 * @return A SearchVector containing the search results.
+	 */
 	public abstract SearchVector Search(QueryObject r, int mode);
 
-    /**
-     * Abstract method for finding the nearest object to a query point.
-     *
-     * @param p The query object.
-     * @return A SearchVector with the nearest object.
-     */
+	/**
+	 * Abstract method for finding the nearest object to a query point.
+	 *
+	 * @param p The query object.
+	 * @return A SearchVector with the nearest object.
+	 */
 	public abstract SearchVector Nearest(QueryObject p);
 
-    /**
-     * Abstract method for finding objects within a specified distance from a query point.
-     *
-     * @param p    The query object.
-     * @param dist The distance within which to search.
-     * @return A SearchVector with objects within the specified distance.
-     */
+	/**
+	 * Abstract method for finding objects within a specified distance from a query
+	 * point.
+	 *
+	 * @param p    The query object.
+	 * @param dist The distance within which to search.
+	 * @return A SearchVector with objects within the specified distance.
+	 */
 	public abstract SearchVector Nearest(QueryObject p, double dist);
 
-    /**
-     * Finds the nearest drawable object to a given query point.
-     *
-     * @param p The query object used to find the nearest drawable.
-     * @return The nearest drawable object to the query point.
-     */
+	/**
+	 * Finds the nearest drawable object to a given query point.
+	 *
+	 * @param p The query object used to find the nearest drawable.
+	 * @return The nearest drawable object to the query point.
+	 */
 	public abstract Drawable NearestFirst(QueryObject p);
 
-    /**
-     * Finds all drawable objects within a specified distance from a query point.
-     *
-     * @param p    The query object.
-     * @param dist The maximum distance within which drawable objects are considered.
-     * @return An array of drawable objects within the specified distance of the query point.
-     */
+	/**
+	 * Finds all drawable objects within a specified distance from a query point.
+	 *
+	 * @param p    The query object.
+	 * @param dist The maximum distance within which drawable objects are
+	 *             considered.
+	 * @return An array of drawable objects within the specified distance of the
+	 *         query point.
+	 */
 	public abstract Drawable[] NearestRange(QueryObject p, double dist);
 
-    /**
-     * Draws the contents of the spatial structure.
-     *
-     * @param g     The drawing target for rendering the structure.
-     * @param view  The rectangular area of the view in which the content is drawn.
-     */
+	/**
+	 * Draws the contents of the spatial structure.
+	 *
+	 * @param g    The drawing target for rendering the structure.
+	 * @param view The rectangular area of the view in which the content is drawn.
+	 */
 	public abstract void drawContents(DrawingTarget g, Rectangle view);
 
-    /**
-     * Draws a grid on the drawing target.
-     *
-     * @param g     The drawing target on which the grid is drawn.
-     * @param level The level of detail or zoom level at which the grid is drawn.
-     */
+	/**
+	 * Draws a grid on the drawing target.
+	 *
+	 * @param g     The drawing target on which the grid is drawn.
+	 * @param level The level of detail or zoom level at which the grid is drawn.
+	 */
 	public void drawGrid(DrawingTarget g, int level) {
 	};
 
-    /**
-     * Retrieves the name of the spatial structure.
-     *
-     * @return The name of the spatial structure.
-     */
+	/**
+	 * Retrieves the name of the spatial structure.
+	 *
+	 * @return The name of the spatial structure.
+	 */
 	public abstract String getName();
 
-    /**
-     * Gets the currently selected operation in the user interface.
-     *
-     * @return The currently selected operation, or null if no operation is selected.
-     */
+	/**
+	 * Gets the currently selected operation in the user interface.
+	 *
+	 * @return The currently selected operation, or null if no operation is
+	 *         selected.
+	 */
 	public String getCurrentOperation() {
 		if (availOps == null)
 			return null;
 		return availOps.getSelectedItem();
 	}
 
-    /**
-     * Determines how the drawable object relates to the search query and adds it to the search vector.
-     *
-     * @param s             The search query object.
-     * @param cur           The current drawable object being considered.
-     * @param mode          The search mode (e.g., contains, is contained, overlaps).
-     * @param v             The search vector to which the result is added.
-     * @param searchVector  The vector containing search results.
-     */
+	/**
+	 * Determines how the drawable object relates to the search query and adds it to
+	 * the search vector.
+	 *
+	 * @param s            The search query object.
+	 * @param cur          The current drawable object being considered.
+	 * @param mode         The search mode (e.g., contains, is contained, overlaps).
+	 * @param v            The search vector to which the result is added.
+	 * @param searchVector The vector containing search results.
+	 */
 	public void drawableInOut(QueryObject s, Drawable cur, int mode, SearchVector v, Vector searchVector) {
 		boolean isBlue = false;
 		if (cur == null || s == null)

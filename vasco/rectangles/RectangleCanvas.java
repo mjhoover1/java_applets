@@ -19,21 +19,21 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	RectangleStructure[] pstrs; // Array to hold different rectangle structures
 	public RectangleStructure pstruct; // Current rectangle structure
 
-    /**
-     * Constructs a RectangleCanvas with specified parameters.
-     *
-     * @param r         Initial dimensions of the canvas.
-     * @param dt        Drawing target.
-     * @param overview  Overview drawing target.
-     * @param animp     Animation panel.
-     * @param ti        Top-level interface.
-     */
+	/**
+	 * Constructs a RectangleCanvas with specified parameters.
+	 *
+	 * @param r        Initial dimensions of the canvas.
+	 * @param dt       Drawing target.
+	 * @param overview Overview drawing target.
+	 * @param animp    Animation panel.
+	 * @param ti       Top-level interface.
+	 */
 	public RectangleCanvas(DRectangle r, DrawingTarget dt, DrawingTarget overview, Panel animp, TopInterface ti) {
 		super(r, dt, overview, animp, ti);
 		pstrs = new RectangleStructure[7];
 
-        // Initialize operation features
-        // Initialize operation features for rectangle manipulation.
+		// Initialize operation features
+		// Initialize operation features for rectangle manipulation.
 		opFeature = new OpFeature[13];
 		int index = 0;
 		opFeature[index++] = new OpFeature("Insert", OPFEATURE_INSERT, "Click and drag to insert a new rectangle.",
@@ -59,7 +59,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 
 		OpFeature[] opf = new OpFeature[5];
 
-        // Initialize operation features for query objects.
+		// Initialize operation features for query objects.
 		opf[0] = new OpFeature("Point", QueryObject.QO_POINT,
 				"Specify a query point to find all items within given distance from it.", "Enter query point", "", "",
 				InputEvent.BUTTON1_MASK);
@@ -78,7 +78,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 				"Input root of query sector", "Input starting angle", "Input extent of sector",
 				InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
 
-        // Add features for overlap, nearest, and within operations
+		// Add features for overlap, nearest, and within operations
 		opFeature[index++] = new OpFeatures("Overlap", OPFEATURE_WINDOW, opf, withinStats);
 		opFeature[index++] = new OpFeatures("Nearest", OPFEATURE_NEAREST, opf, withinStats);
 		opFeature[index++] = new OpFeatures("Within", OPFEATURE_WITHIN, opf, withinStats);
@@ -92,11 +92,11 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 				"", "", 0);
 	}
 
-    /**
-     * Initializes the RectangleStructure array.
-     */
+	/**
+	 * Initializes the RectangleStructure array.
+	 */
 	public synchronized void initStructs() {
-        // Initialize various RectangleStructure implementations.
+		// Initialize various RectangleStructure implementations.
 		pstrs[0] = new CIFTree(wholeCanvas, 9, topInterface, this);
 		pstrs[1] = new RectTree(wholeCanvas, 9, topInterface, this);
 		pstrs[2] = new BucketRect(wholeCanvas, 9, 3, topInterface, this);
@@ -106,54 +106,56 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		pstrs[6] = new LOOSETree(wholeCanvas, 9, 2.0, topInterface, this);
 	}
 
-    /**
-     * Gets the type of the applet.
-     *
-     * @return The applet type.
-     */
+	/**
+	 * Gets the type of the applet.
+	 *
+	 * @return The applet type.
+	 */
 	public int getAppletType() {
 		return ColorHelp.RECTANGLE_APPLET;
 	}
 
-    /**
-     * Gets the count of available structures.
-     *
-     * @return The count of structures.
-     */
+	/**
+	 * Gets the count of available structures.
+	 *
+	 * @return The count of structures.
+	 */
 	public int getStructCount() {
 		return pstrs.length;
 	}
 
-    /**
-     * Gets the name of the structure at the specified index.
-     *
-     * @param i The index of the structure.
-     * @return The name of the structure.
-     */
+	/**
+	 * Gets the name of the structure at the specified index.
+	 *
+	 * @param i The index of the structure.
+	 * @return The name of the structure.
+	 */
 	public String getStructName(int i) {
 		return pstrs[i].getName();
 	}
 
-    /**
-     * Gets the name of the current rectangle structure.
-     * @return The name of the current rectangle structure.
-     */
+	/**
+	 * Gets the name of the current rectangle structure.
+	 * 
+	 * @return The name of the current rectangle structure.
+	 */
 	public String getCurrentName() {
 		return pstruct.getName();
 	}
 
-    /**
-     * Gets the file selector for a specific operation.
-     * @param op Operation for which the file selector is needed.
-     * @return RectangleFileSelector for the specified operation.
-     */
+	/**
+	 * Gets the file selector for a specific operation.
+	 * 
+	 * @param op Operation for which the file selector is needed.
+	 * @return RectangleFileSelector for the specified operation.
+	 */
 	public fileSelector getFileSelector(String op) {
 		return new RectangleFileSelector(this, op, topInterface);
 	}
 
-    /**
-     * Clears the canvas.
-     */
+	/**
+	 * Clears the canvas.
+	 */
 	public void clear() {
 		super.clear();
 		pstruct.MessageStart();
@@ -161,21 +163,22 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		pstruct.MessageEnd();
 	}
 
-    /**
-     * Gets the name of the current operation.
-     * @return The name of the current operation.
-     */
+	/**
+	 * Gets the name of the current operation.
+	 * 
+	 * @return The name of the current operation.
+	 */
 	protected String getCurrentOperationName() {
 		return pstruct.getCurrentOperation();
 	}
 
 	/* ------------- file load / save ------------ */
 
-    /**
-     * Converts the history list of rectangles to a vector.
-     *
-     * @return The vector representation of the history list.
-     */
+	/**
+	 * Converts the history list of rectangles to a vector.
+	 *
+	 * @return The vector representation of the history list.
+	 */
 	public Vector vectorOut() {
 		Vector ret = new Vector();
 		for (int i = 0; i < historyList.size(); i++) {
@@ -202,11 +205,11 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		return ret;
 	}
 
-    /**
-     * Converts the history list of rectangles to an array of strings.
-     *
-     * @return The array of strings representing the history list.
-     */
+	/**
+	 * Converts the history list of rectangles to an array of strings.
+	 *
+	 * @return The array of strings representing the history list.
+	 */
 	public String[] stringsOut() {
 		Vector in = vectorOut();
 		String[] out = new String[in.size()];
@@ -217,11 +220,12 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		return out;
 	}
 
-    /**
-     * Converts a vector of extended points to rectangle structures and updates the canvas.
-     *
-     * @param p The vector of extended points.
-     */
+	/**
+	 * Converts a vector of extended points to rectangle structures and updates the
+	 * canvas.
+	 *
+	 * @param p The vector of extended points.
+	 */
 	public void vectorIn(Vector p) { /* vector of extended points */
 		pstruct.MessageStart();
 		pstruct.Clear();
@@ -236,20 +240,20 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 
 	/* ----- drawing utilities ----------- */
 
-    /**
-     * Draws the contents on the given drawing target.
-     *
-     * @param g The drawing target.
-     */
+	/**
+	 * Draws the contents on the given drawing target.
+	 *
+	 * @param g The drawing target.
+	 */
 	public void drawContents(DrawingTarget g) {
 		pstruct.drawContents(g, g.getView());
 	}
 
-    /**
-     * Draws the grid on the given drawing target.
-     *
-     * @param g The drawing target.
-     */
+	/**
+	 * Draws the grid on the given drawing target.
+	 *
+	 * @param g The drawing target.
+	 */
 	public void drawGrid(DrawingTarget g) {
 		super.drawGrid(g);
 		if (gridOn)
@@ -258,12 +262,12 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 
 	/* --------------- operations on structures ------------------- */
 
-    /**
-     * Searches for objects based on the specified query.
-     *
-     * @param s   The query object.
-     * @param off The drawing targets.
-     */
+	/**
+	 * Searches for objects based on the specified query.
+	 *
+	 * @param s   The query object.
+	 * @param off The drawing targets.
+	 */
 	protected void search(QueryObject s, DrawingTarget[] off) {
 		SearchVector v;
 		v = pstruct.Search(s, searchMode);
@@ -272,13 +276,13 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		}
 	}
 
-    /**
-     * Finds the nearest objects based on the specified query.
-     *
-     * @param p   The query object.
-     * @param dist The distance.
-     * @param off  The drawing targets.
-     */
+	/**
+	 * Finds the nearest objects based on the specified query.
+	 *
+	 * @param p    The query object.
+	 * @param dist The distance.
+	 * @param off  The drawing targets.
+	 */
 	protected void nearest(QueryObject p, double dist, DrawingTarget[] off) {
 		SearchVector v;
 		v = pstruct.Nearest(p, dist);
@@ -315,7 +319,8 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	 *
 	 * @param index The index of the element to check.
 	 * @param test  The array to check against.
-	 * @return True if the element at the specified index is in the array; otherwise, false.
+	 * @return True if the element at the specified index is in the array;
+	 *         otherwise, false.
 	 */
 	boolean isChange(int index, int[] test) { // to test if element 'i' from 'lines' is in array 'test'
 		if (test == null)
@@ -326,19 +331,19 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		return false;
 	}
 
-    /**
-     * Updates the canvas based on the provided parameters.
-     */
+	/**
+	 * Updates the canvas based on the provided parameters.
+	 */
 	void updateFromParams() {
 		updateFromParams(null);
 	}
 
-    /**
-     * Updates the canvas based on the provided parameters and a test array.
-     *
-     * @param test The test array.
-     * @return True if the update is successful, false otherwise.
-     */
+	/**
+	 * Updates the canvas based on the provided parameters and a test array.
+	 *
+	 * @param test The test array.
+	 * @return True if the update is successful, false otherwise.
+	 */
 	boolean updateFromParams(int[] test) {
 		pstruct.MessageStart();
 		pstruct.Clear();
@@ -390,12 +395,12 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		}
 	}
 
-    /**
-     * Sets the tree for the specified index.
-     *
-     * @param i   The index.
-     * @param ops The choice of operations.
-     */
+	/**
+	 * Sets the tree for the specified index.
+	 *
+	 * @param i   The index.
+	 * @param ops The choice of operations.
+	 */
 	public void setTree(int i, Choice ops) {
 		String op = ops.getSelectedItem();
 		pstruct = pstrs[i];
@@ -410,14 +415,14 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			ops.select(op);
 		} catch (Exception e) {
 		}
-		;
+
 		setHelp();
 		rebuild();
 	}
 
-    /**
-     * Rebuilds the canvas.
-     */
+	/**
+	 * Rebuilds the canvas.
+	 */
 	public void rebuild() {
 		updateFromParams();
 		if (runningThread != null) {
@@ -638,11 +643,11 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		super.mouseClicked(me);
 	}
 
-    /**
-     * Handles mouse events on the canvas.
-     *
-     * @param e The mouse event.
-     */
+	/**
+	 * Handles mouse events on the canvas.
+	 *
+	 * @param e The mouse event.
+	 */
 	public void mousePressed(MouseEvent me) {
 
 		if (lastEvent != MOUSE_RELEASED && lastEvent != MOUSE_MOVED)
@@ -671,7 +676,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			pstruct.MessageEnd();
 		}
 
-        // Implementation for Bintrees operation
+		// Implementation for Bintrees operation
 		if (op == OPFEATURE_BINTREES && pstruct instanceof CIFTree) {
 			redraw();
 			((CIFTree) pstruct).drawBintree(p, offscrG);
@@ -679,7 +684,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			return;
 		}
 
-        // Implementation for motionsensitivity operation
+		// Implementation for motionsensitivity operation
 		if (op == OPFEATURE_MOTIONSENSITIVITY && me.getButton() == me.BUTTON3) {
 
 			Drawable b = pstruct.NearestFirst(new QueryObject(p));
@@ -702,7 +707,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			return;
 		}
 
-        // Implementation for move or motionsensitivity operation
+		// Implementation for move or motionsensitivity operation
 		if (op == OPFEATURE_MOVE || op == OPFEATURE_MOTIONSENSITIVITY) {
 
 			lastMove = null;
@@ -914,11 +919,11 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		}
 	}
 
-    /**
-     * Handles mouse drag events on the canvas.
-     *
-     * @param e The mouse event.
-     */
+	/**
+	 * Handles mouse drag events on the canvas.
+	 *
+	 * @param e The mouse event.
+	 */
 	public void mouseDragged(MouseEvent me) {
 
 		debugPrint("mouseDragged");
@@ -935,7 +940,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		Point scrCoord = offscrG.adjustPoint(me.getPoint());
 		DPoint p = offscrG.transPointT(scrCoord);
 
-        // Implementation for move edge operation
+		// Implementation for move edge operation
 		if (op == OPFEATURE_MOVEEDGE) {
 			DRectangle fP = (DRectangle) historyList.elementAt(lastInsert);
 			DRectangle newest = null;
@@ -979,7 +984,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			lastDelete = fP;
 		}
 
-        // Implementation for move vertex operation
+		// Implementation for move vertex operation
 		if (op == OPFEATURE_MOVEVERTEX) {
 			DRectangle fP = (DRectangle) historyList.elementAt(lastInsert);
 			double d1, d2, d3, d4;
@@ -1028,7 +1033,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			lastDelete = fP;
 		}
 
-        // Implementation for insert operation
+		// Implementation for insert operation
 		if (op == OPFEATURE_INSERT) {
 			DPoint last = offscrG.transPointT(lastP);
 
@@ -1050,11 +1055,11 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 
 	}
 
-    /**
-     * Handles mouse release events on the canvas.
-     *
-     * @param e The mouse event.
-     */
+	/**
+	 * Handles mouse release events on the canvas.
+	 *
+	 * @param e The mouse event.
+	 */
 	public void mouseReleased(MouseEvent me) {
 		debugPrint("mouseReleased");
 

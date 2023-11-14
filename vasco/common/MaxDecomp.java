@@ -2,35 +2,54 @@
 package vasco.common;
 
 import java.awt.*;
-import java.util.*;
+//import java.util.*;
 import java.awt.event.*;
 
+/**
+ * MaxDecomp class allows setting the maximum decomposition depth through a graphical user interface.
+ *
+ * The MaxDecomp class provides a graphical user interface element for setting the maximum decomposition depth.
+ * Users can select the depth from a dropdown menu, including an option to turn off decomposition.
+ * Changes to the maximum decomposition depth trigger events that can be handled by listeners.
+ */
 public class MaxDecomp implements ItemListener {
-  MaxDecompIface pstr;
-  static final int OFF = 35;
+	MaxDecompIface pstr;
+	static final int OFF = 35;
 
-  public MaxDecomp(TopInterface ti, int maxValue, MaxDecompIface th) {
-    pstr = th;
+    /**
+     * Constructs a MaxDecomp object.
+     *
+     * @param ti The TopInterface used for mouse display interaction.
+     * @param maxValue The maximum value for decomposition depth.
+     * @param th The MaxDecompIface interface for handling decomposition depth changes.
+     */
+	public MaxDecomp(TopInterface ti, int maxValue, MaxDecompIface th) {
+		pstr = th;
 
-    Panel maxD = new Panel();
-    maxD.setLayout(new BorderLayout());
-    maxD.add("West", new Label("Max Decomposition"));
-    Choice maxDChoice = new Choice();
-    new MouseHelp(maxDChoice, ti.getMouseDisplay(), "Set maximum decomposition depth", "", "");
-    maxDChoice.addItem("Off");
-    for (int i = 1; i <= maxValue; i++)
-      maxDChoice.addItem(String.valueOf(i));
-    maxDChoice.select(pstr.getMaxDecomp() == OFF ? 0 : pstr.getMaxDecomp());
-    maxD.add("East", maxDChoice);
-    maxDChoice.addItemListener(this);
-    ti.getPanel().add(maxD);
-  }
- 
-  public void itemStateChanged(ItemEvent ie) {
-    Choice ch = (Choice)ie.getSource();
-    if (ch.getSelectedIndex() == 0)
-      pstr.setMaxDecomp(OFF);
-    else
-      pstr.setMaxDecomp(ch.getSelectedIndex());
-  }
+		Panel maxD = new Panel();
+		maxD.setLayout(new BorderLayout());
+		maxD.add("West", new Label("Max Decomposition"));
+		Choice maxDChoice = new Choice();
+		new MouseHelp(maxDChoice, ti.getMouseDisplay(), "Set maximum decomposition depth", "", "");
+		maxDChoice.addItem("Off");
+		for (int i = 1; i <= maxValue; i++)
+			maxDChoice.addItem(String.valueOf(i));
+		maxDChoice.select(pstr.getMaxDecomp() == OFF ? 0 : pstr.getMaxDecomp());
+		maxD.add("East", maxDChoice);
+		maxDChoice.addItemListener(this);
+		ti.getPanel().add(maxD);
+	}
+
+    /**
+     * Handles the item state change event triggered by the Max Decomposition choice.
+     *
+     * @param ie The ItemEvent object representing the item state change event.
+     */
+	public void itemStateChanged(ItemEvent ie) {
+		Choice ch = (Choice) ie.getSource();
+		if (ch.getSelectedIndex() == 0)
+			pstr.setMaxDecomp(OFF);
+		else
+			pstr.setMaxDecomp(ch.getSelectedIndex());
+	}
 }
