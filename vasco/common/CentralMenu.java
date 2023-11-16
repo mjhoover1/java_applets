@@ -123,9 +123,9 @@ public class CentralMenu extends Panel implements ActionListener, ItemListener {
 		helpArea.setEditable(false);
 
 		// SIGMOD 2010: Disabled these for SIGMOD
-	    add(pan); // Add pan Panel to this panel
+	    add(pan); // Add pan Panel to this panel: Shows the Load, Save, and Delete on side Menu
 	    add(grd); // Add grd Panel to this panel
-	    add(splitbut); // Add splitbut Button to this panel
+	    add(splitbut); // Add splitbut Button to this panel: Shows the Data structures drop down menu
 	    add(opanel); // Add opanel Panel to this panel
 	    add(undo); // Add undo Button to this panel
 	    add(chbut); // Add chbut Button to this panel

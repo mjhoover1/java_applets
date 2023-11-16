@@ -13,11 +13,11 @@ public class CommonApplet extends Applet implements AppletValidate, ActionListen
 
     // Method for global validation (commented out)
     public void globalValidate() {
-        // validate();
+//         validate();
     }
 
     // Constants for the applet size and help width
-    protected final int SIZE = 512*2; // 512;
+    protected final int SIZE = 512; 
     protected final int helpWidth = 20;
 
     // Components used in the applet
