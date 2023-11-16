@@ -1,11 +1,7 @@
 #
 # compile all java files and wrap them in the appropriate jar files
 #
-#JAVAC = /usr/imports/java1.1.8/bin/javac 
-#JAVAC = javac -source 1.4 -Xlint:deprecation
-# JAVAC = javac -source 1.4 -nowarn
-#JAVAC = javac -target 1.4
-# JAVAC = /usr/imports/java1.1.8/bin/javac 
+# If you want to run this in eclipse you need to remove all JAR files from directory
 
 JAVAC = /usr/bin/javac
 JAR = jar 
