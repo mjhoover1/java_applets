@@ -57,15 +57,15 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 * @param c The choice object
 	 */
 	public void reInit(Choice c) {
-		System.out.println("c " + c.getItemCount());
+//		System.out.println("c " + c.getItemCount());
 		super.reInit(c);
-		System.out.println("after c " + c.getItemCount());
-		System.out.print("this is " + this);
+//		System.out.println("after c " + c.getItemCount());
+//		System.out.print("this is " + this);
 		new MaxDecomp(topInterface, 9, this);
 		new LoosenessFactor(topInterface, 2.0, this);
 		availOps.addItem("Motion Insensitivity");
 		availOps.addItem("Show Quadtree");
-		System.out.print("availOps is " + availOps);
+//		System.out.print("availOps is " + availOps);
 	}
 
 	/**

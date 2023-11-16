@@ -404,13 +404,13 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	public void setTree(int i, Choice ops) {
 		String op = ops.getSelectedItem();
 		pstruct = pstrs[i];
-		System.out.println("pstruct " + pstruct);
-		System.out.println("ops " + ops);
+//		System.out.println("pstruct " + pstruct);
+//		System.out.println("ops " + ops);
 		ops.removeAll();
-		System.out.println("count " + ops.getItemCount());
+//		System.out.println("count " + ops.getItemCount());
 		pstruct.reInit(ops);
-		System.out.println("After count " + ops.getItemCount());
-		System.out.println("pstruct " + pstruct);
+//		System.out.println("After count " + ops.getItemCount());
+//		System.out.println("pstruct " + pstruct);
 		try {
 			ops.select(op);
 		} catch (Exception e) {
