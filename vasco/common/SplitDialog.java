@@ -8,7 +8,8 @@ package vasco.common;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.Toolkit;
-
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class SplitDialog extends Dialog implements ActionListener, ItemListener, Runnable {
 	GeneralCanvas rcanvas;
@@ -31,14 +32,19 @@ public class SplitDialog extends Dialog implements ActionListener, ItemListener,
      * @param md       The MouseDisplay for handling mouse-related actions.
      */
 	public SplitDialog(GeneralCanvas rc, Choice c, String treeType, Label topBar, AppletValidate av, MouseDisplay md) {
-		super(new Frame(), "Data Structures", false);
+		super(new Frame(), "Data Structures", false); // The dialog is created with a new Frame as its parent and a title. It's also set as non-modal.
+		
+		// Initialize the variables like topBar, av, opChoice, rcanvas, etc.
 		this.topBar = topBar;
 		this.av = av;
 		int i = 0;
-
 		opChoice = c;
 		rcanvas = rc;
+		
+		// The layout of the dialog is set to a GridLayout.
 		setLayout(new GridLayout(rc.getStructCount() + 1, 1));
+		
+		// Initialize and Add Components:
 		smeth = new CheckboxGroup();
 		splitMethod = new Checkbox[rc.getStructCount()];
 		close = new Button("Close");
@@ -58,8 +64,17 @@ public class SplitDialog extends Dialog implements ActionListener, ItemListener,
 		topBar.setText(rc.getCurrentName() + " data structure");
 		add(close);
 		close.addActionListener(this);
+		
 		pack();
+		
 		setResizable(true); // This sets the data structure radio button pop up to be resizable
+		
+		addWindowListener(new WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent e) {
+		        dispose();
+		    }
+		});
 		
 		// Get the screen size
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -131,9 +146,9 @@ public class SplitDialog extends Dialog implements ActionListener, ItemListener,
 			rcanvas.stop();
 			for (int i = 0; i < splitMethod.length; i++)
 				if (b == splitMethod[i]) {
-					System.out.println("opChoice " + opChoice);
-					System.out.println("i " + i);
-					System.out.println("rcanvas " + i);
+//					System.out.println("opChoice " + opChoice);
+//					System.out.println("i " + i);
+//					System.out.println("rcanvas " + i);
 					rcanvas.setTree(i, opChoice);
 					topBar.setText(rcanvas.getCurrentName() + " data structure");
 					opChoice.invalidate();
