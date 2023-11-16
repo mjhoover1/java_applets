@@ -7,8 +7,8 @@ package vasco.common;
 
 import java.awt.*;
 import java.awt.event.*;
-//import java.applet.*;
-//import java.util.*;
+import java.awt.Toolkit;
+
 
 public class SplitDialog extends Dialog implements ActionListener, ItemListener, Runnable {
 	GeneralCanvas rcanvas;
@@ -59,7 +59,20 @@ public class SplitDialog extends Dialog implements ActionListener, ItemListener,
 		add(close);
 		close.addActionListener(this);
 		pack();
-		setResizable(true);
+		setResizable(true); // This sets the data structure radio button pop up to be resizable
+		
+		// Get the screen size
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int width = screenSize.width;
+		int height = screenSize.height;
+
+		// Calculate the position to center the dialog
+		int x = (width - getWidth()) / 2;
+		int y = (height - getHeight()) / 2;
+
+		// Set the location of the dialog
+		setLocation(x, y);
+		
 		visible = false;
 		new Thread(this).start();
 	}
