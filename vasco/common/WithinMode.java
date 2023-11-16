@@ -7,6 +7,9 @@ import java.awt.event.*;
 //import java.util.*;
 import java.text.*;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 
 public class WithinMode extends Dialog implements CommonConstants, ActionListener {
 	Checkbox point, polygon, rectangle, path, sector;
@@ -118,6 +121,14 @@ public class WithinMode extends Dialog implements CommonConstants, ActionListene
 
 		// Set the location of the dialog
 		setLocation(x, y);
+		
+		addWindowListener(new WindowAdapter() {     // Add window listener to handle window closing event
+		    @Override
+		    public void windowClosing(WindowEvent e) {
+		        dispose();
+		    }
+		});
+
 		
 		setResizable(true);
 		show();

@@ -69,13 +69,14 @@ public class SplitDialog extends Dialog implements ActionListener, ItemListener,
 		
 		setResizable(true); // This sets the data structure radio button pop up to be resizable
 		
-		addWindowListener(new WindowAdapter() {
+		addWindowListener(new WindowAdapter() {     // Add window listener to handle window closing event
 		    @Override
 		    public void windowClosing(WindowEvent e) {
 		        dispose();
 		    }
 		});
 		
+		// This makes the pop up come up right in the center of the screen
 		// Get the screen size
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int width = screenSize.width;
