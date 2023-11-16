@@ -109,6 +109,7 @@ public class DrawingPanel extends Panel
 		can.addMouseMotionListener(canvasMML);
 		updateCoords();
 		insets = new Insets(5, 5, 5, 5);
+	    setPreferredSize(new Dimension(512 + 28, 512 + 84)); // setting preferred size of drawing panel adding + # for scroll bars
 	}
 
     /**
