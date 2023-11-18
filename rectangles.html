@@ -1,0 +1,298 @@
+<HTML>
+    <head>
+    <title>Spatial Index Demos</title>
+    <meta name="description" content="The site dedicated to demo applets
+    of various spatial data structures.">
+    <meta name="keywords" content="quadtree, spatial, data, structure, java, applet">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    </head>
+    
+    <center> <h1>Spatial Index Demos</h1></center>
+    
+    <p>Brought to you by <a href="http://www.cs.umd.edu/~brabec">Frantisek
+    Brabec</a> (<a href="mailto:brabec_at_cs.umd.edu">brabec at cs.umd.edu</a>) and
+    <a href="http://www.cs.umd.edu/~hjs">Hanan Samet</a> (<a
+    href="mailto:hjs_at_cs.umd.edu">hjs at cs.umd.edu</a>). 
+    
+    <!-- In case of problems with the default web server, please try the <a
+    href="http://www.cs.umd.edu/users/brabec/quadtree/index2.html">alternative</a>
+    server (disables LOAD/SAVE features).
+    -->
+    </p>
+    
+    <p>
+    These applets are based on algorithms published in the following <a
+    href="http://www.cs.umd.edu/~hjs/design.html">books</a>:
+    <p>
+    <table align="center" cellspacing="5%" width="70%">
+       <tbody>
+          <tr valign=top>
+          <td><img src="http://www.cs.umd.edu/~hjs/cover.jpg" width="100%"></td>
+          <td></td><td></td>
+          <td></td><td></td>
+          <td><img src="http://www.cs.umd.edu/~hjs/cover2.jpg" width="100%"></td>
+          <td><table align="left" cellspacing="0%" width="65%">
+           <tbody><tr><td>
+           <a href="http://www.amazon.com/review/product/0123694469?ie=UTF8&amp;tag=hompagofhansa-20&amp;linkCode=am2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0123694469" style="color: rgb(255,255,255)">
+                   <img src="http://www.cs.umd.edu/~hjs/foundation_book.jpg" width="100%"></a>
+         <img src="http://www.assoc-amazon.com/e/ir?t=hompagofhansa-20&amp;l=as2&amp;o=1&amp;a=0123694469" alt="" style="border: medium none  ! important; margin: 0px ! important; display: none;" border="0" height="1" width="1">
+           </td></tr>
+           <tr><td align="center"><font color="blue" size="-1">
+           <a href="http://www.cs.umd.edu/%7Ehjs/multidimensional-book-flyer.pdf" 
+              onclick="javascript:urchinTracker('BookExtracts/BookDiscountFlyer'); ">
+                 Click here for the table of contents and a 20% discount coupon</a></font></td></tr>
+        </tbody></table>
+     </td></tr></tbody></table>
+    <p>
+    <ul>
+    <li> H. Samet, <i> The Design and Analysis of Spatial Data Structures </i>,
+    Addison-Wesley, Reading, MA, 1990.
+    <!--
+    <a href="pubs/bookform.pdf">ISBN 0-201-50255-0</a>.
+    -->
+    </li>
+    <li> H. Samet, <i> Applications of Spatial Data Structures:  Computer
+    Graphics, Image Processing, and GIS </i>, Addison-Wesley, Reading, MA, 1990.
+    <!--
+    <a href="pubs/bookform.pdf">ISBN 0-201-50300-0</a>.
+    --></li>
+    <li><img src="http://www.cs.umd.edu/pics/new_blue_yellow.gif">&nbsp;&nbsp;H. Samet, <i>Foundations of Multidimensional and Metric
+        Data Structures</i>, Morgan-Kaufmann, San Francisco, 2006
+       <a href="http://www.cs.umd.edu/~hjs/multidimensional-book-flyer.pdf">(click for brochure and 20% off code)</a>
+    
+    </ul>
+    
+    <p>
+    A <!-- <A HREF="http://amber.berkeley.edu:4243/eng/br241/br241-1.html"> -->short
+    course<!--</A>--> on some of the algorithms and data structures used in these
+    applets was held at UC Berkeley on March 29-31, 1999.
+    </p>
+    
+    <hr>
+    
+    <p><img src="http://www.cs.umd.edu/pics/new_blue_yellow.gif"> 
+    If you are interested in these
+    spatial index demos, you could be also interested in our most recently
+    developed software - <a href="http://www.cs.umd.edu/~brabec/sandjava/index.html"><b>SAND
+    Internet Browser</b></a>.  SAND is a spatial data browser and spatial
+    database engine with Java front-end.</p>
+    
+    <hr>
+    <p><b>Window</b> and <b>Range
+    search</b> operations were replaced by more general
+    <b>Overlap Search</b>. <b>Overlap Search</b> finds all the objects
+    (e.g., rectangles) in the current data structure that intersect the
+    query object (e.g., a path).
+    The particular type of intersection can be specified by setting the
+    additional conditions.  </p><p> More query object types for which the
+    nearest neighbor algorithm can be run were added.  Now you can rank
+    objects by their distance from point, rectangle, polygon, path, and sector.
+    Also the <b>Within</b> query
+    was added that finds all the objects within a given distance from a query
+    object. </p>
+    
+    <hr>
+    <h2>Spatial Datastructures Visualization</h2>
+    <p>Instructions and further information about the visualization tool can be found below.</p>
+    
+        <script align="center" src="https://cjrtnc.leaningtech.com/2.3/loader.js"></script>
+        <script>cheerpjInit({enablePreciseAppletArchives:true});</script>
+        <cheerpj-applet archive="rectangles.jar" code="vasco.rectangles.main" height="900" width="900">
+            <!-- <param name="treetype" value="R-Tree"> -->
+            <p>not able to load Java applet</p>
+        </cheerpj-applet>
+    
+    <!-- <p>You may use the <b>appletviewer</b>,
+       a tool included in Java SE Development Kit 8 (JDK 8), to view the 
+       demos.
+       </p>
+       <ul>
+         <li> First, download and install JDK 8. The versions including the appletviewer are available <a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank">here</a>.
+           Choose the correct version for your operating system, and you may 
+       need to create an Oracle account first (it is free). E.g., <i>jdk-8u221-windows-i586.exe</i> for Windows 10 system.</li>
+         <li> Change <a href="https://www.java.com/en/download/help/path.xml" target="_blank">environment variables</a> for convenience. If not done so, you may need to locate the appletviewer manually when executing it.</li>
+         <li> Appletviewer can be found in the Java bin folder, e.g., <i>C:\Program Files (x86)\Java\jdk1.8.0_221\bin\appletviewer.exe</i> </li>
+         <li> Afterwards, you are able to run appletviewer to visit the web sites containing applets.
+           Use the following command to execute the viewer: <i>appletviewer [options] [url]</i> where options could be omitted.
+           For example, if you are to watch the demo of rectangle quadtrees, use <i>appletviewer http://donar.umiacs.umd.edu/quadtree/rectangles/recttree.html</i></li>
+       </ul>
+    <p> -->
+    
+    <!-- diable guestbook
+    <center><table cols=2>
+    <tr><td><center>
+      <A HREF="http://www.planetguestbook.com/cgi-bin/miva?gbook.mv+hjsquad">Sign Our Guestbook</a></center>
+    </td><td>
+    <center> <A
+     HREF="http://www.planetguestbook.com/cgi-bin/miva?gbook.mv+hjsquad+view">View Our Guestbook</a>
+    </center>
+    </td></tr>
+    </table>
+    </center>
+    -->
+    
+    <hr>
+    <h2>Points</h2>
+    
+    <ul>
+    <li> <a href="http://donar.umiacs.umd.edu/quadtree/points/pointquad.html">Point Quadtree Demo</a></li>
+    <li> <a href="http://donar.umiacs.umd.edu/quadtree/points/kdtree.html">K-d Tree Demo</a></li>
+    <li> <a href="http://donar.umiacs.umd.edu/quadtree/points/mxquad.html">MX Quadtree Demo</a></li>
+    <li> <a href="http://donar.umiacs.umd.edu/quadtree/points/prquad.html">PR Quadtree Demo</a></li>
+    <li> <a href="http://donar.umiacs.umd.edu/quadtree/points/prbuckquad.html">Bucket PR Quadtree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/points/prkd.html">PR
+    K-d Tree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/points/prkdbuck.html">Bucket
+    PR K-d Tree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/points/pmr.html">PMR
+    Quadtree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/points/pmrkd.html">PMR
+    k-d Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/points/2drange.html">2D
+    Range Tree Demo</a> (old version <a href="http://donar.umiacs.umd.edu/quadtree/RANGEtrees/range.html">here</a>)</li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/points/priority.html">Priority
+    Search Tree Demo</a> (old version <a href="http://donar.umiacs.umd.edu/quadtree/PriorityTrees/priority.html">here</a>)</li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/points/rtrees.html">R-Tree
+    Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/points/pktree.html">PK Tree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/points/voronoi.html">Voronoi Diagram Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/points/delaunay.html">Delaunay Triangulation Demo</a></li>
+    </ul>
+    
+    <hr>
+    
+    <h2>Rectangles</h2>
+    <ul>
+    <li> <a href="http://donar.umiacs.umd.edu/quadtree/rectangles/cifquad.html">MX-CIF Quadtree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/rectangles/recttree.html">Rectangle
+    Quadtree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/rectangles/bucktree.html">Bucket
+    Rectangle Quadtree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/rectangles/PMR.html">PMR
+    Rectangle Quadtree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/rectangles/PMRkd.html">PMR
+    Rectangle k-d Tree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/rectangles/rtrees.html">R-tree
+    Demo</a> (old version <a href="http://donar.umiacs.umd.edu/quadtree/rtrees/rtrees.html">here</a>)</li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/rectangles/loosequad.html">
+    Loose Quadtree Demo</a></li>
+    </ul>
+    
+    <hr>
+    
+    <h2>Lines</h2>
+    
+    <ul>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/lines/pm1.html">PM1
+    Quadtree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/lines/pm2.html">PM2
+    Quadtree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/lines/pm3.html">PM3
+    Quadtree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/lines/pmr.html">PMR
+    Quadtree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/lines/pmbuck.html">Bucket
+    PM Quadtree Demo</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/lines/rtrees.html">R-Tree
+    Demo</a></li>
+    </ul>
+    
+    <hr>
+    
+    <h2>Region Quadtrees</h2>
+    <ul>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/regions/regionquad.html">Region
+    Quadtree Demo</a></li>
+    </ul>
+    
+    <hr>
+    
+    <h2>Operations</h2>
+    
+    For an explanation of the implemented algorithms as well as their
+    visualization and animation, click on one of the following links:
+    
+    <ul>
+    <li> <a href="http://donar.umiacs.umd.edu/quadtree/insert.html">Insert Operation</a></li>
+    <li>Move Operation - click and drag the object nearest to the mouse cursor. The data structure changes dynamically as the object is being moved.</li>
+    <li> <a href="http://donar.umiacs.umd.edu/quadtree/delete.html">Delete Operation</a></li>
+    <li> <a
+    href="http://donar.umiacs.umd.edu/quadtree/window.html">Overlap Search Query</a></li>
+    <li>Window Query</li>
+    <li> <a href="http://donar.umiacs.umd.edu/quadtree/nearest.html">Nearest Neighbor Query</a></li>
+    <li>Within Query - works exactly as the Nearest Neighbor Query except it stops execution once the distance of the next nearest object from the query object is larger than the 'within' parameter.</li>
+    </ul>
+    
+    <h2>Other Features</h2>
+    <ul>
+    <li>Grid - shows grid that allows the user to investigate alignment of quadtree blocks with a regular grid. Press the + and - buttons to see finer or coarser grid respectively.
+    <li>Zoom In/Zoom Out - zooms in and out. Works as zoom in and out in any other application, zooming in allows you to see in more detail areas where objects are too close to each other to investigate fully from the regular view.
+    <li>Zoom Window - allows you to see a selected area of the applet in a separate window and potentially on a different zoom level. This can in effect serve as a magnifying glass tool.
+    </ul>
+    
+    <!-- references removed on request of Hanan Samet
+    <h2>References</h2>
+    
+    These applets were written using the following books.  I highly recommend
+    them as both a textbook for beginners and a reference guide for experienced
+    users.
+    
+    <table cols=5>
+    <tr>
+    
+    <td><center><A
+    HREF="http://www.amazon.com/exec/obidos/ASIN/0130819336/spatialindexdemo"><img
+    src="0130819336.01.MZZZZZZZ.gif"><br>Core Java 2 , Volume 1: Fundamentals</A></center> </td>
+    
+    <td><center> <A
+    HREF="http://www.amazon.com/exec/obidos/ASIN/0137669658/spatialindexdemo"><img
+    src="0137669658.01.MZZZZZZZ.gif"><br>Core
+    Java 1.1 Volume II Advanced Features</A></center> </td>
+    
+    <td><center> <A
+    HREF="http://www.amazon.com/exec/obidos/ASIN/1565924878/spatialindexdemo"><img
+    src="1565924878.01.MZZZZZZZ.gif"><br>Java
+    in a Nutshell</A></center> </td>
+    
+    <td><center> <A
+    HREF="http://www.amazon.com/exec/obidos/ASIN/0130796662/spatialindexdemo"><img
+    src="0130796662.01.MZZZZZZZ.gif"><br>Graphic Java 2, Mastering the JFC: AWT,
+    Volume 1</A></center> </td>
+    
+    <td><center> <A
+    HREF="http://www.amazon.com/exec/obidos/ASIN/0130796670/spatialindexdemo"><img
+    src="0130796670.01.MZZZZZZZ.gif"><br>Graphic Java 2, Volume 2, Swing</A></center> </td>
+    
+    </tr>
+    </table>
+    
+    These links are provided <i>In Association with</i> <a
+    href="http://www.amazon.com/exec/obidos/redirect-home/spatialindexdemo"><img
+    src="90X29-w-logo.gif"></a>.
+    -->
+    </HTML>
+    
+    

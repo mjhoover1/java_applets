@@ -1,0 +1,3 @@
+- merge rank, overlap and within to one operation (ala SAND)
+- add non-spatial data support
+
