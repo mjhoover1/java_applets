@@ -50,6 +50,9 @@ public class SplitDialog extends Dialog implements ActionListener, ItemListener,
 		close = new Button("Close");
 		new MouseHelp(close, md, "Close structure selection window", "", "");
 
+	    // Set the preferred size for the close button
+	    close.setPreferredSize(new Dimension(100, 50)); // Adjust width and height as needed
+		
 		rcanvas.setTree(0, opChoice); // if no switch present
 		for (int j = 0; j < rc.getStructCount(); j++) {
 			if (rc.getStructName(j).equalsIgnoreCase(treeType)) {
@@ -65,7 +68,9 @@ public class SplitDialog extends Dialog implements ActionListener, ItemListener,
 		add(close);
 		close.addActionListener(this);
 		
-		pack();
+	    // Pack the components and then set the size of the dialog
+	    pack();
+	    setSize(new Dimension(600, 400)); // Adjust width and height as needed
 		
 		setResizable(true); // This sets the data structure radio button pop up to be resizable
 		
