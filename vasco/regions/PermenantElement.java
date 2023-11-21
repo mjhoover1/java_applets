@@ -1,7 +1,7 @@
 package vasco.regions;
 import vasco.common.*;
 
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.util.*;
   
 public class PermenantElement extends  ConvertGenElement{

@@ -1,7 +1,7 @@
 /* $Id: DrawingCanvas.java,v 1.4 2007/10/28 15:38:13 jagan Exp $ */
 package vasco.common;
 
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 
 /* -------------------------------------------
  * Drawing Canvas - provides drawing functions for the application

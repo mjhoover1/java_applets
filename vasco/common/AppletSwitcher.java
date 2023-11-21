@@ -1,6 +1,6 @@
 package vasco.common;
 
-import java.applet.Applet;
+import javax.swing.JApplet; // import java.applet.Applet;
 import java.applet.AppletContext;
 import java.applet.AppletStub;
 import java.awt.Dimension;
@@ -84,6 +84,6 @@ public class AppletSwitcher extends Thread implements AppletStub{
 	  realApplet.start();
 	  
 	  
-	app.validate();
+	  app.validate();
 	}
 }

@@ -3,7 +3,7 @@ package vasco.rectangles;
 /* $Id: PMRRectTree.java,v 1.2 2004/11/20 22:38:48 brabec Exp $ */
 import vasco.common.*;
 import java.util.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 
 /**
  * This class represents a PMR Rectangle Quadtree that extends GenericRectTree.

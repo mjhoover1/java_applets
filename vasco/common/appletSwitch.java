@@ -1,7 +1,7 @@
 /* $Id: appletSwitch.java,v 1.3 2003/01/30 04:05:52 brabec Exp $ */
 package vasco.common;
 
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.applet.*;
 import java.awt.event.*;
 import java.net.*;

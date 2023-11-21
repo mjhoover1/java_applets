@@ -3,7 +3,7 @@
 #
 # If you want to run this in eclipse you need to remove all JAR files from directory
 
-JAVAC = javac
+JAVAC = /usr/bin/javac
 JAR = jar 
 RECTDIR = vasco/rectangles
 REGIONDIR = vasco/regions

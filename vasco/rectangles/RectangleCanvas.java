@@ -2,7 +2,7 @@ package vasco.rectangles;
 
 /* $Id: RectangleCanvas.java,v 1.3 2007/10/28 15:38:19 jagan Exp $ */
 import vasco.common.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import vasco.drawable.*;

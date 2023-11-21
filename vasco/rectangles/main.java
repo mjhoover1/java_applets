@@ -6,7 +6,7 @@ package vasco.rectangles;
  */
 import vasco.common.*;
 
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 
 public class main extends CommonApplet implements GenericMain {
 

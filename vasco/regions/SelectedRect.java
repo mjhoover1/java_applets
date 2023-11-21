@@ -1,5 +1,6 @@
 package vasco.regions;
-import java.awt.*;
+
+import javax.swing.*; // import java.awt.*;
 
 public class SelectedRect{
   public Point ul, lr;

@@ -5,7 +5,7 @@
  */
 package vasco.common;
 
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.awt.event.*;
 //import java.applet.*;
 //import java.util.*;

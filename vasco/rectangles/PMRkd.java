@@ -8,7 +8,7 @@ package vasco.rectangles;
  * @version $Id: PMRkd.java,v 1.2 2004/11/20 22:38:48 brabec Exp $
  */
 import vasco.common.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.util.*;
 import vasco.drawable.*;
 

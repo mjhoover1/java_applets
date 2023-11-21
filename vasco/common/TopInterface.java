@@ -4,7 +4,7 @@
  */
 package vasco.common;
 
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 
 public class TopInterface {
 

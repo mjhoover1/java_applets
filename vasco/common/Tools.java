@@ -2,8 +2,8 @@
 package vasco.common;
 
 import java.util.*;
-import java.applet.Applet;
-import java.awt.*;
+import javax.swing.JApplet; // import java.applet.Applet;
+import javax.swing.*; // import java.awt.*;
 import java.net.*;
 import java.io.*;
 
