@@ -1,7 +1,7 @@
 /* $Id: OverviewWindow.java,v 1.2 2007/10/28 15:38:13 jagan Exp $ */
 package vasco.common;
 
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.awt.event.*;
 //import java.applet.*;
 //import java.util.*;
@@ -35,7 +35,7 @@ public class OverviewWindow extends Dialog
     /**
      * Inner class representing a canvas with basic setup for the overview window.
      */
-	abstract class OverviewCanvas extends Canvas {
+	abstract class OverviewCanvas extends JPanel {
 		public OverviewCanvas() {
 			super();
 			setSize(80, OVERVIEW_SIZE);

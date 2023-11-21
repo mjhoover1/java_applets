@@ -4,10 +4,10 @@
  */
 package vasco.common;
 
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.awt.event.*;
 
-public class MouseDisplay extends Canvas {
+public class MouseDisplay extends JPanel {
 
     private Image im;
     private static int HGHT = 80;

@@ -8,7 +8,7 @@ package vasco.rectangles;
 
 import vasco.common.*;
 import java.util.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.awt.event.*;
 import vasco.drawable.*;
 
@@ -868,7 +868,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 		/**
 		 * Inner class representing a canvas for drawing the binary tree of LOOSEcnode.
 		 */
-		class BinTreeCanvas extends Canvas {
+		class BinTreeCanvas extends JPanel {
 			LOOSEcnode cn;
 			DrawingTarget dt;
 			int bintreecounter;

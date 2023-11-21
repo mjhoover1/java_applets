@@ -8,7 +8,7 @@ import javax.swing.*; // import java.awt.*;
  * contains transformation matrix to scale based on zoom in/out and move from DrawingPanel
  * -------------------------------------------
  */
-public class DrawingCanvas extends Canvas implements DrawingTarget {
+public class DrawingCanvas extends JPanel implements DrawingTarget {
     private static final int POINTSIZE = 6;
     private Image i;
     private Graphics offscr;

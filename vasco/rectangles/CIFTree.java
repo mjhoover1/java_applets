@@ -3,7 +3,7 @@ package vasco.rectangles;
 /* $Id: CIFTree.java,v 1.3 2003/09/05 16:33:12 brabec Exp $ */
 import vasco.common.*;
 import java.util.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.awt.event.*;
 import vasco.drawable.*;
 
@@ -595,7 +595,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 		 * tree structure of a CIF tree node. It displays both x and y axis binary
 		 * trees.
 		 */
-		class BinTreeCanvas extends Canvas {
+		class BinTreeCanvas extends JPanel {
 			CIFcnode cn;
 			DrawingTarget dt;
 			int bintreecounter;
