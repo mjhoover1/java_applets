@@ -1,7 +1,7 @@
 package vasco.points;
 /* $Id: GenPRkdbuck.java,v 1.1.1.1 2002/09/25 05:48:36 brabec Exp $ */
 import vasco.common.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.util.*;
 
 public abstract class GenPRkdbuck extends GenericPRkdbucket {
@@ -10,7 +10,7 @@ public abstract class GenPRkdbuck extends GenericPRkdbucket {
     super(can, b, md, p, r);
   }
 
-  public void reInit(Choice ao) {
+  public void reInit(JComboBox ao) {
     super.reInit(ao);
   }
 

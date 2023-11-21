@@ -2,7 +2,7 @@ package vasco.points;
 /* $Id: PointRTree.java,v 1.1.1.1 2002/09/25 05:48:37 brabec Exp $ */
 import vasco.common.*;
 import vasco.drawable.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 
 public class PointRTree extends PointStructure {
   RTree rt;
@@ -12,7 +12,7 @@ public class PointRTree extends PointStructure {
     rt = new RTree(can, 3, 6, p, r);
   }
 
-  public void reInit(Choice ops) {
+  public void reInit(JComboBox ops) {
     super.reInit(ops);
     rt.reInit(ops);
     ops.addItem("Nearest");

@@ -1,8 +1,11 @@
 /* $Id: GeneralCanvas.java,v 1.8 2007/10/28 15:38:13 jagan Exp $ */
 package vasco.common;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*; // import java.awt.*;
+import javax.swing.event.*; // import java.awt.event.*;
+
+import org.w3c.dom.events.MouseEvent;
+
 import java.util.*;
 
 // ------------- P Canvas -------------------
@@ -97,7 +100,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
      * @param m        The panel containing the canvas.
      * @param ti       The top-level interface.
      */
-	public GeneralCanvas(DRectangle can, DrawingTarget dt, DrawingTarget overview, Panel m, TopInterface ti) {
+	public GeneralCanvas(DRectangle can, DrawingTarget dt, DrawingTarget overview, JPanel m, TopInterface ti) {
 		topInterface = ti;
 		animPanel = new AnimationPanel(m);
 		offscrG = dt;
@@ -227,21 +230,21 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		final String RUNMODE_OBJECT_S = "stop on object";
 		final String RUNMODE_SUCCESS_S = "stop on success";
 
-		Button start, stop, pauseresume;
+		JButton start, stop, pauseresume;
 		Scrollbar progress;
 		MouseHelp starthelp, pauseresumehelp, stophelp;
-		Choice runmode;
+		JComboBox runmode;
 
 		/**
          * Constructs an AnimationPanel with controls for animation.
          *
          * @param r The panel containing the animation controls.
          */
-		AnimationPanel(Panel r) {
+		AnimationPanel(JPanel r) {
 			Scrollbar ranger;
 			r.setLayout(new GridLayout(4, 1));
 
-			Panel anim = new Panel();
+			JPanel anim = new JPanel();
 			anim.setLayout(new GridLayout(1, 2));
 			anim.add(new Label("Speed"));
 			ranger = new Scrollbar(Scrollbar.HORIZONTAL, 5, 1, 0, 10);
@@ -251,7 +254,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 
 			new MouseHelp(ranger, topInterface.getMouseDisplay(), "Drag slider to change animation speed", "", "");
 
-			Panel progressPanel = new Panel();
+			JPanel progressPanel = new JPanel();
 			progressPanel.setLayout(new GridLayout(1, 2));
 			progressPanel.add(new Label("Progress"));
 			progressPanel.add(progress = new Scrollbar(Scrollbar.HORIZONTAL, 0, 1, 0, 0));
@@ -259,21 +262,21 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 
 			new MouseHelp(progress, topInterface.getMouseDisplay(), "Drag to view animation progress", "", "");
 
-			Panel buts = new Panel();
+			JPanel buts = new JPanel();
 			buts.setLayout(new GridLayout(1, 3));
-			buts.add(start = new Button("Start"));
-			buts.add(pauseresume = new Button("Pause"));
-			buts.add(stop = new Button("Stop"));
+			buts.add(start = new JButton("Start"));
+			buts.add(pauseresume = new JButton("Pause"));
+			buts.add(stop = new JButton("Stop"));
 			starthelp = new MouseHelp(start, topInterface.getMouseDisplay(), "Start animation", "", "");
 			pauseresumehelp = new MouseHelp(pauseresume, topInterface.getMouseDisplay(), "Pause animation", "", "",
 					"Resume animation", "", "");
 			stophelp = new MouseHelp(stop, topInterface.getMouseDisplay(), "Stop animation", "", "");
 			r.add(buts);
 
-			runmode = new Choice();
+			runmode = new JComboBox();
 			runmode.add(RUNMODE_CONTINUOUS_S);
 			runmode.add(RUNMODE_OBJECT_S);
-			Panel runmodeP = new Panel();
+			JPanel runmodeP = new JPanel();
 			runmodeP.setLayout(new BorderLayout());
 			runmodeP.add("West", new Label("Run Mode:"));
 			runmodeP.add("Center", runmode);
@@ -543,7 +546,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	/* --------------- operations on structures ------------------- */
 
 	// Abstract method to set a tree based on a structure and operation choice
-	public abstract void setTree(int str, Choice opChoice);
+	public abstract void setTree(int str, JComboBox opChoice);
 
 	// Method to set the wait time
 	void setWaitTime(int w) {

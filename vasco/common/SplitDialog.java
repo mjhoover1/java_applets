@@ -12,9 +12,9 @@ import java.awt.Toolkit;
 public class SplitDialog extends JDialog implements ActionListener, ItemListener, Runnable {
 	GeneralCanvas rcanvas;
 	JCheckBox[] splitMethod;
-	CheckboxGroup smeth;
-	Button close;
-	Choice opChoice;
+	ButtonGroup smeth;
+	JButton close;
+	JComboBox opChoice;
 	boolean visible;
 	Label topBar;
 	AppletValidate av;
@@ -29,7 +29,7 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
      * @param av       The AppletValidate object for validation.
      * @param md       The MouseDisplay for handling mouse-related actions.
      */
-	public SplitDialog(GeneralCanvas rc, Choice c, String treeType, Label topBar, AppletValidate av, MouseDisplay md) {
+	public SplitDialog(GeneralCanvas rc, JComboBox c, String treeType, Label topBar, AppletValidate av, MouseDisplay md) {
 		super(new JFrame(), "Data Structures", false); // The dialog is created with a new Frame as its parent and a title. It's also set as non-modal.
 		
 		// Initialize the variables like topBar, av, opChoice, rcanvas, etc.
@@ -43,9 +43,9 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
 		setLayout(new GridLayout(rc.getStructCount() + 1, 1));
 		
 		// Initialize and Add Components:
-		smeth = new CheckboxGroup();
+		smeth = new ButtonGroup();
 		splitMethod = new JCheckBox[rc.getStructCount()];
-		close = new Button("Close");
+		close = new JButton("Close");
 		new MouseHelp(close, md, "Close structure selection window", "", "");
 
 	    // Set the preferred size for the close button
@@ -134,7 +134,7 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
 	 * @param e The ActionEvent object representing the event.
 	 */
 	public void actionPerformed(ActionEvent e) {
-		Button src = (Button) e.getSource();
+		JButton src = (JButton) e.getSource();
 		if (src == close)
 			dispose();
 	}
@@ -145,7 +145,7 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
 	 * @param e The ItemEvent object representing the event.
 	 */
 	public void itemStateChanged(ItemEvent e) {
-		Checkbox b = (Checkbox) e.getSource();
+		JCheckBox b = (JCheckBox) e.getSource();
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			rcanvas.stop();
 			for (int i = 0; i < splitMethod.length; i++)

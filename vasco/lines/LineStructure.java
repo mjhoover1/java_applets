@@ -2,7 +2,7 @@ package vasco.lines;
 /* $Id: LineStructure.java,v 1.3 2005/01/31 15:15:43 brabec Exp $ */
 import vasco.common.*;
 import vasco.drawable.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 
 public abstract class LineStructure extends SpatialStructure implements CommonConstants{
   PR prt;
@@ -11,7 +11,7 @@ public abstract class LineStructure extends SpatialStructure implements CommonCo
     super(can, p, r);
   }
 
-  public void reInit(Choice ops) {
+  public void reInit(JComboBox ops) {
     super.reInit(ops);
     ops.addItem("Insert");
     ops.addItem("Move");

@@ -2,7 +2,7 @@ package vasco.points;
 /* $Id: PTTree.java,v 1.1.1.1 2002/09/25 05:48:37 brabec Exp $ */
 import vasco.common.*;
 import vasco.drawable.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.util.*;
 
 public class PTTree extends PointStructure {
@@ -15,7 +15,7 @@ public class PTTree extends PointStructure {
     ROOT = null;
   }
 
-  public void reInit(Choice ao) {
+  public void reInit(JComboBox ao) {
     super.reInit(ao);
     ao.addItem("Nearest");
     ao.addItem("Within");

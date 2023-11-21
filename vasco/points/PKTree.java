@@ -3,7 +3,7 @@ package vasco.points;
 import vasco.common.*;
 import vasco.drawable.*;
 import java.util.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 
 public class PKTree extends PointStructure implements BucketIface {
 
@@ -15,7 +15,7 @@ public class PKTree extends PointStructure implements BucketIface {
 	kParam = k;
     }
 
-    public void reInit(Choice ao) {
+    public void reInit(JComboBox ao) {
 	super.reInit(ao);
 	ao.addItem("Nearest");
 	ao.addItem("Within");

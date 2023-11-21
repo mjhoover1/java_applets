@@ -1,6 +1,8 @@
 package vasco.points;
 /* $Id: PRkd.java,v 1.2 2007/10/28 15:38:18 jagan Exp $ */
-import java.awt.Choice;
+// import java.awt.Choice;
+
+import javax.swing.JComboBox;
 
 import vasco.common.DRectangle;
 import vasco.common.RebuildTree;
@@ -11,7 +13,7 @@ public class PRkd extends GenPRkdbuck {
     super(can, 1, md, p, r);
   }
 
-  public void reInit(Choice ao) {
+  public void reInit(JComboBox ao) {
     super.reInit(ao);
   }
 

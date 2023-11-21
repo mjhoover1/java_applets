@@ -1,6 +1,8 @@
 package vasco.points;
 /* $Id: PRkdbucket.java,v 1.2 2007/10/28 15:38:18 jagan Exp $ */
-import java.awt.Choice;
+// import java.awt.Choice;
+
+import javax.swing.JComboBox;
 
 import vasco.common.Bucket;
 import vasco.common.DRectangle;
@@ -13,7 +15,7 @@ public class PRkdbucket extends GenPRkdbuck {
     super(can, b, md, p, r);
   }
 
-  public void reInit(Choice ao) {
+  public void reInit(JComboBox ao) {
     super.reInit(ao);
     new Bucket(topInterface, "Bucket Capacity", this);
   }

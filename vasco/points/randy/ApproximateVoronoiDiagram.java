@@ -1,18 +1,20 @@
 package vasco.points.randy;
 
-import java.awt.BorderLayout;
-import java.awt.Choice;
-import java.awt.Color;
-import java.awt.Label;
-import java.awt.Panel;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+// import java.awt.BorderLayout;
+// import java.awt.Choice;
+// import java.awt.Color;
+// import java.awt.Label;
+// import java.awt.Panel;
+// import java.awt.Rectangle;
+// import java.awt.event.ActionEvent;
+// import java.awt.event.ActionListener;
+// import java.awt.event.ItemEvent;
+// import java.awt.event.ItemListener;
 import java.util.Iterator;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import vasco.common.DPoint;
@@ -152,7 +154,7 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 			vd.Clear();
 		}
 	  
-	  public void reInit(Choice ops) {
+	  public void reInit(JComboBox ops) {
 			Clear();
 		    topInterface.getPanel().removeAll();
 		    availOps = ops;
@@ -181,13 +183,13 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 	  
 	  public class MaxDecompCombo implements ItemListener
 	  {
-		  public Choice choice;
+		  public JComboBox choice;
 		  public MaxDecompCombo(TopInterface ti) {
 
-			    Panel maxD = new Panel();
+			    JPanel maxD = new JPanel();
 			    maxD.setLayout(new BorderLayout());
 			    maxD.add("West", new Label("Max Decomposition"));
-			    choice = new Choice();
+			    choice = new JComboBox();
 			    choice.addItem("1");
 			    choice.addItem("2");
 			    choice.addItem("3");
@@ -204,7 +206,7 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 			  }
 		  
 		  public void itemStateChanged(ItemEvent ie) {
-			    Choice ch = (Choice)ie.getSource();
+				JComboBox ch = (JComboBox)ie.getSource();
 			    setMaxDecomp(Integer.parseInt(ch.getSelectedItem()));
 			  }
 	  }
@@ -214,7 +216,7 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 		  public JTextField text;
 		  public EpsilonText(TopInterface ti) {
 
-			    Panel maxD = new Panel();
+				JPanel maxD = new JPanel();
 			    maxD.setLayout(new BorderLayout());
 			    maxD.add("West", new Label("epsilon            "));
 			    text = new JTextField(""+epsilon);
@@ -229,7 +231,7 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 		  public JTextField text;
 		  public TText(TopInterface ti) {
 
-			    Panel maxD = new Panel();
+				JPanel maxD = new JPanel();
 			    maxD.setLayout(new BorderLayout());
 			    maxD.add("West", new Label("t                  "));
 			    text = new JTextField(""+t);
@@ -242,13 +244,13 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 	  
 	  public class ShowColorCombo implements ItemListener
 	  {
-		  public Choice choice;
+		  public JComboBox choice;
 		  public ShowColorCombo(TopInterface ti) {
 
-			    Panel maxD = new Panel();
+			    JPanel maxD = new JPanel();
 			    maxD.setLayout(new BorderLayout());
 			    maxD.add("West", new Label("Show Color            "));
-			    choice = new Choice();
+			    choice = new JComboBox();
 			    choice.addItem("No");
 			    choice.addItem("Yes");
 			    if(showColor)choice.select(1);
@@ -259,7 +261,7 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 			  }
 		  
 		  public void itemStateChanged(ItemEvent ie) {
-			    Choice ch = (Choice)ie.getSource();
+				JComboBox ch = (JComboBox)ie.getSource();
 			    if(ch.getSelectedItem().equals("No"))showColor=false;
 			    else showColor=true;
 			    try{rebuildQuadtree();}catch(Exception e){}
@@ -269,13 +271,13 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 	  
 	  public class DecomposeMaximallyCombo implements ItemListener
 	  {
-		  public Choice choice;
+		  public JComboBox choice;
 		  public DecomposeMaximallyCombo(TopInterface ti) {
 
-			    Panel maxD = new Panel();
+			    JPanel maxD = new JPanel();
 			    maxD.setLayout(new BorderLayout());
 			    maxD.add("West", new Label("Full Decomposition (slow)"));
-			    choice = new Choice();
+			    choice = new JComboBox();
 			    choice.addItem("No");
 			    choice.addItem("Yes");
 			    if(maxDecomposition)choice.select(1);
@@ -299,9 +301,9 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 	  {
 		  public SubmitButton(TopInterface ti) {
 
-			    Panel maxD = new Panel();
+			    JPanel maxD = new JPanel();
 			    maxD.setLayout(new BorderLayout());
-			    JButton submitButton=new JButton("    Change Parameters    ");
+			    JButton submitButton = new JButton("    Change Parameters    ");
 			    submitButton.addActionListener(this);
 			    maxD.add("East", submitButton);
 			    ti.getPanel().add(maxD);

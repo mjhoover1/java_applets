@@ -21,8 +21,8 @@ public class appletSwitch extends JPanel implements ItemListener {
 	final static String[] urls = { "/quadtree/points.html", "/quadtree/lines.html", "/quadtree/rectangles.html",
 			"/quadtree/regions.html" };
 
-	Choice ch; // Choice component for selecting applets
-	Applet applet; // Reference to the parent applet
+	JComboBox ch; // Choice component for selecting applets
+	JApplet applet; // Reference to the parent applet
 	int initValue; // Initial value for the choice component
 
 	/**
@@ -33,7 +33,7 @@ public class appletSwitch extends JPanel implements ItemListener {
 	 * @param ti TopInterface instance for accessing mouse display.
 	 */
 	public appletSwitch(int iv, Applet ac, TopInterface ti) {
-		ch = new Choice();
+		ch = new JComboBox();
 		new MouseHelp(ch, ti.getMouseDisplay(), "Go to other spatial demo applets", "", "");
 		ch.addItem("Point Applet");
 		ch.addItem("Line Applet");

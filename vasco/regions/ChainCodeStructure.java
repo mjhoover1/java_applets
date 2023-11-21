@@ -3,7 +3,7 @@ package vasco.regions;
 import vasco.common.*;
 import vasco.drawable.*;
 
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.util.*;
   
 public class ChainCodeStructure extends RegionStructure {
@@ -25,7 +25,7 @@ public class ChainCodeStructure extends RegionStructure {
     return super.search(node, p);
   } 
   
-  public void reInit(Choice ao) {
+  public void reInit(JComboBox ao) {
     super.reInit(ao);
     ao.addItem("To quadtree");
     ao.addItem("To array");

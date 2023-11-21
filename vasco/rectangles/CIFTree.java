@@ -53,7 +53,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 *
 	 * @param c Choice of rectangles to initialize the tree.
 	 */
-	public void reInit(Choice c) {
+	public void reInit(JComboBox c) {
 		super.reInit(c);
 		new MaxDecomp(topInterface, 9, this);
 		availOps.addItem("Show bintree");
@@ -588,7 +588,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	class BinTreeFrame extends JFrame implements ActionListener {
 		// Implementation of the frame for displaying binary trees
 		ScrollPane sp;
-		Button close;
+		JButton close;
 
 		/**
 		 * The `BinTreeCanvas` inner class extends Canvas and is used to draw the binary
@@ -734,7 +734,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 			sp.setSize(300, 300);
 			add("Center", sp);
 			sp.add(bt);
-			close = new Button("Close");
+			close = new JButton("Close");
 			close.addActionListener(this);
 			add("South", close);
 			pack();
@@ -747,7 +747,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 		 * @param e The action event.
 		 */
 		public void actionPerformed(ActionEvent e) {
-			Button src = (Button) e.getSource();
+			JButton src = (JButton) e.getSource();
 			if (src == close)
 				dispose();
 		}

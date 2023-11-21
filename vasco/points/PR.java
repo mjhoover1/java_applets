@@ -1,7 +1,9 @@
 package vasco.points;
 
+import javax.swing.JComboBox;
+
 /* $Id: PR.java,v 1.2 2007/10/28 15:38:18 jagan Exp $ */
-import java.awt.Choice;
+// import java.awt.Choice;
 import vasco.common.DRectangle;
 import vasco.common.RebuildTree;
 import vasco.common.TopInterface;
@@ -30,7 +32,7 @@ public class PR extends GenPRbuck {
      *
      * @param ao A {@link Choice} object containing various options for reinitialization.
      */
-	public void reInit(Choice ao) {
+	public void reInit(JComboBox ao) {
 		super.reInit(ao);
 	}
 

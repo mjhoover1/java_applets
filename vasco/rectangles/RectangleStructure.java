@@ -2,7 +2,7 @@ package vasco.rectangles;
 
 /* $Id: RectangleStructure.java,v 1.2 2007/10/28 15:38:20 jagan Exp $ */
 import vasco.common.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 //import java.util.*;
 import vasco.drawable.*;
 
@@ -30,7 +30,7 @@ public abstract class RectangleStructure extends SpatialStructure implements Com
 	 *
 	 * @param ops The operations Choice menu to which the operations will be added.
 	 */
-	public void reInit(Choice ops) {
+	public void reInit(JComboBox ops) {
 		super.reInit(ops);
 		availOps.addItem("Insert");
 		availOps.addItem("Move");

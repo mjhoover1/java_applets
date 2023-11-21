@@ -28,7 +28,7 @@ class PMRRectTree extends GenericRectTree {
      *
      * @param c The choice used for reinitialization.
      */
-	public void reInit(Choice c) {
+	public void reInit(JComboBox c) {
 		super.reInit(c);
 		new Bucket(topInterface, "Splitting Threshold", this);
 	}

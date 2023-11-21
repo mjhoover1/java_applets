@@ -2,7 +2,7 @@ package vasco.points;
 /* $Id: MXTree.java,v 1.1.1.1 2002/09/25 05:48:37 brabec Exp $ */
 import vasco.common.*;
 import vasco.drawable.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.util.*;
 
 public class MXTree extends PointStructure implements MaxDecompIface {
@@ -15,7 +15,7 @@ public class MXTree extends PointStructure implements MaxDecompIface {
 	canvasWidth = (int)Math.pow(2, maxDecomp);
     }
 
-    public void reInit(Choice ao) {
+    public void reInit(JComboBox ao) {
 		super.reInit(ao);
 		new MaxDecomp(topInterface, 9, this);
 		ao.addItem("Nearest");

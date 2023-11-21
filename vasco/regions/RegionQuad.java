@@ -22,7 +22,7 @@ public class RegionQuad extends RegionStructure {
   } 
 
  
-  public void reInit(Choice ao) {
+  public void reInit(JComboBox ao) {
     super.reInit(ao);
     ao.addItem("To raster");
     ao.addItem("To chain");

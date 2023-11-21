@@ -2,7 +2,7 @@ package vasco.lines;
 /* $Id: GenericLine.java,v 1.2 2007/10/28 15:38:15 jagan Exp $ */
 import vasco.common.*;
 import vasco.drawable.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.util.*;
 
 public abstract class GenericLine extends LineStructure implements MaxDecompIface {
@@ -17,7 +17,7 @@ public abstract class GenericLine extends LineStructure implements MaxDecompIfac
 	maxDecomp = md;
     }
 
-    public void reInit(Choice ops) {
+    public void reInit(JComboBox ops) {
 	super.reInit(ops);
 	new MaxDecomp(topInterface, 9, this);
     }

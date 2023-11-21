@@ -1,14 +1,19 @@
 package vasco.points;
 /* $Id: PointCanvas.java,v 1.3 2007/10/28 15:38:18 jagan Exp $ */
-import java.awt.Choice;
-import java.awt.Color;
-import java.awt.Panel;
-import java.awt.Point;
-import java.awt.event.InputEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.MouseEvent;
+// import java.awt.Choice;
+// import java.awt.Color;
+// import java.awt.Panel;
+// import java.awt.Point;
+// import java.awt.event.InputEvent;
+// import java.awt.event.ItemEvent;
+// import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.Vector;
+
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+
+import org.w3c.dom.events.MouseEvent;
 
 import vasco.common.ColorHelp;
 import vasco.common.DLine;
@@ -47,11 +52,11 @@ public class PointCanvas extends GenericCanvas implements FileIface {
   
   public DRectangle can;
   public DrawingTarget dt;
-  public Panel animp;
+  public JPanel animp;
   public TopInterface ti;
 
   PointCanvas(DRectangle can, DrawingTarget dt, DrawingTarget overview,
-	      Panel animp, TopInterface ti) {
+              JPanel animp, TopInterface ti) {
     super(can, dt, overview, animp, ti);
     this.can=can;
     this.dt=dt;
@@ -266,7 +271,7 @@ public class PointCanvas extends GenericCanvas implements FileIface {
     	this.handler=handler;
     }
 
-    public void useLineStruct(LineStructure p,Choice ops)
+    public void useLineStruct(LineStructure p,JComboBox ops)
     {
     	LineCanvas lc=new LineCanvas(can,dt,overview,animp,ti);
     	lc.pstruct=p;

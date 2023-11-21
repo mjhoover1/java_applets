@@ -1,17 +1,20 @@
 package vasco.points.randy;
 
-import java.awt.BorderLayout;
-import java.awt.Choice;
-import java.awt.Color;
-import java.awt.Label;
-import java.awt.Panel;
-import java.awt.Rectangle;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+// import java.awt.BorderLayout;
+// import java.awt.Choice;
+// import java.awt.Color;
+// import java.awt.Label;
+// import java.awt.Panel;
+// import java.awt.Rectangle;
+// import java.awt.event.ItemEvent;
+// import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Vector;
+
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
 
 import vasco.common.AppletSwitcher;
 import vasco.common.DLine;
@@ -209,7 +212,7 @@ return delaunay.NearestFirst(p);
 			delaunay.Clear();
 		}
 		
-		public void reInit(Choice ops) {
+		public void reInit(JComboBox ops) {
 			Clear();
 		    topInterface.getPanel().removeAll();
 		    availOps = ops;
@@ -247,10 +250,10 @@ return delaunay.NearestFirst(p);
 		  {
 			  public ShowDTCombo(TopInterface ti) {
 
-				    Panel maxD = new Panel();
+				    JPanel maxD = new JPanel();
 				    maxD.setLayout(new BorderLayout());
 				    maxD.add("West", new Label("Show DT"));
-				    Choice maxDChoice = new Choice();
+				    JComboBox maxDChoice = new JComboBox();
 				    maxDChoice.addItem("No");
 				    maxDChoice.addItem("Yes");
 				    if(showDelaunay)
@@ -263,7 +266,7 @@ return delaunay.NearestFirst(p);
 				  }
 			  
 			  public void itemStateChanged(ItemEvent ie) {
-				    Choice ch = (Choice)ie.getSource();
+					JComboBox ch = (JComboBox)ie.getSource();
 				    if(ch.getSelectedItem().equals("No"))showDelaunay=false;
 				    else showDelaunay=true;
 				    reb.redraw();
@@ -275,10 +278,10 @@ return delaunay.NearestFirst(p);
 		  {
 			  public ShowPM2Combo(TopInterface ti) {
 
-				    Panel maxD = new Panel();
+					JPanel maxD = new JPanel();
 				    maxD.setLayout(new BorderLayout());
 				    maxD.add("West", new Label("Show PM2 Index"));
-				    Choice maxDChoice = new Choice();
+				    JComboBox maxDChoice = new JComboBox();
 				    maxDChoice.addItem("No");
 				    maxDChoice.addItem("Yes");
 				    if(showPM2)
@@ -291,7 +294,7 @@ return delaunay.NearestFirst(p);
 				  }
 			  
 			  public void itemStateChanged(ItemEvent ie) {
-				    Choice ch = (Choice)ie.getSource();
+					JComboBox ch = (JComboBox)ie.getSource();
 				    if(ch.getSelectedItem().equals("No"))showPM2=false;
 				    else 
 				    {

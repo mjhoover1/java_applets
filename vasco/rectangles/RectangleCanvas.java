@@ -4,6 +4,9 @@ package vasco.rectangles;
 import vasco.common.*;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
+
+import org.w3c.dom.events.MouseEvent;
+
 import java.util.*;
 import vasco.drawable.*;
 
@@ -401,7 +404,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	 * @param i   The index.
 	 * @param ops The choice of operations.
 	 */
-	public void setTree(int i, Choice ops) {
+	public void setTree(int i, JComboBox ops) {
 		String op = ops.getSelectedItem();
 		pstruct = pstrs[i];
 //		System.out.println("pstruct " + pstruct);

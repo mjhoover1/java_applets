@@ -654,7 +654,7 @@ public class RTree extends SpatialStructure implements ItemListener{
       p.add(ov = new JCheckBox("Overlap"));
       new MouseHelp(ov, topInterface.getMouseDisplay(), "Turn overlap calculation on", "", "",
 		    "Turn overlap calculation off", "", "");
-      p.add(cov = new Checkbox("Coverage"));
+      p.add(cov = new JCheckBox("Coverage"));
       new MouseHelp(cov, topInterface.getMouseDisplay(), "Turn coverage calculation on", "", "",
 		    "Turn coverage calculation off", "", "");
       ov.addItemListener(this);
@@ -794,7 +794,7 @@ public class RTree extends SpatialStructure implements ItemListener{
   double[] overlap;
   int lastOn;
   VisibleLevels vl;
-  Choice splitMeth;
+  JComboBox splitMeth;
 
 
   public RTree(DRectangle can, int minnl, int maxnl, TopInterface p, RebuildTree r) {
@@ -804,7 +804,7 @@ public class RTree extends SpatialStructure implements ItemListener{
     splitMode = structs[0];
     initSpaceFillingCurves();
     vl = new VisibleLevels();
-    splitMeth = new Choice();
+    splitMeth = new JComboBox();
     for (int i = 0; i < structs.length; i++)
       splitMeth.add(structs[i]);
     splitMeth.addItemListener(this);
@@ -817,13 +817,13 @@ public class RTree extends SpatialStructure implements ItemListener{
     splitMode = mode;
     initSpaceFillingCurves();
     vl = new VisibleLevels();
-    splitMeth = new Choice();
+    splitMeth = new JComboBox();
     for (int i = 0; i < structs.length; i++)
       splitMeth.add(structs[i]);
     splitMeth.addItemListener(this);
   }
 
-  public void reInit(Choice ops) {
+  public void reInit(JComboBox ops) {
     super.reInit(ops);
     Clear();
     coverage = new double[0];

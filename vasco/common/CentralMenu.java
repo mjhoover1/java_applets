@@ -16,16 +16,16 @@ import javax.swing.event.*; // import java.awt.event.*;
  */
 public class CentralMenu extends JPanel implements ActionListener, ItemListener {
 	protected GeneralCanvas rcanvas; // Reference to the GeneralCanvas used in the application.
-	public Choice operations; // Choice component for selecting operations.
+	public JComboBox operations; // Choice component for selecting operations.
 	protected SplitDialog dlg; // Reference to the SplitDialog used for splitting data structures.
-	protected Button splitbut; // Button for opening the SplitDialog.
+	protected JButton splitbut; // Button for opening the SplitDialog.
 	protected JDialog dialog; // Dialog for displaying color legends.
-	protected Button chbut; // Button for opening the color legend dialog.
-	protected Button undo; // Button for undoing the last insert or delete operation.
-	protected Button plusGrid, minusGrid; // plusGrid - Button for zooming in the grid, & minusGrid - Button for zooming
+	protected JButton chbut; // Button for opening the color legend dialog.
+	protected JButton undo; // Button for undoing the last insert or delete operation.
+	protected JButton plusGrid, minusGrid; // plusGrid - Button for zooming in the grid, & minusGrid - Button for zooming
 											// out the grid.
 	protected JCheckBox gridChb; // Checkbox for toggling the grid visibility.
-	protected Button load, save, clear; // load - Button for loading a data set, save - Button for saving a data set., &
+	protected JButton load, save, clear; // load - Button for loading a data set, save - Button for saving a data set., &
 										// clear - Button for clearing (erasing) the data set.
 	protected int gridLevel; // The current grid level.
 	protected Label topBar; // Label for displaying information in the top bar.
@@ -45,7 +45,7 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 	 * @param md          The MouseDisplay for handling mouse-related actions.
 	 */
 	public CentralMenu(GeneralCanvas rc, String treeMode, JPanel indStructP, AppletValidate av, TextArea helpArea,
-			Label topBar, Button overviewButton, MouseDisplay md) {
+			Label topBar, JButton overviewButton, MouseDisplay md) {
 		GridBagLayout bplayout; // Initialize the GridBagLayout
 		setLayout(bplayout = new GridBagLayout()); // Set the layout for this panel to GridBagLayout
 		rcanvas = rc;
@@ -66,11 +66,11 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 		opanel.setLayout(new BorderLayout());
 		bplayout.setConstraints(opanel, butpan); // Apply constraints to the opanel Panel
 
-		operations = new Choice();
+		operations = new JComboBox();
 		operations.addItemListener(rc);
 		dlg = new SplitDialog(rcanvas, operations, treeMode, topBar, av, md); // Initialize SplitDialog
 
-		splitbut = new Button("Data Structures");
+		splitbut = new JButton("Data Structures");
 		bplayout.setConstraints(splitbut, butpan);
 		splitbut.addActionListener(this);
 		new MouseHelp(splitbut, md, "Open a structure selection window", "", ""); // Add mouse help for splitbut
@@ -79,25 +79,25 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 		opanel.add("East", operations);
 		new MouseHelp(operations, md, "Select a data structure operation", "", ""); // Add mouse help for operations Choice
 
-		undo = new Button("Undo");
+		undo = new JButton("Undo");
 		undo.addActionListener(this);
 		bplayout.setConstraints(undo, butpan);
 		new MouseHelp(undo, md, "Undo the last insert or delete", "", ""); // Add mouse help for undo Button
 
-		chbut = new Button("Operation Color Legend");
+		chbut = new JButton("Operation Color Legend");
 		chbut.addActionListener(this);
 		bplayout.setConstraints(chbut, butpan);
 		new MouseHelp(chbut, md, "Open a color legend window", "", ""); // Add mouse help for chbut Button
 
 		JPanel pan = new JPanel();
 		pan.setLayout(new GridLayout(1, 3));
-		load = new Button("Load");
+		load = new JButton("Load");
 		load.addActionListener(this);
 		new MouseHelp(load, md, "Load a data set from the data server", "", "");  // Add mouse help for load Button
-		save = new Button("Save");
+		save = new JButton("Save");
 		save.addActionListener(this);
 		new MouseHelp(save, md, "Save a data set to the data server", "", ""); // Add mouse help for save Button
-		clear = new Button("Clear");
+		clear = new JButton("Clear");
 		clear.addActionListener(this);
 		new MouseHelp(clear, md, "Clear (erase) the data set", "", ""); // Add mouse help for clear Button
 		pan.add(load);
@@ -112,9 +112,9 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 		rc.setGrid(true);
 		new MouseHelp(gridChb, md, "Show grid", "", "", "Hide grid", "", "");  // Add mouse help for gridChb Checkbox
 		gridChb.addItemListener(this);
-		grd.add(plusGrid = new Button("+"));
+		grd.add(plusGrid = new JButton("+"));
 		plusGrid.addActionListener(this);
-		grd.add(minusGrid = new Button("-"));
+		grd.add(minusGrid = new JButton("-"));
 		minusGrid.addActionListener(this);
 		gridLevel = 0;
 		new MouseHelp(plusGrid, md, "Show a finer grid", "", "");  // Add mouse help for plusGrid Button

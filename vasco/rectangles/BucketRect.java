@@ -2,7 +2,7 @@ package vasco.rectangles;
 
 /* $Id: BucketRect.java,v 1.2 2004/11/20 22:38:48 brabec Exp $ */
 import vasco.common.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 
 /**
  * BucketRect is a specialized implementation of a rectangle-based Quadtree.
@@ -31,7 +31,7 @@ public class BucketRect extends GenRectTree {
      *
      * @param c The Choice component used for reinitialization options.
      */
-	public void reInit(Choice c) {
+	public void reInit(JComboBox c) {
 		super.reInit(c);
 		new Bucket(topInterface, "Bucket Capacity", this);
 	}

@@ -56,7 +56,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 * 
 	 * @param c The choice object
 	 */
-	public void reInit(Choice c) {
+	public void reInit(JComboBox c) {
 //		System.out.println("c " + c.getItemCount());
 		super.reInit(c);
 //		System.out.println("after c " + c.getItemCount());
@@ -863,7 +863,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 */
 	class BinTreeFrame extends JFrame implements ActionListener {
 		ScrollPane sp;
-		Button close;
+		JButton close;
 
 		/**
 		 * Inner class representing a canvas for drawing the binary tree of LOOSEcnode.
@@ -1010,7 +1010,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 			sp.setSize(300, 300);
 			add("Center", sp);
 			sp.add(bt);
-			close = new Button("Close");
+			close = new JButton("Close");
 			close.addActionListener(this);
 			add("South", close);
 			pack();
@@ -1023,7 +1023,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 		 * @param e The ActionEvent
 		 */
 		public void actionPerformed(ActionEvent e) {
-			Button src = (Button) e.getSource();
+			JButton src = (JButton) e.getSource();
 			if (src == close)
 				dispose();
 		}

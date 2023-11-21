@@ -29,7 +29,7 @@ public class MaxDecomp implements ItemListener {
 		JPanel maxD = new JPanel();
 		maxD.setLayout(new BorderLayout());
 		maxD.add("West", new Label("Max Decomposition"));
-		Choice maxDChoice = new Choice();
+		JComboBox maxDChoice = new JComboBox();
 		new MouseHelp(maxDChoice, ti.getMouseDisplay(), "Set maximum decomposition depth", "", "");
 		maxDChoice.addItem("Off");
 		for (int i = 1; i <= maxValue; i++)
@@ -46,7 +46,7 @@ public class MaxDecomp implements ItemListener {
      * @param ie The ItemEvent object representing the item state change event.
      */
 	public void itemStateChanged(ItemEvent ie) {
-		Choice ch = (Choice) ie.getSource();
+		JComboBox ch = (JComboBox) ie.getSource();
 		if (ch.getSelectedIndex() == 0)
 			pstr.setMaxDecomp(OFF);
 		else

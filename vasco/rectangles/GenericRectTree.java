@@ -3,7 +3,7 @@ package vasco.rectangles;
 /* $Id: GenericRectTree.java,v 1.1.1.1 2002/09/25 05:48:37 brabec Exp $ */
 import vasco.common.*;
 import java.util.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import vasco.drawable.*;
 // --------- Rect Quadtree ---------
 /**
@@ -50,7 +50,7 @@ abstract class GenericRectTree extends RectangleStructure implements BucketIface
 	 *
 	 * @param c The choice component containing configuration options for the quadtree.
 	 */
-	public void reInit(Choice c) {
+	public void reInit(JComboBox c) {
 		super.reInit(c);
 		new MaxDecomp(topInterface, 9, this);
 	}

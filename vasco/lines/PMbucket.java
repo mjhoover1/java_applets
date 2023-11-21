@@ -1,7 +1,7 @@
 package vasco.lines;
 /* $Id: PMbucket.java,v 1.1.1.1 2002/09/25 05:48:36 brabec Exp $ */
 import vasco.common.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 
 
 public class PMbucket extends GenericBucket {
@@ -18,7 +18,7 @@ public class PMbucket extends GenericBucket {
         return false;
     }
 
-  public void reInit(Choice c) {
+  public void reInit(JComboBox c) {
     super.reInit(c);
     new Bucket(topInterface, "Bucket Capacity", this);
   }

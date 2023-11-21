@@ -1,9 +1,11 @@
 package vasco.points;
 /* $Id: RangeTree.java,v 1.2 2007/10/28 15:38:18 jagan Exp $ */
-import java.awt.Choice;
-import java.awt.Color;
-import java.awt.Rectangle;
+// import java.awt.Choice;
+// import java.awt.Color;
+// import java.awt.Rectangle;
 import java.util.Vector;
+
+import javax.swing.JComboBox;
 
 import vasco.common.DPoint;
 import vasco.common.DRectangle;
@@ -51,7 +53,7 @@ public class RangeTree extends PointStructure {
     super(can, p, r);
   }
 
-  public void reInit(Choice ao) {
+  public void reInit(JComboBox ao) {
     super.reInit(ao);
   }
 

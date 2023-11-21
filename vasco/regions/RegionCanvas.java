@@ -5,6 +5,9 @@ import vasco.drawable.*;
 
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
+
+import org.w3c.dom.events.MouseEvent;
+
 import java.util.*;
 
 /*
@@ -53,7 +56,7 @@ public class RegionCanvas extends GenericCanvas
   protected Vector cb = null; // connected blocks
 
   private int sIndex = -1;
-  private Choice sChoice = null;
+  private JComboBox sChoice = null;
 
   public RegionCanvas(DRectangle can, DrawingTarget dt, DrawingTarget over, 
                       JPanel animp, TopInterface ti){//, CentralMenu centralmenu) {
@@ -180,7 +183,7 @@ public class RegionCanvas extends GenericCanvas
     }
 
 
-    if (obj instanceof Choice){
+    if (obj instanceof JComboBox){
  
       String op = getCurrentOperationName();
 
@@ -259,7 +262,7 @@ public class RegionCanvas extends GenericCanvas
   }
  
 
-  public boolean selectCBlock(int i, Choice ops, Vector cb){
+  public boolean selectCBlock(int i, JComboBox ops, Vector cb){
     int no, x, index;
     
     // find the number of valid connected blocks
@@ -296,7 +299,7 @@ public class RegionCanvas extends GenericCanvas
     return false;
   }
  
-  public void switchTree(int i, Choice ops){
+  public void switchTree(int i, JComboBox ops){
     String op = ops.getSelectedItem();
 
     cb = null;
@@ -324,7 +327,7 @@ public class RegionCanvas extends GenericCanvas
       rebuild(); 
   }
 
-  public void setTree(int i, Choice ops){
+  public void setTree(int i, JComboBox ops){
     // if it is chain code
     if (i == 3 && sChoice == null){
       

@@ -3,7 +3,7 @@ package vasco.points;
 /* $Id: GenericPRbucket.java,v 1.2 2007/10/28 15:38:17 jagan Exp $ */
 import vasco.common.*;
 import vasco.drawable.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.util.*;
 
 /**
@@ -117,7 +117,7 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 *
 	 * @param ao The choice settings to configure the Quadtree.
 	 */
-	public void reInit(Choice ao) {
+	public void reInit(JComboBox ao) {
 		super.reInit(ao);
 		new MaxDecomp(topInterface, 9, this);
 		ao.addItem("Nearest");

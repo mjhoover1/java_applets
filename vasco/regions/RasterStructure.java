@@ -24,7 +24,7 @@ public class RasterStructure extends RegionStructure {
     return super.search(node, p);
   } 
   
-  public void reInit(Choice ao) {
+  public void reInit(JComboBox ao) {
     super.reInit(ao);
     ao.addItem("To quadtree");
     ao.addItem("To array");

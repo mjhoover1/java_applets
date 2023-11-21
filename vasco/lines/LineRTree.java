@@ -2,7 +2,7 @@ package vasco.lines;
 /* $Id: LineRTree.java,v 1.1.1.1 2002/09/25 05:48:36 brabec Exp $ */
 import vasco.common.*;
 import vasco.drawable.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 
 public class LineRTree extends LineStructure {
   RTree rt;
@@ -12,7 +12,7 @@ public class LineRTree extends LineStructure {
     rt = new RTree(can, 3, 6, p, r);
   }
 
-  public void reInit(Choice ops) {
+  public void reInit(JComboBox ops) {
     super.reInit(ops);
     rt.reInit(ops);
   }

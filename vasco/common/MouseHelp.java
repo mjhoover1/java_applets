@@ -215,7 +215,7 @@ public class MouseHelp extends MouseAdapter implements ItemListener {
 
     // Handles state changes for components like checkboxes
 	public void itemStateChanged(ItemEvent ie) {
-		current = ((Checkbox) c).getState() ? back : front;
+		current = ((JCheckBox) c).getState() ? back : front;
 		show();
 	}
 }

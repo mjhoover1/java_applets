@@ -51,7 +51,7 @@ abstract public class RegionStructure extends SpatialStructure
   } 
 
   /************** SpatialStructure **************/
-  public void reInit(Choice ops){
+  public void reInit(JComboBox ops){
     super.reInit(ops);
     availOps.addItem("Insert");
     availOps.addItem("Move");

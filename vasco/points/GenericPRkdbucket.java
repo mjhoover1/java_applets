@@ -1,9 +1,11 @@
 package vasco.points;
 /* $Id: GenericPRkdbucket.java,v 1.2 2007/10/28 15:38:17 jagan Exp $ */
-import java.awt.Choice;
-import java.awt.Color;
-import java.awt.Rectangle;
+// import java.awt.Choice;
+// import java.awt.Color;
+// import java.awt.Rectangle;
 import java.util.Vector;
+
+import javax.swing.JComboBox;
 
 import vasco.common.BucketIface;
 import vasco.common.CommonConstants;
@@ -74,7 +76,7 @@ public abstract class GenericPRkdbucket extends PointStructure implements MaxDec
     maxDecomp = md;
   }
 
-  public void reInit(Choice ao) {
+  public void reInit(JComboBox ao) {
     super.reInit(ao);
     new MaxDecomp(topInterface, 18, this);
     ao.addItem("Nearest");

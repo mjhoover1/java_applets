@@ -2,7 +2,7 @@
 package vasco.common;
 
 import vasco.drawable.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.util.*;
 
 /**
@@ -14,7 +14,7 @@ public abstract class SpatialStructure implements CommonConstants {
 
 	public TopInterface topInterface;
 	public RebuildTree reb;
-	public Choice availOps;
+	public JComboBox availOps;
 	public DRectangle wholeCanvas;
 	private SwitchCursor cursorThread;
 
@@ -38,7 +38,7 @@ public abstract class SpatialStructure implements CommonConstants {
 	 *
 	 * @param ops The choice component for available operations.
 	 */
-	public void reInit(Choice ops) {
+	public void reInit(JComboBox ops) {
 		Clear();
 		topInterface.getPanel().removeAll();
 		availOps = ops;

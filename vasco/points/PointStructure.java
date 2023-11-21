@@ -1,7 +1,9 @@
 package vasco.points;
 
+import javax.swing.JComboBox;
+
 /* $Id: PointStructure.java,v 1.3 2007/10/28 15:38:18 jagan Exp $ */
-import java.awt.Choice;
+// import java.awt.Choice;
 import vasco.common.CommonConstants;
 import vasco.common.DPoint;
 import vasco.common.DRectangle;
@@ -39,7 +41,7 @@ abstract public class PointStructure extends SpatialStructure implements CommonC
 	 * 
 	 * @param ops The set of operations to be available in the spatial structure.
 	 */
-	public void reInit(Choice ops) {
+	public void reInit(JComboBox ops) {
 		super.reInit(ops);
 		availOps.addItem("Insert");
 		availOps.addItem("Move");

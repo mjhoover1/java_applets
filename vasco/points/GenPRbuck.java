@@ -2,7 +2,7 @@ package vasco.points;
 
 /* $Id: GenPRbuck.java,v 1.1.1.1 2002/09/25 05:48:36 brabec Exp $ */
 import vasco.common.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.util.*;
 
 /**
@@ -30,7 +30,7 @@ public abstract class GenPRbuck extends GenericPRbucket {
      *
      * @param ao A {@link Choice} object containing various options for reinitialization.
      */
-	public void reInit(Choice ao) {
+	public void reInit(JComboBox ao) {
 		super.reInit(ao);
 	}
 

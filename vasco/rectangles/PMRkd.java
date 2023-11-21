@@ -42,7 +42,7 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	 *
 	 * @param c The choice used for reinitialization.
 	 */
-	public void reInit(Choice c) {
+	public void reInit(JComboBox c) {
 		super.reInit(c);
 		ROOT = null;
 		new MaxDecomp(topInterface, 18, this);
