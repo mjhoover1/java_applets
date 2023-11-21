@@ -1,11 +1,11 @@
 package vasco.regions;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 import java.awt.event.*;
 import java.applet.*;
 import java.util.*;
 import java.text.*;
 
-public class InfoBox extends Dialog implements ActionListener {
+public class InfoBox extends JDialog implements ActionListener {
   Button ok;
 
   public InfoBox(String text) {

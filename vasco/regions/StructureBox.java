@@ -5,7 +5,7 @@ import java.applet.*;
 import java.util.*;
 import java.text.*;
 
-public class StructureBox extends Dialog implements ActionListener {
+public class StructureBox extends JDialog implements ActionListener {
   int row;
   int col;
   TextArea ta;
