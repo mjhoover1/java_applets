@@ -1,7 +1,7 @@
 package vasco.regions;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
-import java.applet.*;
+// import java.applet.*;
 import java.util.*;
 import java.text.*;
 

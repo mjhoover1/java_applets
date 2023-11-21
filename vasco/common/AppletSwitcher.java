@@ -1,8 +1,8 @@
 package vasco.common;
 
 import javax.swing.JApplet; // import java.applet.Applet;
-import java.applet.AppletContext;
-import java.applet.AppletStub;
+// import java.applet.AppletContext;
+// import java.applet.AppletStub;
 import java.awt.Dimension;
 import java.net.URL;
 import java.util.TreeMap;

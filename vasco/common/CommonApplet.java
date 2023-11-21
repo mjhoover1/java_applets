@@ -6,10 +6,10 @@ package vasco.common;
 
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
-import java.applet.*;
+// import java.applet.*;
 import java.io.*;
 
-public class CommonApplet extends Applet implements AppletValidate, ActionListener {
+public class CommonApplet extends JApplet implements AppletValidate, ActionListener {
 
     // Method for global validation (commented out)
     public void globalValidate() {

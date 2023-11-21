@@ -2,7 +2,7 @@ package vasco.regions;
 import vasco.common.*;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
-import java.applet.*;
+// import java.applet.*;
 import java.util.*;
 
 public class RegionCentralMenu extends CentralMenu{
