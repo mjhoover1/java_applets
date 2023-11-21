@@ -1,21 +1,25 @@
 package vasco.common;
 
 import javax.swing.JApplet; // import java.applet.Applet;
+
+import java.applet.Applet;
+import java.applet.AppletContext;
+import java.applet.AppletStub;
+import java.awt.Dimension;
 // import java.applet.AppletContext;
 // import java.applet.AppletStub;
 // import java.awt.Dimension;
 import java.net.URL;
 import java.util.TreeMap;
 
-public class AppletSwitcher extends Thread implements AppletStub{
-	Applet app;
-	Class appToLoad;
+public class AppletSwitcher extends Thread implements AppletStub {
+	JApplet app;
+	Class<?> appToLoad; // Class appToLoad;
 	boolean active=false;
-	public Applet realApplet;
-	TreeMap params=new TreeMap();
+	public JApplet realApplet;
+	TreeMap<String,String> params=new TreeMap<>(); // TreeMap params=new TreeMap();
 	
-	public Applet getNewApplet()
-	{
+	public Applet getNewApplet() {
 		return realApplet;
 	}
 	
@@ -26,7 +30,7 @@ public class AppletSwitcher extends Thread implements AppletStub{
 	
 	public String getParameter(String s)
 	{
-		return (String)params.get(s);
+		return params.get(s); // return (String)params.get(s);
 	}
 	
 	public void appletResize(int height,int width)
@@ -46,7 +50,7 @@ public class AppletSwitcher extends Thread implements AppletStub{
 	}
 	
 	
-	public AppletSwitcher(Applet app,Class appToLoad,String[] paramNames,String[] params)
+	public AppletSwitcher(JApplet app, Class<?> appToLoad,String[] paramNames,String[] params) // Class appToLoad,String[] paramNames,String[] params)
 	{
 		this.app=app;
 		this.appToLoad=appToLoad;
@@ -57,7 +61,7 @@ public class AppletSwitcher extends Thread implements AppletStub{
 		}
 		
 		try {	
-		realApplet = (Applet)appToLoad.newInstance();
+		realApplet = (JApplet)appToLoad.newInstance();
 		}
 		catch (Exception e) {
 			e.printStackTrace(System.out);

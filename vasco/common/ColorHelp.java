@@ -3,6 +3,13 @@ package vasco.common;
 
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
+
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
 
 public class ColorHelp extends JDialog implements ActionListener {
@@ -120,7 +127,8 @@ public class ColorHelp extends JDialog implements ActionListener {
 
     objectString = objects[obj_nr];
 
-    setBackground(Color.lightGray);
+    getContentPane().setBackground(Color.lightGray); // Use getContentPane() setBackground(Color.lightGray);
+    
     GridBagLayout gbl = new GridBagLayout();
     setLayout(gbl);
     
@@ -139,11 +147,13 @@ public class ColorHelp extends JDialog implements ActionListener {
 			       obj_nr == LINE_APPLET)?
 			      lineInsert : help[legIndex].opText[i]), 
 			    help[legIndex].opColor[i]);
-      add(p);
+      getContentPane().add(p); // Use getContentPane() add(p);
       gbl.setConstraints(p, cn);
     }
-    add(close = new JButton("Close"));
+    close = new JButton("Close");
     close.addActionListener(this);
+    getContentPane().add(close); // Use getContentPane() add(close = new JButton("Close"));
+    // close.addActionListener(this);
     pack();
   }
 
@@ -151,6 +161,7 @@ public class ColorHelp extends JDialog implements ActionListener {
     JPanel p = new JPanel();
     JPanel sub = new JPanel();
     JLabel l = new JLabel("    ");
+    l.setOpaque(true); // Make JLabel opaque to show background color
     l.setBackground(c);
     p.add(l);
 
@@ -205,6 +216,7 @@ public class ColorHelp extends JDialog implements ActionListener {
     return res;
   }
 
+  @Override
   public void actionPerformed(ActionEvent event) {
       if (event.getSource() == close) {
 	dispose();

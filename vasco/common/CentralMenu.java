@@ -5,6 +5,15 @@
  */
 package vasco.common;
 
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
 //import java.applet.*;
@@ -75,8 +84,8 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 		splitbut.addActionListener(this);
 		new MouseHelp(splitbut, md, "Open a structure selection window", "", ""); // Add mouse help for splitbut
 
-		opanel.add("West", new JLabel("Operations"));
-		opanel.add("East", operations);
+		opanel.add(BorderLayout.WEST, new JLabel("Operations"));
+		opanel.add(BorderLayout.EAST, operations);
 		new MouseHelp(operations, md, "Select a data structure operation", "", ""); // Add mouse help for operations Choice
 
 		undo = new JButton("Undo");
@@ -163,16 +172,19 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 
 		if (obj == gridChb) {
 	        // Set the grid visibility based on the state of the grid checkbox.
-			rcanvas.setGrid(gridChb.getState());
+			rcanvas.setGrid(gridChb.isSelected()); // rcanvas.setGrid(gridChb.getState());
+			boolean gridState = gridChb.isSelected();
+			plusGrid.setEnabled(gridState);
+            minusGrid.setEnabled(gridState);
 			
 	        // Enable or disable zoom buttons based on the grid state.
-			if (gridChb.getState()) {
-				plusGrid.setEnabled(true);
-				minusGrid.setEnabled(true);
-			} else {
-				plusGrid.setEnabled(false);
-				minusGrid.setEnabled(false);
-			}
+			// if (gridChb.getState()) {
+			// 	plusGrid.setEnabled(true);
+			// 	minusGrid.setEnabled(true);
+			// } else {
+			// 	plusGrid.setEnabled(false);
+			// 	minusGrid.setEnabled(false);
+			// }
 		}
 	}
 
@@ -188,7 +200,7 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 			if (dialog != null)
 				dialog.dispose();
 			dialog = new ColorHelp(operations.getSelectedItem(), rcanvas.getAppletType());
-			dialog.show();
+			dialog.setVisible(true) // Replace dialog.show() with dialog.setVisible(true)
 		}
 
 		if (obj == undo) {
@@ -204,14 +216,14 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 	        // Terminate and load a data set from the data server.
 			rcanvas.terminate();
 			fileSelector fs = rcanvas.getFileSelector("LOAD");
-			fs.show();
+			fs.setVisible(true); // Replaced fs.show() with setVisible(true)
 			rcanvas.redraw();
 		}
 		if (obj == save) {
 	        // Terminate and save a data set to the data server.
 			rcanvas.terminate();
 			fileSelector fs = rcanvas.getFileSelector("SAVE");
-			fs.show();
+			fs.setVisible(true); // Replaced fs.show() with setVisible(true)
 			rcanvas.redraw();
 		}
 		if (obj == clear) {

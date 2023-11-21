@@ -4,6 +4,9 @@ package vasco.common;
 import javax.swing.*; // import java.awt.*;
 // import java.applet.*;
 import javax.swing.event.*; // import java.awt.event.*;
+
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.net.*;
 
 /**
@@ -32,7 +35,7 @@ public class appletSwitch extends JPanel implements ItemListener {
 	 * @param ac Reference to the parent applet.
 	 * @param ti TopInterface instance for accessing mouse display.
 	 */
-	public appletSwitch(int iv, Applet ac, TopInterface ti) {
+	public appletSwitch(int iv, JApplet ac, TopInterface ti) {
 		ch = new JComboBox();
 		new MouseHelp(ch, ti.getMouseDisplay(), "Go to other spatial demo applets", "", "");
 		ch.addItem("Point Applet");
@@ -42,7 +45,7 @@ public class appletSwitch extends JPanel implements ItemListener {
 		applet = ac;
 		initValue = iv;
 		add(ch);
-		ch.select(initValue);
+		ch.setSelectedIndex(initValue); // ch.select(initValue);
 		ch.addItemListener(this);
 	}
 
@@ -60,7 +63,7 @@ public class appletSwitch extends JPanel implements ItemListener {
 			// Handle potential MalformedURLException
 		}
 		// Reset the choice component to its initial value
-		ch.select(initValue);
+		ch.setSelectedIndex(initValue); // ch.select(initValue);
 	}
 
 }
