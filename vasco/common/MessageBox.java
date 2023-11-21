@@ -8,13 +8,13 @@ import java.util.*;
 import java.text.*;
 
 public class MessageBox extends JDialog implements ActionListener {
-  Button ok;
+  JButton ok;
 
   MessageBox(String text) {
     super(new JFrame(), "Message", true);
     setLayout(new BorderLayout());
-    add("North", new Label(text));
-    ok = new Button("OK");
+    add("North", new JLabel(text));
+    ok = new JButton("OK");
     ok.addActionListener(this);
     add("South", ok);
     pack();

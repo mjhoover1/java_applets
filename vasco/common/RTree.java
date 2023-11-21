@@ -632,12 +632,12 @@ public class RTree extends SpatialStructure implements ItemListener{
 
       JPanel top = new JPanel();
       top.setLayout(new GridLayout(1, 4));
-      top.add(new Label("Min"));
+      top.add(new JLabel("Min"));
       tfMin = new TextField(Integer.toString(minNodeLength), 2);
       new MouseHelp(tfMin, topInterface.getMouseDisplay(), "Set minimum node capacity", "", "");
       tfMin.addTextListener(this);
       top.add(tfMin);
-      top.add(new Label("Max"));
+      top.add(new JLabel("Max"));
       tfMax = new TextField(Integer.toString(maxNodeLength - 1), 2);
       new MouseHelp(tfMax, topInterface.getMouseDisplay(), "Set maximum node capacity", "", "");
       tfMax.addTextListener(this);
@@ -645,7 +645,7 @@ public class RTree extends SpatialStructure implements ItemListener{
 
       JPanel bottom = new JPanel();
       bottom.setLayout(new BorderLayout());
-      bottom.add("North", new Label(formString("Level", "Overlap", "Coverage")));
+      bottom.add("North", new JLabel(formString("Level", "Overlap", "Coverage")));
       vis = new JList(listSize, true);
       vis.addItemListener(this);
       bottom.add("Center", vis);
@@ -829,7 +829,7 @@ public class RTree extends SpatialStructure implements ItemListener{
     coverage = new double[0];
     overlap = new double[0];
     lastOn = 0;
-    topInterface.getPanel().add(new Label("Splitting Method:"));
+    topInterface.getPanel().add(new JLabel("Splitting Method:"));
     topInterface.getPanel().add(splitMeth);
     topInterface.getPanel().add(vl);
 

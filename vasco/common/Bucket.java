@@ -13,7 +13,7 @@ public class Bucket implements TextListener {
 
     JPanel buck = new JPanel();
     buck.setLayout(new BorderLayout());
-    buck.add("West", new Label(lab));
+    buck.add("West", new JLabel(lab));
     TextField bsize = new TextField(Integer.toString(bi.getBucket()), 2);
     new MouseHelp(bsize, ti.getMouseDisplay(), "Set " + lab, "", "");
     buck.add("East", bsize);

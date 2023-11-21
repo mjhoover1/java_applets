@@ -12,7 +12,7 @@ import java.awt.Toolkit;
 public class WithinMode extends JDialog implements CommonConstants, ActionListener {
 	JCheckBox point, polygon, rectangle, path, sector;
 	ButtonGroup cg;
-	Button ok;
+	JButton ok;
 	TextField dist;
 	JCheckBox blend;
 	int mode;
@@ -90,7 +90,7 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 			pn.setLayout(new BorderLayout());
 			dist = new TextField(initDist);
 			dist.setEditable(true);
-			pn.add("West", new Label("Max Distance"));
+			pn.add("West", new JLabel("Max Distance"));
 			pn.add("East", dist);
 			add(pn);
 		}
@@ -101,7 +101,7 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 				add(comp[i]);
 		}
 
-		ok = new Button("Continue");
+		ok = new JButton("Continue");
 
 		ok.addActionListener(this);
 		add(ok);

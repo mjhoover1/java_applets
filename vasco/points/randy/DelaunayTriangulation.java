@@ -17,6 +17,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import vasco.common.AppletSwitcher;
@@ -597,7 +598,7 @@ public class DelaunayTriangulation extends PointStructure implements Indexable{
 
 			    JPanel maxD = new JPanel();
 			    maxD.setLayout(new BorderLayout());
-			    maxD.add("West", new Label("Show PM2 Index"));
+			    maxD.add("West", new JLabel("Show PM2 Index"));
 			    JComboBox maxDChoice = new JComboBox();
 			    maxDChoice.addItem("No");
 			    maxDChoice.addItem("Yes");

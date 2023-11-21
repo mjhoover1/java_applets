@@ -60,7 +60,7 @@ public class main extends CommonApplet implements GenericMain {
                 GridBagConstraints.REMAINDER, GridBagConstraints.HORIZONTAL));
 
         // Create a button panel
-        buttonpanel = new Panel();
+        buttonpanel = new JPanel();
 
         // Set constraints for the button panel
         GridBagConstraints bp = new GridBagConstraints();
@@ -95,7 +95,7 @@ public class main extends CommonApplet implements GenericMain {
         buttonpanel.add(animp);
 
         // Add compile date label to the button panel
-        Label date = new Label(CompileDate.compileDate);
+        JLabel date = new JLabel(CompileDate.compileDate);
         bplayout.setConstraints(date, butpan);
         buttonpanel.add(date);
 

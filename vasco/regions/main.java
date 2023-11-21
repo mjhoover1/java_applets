@@ -78,7 +78,7 @@ public class main extends CommonApplet implements GenericMain {
     bplayout.setConstraints(centralmenu, butpan);
     buttonpanel.add(animp);
   
-    Label date = new Label(CompileDate.compileDate);
+    JLabel date = new JLabel(CompileDate.compileDate);
     bplayout.setConstraints(date, butpan);
     buttonpanel.add(date);
 

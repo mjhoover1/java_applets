@@ -1,11 +1,14 @@
 package vasco.points;
 /* $Id: main.java,v 1.2 2007/10/28 15:38:18 jagan Exp $ */
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Label;
-import java.awt.Panel;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+// import java.awt.GridBagConstraints;
+// import java.awt.GridBagLayout;
+// import java.awt.Label;
+// import java.awt.Panel;
+// import java.awt.event.MouseListener;
+// import java.awt.event.MouseMotionListener;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import vasco.common.CentralMenu;
 import vasco.common.CommonApplet;
@@ -67,7 +70,7 @@ public class main extends CommonApplet implements GenericMain {
 						 GridBagConstraints.HORIZONTAL));
 
 
-	buttonpanel = new Panel();
+	buttonpanel = new JPanel();
 
 	GridBagConstraints bp = new GridBagConstraints();
 	bp.gridx = GridBagConstraints.RELATIVE;
@@ -98,7 +101,7 @@ public class main extends CommonApplet implements GenericMain {
 	bplayout.setConstraints(centralmenu, butpan);
 	buttonpanel.add(animp);
 
-	Label date = new Label(CompileDate.compileDate);
+	JLabel date = new JLabel(CompileDate.compileDate);
 	bplayout.setConstraints(date, butpan);
 	buttonpanel.add(date);
 

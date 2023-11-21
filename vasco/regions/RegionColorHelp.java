@@ -175,7 +175,7 @@ public class RegionColorHelp extends ColorHelp{
       gbl.setConstraints(p, cn);
     }
 
-    add(close = new Button("Close"));
+    add(close = new JButton("Close"));
     close.addActionListener(this);
     pack();
   }
@@ -183,14 +183,14 @@ public class RegionColorHelp extends ColorHelp{
   protected JPanel createPanel(String text, Color c) {
     JPanel p = new JPanel();
     JPanel sub = new JPanel();
-    Label l = new Label("    ");
+    JLabel l = new JLabel("    ");
     l.setBackground(c);
     p.add(l);
 
     String[] form = format(text, 50);
     sub.setLayout(new GridLayout(form.length, 1));
     for (int i = 0; i < form.length; i++)
-      sub.add(new Label(form[i]));
+      sub.add(new JLabel(form[i]));
     p.add(sub);
     return p;
   }

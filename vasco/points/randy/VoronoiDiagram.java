@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import vasco.common.AppletSwitcher;
@@ -252,7 +253,7 @@ return delaunay.NearestFirst(p);
 
 				    JPanel maxD = new JPanel();
 				    maxD.setLayout(new BorderLayout());
-				    maxD.add("West", new Label("Show DT"));
+				    maxD.add("West", new JLabel("Show DT"));
 				    JComboBox maxDChoice = new JComboBox();
 				    maxDChoice.addItem("No");
 				    maxDChoice.addItem("Yes");
@@ -280,7 +281,7 @@ return delaunay.NearestFirst(p);
 
 					JPanel maxD = new JPanel();
 				    maxD.setLayout(new BorderLayout());
-				    maxD.add("West", new Label("Show PM2 Index"));
+				    maxD.add("West", new JLabel("Show PM2 Index"));
 				    JComboBox maxDChoice = new JComboBox();
 				    maxDChoice.addItem("No");
 				    maxDChoice.addItem("Yes");

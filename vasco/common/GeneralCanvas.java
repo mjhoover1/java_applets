@@ -246,7 +246,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 
 			JPanel anim = new JPanel();
 			anim.setLayout(new GridLayout(1, 2));
-			anim.add(new Label("Speed"));
+			anim.add(new JLabel("Speed"));
 			ranger = new Scrollbar(Scrollbar.HORIZONTAL, 5, 1, 0, 10);
 			setWaitTime(100 * (15 - ranger.getValue()));
 			anim.add(ranger);
@@ -256,7 +256,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 
 			JPanel progressPanel = new JPanel();
 			progressPanel.setLayout(new GridLayout(1, 2));
-			progressPanel.add(new Label("Progress"));
+			progressPanel.add(new JLabel("Progress"));
 			progressPanel.add(progress = new Scrollbar(Scrollbar.HORIZONTAL, 0, 1, 0, 0));
 			r.add(progressPanel);
 
@@ -278,7 +278,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			runmode.add(RUNMODE_OBJECT_S);
 			JPanel runmodeP = new JPanel();
 			runmodeP.setLayout(new BorderLayout());
-			runmodeP.add("West", new Label("Run Mode:"));
+			runmodeP.add("West", new JLabel("Run Mode:"));
 			runmodeP.add("Center", runmode);
 			r.add(runmodeP);
 

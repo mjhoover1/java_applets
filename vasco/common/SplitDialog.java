@@ -16,7 +16,7 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
 	JButton close;
 	JComboBox opChoice;
 	boolean visible;
-	Label topBar;
+	JLabel topBar;
 	AppletValidate av;
 
     /**
@@ -29,7 +29,7 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
      * @param av       The AppletValidate object for validation.
      * @param md       The MouseDisplay for handling mouse-related actions.
      */
-	public SplitDialog(GeneralCanvas rc, JComboBox c, String treeType, Label topBar, AppletValidate av, MouseDisplay md) {
+	public SplitDialog(GeneralCanvas rc, JComboBox c, String treeType, JLabel topBar, AppletValidate av, MouseDisplay md) {
 		super(new JFrame(), "Data Structures", false); // The dialog is created with a new Frame as its parent and a title. It's also set as non-modal.
 		
 		// Initialize the variables like topBar, av, opChoice, rcanvas, etc.

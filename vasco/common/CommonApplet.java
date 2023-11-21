@@ -23,12 +23,12 @@ public class CommonApplet extends JApplet implements AppletValidate, ActionListe
     // Components used in the applet
     protected JPanel buttonpanel;
     protected CentralMenu centralmenu;
-    protected Label topBar;
+    protected JLabel topBar;
     protected TopInterface topInterface;
     protected MouseDisplay mp;
     protected JPanel indStructP;
     protected TextArea helpArea;
-    protected Button overviewButton;
+    protected JButton overviewButton;
     protected JDialog overviewDialog;
 
     // Tree type, panels, and canvases
@@ -78,7 +78,7 @@ public class CommonApplet extends JApplet implements AppletValidate, ActionListe
         animp = new JPanel();
         helpArea = new TextArea(5, helpWidth);
 
-        overviewButton = new Button("Zoom window");
+        overviewButton = new JButton("Zoom window");
         overviewButton.addActionListener(this);
 
         topInterface = new TopInterface(indStructP, mp, helpArea, this);
@@ -86,7 +86,7 @@ public class CommonApplet extends JApplet implements AppletValidate, ActionListe
         can = new DrawingCanvas(new Rectangle(0, 0, SIZE, SIZE), new Rectangle(0, 0, SIZE, SIZE),
                 createImage(SIZE, SIZE), mp);
 
-        topBar = new Label();
+        topBar = new JLabel();
         topBar.setForeground(Color.red);
 
         overviewCanvas = new DrawingCanvas(new Rectangle(0, 0, SIZE, SIZE),

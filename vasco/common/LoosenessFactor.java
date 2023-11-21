@@ -16,7 +16,7 @@ public class LoosenessFactor implements AdjustmentListener {
   static final double finishValue = 35;
   static final double logBase = (double) 1.06;
   static final double cutOff = (double) 1.01;
-  Label currentLoosenessFactor;
+  JLabel currentLoosenessFactor;
 
   private String valueToString(double kk) {
     NumberFormat formatter = new DecimalFormat ( "0.00" ) ; 
@@ -38,7 +38,7 @@ public class LoosenessFactor implements AdjustmentListener {
 
     JPanel maxD = new JPanel();
     maxD.setLayout(new GridLayout(1, 3));
-    maxD.add(new Label("Looseness:"));
+    maxD.add(new JLabel("Looseness:"));
 
     Scrollbar maxDChoice = new Scrollbar(Scrollbar.HORIZONTAL, 
 					(int) ((initialValue)), 
@@ -51,7 +51,7 @@ public class LoosenessFactor implements AdjustmentListener {
 
     maxDChoice.addAdjustmentListener(this);
 
-    currentLoosenessFactor = new Label(); 
+    currentLoosenessFactor = new JLabel(); 
     double kk = logScale(maxDChoice.getValue());
     currentLoosenessFactor.setText(valueToString(kk - 1.0));
 
@@ -76,7 +76,7 @@ public class Bucket implements TextListener {
 
     JPanel buck = new JPanel();
     buck.setLayout(new BorderLayout());
-    buck.add("West", new Label(lab));
+    buck.add("West", new JLabel(lab));
     TextField bsize = new TextField(Integer.toString(bi.getBucket()), 2);
     new MouseHelp(bsize, ti.getMouseDisplay(), "Set " + lab, "", "");
     buck.add("East", bsize);

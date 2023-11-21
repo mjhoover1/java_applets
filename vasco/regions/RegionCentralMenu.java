@@ -10,8 +10,8 @@ public class RegionCentralMenu extends CentralMenu{
   RegionCanvas regionCanvas;
 
     public RegionCentralMenu(RegionCanvas rc, String treeMode, JPanel indStructP, 
-		       AppletValidate av, TextArea helpArea, Label topBar,
-		       Button overviewButton, MouseDisplay md) {
+		       AppletValidate av, TextArea helpArea, JLabel topBar,
+		       JButton overviewButton, MouseDisplay md) {
       super(rc, treeMode, indStructP, av, helpArea, topBar, overviewButton, md);
       regionCanvas = rc;
     }
@@ -24,7 +24,7 @@ public class RegionCentralMenu extends CentralMenu{
 	  regionCanvas.pstruct.si = null;
 	}
 	
-	if (obj instanceof Button && ((Button)obj).
+	if (obj instanceof JButton && ((JButton)obj).
 	    getLabel().equals("Operation Color Legend")) {
 	  if (dialog != null)
 	    dialog.dispose();

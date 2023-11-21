@@ -14,6 +14,7 @@ import java.util.Iterator;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -188,7 +189,7 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 
 			    JPanel maxD = new JPanel();
 			    maxD.setLayout(new BorderLayout());
-			    maxD.add("West", new Label("Max Decomposition"));
+			    maxD.add("West", new JLabel("Max Decomposition"));
 			    choice = new JComboBox();
 			    choice.addItem("1");
 			    choice.addItem("2");
@@ -218,7 +219,7 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 
 				JPanel maxD = new JPanel();
 			    maxD.setLayout(new BorderLayout());
-			    maxD.add("West", new Label("epsilon            "));
+			    maxD.add("West", new JLabel("epsilon            "));
 			    text = new JTextField(""+epsilon);
 			    maxD.add("East", text);
 			    //choice.addItemListener(this);
@@ -233,7 +234,7 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 
 				JPanel maxD = new JPanel();
 			    maxD.setLayout(new BorderLayout());
-			    maxD.add("West", new Label("t                  "));
+			    maxD.add("West", new JLabel("t                  "));
 			    text = new JTextField(""+t);
 			    maxD.add("East", text);
 			    //choice.addItemListener(this);
@@ -249,7 +250,7 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 
 			    JPanel maxD = new JPanel();
 			    maxD.setLayout(new BorderLayout());
-			    maxD.add("West", new Label("Show Color            "));
+			    maxD.add("West", new JLabel("Show Color            "));
 			    choice = new JComboBox();
 			    choice.addItem("No");
 			    choice.addItem("Yes");
@@ -276,7 +277,7 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 
 			    JPanel maxD = new JPanel();
 			    maxD.setLayout(new BorderLayout());
-			    maxD.add("West", new Label("Full Decomposition (slow)"));
+			    maxD.add("West", new JLabel("Full Decomposition (slow)"));
 			    choice = new JComboBox();
 			    choice.addItem("No");
 			    choice.addItem("Yes");
@@ -288,7 +289,7 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 			  }
 		  
 		  public void itemStateChanged(ItemEvent ie) {
-			    Choice ch = (Choice)ie.getSource();
+				JComboBox ch = (JComboBox)ie.getSource();
 			    if(ch.getSelectedItem().equals("No"))maxDecomposition=false;
 			    else maxDecomposition=true;
 			    try{rebuildQuadtree();}catch(Exception e){}

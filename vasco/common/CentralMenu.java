@@ -28,7 +28,7 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 	protected JButton load, save, clear; // load - Button for loading a data set, save - Button for saving a data set., &
 										// clear - Button for clearing (erasing) the data set.
 	protected int gridLevel; // The current grid level.
-	protected Label topBar; // Label for displaying information in the top bar.
+	protected JLabel topBar; // Label for displaying information in the top bar.
 	protected TextArea helpArea; // TextArea for displaying help information.
 
 	/**
@@ -45,7 +45,7 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 	 * @param md          The MouseDisplay for handling mouse-related actions.
 	 */
 	public CentralMenu(GeneralCanvas rc, String treeMode, JPanel indStructP, AppletValidate av, TextArea helpArea,
-			Label topBar, JButton overviewButton, MouseDisplay md) {
+			JLabel topBar, JButton overviewButton, MouseDisplay md) {
 		GridBagLayout bplayout; // Initialize the GridBagLayout
 		setLayout(bplayout = new GridBagLayout()); // Set the layout for this panel to GridBagLayout
 		rcanvas = rc;
@@ -75,7 +75,7 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 		splitbut.addActionListener(this);
 		new MouseHelp(splitbut, md, "Open a structure selection window", "", ""); // Add mouse help for splitbut
 
-		opanel.add("West", new Label("Operations"));
+		opanel.add("West", new JLabel("Operations"));
 		opanel.add("East", operations);
 		new MouseHelp(operations, md, "Select a data structure operation", "", ""); // Add mouse help for operations Choice
 
@@ -131,7 +131,7 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 	    add(chbut); // Add chbut Button to this panel
 	    add(indStructP); // Add indStructP Panel to this panel
 
-		add(new Label("Help"));
+		add(new JLabel("Help"));
 	    add(helpArea); // Add helpArea TextArea to this panel
 	    bplayout.setConstraints(helpArea, butpan); // Apply constraints to helpArea
 

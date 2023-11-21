@@ -13,18 +13,18 @@ import java.lang.*;
 public abstract class fileSelector extends JDialog implements ActionListener, ItemListener {
 
     class RandomWindow extends JDialog implements TextListener, ActionListener {
-	Button load, merge, cancel;
+  JButton load, merge, cancel;
 	TextField tf;
 	int number;
 
 	RandomWindow() {
 	    super(new JFrame(), true);
-	    load = new Button("Load");
-	    merge = new Button("Merge");
-	    cancel = new Button("Cancel");
+	    load = new JButton("Load");
+	    merge = new JButton("Merge");
+	    cancel = new JButton("Cancel");
 	    
 	    setLayout(new GridLayout(3,1));
-	    add(new Label("Number of objects to generate:"));
+	    add(new JLabel("Number of objects to generate:"));
 	    tf = new TextField("20");
 	    add(tf);
 	    tf.addTextListener(this);
@@ -60,7 +60,7 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
 	}
 
 	public void actionPerformed(ActionEvent ae) {
-	    Button b = (Button)ae.getSource();
+    JButton b = (JButton)ae.getSource();
 	    if (b != cancel) {
 		formVector(genRandom(number), b == load ? new Vector() : rcanvas.vectorOut());
 	    }
@@ -69,8 +69,8 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
     }
 
   protected FileIface rcanvas;
-  protected Button save, load, merge, delete, append;
-  protected Button cancel, clip, random;
+  protected JButton save, load, merge, delete, append;
+  protected JButton cancel, clip, random;
   protected java.awt.List imp;
   protected TextField fname;
   protected String actStr;
@@ -90,40 +90,40 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
 
     JPanel fileListPanel = new JPanel();
     fileListPanel.setLayout(new BorderLayout());
-    fileListPanel.add("North", new Label("Existing files:"));
+    fileListPanel.add("North", new JLabel("Existing files:"));
     fileListPanel.add("South", imp = new fileList(datatype));
     imp.addItemListener(this);
 
     JPanel fileNamePanel = new JPanel();
     fileNamePanel.setLayout(new BorderLayout());
-    fileNamePanel.add("North", new Label("Filename:"));
+    fileNamePanel.add("North", new JLabel("Filename:"));
     fileNamePanel.add("South", fname = new TextField(25));
 
-    save = new Button("Save");
+    save = new JButton("Save");
     save.addActionListener(this);
     new MouseHelp(save, ti.getMouseDisplay(), "Save current data set to server", "", "");
-    load = new Button("Load");
+    load = new JButton("Load");
     load.addActionListener(this);
     new MouseHelp(load, ti.getMouseDisplay(), "Load data set from server", "", "");
-    random = new Button("Random set");
+    random = new JButton("Random set");
     random.addActionListener(this);
     new MouseHelp(random, ti.getMouseDisplay(), "Generate random data set", "", "");
-    merge = new Button("Merge");
+    merge = new JButton("Merge");
     merge.addActionListener(this);
     new MouseHelp(merge, ti.getMouseDisplay(), "Merge server data set with current", "", "");
-    append = new Button("Append");
+    append = new JButton("Append");
     append.addActionListener(this);
     new MouseHelp(append, ti.getMouseDisplay(), "Append current data set to set on server", "", "");
-    delete = new Button("Delete");
+    delete = new JButton("Delete");
     delete.addActionListener(this);
     new MouseHelp(delete, ti.getMouseDisplay(), "Delete data set from server", "", "");
-    clip = new Button("Clipboard");
+    clip = new JButton("Clipboard");
     clip.addActionListener(this);
     if (act.equals("SAVE"))
 	new MouseHelp(clip, ti.getMouseDisplay(), "Export current set to text window", "", "");
     else
 	new MouseHelp(clip, ti.getMouseDisplay(), "Import data set from text window", "", "");
-    cancel= new Button("Cancel");
+    cancel= new JButton("Cancel");
     cancel.addActionListener(this);
     new MouseHelp(cancel, ti.getMouseDisplay(), "Cancel file operation", "", "");
     add("North", fileListPanel);
@@ -163,7 +163,7 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
   }
 
     public void actionPerformed(ActionEvent ae) {
-	Button btn = (Button)ae.getSource();
+      JButton btn = (JButton)ae.getSource();
 
       if (btn == load && fname.getText().length() > 0) {
 	formVector(Tools.getFile(datatype, fname.getText()), new Vector());

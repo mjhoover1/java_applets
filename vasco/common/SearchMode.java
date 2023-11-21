@@ -11,7 +11,7 @@ class SearchMode extends Container implements CommonConstants {
 
     SearchMode(int mask) {
 	super();
-	Label l1 = new Label("Search Options - Look for:");
+	JLabel l1 = new JLabel("Search Options - Look for:");
 	l1.setForeground(Color.blue);
 	add(l1);
       m1 = new JCheckBox("Objects completely inside query range");

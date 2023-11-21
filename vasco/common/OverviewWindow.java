@@ -211,8 +211,8 @@ public class OverviewWindow extends JDialog
 
 		JPanel cur = new JPanel();
 		cur.setLayout(new FlowLayout());
-		Label l = new Label("Cursor");
-		l.setAlignment(Label.RIGHT);
+		JLabel l = new JLabel("Cursor");
+		l.setAlignment(JLabel.RIGHT);
 		cur.add(l);
 		position = new TextField(2 * COORDSIZE);
 		position.setEditable(false);
