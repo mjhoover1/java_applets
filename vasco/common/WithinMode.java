@@ -11,7 +11,7 @@ import java.awt.Toolkit;
 
 public class WithinMode extends JDialog implements CommonConstants, ActionListener {
 	JCheckBox point, polygon, rectangle, path, sector;
-	CheckboxGroup cg;
+	ButtonGroup cg;
 	Button ok;
 	TextField dist;
 	JCheckBox blend;
@@ -33,7 +33,7 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 	private void setup(int mask, boolean distanceYes, boolean blend, Container container) {
 		resDist = Double.MAX_VALUE;
 
-		cg = new CheckboxGroup();
+		cg = new ButtonGroup();
 		JLabel l = new JLabel("Query object:");
 		l.setForeground(Color.blue);
 		add(l);
