@@ -24,7 +24,7 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 	protected Button undo; // Button for undoing the last insert or delete operation.
 	protected Button plusGrid, minusGrid; // plusGrid - Button for zooming in the grid, & minusGrid - Button for zooming
 											// out the grid.
-	protected Checkbox gridChb; // Checkbox for toggling the grid visibility.
+	protected JCheckBox gridChb; // Checkbox for toggling the grid visibility.
 	protected Button load, save, clear; // load - Button for loading a data set, save - Button for saving a data set., &
 										// clear - Button for clearing (erasing) the data set.
 	protected int gridLevel; // The current grid level.
@@ -108,7 +108,7 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 		JPanel grd = new JPanel();
 		grd.setLayout(new GridLayout(1, 3));
 		bplayout.setConstraints(grd, butpan);  // Apply constraints to the grd Panel
-		grd.add(gridChb = new Checkbox("Grid", true));
+		grd.add(gridChb = new JCheckBox("Grid", true));
 		rc.setGrid(true);
 		new MouseHelp(gridChb, md, "Show grid", "", "", "Hide grid", "", "");  // Add mouse help for gridChb Checkbox
 		gridChb.addItemListener(this);

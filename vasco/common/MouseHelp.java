@@ -4,6 +4,8 @@ package vasco.common;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
 
+import org.w3c.dom.events.MouseEvent;
+
 /**
  * Class providing mouse-over help functionality for components.
  * When the mouse hovers over a component, help messages are displayed.
@@ -125,10 +127,10 @@ public class MouseHelp extends MouseAdapter implements ItemListener {
         current = front;
 
         // Check if the component is a Checkbox and set item listener
-        if (ckbox instanceof Checkbox) {
-            ((Checkbox) ckbox).addItemListener(this);
+        if (ckbox instanceof JCheckBox) {
+            ((JCheckBox) ckbox).addItemListener(this);
             // Set current help messages based on the state of the Checkbox
-            current = ((Checkbox) ckbox).getState() ? back : front;
+            current = ((JCheckBox) ckbox).getState() ? back : front;
         }
 
         // Set the MouseDisplay and the component

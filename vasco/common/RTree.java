@@ -624,7 +624,7 @@ public class RTree extends SpatialStructure implements ItemListener{
     int minNode, maxNode;
 
     JList vis;
-    Checkbox ov, cov;
+    JCheckBox ov, cov;
 
     VisibleLevels() {
       mask = new boolean[0]; 
@@ -651,7 +651,7 @@ public class RTree extends SpatialStructure implements ItemListener{
       bottom.add("Center", vis);
       JPanel p = new JPanel();
       p.setLayout(new GridLayout(1,2));
-      p.add(ov = new Checkbox("Overlap"));
+      p.add(ov = new JCheckBox("Overlap"));
       new MouseHelp(ov, topInterface.getMouseDisplay(), "Turn overlap calculation on", "", "",
 		    "Turn overlap calculation off", "", "");
       p.add(cov = new Checkbox("Coverage"));

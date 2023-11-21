@@ -10,11 +10,11 @@ import java.awt.Toolkit;
 
 
 public class WithinMode extends JDialog implements CommonConstants, ActionListener {
-	Checkbox point, polygon, rectangle, path, sector;
+	JCheckBox point, polygon, rectangle, path, sector;
 	CheckboxGroup cg;
 	Button ok;
 	TextField dist;
-	Checkbox blend;
+	JCheckBox blend;
 	int mode;
 	double resDist;
 	boolean distanceYes;
@@ -34,14 +34,14 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 		resDist = Double.MAX_VALUE;
 
 		cg = new CheckboxGroup();
-		Label l = new Label("Query object:");
+		JLabel l = new JLabel("Query object:");
 		l.setForeground(Color.blue);
 		add(l);
-		point = new Checkbox("Point", cg, false);
-		rectangle = new Checkbox("Rectangle", cg, false);
-		polygon = new Checkbox("Polygon", cg, false);
-		path = new Checkbox("Path", cg, false);
-		sector = new Checkbox("Sector", cg, false);
+		point = new JCheckBox("Point", cg, false);
+		rectangle = new JCheckBox("Rectangle", cg, false);
+		polygon = new JCheckBox("Polygon", cg, false);
+		path = new JCheckBox("Path", cg, false);
+		sector = new JCheckBox("Sector", cg, false);
 
 		int startComp = getComponentCount();
 		if ((mask & QueryObject.QO_POINT) != 0) {
@@ -75,11 +75,11 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 			add(p);
 		}
 
-		Checkbox c = (Checkbox) (((Container) getComponent(startComp)).getComponent(0));
+		JCheckBox c = (JCheckBox) (((Container) getComponent(startComp)).getComponent(0));
 		// first component below label
 		cg.setSelectedCheckbox(c);
 
-		this.blend = new Checkbox("Blend");
+		this.blend = new JCheckBox("Blend");
 		if (blend) {
 			add(this.blend);
 		}

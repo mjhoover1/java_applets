@@ -3,6 +3,9 @@ package vasco.common;
 
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
+
+import org.w3c.dom.events.MouseEvent;
+
 //import java.applet.*;
 //import java.util.*;
 import java.text.*;
@@ -26,7 +29,7 @@ public class DrawingPanel extends JPanel
 	TextField ul, ur, ll, lr, position;
 	DrawingCanvas can;
 	MouseHelp mh; // help for canvas
-	Checkbox toggleZoom;
+	JCheckBox toggleZoom;
 	Cursor defCur;
 	MouseDisplay mouseDisplay;
 	MouseListener canvasML;
@@ -62,7 +65,7 @@ public class DrawingPanel extends JPanel
 		JPanel hor = new JPanel();
 		hor.setLayout(new GridLayout(1, 3));
 		hor.add(ul = new TextField(COORDSIZE));
-		hor.add(toggleZoom = new Checkbox("Zoom In/Out Mode", false));
+		hor.add(toggleZoom = new JCheckBox("Zoom In/Out Mode", false));
 		new MouseHelp(toggleZoom, mouseDisplay, "Switch to zoom mode", "", "", "Switch to operation mode", "", "");
 		hor.add(ur = new TextField(COORDSIZE));
 		// ur.setAlignment(TextField.RIGHT);

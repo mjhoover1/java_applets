@@ -11,7 +11,7 @@ import java.awt.Toolkit;
 
 public class SplitDialog extends JDialog implements ActionListener, ItemListener, Runnable {
 	GeneralCanvas rcanvas;
-	Checkbox[] splitMethod;
+	JCheckBox[] splitMethod;
 	CheckboxGroup smeth;
 	Button close;
 	Choice opChoice;
@@ -44,7 +44,7 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
 		
 		// Initialize and Add Components:
 		smeth = new CheckboxGroup();
-		splitMethod = new Checkbox[rc.getStructCount()];
+		splitMethod = new JCheckBox[rc.getStructCount()];
 		close = new Button("Close");
 		new MouseHelp(close, md, "Close structure selection window", "", "");
 
@@ -56,7 +56,7 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
 			if (rc.getStructName(j).equalsIgnoreCase(treeType)) {
 				rcanvas.setTree(j, opChoice);
 			}
-			splitMethod[j] = new Checkbox(rc.getStructName(j), smeth, rc.getStructName(j).equalsIgnoreCase(treeType));
+			splitMethod[j] = new JCheckBox(rc.getStructName(j), smeth, rc.getStructName(j).equalsIgnoreCase(treeType));
 			add(splitMethod[j]);
 			splitMethod[j].addItemListener(this);
 		}

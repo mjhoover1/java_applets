@@ -7,17 +7,17 @@ import javax.swing.event.*; // import java.awt.event.*;
 import java.util.*;
 
 class SearchMode extends Container implements CommonConstants {
-    Checkbox m1, m2, m3, m4;
+    JCheckBox m1, m2, m3, m4;
 
     SearchMode(int mask) {
 	super();
 	Label l1 = new Label("Search Options - Look for:");
 	l1.setForeground(Color.blue);
 	add(l1);
-      m1 = new Checkbox("Objects completely inside query range");
-      m2 = new Checkbox("Objects intersecting query range, at least one vertex part of intersection");
-      m3 = new Checkbox("Object intersecting query range, no vertices part of intersection");
-      m4 = new Checkbox("Objects that completely enclose the query range");
+      m1 = new JCheckBox("Objects completely inside query range");
+      m2 = new JCheckBox("Objects intersecting query range, at least one vertex part of intersection");
+      m3 = new JCheckBox("Object intersecting query range, no vertices part of intersection");
+      m4 = new JCheckBox("Objects that completely enclose the query range");
       if ((mask & SEARCHMODE_CONTAINS) != 0) {
 	  JPanel p = new JPanel();
 	  p.setLayout(new BorderLayout());
