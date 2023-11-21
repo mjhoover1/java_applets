@@ -3,6 +3,9 @@ package vasco.common;
 
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
+
+import org.w3c.dom.events.MouseEvent;
+
 //import java.applet.*;
 //import java.util.*;
 import java.text.*;
@@ -15,7 +18,7 @@ import java.text.*;
 /**
  * OverviewWindow class provides a detailed overview window with zoom and scroll functionalities.
  */
-public class OverviewWindow extends Dialog
+public class OverviewWindow extends JDialog
 		implements AdjustmentListener, MouseMotionListener, MouseListener, ComponentListener, ActionListener {
 
 	public static final int OVERVIEW_SIZE = 192;
@@ -30,7 +33,7 @@ public class OverviewWindow extends Dialog
 	Canvas left, right;
 	MouseHelp mh; // help for canvas
 	MouseDisplay mouseDisplay;
-	Button close;
+	JButton close;
 
     /**
      * Inner class representing a canvas with basic setup for the overview window.
@@ -219,7 +222,7 @@ public class OverviewWindow extends Dialog
 		glob.add(cur);
 //    bottm.add("Center", cur);
 
-		close = new Button("Close");
+		close = new JButton("Close");
 		close.addActionListener(this);
 		gbl.setConstraints(close, createConstraints(0, 2, GridBagConstraints.REMAINDER, 1, GridBagConstraints.BOTH));
 		glob.add(close);
