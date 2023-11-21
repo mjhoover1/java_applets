@@ -14,12 +14,12 @@ import java.awt.event.*;
  * CentralMenu is a panel that provides various controls and options for the
  * application.
  */
-public class CentralMenu extends Panel implements ActionListener, ItemListener {
+public class CentralMenu extends JPanel implements ActionListener, ItemListener {
 	protected GeneralCanvas rcanvas; // Reference to the GeneralCanvas used in the application.
 	public Choice operations; // Choice component for selecting operations.
 	protected SplitDialog dlg; // Reference to the SplitDialog used for splitting data structures.
 	protected Button splitbut; // Button for opening the SplitDialog.
-	protected Dialog dialog; // Dialog for displaying color legends.
+	protected JDialog dialog; // Dialog for displaying color legends.
 	protected Button chbut; // Button for opening the color legend dialog.
 	protected Button undo; // Button for undoing the last insert or delete operation.
 	protected Button plusGrid, minusGrid; // plusGrid - Button for zooming in the grid, & minusGrid - Button for zooming
@@ -44,7 +44,7 @@ public class CentralMenu extends Panel implements ActionListener, ItemListener {
 	 * @param overviewButton The Button for showing the zoom window.
 	 * @param md          The MouseDisplay for handling mouse-related actions.
 	 */
-	public CentralMenu(GeneralCanvas rc, String treeMode, Panel indStructP, AppletValidate av, TextArea helpArea,
+	public CentralMenu(GeneralCanvas rc, String treeMode, JPanel indStructP, AppletValidate av, TextArea helpArea,
 			Label topBar, Button overviewButton, MouseDisplay md) {
 		GridBagLayout bplayout; // Initialize the GridBagLayout
 		setLayout(bplayout = new GridBagLayout()); // Set the layout for this panel to GridBagLayout
@@ -62,7 +62,7 @@ public class CentralMenu extends Panel implements ActionListener, ItemListener {
 
 		bplayout.setConstraints(indStructP, butpan); // Apply constraints to the indStructP Panel
 
-		Panel opanel = new Panel();
+		JPanel opanel = new JPanel();
 		opanel.setLayout(new BorderLayout());
 		bplayout.setConstraints(opanel, butpan); // Apply constraints to the opanel Panel
 
@@ -89,7 +89,7 @@ public class CentralMenu extends Panel implements ActionListener, ItemListener {
 		bplayout.setConstraints(chbut, butpan);
 		new MouseHelp(chbut, md, "Open a color legend window", "", ""); // Add mouse help for chbut Button
 
-		Panel pan = new Panel();
+		JPanel pan = new JPanel();
 		pan.setLayout(new GridLayout(1, 3));
 		load = new Button("Load");
 		load.addActionListener(this);

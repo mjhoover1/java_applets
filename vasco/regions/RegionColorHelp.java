@@ -170,7 +170,7 @@ public class RegionColorHelp extends ColorHelp{
       hColor = (Color)hStruct.opColor.elementAt(i);
       hString = (String)hStruct.opText.elementAt(i);
 
-      Panel p = createPanel(hString, hColor);
+      JPanel p = createPanel(hString, hColor);
       add(p);
       gbl.setConstraints(p, cn);
     }
@@ -180,9 +180,9 @@ public class RegionColorHelp extends ColorHelp{
     pack();
   }
 
-  protected Panel createPanel(String text, Color c) {
-    Panel p = new Panel();
-    Panel sub = new Panel();
+  protected JPanel createPanel(String text, Color c) {
+    JPanel p = new JPanel();
+    JPanel sub = new JPanel();
     Label l = new Label("    ");
     l.setBackground(c);
     p.add(l);
