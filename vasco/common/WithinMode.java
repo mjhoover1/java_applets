@@ -7,11 +7,9 @@ import java.awt.event.*;
 //import java.util.*;
 import java.text.*;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 
-public class WithinMode extends Dialog implements CommonConstants, ActionListener {
+public class WithinMode extends JDialog implements CommonConstants, ActionListener {
 	Checkbox point, polygon, rectangle, path, sector;
 	CheckboxGroup cg;
 	Button ok;
@@ -23,12 +21,12 @@ public class WithinMode extends Dialog implements CommonConstants, ActionListene
 	final String initDist = "50";
 
 	public WithinMode(Container c, int mask) {
-		super(new Frame(), "Overlap search", true);
+		super(new JFrame(), "Overlap search", true);
 		setup(mask, false, false, c);
 	}
 
 	public WithinMode(boolean distanceYes) {
-		super(new Frame(), "Rank by distance", true);
+		super(new JFrame(), "Rank by distance", true);
 		setup(~0, distanceYes, true, null);
 	}
 

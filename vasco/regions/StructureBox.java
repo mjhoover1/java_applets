@@ -11,7 +11,7 @@ public class StructureBox extends JDialog implements ActionListener {
   TextArea ta;
 
   public StructureBox(String title, int row, int col){
-    super(new Frame(), title, false);
+    super(new JFrame(), title, false);
     this.row = row;
     this.col = col;
     setLayout(new BorderLayout());
