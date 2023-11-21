@@ -623,7 +623,7 @@ public class RTree extends SpatialStructure implements ItemListener{
     TextField tfMin, tfMax;
     int minNode, maxNode;
 
-    List vis;
+    JList vis;
     Checkbox ov, cov;
 
     VisibleLevels() {
@@ -646,7 +646,7 @@ public class RTree extends SpatialStructure implements ItemListener{
       JPanel bottom = new JPanel();
       bottom.setLayout(new BorderLayout());
       bottom.add("North", new Label(formString("Level", "Overlap", "Coverage")));
-      vis = new List(listSize, true);
+      vis = new JList(listSize, true);
       vis.addItemListener(this);
       bottom.add("Center", vis);
       JPanel p = new JPanel();
