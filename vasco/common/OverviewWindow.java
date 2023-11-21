@@ -28,7 +28,7 @@ public class OverviewWindow extends JDialog
 	Scrollbar sphor, spvert;
 	static final int MAXSCROLL = 512; // make equal to CANSIZE
 	RebuildTree rt;
-	TextField ulx, uly, urx, ury, llx, lly, lrx, lry, position;
+	JTextField ulx, uly, urx, ury, llx, lly, lrx, lry, position;
 	DrawingCanvas can;
 	Canvas left, right;
 	MouseHelp mh; // help for canvas
@@ -214,7 +214,7 @@ public class OverviewWindow extends JDialog
 		JLabel l = new JLabel("Cursor");
 		l.setAlignment(JLabel.RIGHT);
 		cur.add(l);
-		position = new TextField(2 * COORDSIZE);
+		position = new JTextField(2 * COORDSIZE);
 		position.setEditable(false);
 		cur.add(position);
 		gbl.setConstraints(cur,

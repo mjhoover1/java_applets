@@ -620,7 +620,7 @@ public class RTree extends SpatialStructure implements ItemListener{
   class VisibleLevels extends JPanel implements TextListener, ItemListener {
     final int listSize = 5;
     boolean[] mask;
-    TextField tfMin, tfMax;
+    JTextField tfMin, tfMax;
     int minNode, maxNode;
 
     JList vis;
@@ -633,12 +633,12 @@ public class RTree extends SpatialStructure implements ItemListener{
       JPanel top = new JPanel();
       top.setLayout(new GridLayout(1, 4));
       top.add(new JLabel("Min"));
-      tfMin = new TextField(Integer.toString(minNodeLength), 2);
+      tfMin = new JTextField(Integer.toString(minNodeLength), 2);
       new MouseHelp(tfMin, topInterface.getMouseDisplay(), "Set minimum node capacity", "", "");
       tfMin.addTextListener(this);
       top.add(tfMin);
       top.add(new JLabel("Max"));
-      tfMax = new TextField(Integer.toString(maxNodeLength - 1), 2);
+      tfMax = new JTextField(Integer.toString(maxNodeLength - 1), 2);
       new MouseHelp(tfMax, topInterface.getMouseDisplay(), "Set maximum node capacity", "", "");
       tfMax.addTextListener(this);
       top.add(tfMax);
@@ -697,7 +697,7 @@ public class RTree extends SpatialStructure implements ItemListener{
 
     public void textValueChanged(TextEvent te) {
       int nr;
-      TextField tf = (TextField)te.getSource();
+      JTextField tf = (JTextField)te.getSource();
       try {
 	nr = Integer.parseInt(tf.getText());
       } catch (NumberFormatException exc) {

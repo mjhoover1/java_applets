@@ -13,7 +13,7 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 	JCheckBox point, polygon, rectangle, path, sector;
 	ButtonGroup cg;
 	JButton ok;
-	TextField dist;
+	JTextField dist;
 	JCheckBox blend;
 	int mode;
 	double resDist;
@@ -88,7 +88,7 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 		if (distanceYes) {
 			JPanel pn = new JPanel();
 			pn.setLayout(new BorderLayout());
-			dist = new TextField(initDist);
+			dist = new JTextField(initDist);
 			dist.setEditable(true);
 			pn.add("West", new JLabel("Max Distance"));
 			pn.add("East", dist);

@@ -14,7 +14,7 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
 
     class RandomWindow extends JDialog implements TextListener, ActionListener {
   JButton load, merge, cancel;
-	TextField tf;
+	JTextField tf;
 	int number;
 
 	RandomWindow() {
@@ -25,7 +25,7 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
 	    
 	    setLayout(new GridLayout(3,1));
 	    add(new JLabel("Number of objects to generate:"));
-	    tf = new TextField("20");
+	    tf = new JTextField("20");
 	    add(tf);
 	    tf.addTextListener(this);
 
@@ -47,7 +47,7 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
 
 	public void textValueChanged(TextEvent te) {
 	    int nr;
-	    TextField tf = (TextField)te.getSource();
+	    JTextField tf = (JTextField)te.getSource();
 	    try {
 		nr = Integer.parseInt(tf.getText());
 	    } catch (NumberFormatException exc) {
@@ -72,7 +72,7 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
   protected JButton save, load, merge, delete, append;
   protected JButton cancel, clip, random;
   protected java.awt.List imp;
-  protected TextField fname;
+  protected JTextField fname;
   protected String actStr;
   protected String datatype;
   protected String helpmess;
@@ -97,7 +97,7 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
     JPanel fileNamePanel = new JPanel();
     fileNamePanel.setLayout(new BorderLayout());
     fileNamePanel.add("North", new JLabel("Filename:"));
-    fileNamePanel.add("South", fname = new TextField(25));
+    fileNamePanel.add("South", fname = new JTextField(25));
 
     save = new JButton("Save");
     save.addActionListener(this);

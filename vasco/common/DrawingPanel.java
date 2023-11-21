@@ -26,7 +26,7 @@ public class DrawingPanel extends JPanel
 	Scrollbar sphor, spvert;
 	static final int MAXSCROLL = 512; // make equal to CANSIZE
 	RebuildTree rt;
-	TextField ul, ur, ll, lr, position;
+	JTextField ul, ur, ll, lr, position;
 	DrawingCanvas can;
 	MouseHelp mh; // help for canvas
 	JCheckBox toggleZoom;
@@ -64,10 +64,10 @@ public class DrawingPanel extends JPanel
 
 		JPanel hor = new JPanel();
 		hor.setLayout(new GridLayout(1, 3));
-		hor.add(ul = new TextField(COORDSIZE));
+		hor.add(ul = new JTextField(COORDSIZE));
 		hor.add(toggleZoom = new JCheckBox("Zoom In/Out Mode", false));
 		new MouseHelp(toggleZoom, mouseDisplay, "Switch to zoom mode", "", "", "Switch to operation mode", "", "");
-		hor.add(ur = new TextField(COORDSIZE));
+		hor.add(ur = new JTextField(COORDSIZE));
 		// ur.setAlignment(TextField.RIGHT);
 		ul.setEditable(false);
 		ur.setEditable(false);
@@ -87,18 +87,18 @@ public class DrawingPanel extends JPanel
 
 		JPanel bottomCoord = new JPanel();
 		bottomCoord.setLayout(new BorderLayout());
-		bottomCoord.add("West", ll = new TextField(COORDSIZE));
+		bottomCoord.add("West", ll = new JTextField(COORDSIZE));
 
 		JPanel cur = new JPanel();
 		cur.setLayout(new FlowLayout());
 		JLabel l = new JLabel("Cursor");
 		l.setAlignment(JLabel.RIGHT);
 		cur.add(l);
-		position = new TextField(COORDSIZE);
+		position = new JTextField(COORDSIZE);
 		position.setEditable(false);
 		cur.add(position);
 		bottomCoord.add("Center", cur);
-		bottomCoord.add("East", lr = new TextField(COORDSIZE));
+		bottomCoord.add("East", lr = new JTextField(COORDSIZE));
 		// lr.setAlignment(TextField.RIGHT);
 		ll.setEditable(false);
 		lr.setEditable(false);
