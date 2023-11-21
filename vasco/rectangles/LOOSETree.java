@@ -862,7 +862,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 * LOOSEcnode.
 	 */
 	class BinTreeFrame extends JFrame implements ActionListener {
-		ScrollPane sp;
+		JScrollPane sp;
 		JButton close;
 
 		/**
@@ -1006,7 +1006,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 			int height = 30 * (getDepth(cn.BIN[0], 0) + getDepth(cn.BIN[1], 0));
 
 			BinTreeCanvas bt = new BinTreeCanvas(cn, width, height, dt);
-			sp = new ScrollPane();
+			sp = new JScrollPane();
 			sp.setSize(300, 300);
 			add("Center", sp);
 			sp.add(bt);
