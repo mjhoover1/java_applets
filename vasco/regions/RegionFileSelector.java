@@ -71,7 +71,7 @@ class RegionFileSelector extends fileSelector {
   }
 
   public void actionPerformed(ActionEvent ae) {
-    Button btn = (Button)ae.getSource();
+    JButton btn = (JButton)ae.getSource();
 
     if (btn == append && fname.getText().length() > 0) {
       String []s = Tools.getFile(datatype, fname.getText());
