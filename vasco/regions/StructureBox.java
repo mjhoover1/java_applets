@@ -8,14 +8,14 @@ import java.text.*;
 public class StructureBox extends JDialog implements ActionListener {
   int row;
   int col;
-  TextArea ta;
+  JTextArea ta;
 
   public StructureBox(String title, int row, int col){
     super(new JFrame(), title, false);
     this.row = row;
     this.col = col;
     setLayout(new BorderLayout());
-    ta = new TextArea("", row, col, TextArea.SCROLLBARS_BOTH);
+    ta = new JTextArea("", row, col, JTextArea.SCROLLBARS_BOTH);
     ta.setEditable(false);
     add("Center", ta);
     pack(); 

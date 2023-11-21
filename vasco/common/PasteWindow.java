@@ -9,9 +9,9 @@ import java.text.*;
 
 public class PasteWindow extends JDialog implements ActionListener {
     fileSelector fileSel;
-    Button ok;
-    Button cancel;
-    TextArea imp;
+    JButton ok;
+    JButton cancel;
+    JTextArea imp;
     int nrArgs;
 
     public PasteWindow(fileSelector fs, String[] out, String helpLine, int nA, boolean loadMode) {
@@ -19,15 +19,15 @@ public class PasteWindow extends JDialog implements ActionListener {
 	nrArgs = nA;
 	setLayout(new BorderLayout());
 	fileSel = fs;
-	imp = new TextArea(20, 20);
+	imp = new JTextArea(20, 20);
 	for (int i = 0; i < out.length; i++)
 	    imp.append(out[i] + "\n");
 
-	ok = new Button("OK");
+	ok = new JButton("OK");
 	ok.addActionListener(this);
-	cancel = new Button("Cancel");
+	cancel = new JButton("Cancel");
 	cancel.addActionListener(this);
-	TextArea help = new TextArea(helpLine, 2, 20);
+	JTextArea help = new JTextArea(helpLine, 2, 20);
 	help.setEditable(false);
 	add("North", help);
 

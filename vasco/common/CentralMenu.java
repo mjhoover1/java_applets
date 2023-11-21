@@ -29,7 +29,7 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 										// clear - Button for clearing (erasing) the data set.
 	protected int gridLevel; // The current grid level.
 	protected JLabel topBar; // Label for displaying information in the top bar.
-	protected TextArea helpArea; // TextArea for displaying help information.
+	protected JTextArea helpArea; // TextArea for displaying help information.
 
 	/**
 	 * Constructs a CentralMenu panel that provides various user interface elements
@@ -44,7 +44,7 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 	 * @param overviewButton The Button for showing the zoom window.
 	 * @param md          The MouseDisplay for handling mouse-related actions.
 	 */
-	public CentralMenu(GeneralCanvas rc, String treeMode, JPanel indStructP, AppletValidate av, TextArea helpArea,
+	public CentralMenu(GeneralCanvas rc, String treeMode, JPanel indStructP, AppletValidate av, JTextArea helpArea,
 			JLabel topBar, JButton overviewButton, MouseDisplay md) {
 		GridBagLayout bplayout; // Initialize the GridBagLayout
 		setLayout(bplayout = new GridBagLayout()); // Set the layout for this panel to GridBagLayout

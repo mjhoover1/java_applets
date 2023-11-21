@@ -9,9 +9,9 @@ import javax.swing.*; // import java.awt.*;
 public class TopInterface {
 
     // Components in the top interface
-    private Panel specPanel;
+    private JPanel specPanel;
     private MouseDisplay mouseDisplay;
-    private TextArea helpArea;
+    private JTextArea helpArea;
     private Component cursor;
 
     /**
@@ -22,7 +22,7 @@ public class TopInterface {
      * @param helpArea     The text area for displaying help information
      * @param cursor       The cursor component
      */
-    public TopInterface(Panel specPanel, MouseDisplay mouseDisplay, TextArea helpArea, Component cursor) {
+    public TopInterface(Panel specPanel, MouseDisplay mouseDisplay, JTextArea helpArea, Component cursor) {
         this.specPanel = specPanel;
         this.mouseDisplay = mouseDisplay;
         this.helpArea = helpArea;
@@ -34,7 +34,7 @@ public class TopInterface {
      * 
      * @return The special panel
      */
-    public Panel getPanel() {
+    public JPanel getPanel() {
         return specPanel;
     }
 
@@ -52,7 +52,7 @@ public class TopInterface {
      * 
      * @return The help area
      */
-    public TextArea getHelpArea() {
+    public JTextArea getHelpArea() {
         return helpArea;
     }
 

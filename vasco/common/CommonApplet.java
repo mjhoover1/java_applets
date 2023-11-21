@@ -27,7 +27,7 @@ public class CommonApplet extends JApplet implements AppletValidate, ActionListe
     protected TopInterface topInterface;
     protected MouseDisplay mp;
     protected JPanel indStructP;
-    protected TextArea helpArea;
+    protected JTextArea helpArea;
     protected JButton overviewButton;
     protected JDialog overviewDialog;
 
@@ -76,7 +76,7 @@ public class CommonApplet extends JApplet implements AppletValidate, ActionListe
         indStructP = new JPanel();
         indStructP.addContainerListener(new PanelListener(indStructP, this));
         animp = new JPanel();
-        helpArea = new TextArea(5, helpWidth);
+        helpArea = new JTextArea(5, helpWidth);
 
         overviewButton = new JButton("Zoom window");
         overviewButton.addActionListener(this);
