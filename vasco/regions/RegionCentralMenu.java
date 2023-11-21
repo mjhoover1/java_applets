@@ -9,7 +9,7 @@ public class RegionCentralMenu extends CentralMenu{
 
   RegionCanvas regionCanvas;
 
-    public RegionCentralMenu(RegionCanvas rc, String treeMode, Panel indStructP, 
+    public RegionCentralMenu(RegionCanvas rc, String treeMode, JPanel indStructP, 
 		       AppletValidate av, TextArea helpArea, Label topBar,
 		       Button overviewButton, MouseDisplay md) {
       super(rc, treeMode, indStructP, av, helpArea, topBar, overviewButton, md);
