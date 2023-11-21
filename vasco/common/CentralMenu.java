@@ -6,7 +6,7 @@
 package vasco.common;
 
 import javax.swing.*; // import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
 //import java.applet.*;
 //import java.util.*;
 
@@ -105,7 +105,7 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 		pan.add(clear);
 		bplayout.setConstraints(pan, butpan); // Apply constraints to the pan Panel
 
-		Panel grd = new Panel();
+		JPanel grd = new JPanel();
 		grd.setLayout(new GridLayout(1, 3));
 		bplayout.setConstraints(grd, butpan);  // Apply constraints to the grd Panel
 		grd.add(gridChb = new Checkbox("Grid", true));

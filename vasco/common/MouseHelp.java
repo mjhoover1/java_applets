@@ -1,8 +1,8 @@
 /* $Id: MouseHelp.java,v 1.2 2002/09/25 20:55:04 brabec Exp $ */
 package vasco.common;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*; // import java.awt.*;
+import javax.swing.event.*; // import java.awt.event.*;
 
 /**
  * Class providing mouse-over help functionality for components.

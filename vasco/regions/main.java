@@ -1,8 +1,8 @@
 package vasco.regions;
 import vasco.common.*;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*; // import java.awt.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import java.applet.*;
 import java.util.*;  
 import java.io.*;
@@ -50,7 +50,7 @@ public class main extends CommonApplet implements GenericMain {
 					     GridBagConstraints.REMAINDER, 
 					     GridBagConstraints.HORIZONTAL));
  
-    buttonpanel = new Panel();
+    buttonpanel = new JPanel();
 
     GridBagConstraints bp = new GridBagConstraints();
     bp.gridx = GridBagConstraints.RELATIVE;

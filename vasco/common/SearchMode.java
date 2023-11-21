@@ -3,7 +3,7 @@ package vasco.common;
 
 import vasco.drawable.*;
 import javax.swing.*; // import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import java.util.*;
 
 class SearchMode extends Container implements CommonConstants {
@@ -19,25 +19,25 @@ class SearchMode extends Container implements CommonConstants {
       m3 = new Checkbox("Object intersecting query range, no vertices part of intersection");
       m4 = new Checkbox("Objects that completely enclose the query range");
       if ((mask & SEARCHMODE_CONTAINS) != 0) {
-	  Panel p = new Panel();
+	  JPanel p = new JPanel();
 	  p.setLayout(new BorderLayout());
 	  p.add("West", m1);
 	  add(p);
       }
       if ((mask & SEARCHMODE_OVERLAPS) != 0) {
-	  Panel p = new Panel();
+	  JPanel p = new JPanel();
 	  p.setLayout(new BorderLayout());
 	  p.add("West", m2);
 	  add(p);
       }
       if ((mask & SEARCHMODE_CROSSES) != 0) {
-	  Panel p = new Panel();
+	  JPanel p = new JPanel();
 	  p.setLayout(new BorderLayout());
 	  p.add("West", m3);
 	  add(p);
       }
       if ((mask & SEARCHMODE_ISCONTAINED) != 0) {
-	  Panel p = new Panel();
+	  JPanel p = new JPanel();
 	  p.setLayout(new BorderLayout());
 	  p.add("West", m4);
 	  add(p);

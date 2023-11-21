@@ -3,7 +3,7 @@ package vasco.rectangles;
 /* $Id: RectangleCanvas.java,v 1.3 2007/10/28 15:38:19 jagan Exp $ */
 import vasco.common.*;
 import javax.swing.*; // import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import java.util.*;
 import vasco.drawable.*;
 
@@ -28,7 +28,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	 * @param animp    Animation panel.
 	 * @param ti       Top-level interface.
 	 */
-	public RectangleCanvas(DRectangle r, DrawingTarget dt, DrawingTarget overview, Panel animp, TopInterface ti) {
+	public RectangleCanvas(DRectangle r, DrawingTarget dt, DrawingTarget overview, JPanel animp, TopInterface ti) {
 		super(r, dt, overview, animp, ti);
 		pstrs = new RectangleStructure[7];
 

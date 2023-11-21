@@ -1,8 +1,8 @@
 /* $Id: PanelListener.java,v 1.1.1.1 2002/09/25 05:48:35 brabec Exp $ */
 package vasco.common;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*; // import java.awt.*;
+import javax.swing.event.*; // import java.awt.event.*;
 //import java.applet.*;
 //import java.util.*;
 
@@ -15,7 +15,7 @@ import java.awt.event.*;
 public class PanelListener implements ContainerListener {
 
     // The Panel to be dynamically resized
-    Panel tovalid;
+    JPanel tovalid;
 
     // Reference to the AppletValidate instance
     AppletValidate appl;
@@ -27,7 +27,7 @@ public class PanelListener implements ContainerListener {
      * @param p The Panel to be dynamically resized.
      * @param a The AppletValidate instance.
      */
-    public PanelListener(Panel p, AppletValidate a) {
+    public PanelListener(JPanel p, AppletValidate a) {
         tovalid = p;
         appl = a;
     }

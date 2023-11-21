@@ -1,13 +1,13 @@
 /* $Id: PasteWindow.java,v 1.1.1.1 2002/09/25 05:48:36 brabec Exp $ */
 package vasco.common;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*; // import java.awt.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import java.applet.*;
 import java.util.*;
 import java.text.*;
 
-public class PasteWindow extends Dialog implements ActionListener {
+public class PasteWindow extends JDialog implements ActionListener {
     fileSelector fileSel;
     Button ok;
     Button cancel;
@@ -15,7 +15,7 @@ public class PasteWindow extends Dialog implements ActionListener {
     int nrArgs;
 
     public PasteWindow(fileSelector fs, String[] out, String helpLine, int nA, boolean loadMode) {
-	super(new Frame(), "Clipboard", true);
+	super(new JFrame(), "Clipboard", true);
 	nrArgs = nA;
 	setLayout(new BorderLayout());
 	fileSel = fs;
@@ -32,7 +32,7 @@ public class PasteWindow extends Dialog implements ActionListener {
 	add("North", help);
 
 	add("Center", imp);
-	Panel p = new Panel();
+	JPanel p = new JPanel();
 	p.setLayout(new GridLayout(1, 2));
 	p.add(ok);
 	if (loadMode)

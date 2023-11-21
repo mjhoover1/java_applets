@@ -3,14 +3,14 @@ package vasco.common;
 
 import javax.swing.*; // import java.awt.*;
 import java.applet.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import java.net.*;
 
 /**
  * Represents a switch panel for different applet demonstrations in a spatial
  * data structure context.
  */
-public class appletSwitch extends Panel implements ItemListener {
+public class appletSwitch extends JPanel implements ItemListener {
 	// Constants representing different types of applets
 	public final static int POINTS = 0;
 	public final static int LINES = 1;

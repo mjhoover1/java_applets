@@ -6,12 +6,10 @@
 package vasco.common;
 
 import javax.swing.*; // import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
-public class SplitDialog extends Dialog implements ActionListener, ItemListener, Runnable {
+public class SplitDialog extends JDialog implements ActionListener, ItemListener, Runnable {
 	GeneralCanvas rcanvas;
 	Checkbox[] splitMethod;
 	CheckboxGroup smeth;
@@ -32,7 +30,7 @@ public class SplitDialog extends Dialog implements ActionListener, ItemListener,
      * @param md       The MouseDisplay for handling mouse-related actions.
      */
 	public SplitDialog(GeneralCanvas rc, Choice c, String treeType, Label topBar, AppletValidate av, MouseDisplay md) {
-		super(new Frame(), "Data Structures", false); // The dialog is created with a new Frame as its parent and a title. It's also set as non-modal.
+		super(new JFrame(), "Data Structures", false); // The dialog is created with a new Frame as its parent and a title. It's also set as non-modal.
 		
 		// Initialize the variables like topBar, av, opChoice, rcanvas, etc.
 		this.topBar = topBar;

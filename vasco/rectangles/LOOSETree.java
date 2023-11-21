@@ -9,7 +9,7 @@ package vasco.rectangles;
 import vasco.common.*;
 import java.util.*;
 import javax.swing.*; // import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import vasco.drawable.*;
 
 public class LOOSETree extends RectangleStructure implements MaxDecompIface, LoosenessFactorIface {
@@ -861,7 +861,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 * Inner class representing a frame for displaying the binary tree of
 	 * LOOSEcnode.
 	 */
-	class BinTreeFrame extends Frame implements ActionListener {
+	class BinTreeFrame extends JFrame implements ActionListener {
 		ScrollPane sp;
 		Button close;
 

@@ -1,6 +1,6 @@
 package vasco.regions;
 import javax.swing.*; // import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import java.applet.*;
 import java.util.*;
 import java.text.*;
@@ -9,7 +9,7 @@ public class InfoBox extends JDialog implements ActionListener {
   Button ok;
 
   public InfoBox(String text) {
-    super(new Frame(), "Message", true);
+    super(new JFrame(), "Message", true);
     setLayout(new BorderLayout());
     add("North", new Label(text));
     ok = new Button("OK");

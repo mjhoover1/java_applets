@@ -1,9 +1,9 @@
 /* $Id: MaxDecomp.java,v 1.1.1.1 2002/09/25 05:48:35 brabec Exp $ */
 package vasco.common;
 
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 //import java.util.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
 
 /**
  * MaxDecomp class allows setting the maximum decomposition depth through a graphical user interface.
@@ -26,7 +26,7 @@ public class MaxDecomp implements ItemListener {
 	public MaxDecomp(TopInterface ti, int maxValue, MaxDecompIface th) {
 		pstr = th;
 
-		Panel maxD = new Panel();
+		JPanel maxD = new JPanel();
 		maxD.setLayout(new BorderLayout());
 		maxD.add("West", new Label("Max Decomposition"));
 		Choice maxDChoice = new Choice();

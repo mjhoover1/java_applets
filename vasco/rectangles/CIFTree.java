@@ -4,7 +4,7 @@ package vasco.rectangles;
 import vasco.common.*;
 import java.util.*;
 import javax.swing.*; // import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import vasco.drawable.*;
 
 /**
@@ -585,7 +585,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 * binary trees within the CIF tree structure. It includes interactive elements
 	 * to visualize and navigate through the binary tree representations.
 	 */
-	class BinTreeFrame extends Frame implements ActionListener {
+	class BinTreeFrame extends JFrame implements ActionListener {
 		// Implementation of the frame for displaying binary trees
 		ScrollPane sp;
 		Button close;

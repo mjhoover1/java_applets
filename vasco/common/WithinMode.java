@@ -3,7 +3,7 @@ package vasco.common;
 
 //import vasco.drawable.*;
 import javax.swing.*; // import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
 //import java.util.*;
 import java.text.*;
 import java.awt.Toolkit;
@@ -45,31 +45,31 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 
 		int startComp = getComponentCount();
 		if ((mask & QueryObject.QO_POINT) != 0) {
-			Panel p = new Panel();
+			JPanel p = new JPanel();
 			p.setLayout(new BorderLayout());
 			p.add("West", point);
 			add(p);
 		}
 		if ((mask & QueryObject.QO_RECTANGLE) != 0) {
-			Panel p = new Panel();
+			JPanel p = new JPanel();
 			p.setLayout(new BorderLayout());
 			p.add("West", rectangle);
 			add(p);
 		}
 		if ((mask & QueryObject.QO_POLYGON) != 0) {
-			Panel p = new Panel();
+			JPanel p = new JPanel();
 			p.setLayout(new BorderLayout());
 			p.add("West", polygon);
 			add(p);
 		}
 		if ((mask & QueryObject.QO_PATH) != 0) {
-			Panel p = new Panel();
+			JPanel p = new JPanel();
 			p.setLayout(new BorderLayout());
 			p.add("West", path);
 			add(p);
 		}
 		if ((mask & QueryObject.QO_SECTOR) != 0) {
-			Panel p = new Panel();
+			JPanel p = new JPanel();
 			p.setLayout(new BorderLayout());
 			p.add("West", sector);
 			add(p);
@@ -86,7 +86,7 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 
 		this.distanceYes = distanceYes;
 		if (distanceYes) {
-			Panel pn = new Panel();
+			JPanel pn = new JPanel();
 			pn.setLayout(new BorderLayout());
 			dist = new TextField(initDist);
 			dist.setEditable(true);

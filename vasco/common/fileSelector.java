@@ -1,8 +1,8 @@
 /* $Id: fileSelector.java,v 1.2 2002/09/25 20:55:08 brabec Exp $ */
 package vasco.common;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*; // import java.awt.*;
+import javax.swing.event.*; // import java.awt.event.*;
 //import java.applet.*;
 import java.util.*;
 import java.text.*;
@@ -10,15 +10,15 @@ import java.io.*;
 import java.net.*;
 import java.lang.*;
 
-public abstract class fileSelector extends Dialog implements ActionListener, ItemListener {
+public abstract class fileSelector extends JDialog implements ActionListener, ItemListener {
 
-    class RandomWindow extends Dialog implements TextListener, ActionListener {
+    class RandomWindow extends JDialog implements TextListener, ActionListener {
 	Button load, merge, cancel;
 	TextField tf;
 	int number;
 
 	RandomWindow() {
-	    super(new Frame(), true);
+	    super(new JFrame(), true);
 	    load = new Button("Load");
 	    merge = new Button("Merge");
 	    cancel = new Button("Cancel");
@@ -30,7 +30,7 @@ public abstract class fileSelector extends Dialog implements ActionListener, Ite
 	    tf.addTextListener(this);
 
 	    number = 20;
-	    Panel buts = new Panel();
+	    JPanel buts = new JPanel();
 	    buts.setLayout(new GridLayout(1,3));
 	    buts.add(load);
 	    buts.add(merge);
@@ -80,7 +80,7 @@ public abstract class fileSelector extends Dialog implements ActionListener, Ite
 
 
   public fileSelector(FileIface rc, String dtype, String hm, String act, TopInterface ti) { // action = { SAVE | LOAD }
-    super(new Frame(), act.compareTo("SAVE") == 0 ? "Save" : "Load", true);
+    super(new JFrame(), act.compareTo("SAVE") == 0 ? "Save" : "Load", true);
     actStr = act;
     topInterface = ti;
     setLayout(new BorderLayout());
@@ -88,13 +88,13 @@ public abstract class fileSelector extends Dialog implements ActionListener, Ite
     datatype = dtype;
     helpmess = hm;
 
-    Panel fileListPanel = new Panel();
+    JPanel fileListPanel = new JPanel();
     fileListPanel.setLayout(new BorderLayout());
     fileListPanel.add("North", new Label("Existing files:"));
     fileListPanel.add("South", imp = new fileList(datatype));
     imp.addItemListener(this);
 
-    Panel fileNamePanel = new Panel();
+    JPanel fileNamePanel = new JPanel();
     fileNamePanel.setLayout(new BorderLayout());
     fileNamePanel.add("North", new Label("Filename:"));
     fileNamePanel.add("South", fname = new TextField(25));
@@ -128,7 +128,7 @@ public abstract class fileSelector extends Dialog implements ActionListener, Ite
     new MouseHelp(cancel, ti.getMouseDisplay(), "Cancel file operation", "", "");
     add("North", fileListPanel);
     add("Center", fileNamePanel);
-    Panel p = new Panel();
+    JPanel p = new JPanel();
     if (act.compareTo("SAVE") == 0) {
       p.add(save);
       p.add(append);

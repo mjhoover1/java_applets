@@ -3,8 +3,8 @@ package vasco.lines;
 import vasco.common.*;
 import vasco.drawable.*;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*; // import java.awt.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import java.util.*;
 
 // ------------- P Canvas -------------------
@@ -49,7 +49,7 @@ public class LineCanvas extends GenericCanvas implements FileIface,
   LineStructure[] pstrs;
   public LineStructure pstruct;
   
-  public LineCanvas(DRectangle can, DrawingTarget dt, DrawingTarget over, Panel animp, TopInterface ti) {
+  public LineCanvas(DRectangle can, DrawingTarget dt, DrawingTarget over, JPanel animp, TopInterface ti) {
     super(can, dt, over, animp, ti);
     pstrs = new LineStructure[6];
 

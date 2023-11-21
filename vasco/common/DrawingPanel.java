@@ -1,8 +1,8 @@
 /* $Id: DrawingPanel.java,v 1.1.1.1 2002/09/25 05:48:35 brabec Exp $ */
 package vasco.common;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*; // import java.awt.*;
+import javax.swing.event.*; // import java.awt.event.*;
 //import java.applet.*;
 //import java.util.*;
 import java.text.*;
@@ -15,7 +15,7 @@ import java.text.*;
 /**
  * A panel for drawing graphics with zooming and panning capabilities.
  */
-public class DrawingPanel extends Panel
+public class DrawingPanel extends JPanel
 		implements AdjustmentListener, MouseMotionListener, MouseListener, ItemListener {
 
 	Insets insets;
@@ -56,10 +56,10 @@ public class DrawingPanel extends Panel
 		zoomStep = 1;
 		setLayout(new BorderLayout());
 
-		Panel glob = new Panel();
+		JPanel glob = new JPanel();
 		glob.setLayout(new BorderLayout());
 
-		Panel hor = new Panel();
+		JPanel hor = new JPanel();
 		hor.setLayout(new GridLayout(1, 3));
 		hor.add(ul = new TextField(COORDSIZE));
 		hor.add(toggleZoom = new Checkbox("Zoom In/Out Mode", false));
@@ -82,11 +82,11 @@ public class DrawingPanel extends Panel
 		sphor.addAdjustmentListener(this);
 		add("Center", glob);
 
-		Panel bottomCoord = new Panel();
+		JPanel bottomCoord = new JPanel();
 		bottomCoord.setLayout(new BorderLayout());
 		bottomCoord.add("West", ll = new TextField(COORDSIZE));
 
-		Panel cur = new Panel();
+		JPanel cur = new JPanel();
 		cur.setLayout(new FlowLayout());
 		Label l = new Label("Cursor");
 		l.setAlignment(Label.RIGHT);

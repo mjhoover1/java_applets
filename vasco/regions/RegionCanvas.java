@@ -4,7 +4,7 @@ import vasco.common.*;
 import vasco.drawable.*;
 
 import javax.swing.*; // import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import java.util.*;
 
 /*
@@ -56,7 +56,7 @@ public class RegionCanvas extends GenericCanvas
   private Choice sChoice = null;
 
   public RegionCanvas(DRectangle can, DrawingTarget dt, DrawingTarget over, 
-		    Panel animp, TopInterface ti){//, CentralMenu centralmenu) {
+                      JPanel animp, TopInterface ti){//, CentralMenu centralmenu) {
     /* initialize the canvas */
     super(can, dt, over, animp, ti);
 

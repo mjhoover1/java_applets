@@ -4,8 +4,8 @@
  */
 package vasco.common;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*; // import java.awt.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import java.applet.*;
 import java.io.*;
 
@@ -21,19 +21,19 @@ public class CommonApplet extends Applet implements AppletValidate, ActionListen
     protected final int helpWidth = 20;
 
     // Components used in the applet
-    protected Panel buttonpanel;
+    protected JPanel buttonpanel;
     protected CentralMenu centralmenu;
     protected Label topBar;
     protected TopInterface topInterface;
     protected MouseDisplay mp;
-    protected Panel indStructP;
+    protected JPanel indStructP;
     protected TextArea helpArea;
     protected Button overviewButton;
-    protected Dialog overviewDialog;
+    protected JDialog overviewDialog;
 
     // Tree type, panels, and canvases
     protected String treeType;
-    protected Panel animp;
+    protected JPanel animp;
     protected DrawingCanvas can;
     protected DrawingCanvas overviewCanvas;
 
@@ -73,9 +73,9 @@ public class CommonApplet extends Applet implements AppletValidate, ActionListen
             treeType = "PM2Quadtree";
         }
 
-        indStructP = new Panel();
+        indStructP = new JPanel();
         indStructP.addContainerListener(new PanelListener(indStructP, this));
-        animp = new Panel();
+        animp = new JPanel();
         helpArea = new TextArea(5, helpWidth);
 
         overviewButton = new Button("Zoom window");

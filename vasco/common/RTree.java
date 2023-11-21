@@ -3,7 +3,8 @@ package vasco.common;
 
 import vasco.drawable.*;
 import javax.swing.*; // import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
+import java.util.List;
 import java.util.Vector;
 
 public class RTree extends SpatialStructure implements ItemListener{
@@ -616,7 +617,7 @@ public class RTree extends SpatialStructure implements ItemListener{
 
   // ------------------------  RTREE -------------------------------
 
-  class VisibleLevels extends Panel implements TextListener, ItemListener {
+  class VisibleLevels extends JPanel implements TextListener, ItemListener {
     final int listSize = 5;
     boolean[] mask;
     TextField tfMin, tfMax;
@@ -629,7 +630,7 @@ public class RTree extends SpatialStructure implements ItemListener{
       mask = new boolean[0]; 
       setLayout(new BorderLayout());
 
-      Panel top = new Panel();
+      JPanel top = new JPanel();
       top.setLayout(new GridLayout(1, 4));
       top.add(new Label("Min"));
       tfMin = new TextField(Integer.toString(minNodeLength), 2);
@@ -642,13 +643,13 @@ public class RTree extends SpatialStructure implements ItemListener{
       tfMax.addTextListener(this);
       top.add(tfMax);
 
-      Panel bottom = new Panel();
+      JPanel bottom = new JPanel();
       bottom.setLayout(new BorderLayout());
       bottom.add("North", new Label(formString("Level", "Overlap", "Coverage")));
       vis = new List(listSize, true);
       vis.addItemListener(this);
       bottom.add("Center", vis);
-      Panel p = new Panel();
+      JPanel p = new JPanel();
       p.setLayout(new GridLayout(1,2));
       p.add(ov = new Checkbox("Overlap"));
       new MouseHelp(ov, topInterface.getMouseDisplay(), "Turn overlap calculation on", "", "",

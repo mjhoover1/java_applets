@@ -1,8 +1,8 @@
 /* $Id: Bucket.java,v 1.1.1.1 2002/09/25 05:48:35 brabec Exp $ */
 package vasco.common;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*; // import java.awt.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import java.util.*;
 
 public class Bucket implements TextListener {
@@ -11,7 +11,7 @@ public class Bucket implements TextListener {
   public Bucket(TopInterface ti, String lab, BucketIface b) {
     bi = b;
 
-    Panel buck = new Panel();
+    JPanel buck = new JPanel();
     buck.setLayout(new BorderLayout());
     buck.add("West", new Label(lab));
     TextField bsize = new TextField(Integer.toString(bi.getBucket()), 2);

@@ -2,10 +2,10 @@
 package vasco.common;
 
 import javax.swing.*; // import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import java.util.*;
 
-public class ColorHelp extends Dialog implements ActionListener {
+public class ColorHelp extends JDialog implements ActionListener {
   public static int POINT_APPLET = 0;
   public static int LINE_APPLET = 1;
   public static int RECTANGLE_APPLET = 2;
@@ -101,11 +101,11 @@ public class ColorHelp extends Dialog implements ActionListener {
   protected Button close;
   protected String objectString;
   public ColorHelp(){
-    super(new Frame(), false);
+    super(new JFrame(), false);
   }
 
   public ColorHelp(String opType, int obj_nr) {
-    super(new Frame(), false);
+    super(new JFrame(), false);
     int legIndex = -1;
     for (int i = 0; i < help.length; i++)
 	if (help[i].opName.equals(opType)) {
@@ -134,7 +134,7 @@ public class ColorHelp extends Dialog implements ActionListener {
     for (int i = 0; i < help[legIndex].opColor.length; i++) {
       if (help[legIndex].opColor[i] == Color.white && obj_nr != RTREE_APPLET && opType.equals("Nearest"))
 	continue;
-      Panel p = createPanel(( (help[legIndex].opColor[i] == Color.orange && 
+      JPanel p = createPanel(( (help[legIndex].opColor[i] == Color.orange && 
 			       opType.equals("Insert") && 
 			       obj_nr == LINE_APPLET)?
 			      lineInsert : help[legIndex].opText[i]), 
@@ -147,9 +147,9 @@ public class ColorHelp extends Dialog implements ActionListener {
     pack();
   }
 
-  protected Panel createPanel(String text, Color c) {
-    Panel p = new Panel();
-    Panel sub = new Panel();
+  protected JPanel createPanel(String text, Color c) {
+    JPanel p = new JPanel();
+    JPanel sub = new JPanel();
     Label l = new Label("    ");
     l.setBackground(c);
     p.add(l);

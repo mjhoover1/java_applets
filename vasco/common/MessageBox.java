@@ -1,17 +1,17 @@
 /* $Id: MessageBox.java,v 1.1.1.1 2002/09/25 05:48:36 brabec Exp $ */
 package vasco.common;
 
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*; // import java.awt.*;
+import javax.swing.event.*; // import java.awt.event.*;
 import java.applet.*;
 import java.util.*;
 import java.text.*;
 
-public class MessageBox extends Dialog implements ActionListener {
+public class MessageBox extends JDialog implements ActionListener {
   Button ok;
 
   MessageBox(String text) {
-    super(new Frame(), "Message", true);
+    super(new JFrame(), "Message", true);
     setLayout(new BorderLayout());
     add("North", new Label(text));
     ok = new Button("OK");

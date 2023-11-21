@@ -2,7 +2,7 @@
 package vasco.common;
 
 import javax.swing.*; // import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*; // import java.awt.event.*;
 //import java.applet.*;
 //import java.util.*;
 import java.text.*;
@@ -143,7 +143,7 @@ public class OverviewWindow extends Dialog
      * @param mouseDisplay A MouseDisplay instance for displaying mouse-related information.
      */
 	public OverviewWindow(DrawingCanvas dc, RebuildTree reb, MouseDisplay mouseDisplay) {
-		super(new Frame(), "Magnifying glass");
+		super(new JFrame(), "Magnifying glass");
 		// setSize(150,150);
 		final int COORDSIZE = 7;
 		can = dc;
@@ -170,7 +170,7 @@ public class OverviewWindow extends Dialog
 		left = new LeftCanvas();
 		right = new RightCanvas();
 
-		Panel dcan = new Panel();
+		JPanel dcan = new JPanel();
 		dcan.setLayout(new BorderLayout());
 
 		sphor = new Scrollbar(Scrollbar.HORIZONTAL, 0, OVERVIEW_SIZE, 0, MAXSCROLL);
@@ -206,7 +206,7 @@ public class OverviewWindow extends Dialog
 		 * bottm.add("North", bottomCoor);
 		 */
 
-		Panel cur = new Panel();
+		JPanel cur = new JPanel();
 		cur.setLayout(new FlowLayout());
 		Label l = new Label("Cursor");
 		l.setAlignment(Label.RIGHT);
