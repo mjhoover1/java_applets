@@ -1,6 +1,9 @@
 /* $Id: YellowBlock.java,v 1.1.1.1 2002/09/25 05:48:36 brabec Exp $ */
 package vasco.common;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+
 import javax.swing.*; // import java.awt.*;
 
 public class YellowBlock extends DRectangle implements GenElement {
