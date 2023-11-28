@@ -4,7 +4,12 @@
  */
 package vasco.common;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.*; // import java.awt.*;
@@ -97,12 +102,15 @@ public class MouseDisplay extends JPanel {
         return true;
     }
 
+
     /**
      * Paints the graphical representation of mouse events.
      * 
      * @param mdG The Graphics object for painting
      */
-    public void paint(Graphics mdG) {
+    @Override
+    protected void paintComponent(Graphics mdG) {
+        super.paintComponent(mdG);
         FontMetrics fm = mdG.getFontMetrics();
         Dimension dim = getSize();
         mdG.setColor(Color.black);
@@ -119,4 +127,27 @@ public class MouseDisplay extends JPanel {
             mdG.drawString(rightBut, dim.width / 2 + im.getWidth(this) / 2,
                     dim.height - im.getHeight(this) / 2 + fm.getHeight());
     }
+
+    /**
+     * Paints the graphical representation of mouse events.
+     * 
+     * @param mdG The Graphics object for painting
+     */
+    // public void paint(Graphics mdG) {
+    //     FontMetrics fm = mdG.getFontMetrics();
+    //     Dimension dim = getSize();
+    //     mdG.setColor(Color.black);
+    //     mdG.drawImage(im, dim.width / 2 - im.getWidth(this) / 2, dim.height - im.getHeight(this), this);
+    //     mdG.drawString(b1, dim.width / 2 - im.getWidth(this) / 2 - fm.stringWidth(b1),
+    //             dim.height - im.getHeight(this) / 2);
+    //     mdG.drawString(b2, dim.width / 2 - fm.stringWidth(b2) / 2, dim.height - im.getHeight(this));
+    //     mdG.drawString(b3, dim.width / 2 + im.getWidth(this) / 2, dim.height - im.getHeight(this) / 2);
+    //     mdG.setColor(Color.blue);
+    //     if (b2.length() > 0)
+    //         mdG.drawString(middleBut, dim.width / 2 - fm.stringWidth(middleBut) / 2,
+    //                 dim.height - im.getHeight(this) - fm.getHeight());
+    //     if (b3.length() > 0)
+    //         mdG.drawString(rightBut, dim.width / 2 + im.getWidth(this) / 2,
+    //                 dim.height - im.getHeight(this) / 2 + fm.getHeight());
+    // }
 }
