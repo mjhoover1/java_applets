@@ -6,8 +6,11 @@ import vasco.drawable.*;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
 
-import org.w3c.dom.events.MouseEvent;
-
+import java.awt.event.MouseEvent;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.InputEvent;
+import java.awt.event.ItemListener;
 import java.util.*;
 
 // ------------- P Canvas -------------------
@@ -311,18 +314,21 @@ public class LineCanvas extends GenericCanvas implements FileIface,
 	}
     }
 
-    public void setTree(int i, JComboBox ops) {
-        String op = ops.getSelectedItem();
-        pstruct = pstrs[i];
-        ops.removeAll();
-        pstruct.reInit(ops);
-        
-        try {
-          ops.select(op);
-        } catch(Exception e) {};
-        setHelp();
-        rebuild();
-      }
+    public void setTree(int i, JComboBox<String> ops) {
+		String op = (String) ops.getSelectedItem();
+		pstruct = pstrs[i];
+		ops.removeAllItems();
+		pstruct.reInit(ops);
+	
+		try {
+			ops.setSelectedItem(op);
+		} catch (Exception e) {
+			// Handle the exception appropriately
+			e.printStackTrace();
+		}
+		setHelp();
+		rebuild();
+	}
 
   public void rebuild() {
     pstruct.Clear();

@@ -3,6 +3,9 @@ package vasco.lines;
 import vasco.common.*;
 import vasco.drawable.*;
 import javax.swing.*; // import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.util.*;
 
 public abstract class GenericLine extends LineStructure implements MaxDecompIface {

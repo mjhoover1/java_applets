@@ -558,7 +558,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	/* --------------- operations on structures ------------------- */
 
 	// Abstract method to set a tree based on a structure and operation choice
-	public abstract void setTree(int str, JComboBox opChoice);
+	public abstract void setTree(int str, JComboBox<String> opChoice);
 
 	// Method to set the wait time
 	void setWaitTime(int w) {
