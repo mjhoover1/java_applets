@@ -1,7 +1,16 @@
 /* $Id: DrawingCanvas.java,v 1.4 2007/10/28 15:38:13 jagan Exp $ */
 package vasco.common;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image; // May need to remove if Swing replacement
+import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 
 import javax.swing.*; // import java.awt.*;
 
@@ -58,15 +67,24 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 
     // Redraw the canvas
     public void redraw() {
-        paint(getGraphics());
+        repaint(); // Use repaint() instead of paint() paint(getGraphics());
     }
 
     // Paint method to draw on the canvas
-    public void paint(Graphics g) {
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         if (g == null)
             return;
         g.drawImage(i, 0, 0, this);
     }
+
+    // // Paint method to draw on the canvas
+    // public void paint(Graphics g) {
+    //     if (g == null)
+    //         return;
+    //     g.drawImage(i, 0, 0, this);
+    // }
 
     // Get the current view rectangle
     public Rectangle getView() {

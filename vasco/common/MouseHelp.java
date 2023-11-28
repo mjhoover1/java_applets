@@ -1,10 +1,16 @@
 /* $Id: MouseHelp.java,v 1.2 2002/09/25 20:55:04 brabec Exp $ */
 package vasco.common;
 
+import java.awt.event.InputEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
 
 import org.w3c.dom.events.MouseEvent;
+
 
 /**
  * Class providing mouse-over help functionality for components.
@@ -15,7 +21,7 @@ import org.w3c.dom.events.MouseEvent;
 public class MouseHelp extends MouseAdapter implements ItemListener {
     String b1, b2, b3; // Strings to hold help messages
     MouseDisplay md;   // MouseDisplay object to show help messages
-    Component c;       // Component to which this mouse help is attached
+    JComponent c;       // Component to which this mouse help is attached
     String[] front, back, current; // Arrays to hold front and back messages
     int buttonMask;    // Mouse button mask for identifying the button press
 
@@ -37,8 +43,8 @@ public class MouseHelp extends MouseAdapter implements ItemListener {
      * @param b2 Second help message.
      * @param b3 Third help message.
      */
-	public MouseHelp(Component c, MouseDisplay md, String b1, String b2, String b3) {
-		this(c, md, b1, b2, b3, InputEvent.BUTTON1_MASK);
+	public MouseHelp(JComponent c, MouseDisplay md, String b1, String b2, String b3) {
+		this(c, md, b1, b2, b3, InputEvent.BUTTON1_DOWN_MASK); // InputEvent.BUTTON1_MASK);
 	}
 
     /**
@@ -54,7 +60,7 @@ public class MouseHelp extends MouseAdapter implements ItemListener {
      * @param c2    Second back message.
      * @param c3    Third back message.
      */
-	public MouseHelp(Component ckbox, MouseDisplay md, String b1, String b2, String b3, String c1, String c2,
+	public MouseHelp(JComponent ckbox, MouseDisplay md, String b1, String b2, String b3, String c1, String c2,
 			String c3) {
 		this(ckbox, md, b1, b2, b3, c1, c2, c3, InputEvent.BUTTON1_MASK);
 	}
@@ -75,7 +81,7 @@ public class MouseHelp extends MouseAdapter implements ItemListener {
      *             This mask helps in determining for which mouse actions (like left click, right click) 
      *             the help should be shown.
      */
-	public MouseHelp(Component c, MouseDisplay md, String b1, String b2, String b3, int mask) {
+	public MouseHelp(JComponent c, MouseDisplay md, String b1, String b2, String b3, int mask) {
         this(); // Call the default constructor to initialize the front and back arrays
 
         // Assign help messages to the front array. These are the messages that will be displayed
@@ -109,7 +115,7 @@ public class MouseHelp extends MouseAdapter implements ItemListener {
      * @param c3    Third help message for the alternate (back) state.
      * @param mask  Mouse button mask to identify the specific mouse button events of interest.
      */
-	public MouseHelp(Component ckbox, MouseDisplay md, String b1, String b2, String b3, String c1, String c2, String c3,
+	public MouseHelp(JComponent ckbox, MouseDisplay md, String b1, String b2, String b3, String c1, String c2, String c3,
 			int mask) {
         this(); // Call the default constructor to initialize arrays
 
@@ -130,7 +136,7 @@ public class MouseHelp extends MouseAdapter implements ItemListener {
         if (ckbox instanceof JCheckBox) {
             ((JCheckBox) ckbox).addItemListener(this);
             // Set current help messages based on the state of the Checkbox
-            current = ((JCheckBox) ckbox).getState() ? back : front;
+            current = ((JCheckBox) ckbox).isSelected() ? back : front; // current = ((JCheckBox) ckbox).getState() ? back : front;
         }
 
         // Set the MouseDisplay and the component
@@ -214,8 +220,12 @@ public class MouseHelp extends MouseAdapter implements ItemListener {
 	}
 
     // Handles state changes for components like checkboxes
-	public void itemStateChanged(ItemEvent ie) {
-		current = ((JCheckBox) c).getState() ? back : front;
-		show();
-	}
+    public void itemStateChanged(ItemEvent ie) {
+        current = ((JCheckBox) c).isSelected() ? back : front;
+        show();
+    }
+	// public void itemStateChanged(ItemEvent ie) {
+	// 	current = ((JCheckBox) c).getState() ? back : front;
+	// 	show();
+	// }
 }
