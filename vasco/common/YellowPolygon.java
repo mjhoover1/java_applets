@@ -3,6 +3,8 @@ package vasco.common;
 /* $Id: YellowPolygon.java,v 1.1 2007/10/29 01:19:51 jagan Exp $ */
 import vasco.common.*;
 import javax.swing.*; // import java.awt.*;
+
+import java.awt.Color;
 import java.util.*;
 
 public class YellowPolygon implements GenElement {
