@@ -2,7 +2,11 @@
 package vasco.common;
 
 import vasco.drawable.*;
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Point;
+
+import javax.swing.*; // import java.awt.*;
 
 /**
  * Class representing a drawable point in a 2D space. This class is used to
