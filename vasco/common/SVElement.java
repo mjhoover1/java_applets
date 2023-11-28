@@ -2,6 +2,8 @@
 package vasco.common;
 
 import javax.swing.*; // import java.awt.*;
+
+import java.awt.Color;
 import java.util.*;
 
 public class SVElement extends AnimElement {
