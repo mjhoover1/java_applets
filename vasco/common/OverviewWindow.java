@@ -4,8 +4,25 @@ package vasco.common;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
 
-import org.w3c.dom.events.MouseEvent;
-
+import java.awt.event.MouseEvent;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 //import java.applet.*;
 //import java.util.*;
 import java.text.*;
@@ -25,12 +42,12 @@ public class OverviewWindow extends JDialog
 	// public static final int OVERVIEW_SIZE = 512;
 
 	int zoomStep;
-	Scrollbar sphor, spvert;
+	JScrollBar sphor, spvert;
 	static final int MAXSCROLL = 512; // make equal to CANSIZE
 	RebuildTree rt;
 	JTextField ulx, uly, urx, ury, llx, lly, lrx, lry, position;
 	DrawingCanvas can;
-	Canvas left, right;
+	JPanel left, right;
 	MouseHelp mh; // help for canvas
 	MouseDisplay mouseDisplay;
 	JButton close;
@@ -176,8 +193,8 @@ public class OverviewWindow extends JDialog
 		JPanel dcan = new JPanel();
 		dcan.setLayout(new BorderLayout());
 
-		sphor = new Scrollbar(Scrollbar.HORIZONTAL, 0, OVERVIEW_SIZE, 0, MAXSCROLL);
-		spvert = new Scrollbar(Scrollbar.VERTICAL, 0, OVERVIEW_SIZE, 0, MAXSCROLL);
+		sphor = new JScrollBar(JScrollBar.HORIZONTAL, 0, OVERVIEW_SIZE, 0, MAXSCROLL);
+		spvert = new JScrollBar(JScrollBar.VERTICAL, 0, OVERVIEW_SIZE, 0, MAXSCROLL);
 		spvert.addAdjustmentListener(this);
 		sphor.addAdjustmentListener(this);
 
@@ -212,7 +229,7 @@ public class OverviewWindow extends JDialog
 		JPanel cur = new JPanel();
 		cur.setLayout(new FlowLayout());
 		JLabel l = new JLabel("Cursor");
-		l.setAlignment(JLabel.RIGHT);
+		l.setAlignmentX(JLabel.RIGHT); // l.setAlignment(JLabel.RIGHT);
 		cur.add(l);
 		position = new JTextField(2 * COORDSIZE);
 		position.setEditable(false);
@@ -405,7 +422,7 @@ public class OverviewWindow extends JDialog
      * @param ae AdjustmentEvent that triggered the change.
      */
 	public void adjustmentValueChanged(AdjustmentEvent ae) {
-		Scrollbar s = (Scrollbar) ae.getSource();
+		JScrollBar s = (JScrollBar) ae.getSource();
 		if (s == sphor) {
 			can.moveX(s.getValue() / (MAXSCROLL - OVERVIEW_SIZE / (float) zoomStep));
 		} else {
