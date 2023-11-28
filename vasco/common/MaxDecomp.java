@@ -1,6 +1,10 @@
 /* $Id: MaxDecomp.java,v 1.1.1.1 2002/09/25 05:48:35 brabec Exp $ */
 package vasco.common;
 
+import java.awt.BorderLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.*; // import java.awt.*;
 //import java.util.*;
 import javax.swing.event.*; // import java.awt.event.*;
@@ -29,12 +33,12 @@ public class MaxDecomp implements ItemListener {
 		JPanel maxD = new JPanel();
 		maxD.setLayout(new BorderLayout());
 		maxD.add("West", new JLabel("Max Decomposition"));
-		JComboBox maxDChoice = new JComboBox();
+        JComboBox<String> maxDChoice = new JComboBox<>();
 		new MouseHelp(maxDChoice, ti.getMouseDisplay(), "Set maximum decomposition depth", "", "");
 		maxDChoice.addItem("Off");
 		for (int i = 1; i <= maxValue; i++)
 			maxDChoice.addItem(String.valueOf(i));
-		maxDChoice.select(pstr.getMaxDecomp() == OFF ? 0 : pstr.getMaxDecomp());
+		maxDChoice.setSelectedIndex(pstr.getMaxDecomp() == OFF ? 0 : pstr.getMaxDecomp()); //maxDChoice.select(pstr.getMaxDecomp() == OFF ? 0 : pstr.getMaxDecomp());
 		maxD.add("East", maxDChoice);
 		maxDChoice.addItemListener(this);
 		ti.getPanel().add(maxD);
@@ -46,7 +50,7 @@ public class MaxDecomp implements ItemListener {
      * @param ie The ItemEvent object representing the item state change event.
      */
 	public void itemStateChanged(ItemEvent ie) {
-		JComboBox ch = (JComboBox) ie.getSource();
+		JComboBox<String> ch = (JComboBox<String>) ie.getSource();
 		if (ch.getSelectedIndex() == 0)
 			pstr.setMaxDecomp(OFF);
 		else
