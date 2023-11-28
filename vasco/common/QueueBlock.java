@@ -1,6 +1,9 @@
 /* $Id: QueueBlock.java,v 1.1.1.1 2002/09/25 05:48:35 brabec Exp $ */
 package vasco.common;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+
 import javax.swing.*; // import java.awt.*;
 
 public class QueueBlock extends DRectangle implements GenElement {
@@ -28,7 +31,7 @@ public class QueueBlock extends DRectangle implements GenElement {
   public void drawElementFirst(DrawingTarget g) {
     g.setColor(Color.green);
     g.drawRect(x, y, width, height);
-  };
+  }
 
   public void drawElementNext(DrawingTarget g) {};
 

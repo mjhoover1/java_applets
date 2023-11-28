@@ -3,6 +3,10 @@ package vasco.common;
 
 import vasco.drawable.*;
 import javax.swing.*; // import java.awt.*;
+
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.*;
 
 /**
@@ -38,7 +42,7 @@ public abstract class SpatialStructure implements CommonConstants {
 	 *
 	 * @param ops The choice component for available operations.
 	 */
-	public void reInit(JComboBox ops) {
+	public void reInit(JComboBox<String> ops) {
 		Clear();
 		topInterface.getPanel().removeAll();
 		availOps = ops;
@@ -237,7 +241,7 @@ public abstract class SpatialStructure implements CommonConstants {
 	public String getCurrentOperation() {
 		if (availOps == null)
 			return null;
-		return availOps.getSelectedItem();
+		return (String) availOps.getSelectedItem(); // Casted to String
 	}
 
 	/**

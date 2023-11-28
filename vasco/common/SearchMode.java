@@ -4,6 +4,8 @@ package vasco.common;
 import vasco.drawable.*;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
+
+import java.awt.Color;
 import java.util.*;
 
 class SearchMode extends Container implements CommonConstants {

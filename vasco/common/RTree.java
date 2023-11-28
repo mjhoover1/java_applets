@@ -4,6 +4,14 @@ package vasco.common;
 import vasco.drawable.*;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.Rectangle;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+// import java.awt.event.TextListener;
 import java.util.List;
 import java.util.Vector;
 
@@ -617,7 +625,7 @@ public class RTree extends SpatialStructure implements ItemListener{
 
   // ------------------------  RTREE -------------------------------
 
-  class VisibleLevels extends JPanel implements TextListener, ItemListener {
+  class VisibleLevels extends JPanel implements DocumentListener, ItemListener {
     final int listSize = 5;
     boolean[] mask;
     JTextField tfMin, tfMax;
@@ -635,20 +643,27 @@ public class RTree extends SpatialStructure implements ItemListener{
       top.add(new JLabel("Min"));
       tfMin = new JTextField(Integer.toString(minNodeLength), 2);
       new MouseHelp(tfMin, topInterface.getMouseDisplay(), "Set minimum node capacity", "", "");
-      tfMin.addTextListener(this);
+      tfMin.getDocument().addDocumentListener(this); // Changed from tfMin.addTextListener(this)
       top.add(tfMin);
       top.add(new JLabel("Max"));
       tfMax = new JTextField(Integer.toString(maxNodeLength - 1), 2);
       new MouseHelp(tfMax, topInterface.getMouseDisplay(), "Set maximum node capacity", "", "");
-      tfMax.addTextListener(this);
+      tfMax.getDocument().addDocumentListener(this); // Changed from tfMax.addTextListener(this)
       top.add(tfMax);
 
       JPanel bottom = new JPanel();
       bottom.setLayout(new BorderLayout());
       bottom.add("North", new JLabel(formString("Level", "Overlap", "Coverage")));
-      vis = new JList(listSize, true);
-      vis.addItemListener(this);
-      bottom.add("Center", vis);
+      vis.setVisibleRowCount(listSize); // Use setVisibleRowCount to set the number of visible rows
+      vis.addListSelectionListener(e -> {
+        int selectedIndex = vis.getSelectedIndex();
+        if (selectedIndex != -1) {
+            lastOn = selectedIndex;
+            mask[lastOn] = true;
+            reb.redraw();
+        }
+      });     
+      bottom.add("Center", new JScrollPane(vis)); // Wrap the JList in a JScrollPane
       JPanel p = new JPanel();
       p.setLayout(new GridLayout(1,2));
       p.add(ov = new JCheckBox("Overlap"));
@@ -665,59 +680,78 @@ public class RTree extends SpatialStructure implements ItemListener{
       add("South", bottom);
     }
 
-    public void itemStateChanged(ItemEvent ie) {
-      if (ie.getSource() == ov || ie.getSource() == cov) {
-	adjustList(vis.getItemCount());
-	return;
-      }
-
-      if (ie.getSource() == vis) {
-	switch(ie.getStateChange()){
-	case ItemEvent.SELECTED:
-	  lastOn = ((Integer)ie.getItem()).intValue();
-	  mask[lastOn] = true;
-	  reb.redraw();
-	  break;
-	case ItemEvent.DESELECTED:
-	  mask[((Integer)ie.getItem()).intValue()] = false;
-	  reb.redraw();
-	  break;
-	}
-      }
-      
-      if (mask.length > 0 && mask[mask.length - 1] == false && 
-	  (getCurrentOperation().equals("Delete") || getCurrentOperation().equals("Move"))) {  
-	  // getSource == vis || availOps
-	mask[mask.length - 1] = true;
-	vis.select(mask.length - 1);
-	reb.redraw();
-      }
+    // Implement DocumentListener methods (changed from TextListener)
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        textValueChanged(e);
     }
 
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        textValueChanged(e);
+    }
 
-    public void textValueChanged(TextEvent te) {
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        textValueChanged(e);
+    }
+
+    public void itemStateChanged(ItemEvent ie) {
+        if (ie.getSource() == ov || ie.getSource() == cov) {
+            adjustList(vis.getModel().getSize());
+            return;
+        }
+
+        if (ie.getSource() == vis) {
+            switch (ie.getStateChange()) {
+                case ItemEvent.SELECTED:
+                    lastOn = vis.getSelectedIndex();
+                    mask[lastOn] = true;
+                    reb.redraw();
+                    break;
+                case ItemEvent.DESELECTED:
+                    mask[vis.getSelectedIndex()] = false;
+                    reb.redraw();
+                    break;
+            }
+        }
+
+        if (mask.length > 0 && !mask[mask.length - 1] &&
+                (getCurrentOperation().equals("Delete") || getCurrentOperation().equals("Move"))) {
+            mask[mask.length - 1] = true;
+            vis.setSelectedIndex(mask.length - 1);
+            reb.redraw();
+        }
+    }
+
+    public void textValueChanged(DocumentEvent de) {
       int nr;
-      JTextField tf = (JTextField)te.getSource();
+      JTextField tf;
+      if (de.getDocument() == tfMin.getDocument()) {
+          tf = tfMin;
+      } else {
+          tf = tfMax;
+      }
       try {
-	nr = Integer.parseInt(tf.getText());
+          nr = Integer.parseInt(tf.getText());
       } catch (NumberFormatException exc) {
-	nr = -1;
+          nr = -1;
       }
 
       if (tf == tfMin) {
-	if (nr < 1 || nr > 99 || nr > Math.ceil(maxNodeLength/2.0)) 
-	  tf.setText(Integer.toString(minNodeLength));
-	else if (minNodeLength != nr) {
-	    minNodeLength = nr;
-	    reb.rebuild();
-	}
+          if (nr < 1 || nr > 99 || nr > Math.ceil(maxNodeLength / 2.0))
+              tf.setText(Integer.toString(minNodeLength));
+          else if (minNodeLength != nr) {
+              minNodeLength = nr;
+              reb.rebuild();
+          }
       } else {
-	if (nr < 1 || nr > 99 || minNodeLength > Math.ceil(nr/2.0)) 
-	  tf.setText(Integer.toString(maxNodeLength - 1));
-	else if (maxNodeLength != nr + 1) {
-	    maxNodeLength = nr + 1;
-	    reb.rebuild();
-	}
+          if (nr < 1 || nr > 99 || minNodeLength > Math.ceil(nr / 2.0))
+              tf.setText(Integer.toString(maxNodeLength - 1));
+          else if (maxNodeLength != nr + 1) {
+              maxNodeLength = nr + 1;
+              reb.rebuild();
+          }
       }
     }
 
@@ -742,36 +776,35 @@ public class RTree extends SpatialStructure implements ItemListener{
       boolean newMask[] = new boolean[depth];
 
       if (newMask.length > mask.length) {
-	System.arraycopy(mask, 0, newMask, newMask.length - mask.length, mask.length);
-	for (int i = 0; i < newMask.length - mask.length; i++)
-	  newMask[i] = false;
-      } else 
-	System.arraycopy(mask, mask.length - newMask.length, newMask, 0, depth);
+          System.arraycopy(mask, 0, newMask, newMask.length - mask.length, mask.length);
+          for (int i = 0; i < newMask.length - mask.length; i++)
+              newMask[i] = false;
+      } else
+          System.arraycopy(mask, mask.length - newMask.length, newMask, 0, depth);
 
       if (mask.length == 0 && depth > 0)
-	newMask[depth - 1] = true;
+          newMask[depth - 1] = true;
 
       mask = newMask;
 
       overlap = new double[depth];
       coverage = new double[depth];
-      if (cov.getState() || ov.getState())
-	calcCoverage(overlap, coverage);
+      if (cov.isSelected() || ov.isSelected()) // Changed from cov.getState() and ov.getState()
+          calcCoverage(overlap, coverage);
       else
-	for (int i = 0; i < depth; i++)
-	  coverage[i] = overlap[i] = -1;
+          for (int i = 0; i < depth; i++)
+              coverage[i] = overlap[i] = -1;
 
-      if (vis.getItemCount() > 0)
-	vis.removeAll();
+      DefaultListModel<String> listModel = (DefaultListModel<String>) vis.getModel();
+      listModel.clear();
       for (int i = 0; i < depth; i++) {
-	vis.addItem(formString(i, ov.getState() ? overlap[i] : -1, 
-			       cov.getState() ? coverage[i] : -1));
-	if (mask[i])
-	  vis.select(i);
+          listModel.addElement(formString(i, ov.isSelected() ? overlap[i] : -1, // Changed from ov.getState()
+                  cov.isSelected() ? coverage[i] : -1)); // Changed from cov.getState()
+          if (mask[i])
+              vis.addSelectionInterval(i, i);
       }
-    }
-
   }
+}
 
   final static String[] structs = {"Exhaustive",
 				   "Quadratic",
@@ -794,7 +827,7 @@ public class RTree extends SpatialStructure implements ItemListener{
   double[] overlap;
   int lastOn;
   VisibleLevels vl;
-  JComboBox splitMeth;
+  JComboBox<String> splitMeth; // Added generic type argument
 
 
   public RTree(DRectangle can, int minnl, int maxnl, TopInterface p, RebuildTree r) {
@@ -804,26 +837,22 @@ public class RTree extends SpatialStructure implements ItemListener{
     splitMode = structs[0];
     initSpaceFillingCurves();
     vl = new VisibleLevels();
-    splitMeth = new JComboBox();
-    for (int i = 0; i < structs.length; i++)
-      splitMeth.add(structs[i]);
+    splitMeth = new JComboBox<>(structs); // Use the array directly for initialization
     splitMeth.addItemListener(this);
   }
 
-  RTree(DRectangle can, String mode, int minnl, int maxnl, TopInterface p, RebuildTree r) {
+  public RTree(DRectangle can, String mode, int minnl, int maxnl, TopInterface p, RebuildTree r) {
     super(can, p, r);
     minNodeLength = minnl;
     maxNodeLength = maxnl + 1;
     splitMode = mode;
     initSpaceFillingCurves();
     vl = new VisibleLevels();
-    splitMeth = new JComboBox();
-    for (int i = 0; i < structs.length; i++)
-      splitMeth.add(structs[i]);
+    splitMeth = new JComboBox<>(structs); // Use the array directly for initialization
     splitMeth.addItemListener(this);
   }
 
-  public void reInit(JComboBox ops) {
+  public void reInit(JComboBox<String> ops) { // Added generic type argument
     super.reInit(ops);
     Clear();
     coverage = new double[0];
@@ -833,12 +862,12 @@ public class RTree extends SpatialStructure implements ItemListener{
     topInterface.getPanel().add(splitMeth);
     topInterface.getPanel().add(vl);
 
-    ops.removeItemListener(vl);  // hack to make sure there will be just one ItemListener on Choice
+    ops.removeItemListener(vl);
     ops.addItemListener(vl);
   }
 
   public void itemStateChanged(ItemEvent ie) {
-    splitMode = splitMeth.getSelectedItem();
+    splitMode = (String) splitMeth.getSelectedItem(); // Added casting to String
     reb.rebuild();
   }
 
