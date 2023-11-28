@@ -1,5 +1,10 @@
 package vasco.points.randy;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 // import java.awt.BorderLayout;
 // import java.awt.Choice;
 // import java.awt.Color;
@@ -258,9 +263,9 @@ return delaunay.NearestFirst(p);
 				    maxDChoice.addItem("No");
 				    maxDChoice.addItem("Yes");
 				    if(showDelaunay)
-				    	maxDChoice.select(1);//No is default
+						maxDChoice.setSelectedIndex(1); 
 				    else
-				    	maxDChoice.select(0);//No is default
+						maxDChoice.setSelectedIndex(0);  //No is default
 				    maxD.add("East", maxDChoice);
 				    maxDChoice.addItemListener(this);
 				    ti.getPanel().add(maxD);
@@ -286,9 +291,9 @@ return delaunay.NearestFirst(p);
 				    maxDChoice.addItem("No");
 				    maxDChoice.addItem("Yes");
 				    if(showPM2)
-				    	maxDChoice.select(1);//No is default
+						maxDChoice.setSelectedIndex(1); //No is default
 				    else
-				    	maxDChoice.select(0);
+						maxDChoice.setSelectedIndex(0); 
 				    maxD.add("East", maxDChoice);
 				    maxDChoice.addItemListener(this);
 				    ti.getPanel().add(maxD);
