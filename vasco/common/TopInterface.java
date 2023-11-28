@@ -4,6 +4,7 @@
  */
 package vasco.common;
 
+import java.awt.Component;
 import java.awt.Cursor;
 
 import javax.swing.*; // import java.awt.*;
@@ -24,11 +25,11 @@ public class TopInterface {
      * @param helpArea     The text area for displaying help information
      * @param cursor       The cursor component
      */
-    public TopInterface(JPanel specPanel, MouseDisplay mouseDisplay, JTextArea helpArea, JComponent cursor) {
+    public TopInterface(JPanel specPanel, MouseDisplay mouseDisplay, JTextArea helpArea, Component cursor) { // Added Component
         this.specPanel = specPanel;
         this.mouseDisplay = mouseDisplay;
         this.helpArea = helpArea;
-        this.cursor = cursor;
+        this.cursor = (JComponent) cursor;
     }
 
     /**
