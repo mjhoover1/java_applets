@@ -1,7 +1,9 @@
 /* $Id: DPolygon.java,v 1.1.1.1 2002/09/25 05:48:35 brabec Exp $ */
 package vasco.common;
 
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
+
+import java.awt.Color;
 import java.util.*;
 import vasco.drawable.*;
 //============================================================================
