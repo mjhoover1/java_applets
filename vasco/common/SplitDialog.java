@@ -7,14 +7,23 @@ package vasco.common;
 
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
+
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class SplitDialog extends JDialog implements ActionListener, ItemListener, Runnable {
 	GeneralCanvas rcanvas;
 	JCheckBox[] splitMethod;
 	ButtonGroup smeth;
 	JButton close;
-	JComboBox opChoice;
+    JComboBox<String> opChoice; // Added generic type argument
 	boolean visible;
 	JLabel topBar;
 	AppletValidate av;
@@ -29,7 +38,7 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
      * @param av       The AppletValidate object for validation.
      * @param md       The MouseDisplay for handling mouse-related actions.
      */
-	public SplitDialog(GeneralCanvas rc, JComboBox c, String treeType, JLabel topBar, AppletValidate av, MouseDisplay md) {
+	public SplitDialog(GeneralCanvas rc, JComboBox<String> c, String treeType, JLabel topBar, AppletValidate av, MouseDisplay md) {
 		super(new JFrame(), "Data Structures", false); // The dialog is created with a new Frame as its parent and a title. It's also set as non-modal.
 		
 		// Initialize the variables like topBar, av, opChoice, rcanvas, etc.
@@ -53,10 +62,9 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
 		
 		rcanvas.setTree(0, opChoice); // if no switch present
 		for (int j = 0; j < rc.getStructCount(); j++) {
-			if (rc.getStructName(j).equalsIgnoreCase(treeType)) {
-				rcanvas.setTree(j, opChoice);
-			}
-			splitMethod[j] = new JCheckBox(rc.getStructName(j), smeth, rc.getStructName(j).equalsIgnoreCase(treeType));
+			boolean isSelected = rc.getStructName(j).equalsIgnoreCase(treeType);
+			splitMethod[j] = new JCheckBox(rc.getStructName(j), isSelected);
+			smeth.add(splitMethod[j]); // Add the checkbox to the button group
 			add(splitMethod[j]);
 			splitMethod[j].addItemListener(this);
 		}
@@ -117,7 +125,7 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
 	 */
 	public void show() {
 		visible = true;
-		super.show();
+		super.setVisible(true); // super.show();
 	}
 
 	/**
