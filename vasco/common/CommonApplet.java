@@ -5,9 +5,17 @@
 package vasco.common;
 
 import javax.swing.*; // import java.awt.*;
-import javax.swing.event.*; // import java.awt.event.*;
+import javax.imageio.ImageIO;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+// import javax.swing.event.*; // import java.awt.event.*;
 // import java.applet.*;
+import java.awt.event.ActionListener;
 import java.io.*;
+// import java.awt.Rectangle;
 
 public class CommonApplet extends JApplet implements AppletValidate, ActionListener {
 
@@ -22,7 +30,7 @@ public class CommonApplet extends JApplet implements AppletValidate, ActionListe
 
     // Components used in the applet
     protected JPanel buttonpanel;
-    protected CentralMenu centralmenu;
+    protected CentralMenu centralMenu;
     protected JLabel topBar;
     protected TopInterface topInterface;
     protected MouseDisplay mp;
@@ -53,18 +61,22 @@ public class CommonApplet extends JApplet implements AppletValidate, ActionListe
     public void init() {
         Tools.currentApplet = this;
         String imageFileName = "mousehelp.gif";
-        InputStream jpgStream = CommonApplet.class.getResourceAsStream(imageFileName);
+        // InputStream jpgStream = CommonApplet.class.getResourceAsStream(imageFileName);
 
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        Image mouseIm = null;
+        // Toolkit tk = Toolkit.getDefaultToolkit();
+        ImageIcon mouseImIcon = null; // Image mouseIm = null;
+
         try {
-            byte imageBytes[] = new byte[jpgStream.available()];
-            jpgStream.read(imageBytes);
-            mouseIm = tk.createImage(imageBytes);
+            mouseImIcon = new ImageIcon(CommonApplet.class.getResource(imageFileName));
+
+            // byte imageBytes[] = new byte[jpgStream.available()];
+            // jpgStream.read(imageBytes);
+            // mouseIm = tk.createImage(imageBytes);
         } catch (Exception e) {
             System.err.println("Error loading image <" + imageFileName + "> " + e.toString());
         }
 
+        Image mouseIm = mouseImIcon.getImage();
         mp = new MouseDisplay(getSize().width, mouseIm);
 
         try {
@@ -74,7 +86,7 @@ public class CommonApplet extends JApplet implements AppletValidate, ActionListe
         }
 
         indStructP = new JPanel();
-        indStructP.addContainerListener(new PanelListener(indStructP, this));
+        // indStructP.addComponentListener(new PanelListener(indStructP, this)); // indStructP.addContainerListener(new PanelListener(indStructP, this));
         animp = new JPanel();
         helpArea = new JTextArea(5, helpWidth);
 
@@ -98,11 +110,12 @@ public class CommonApplet extends JApplet implements AppletValidate, ActionListe
     public void actionPerformed(ActionEvent ae) {
         Object c = ae.getSource();
         if (c == overviewButton) {
-            overviewDialog.show();
+            overviewDialog.setVisible(true); // Replace .show() with .setVisible(true)  overviewDialog.show();
         }
     }
 
     // Start method for the applet
+    @Override
     public void start() {
         super.start();
         validate();
@@ -110,7 +123,10 @@ public class CommonApplet extends JApplet implements AppletValidate, ActionListe
 
     // Stop method for the applet
     public void stop() {
-        centralmenu.dispose();
+        //centralmenu.dispose();
+        if (centralMenu != null) {
+            centralMenu.dispose();
+        }
         super.stop();
     }
 

@@ -16,7 +16,7 @@ public class Tools {
 	static String localServer = "localhost";
 	static int portNumber = 1602;
 
-	static public Applet currentApplet = null; // keeps track of the current running applet to easily switch between them
+	static public JApplet currentApplet = null; // keeps track of the current running applet to easily switch between them
 
     /**
      * Displays an error message using a message box.
