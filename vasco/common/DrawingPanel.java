@@ -4,8 +4,25 @@ package vasco.common;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
 
-import org.w3c.dom.events.MouseEvent;
+import java.awt.event.MouseEvent;
 
+// import org.w3c.dom.events.MouseEvent;
+
+import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.InputEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 //import java.applet.*;
 //import java.util.*;
 import java.text.*;
@@ -23,7 +40,8 @@ public class DrawingPanel extends JPanel
 
 	Insets insets;
 	int zoomStep;
-	Scrollbar sphor, spvert;
+	JScrollBar sphor, spvert;
+	// JScrollPane sphor, spvert;
 	static final int MAXSCROLL = 512; // make equal to CANSIZE
 	RebuildTree rt;
 	JTextField ul, ur, ll, lr, position;
@@ -75,8 +93,8 @@ public class DrawingPanel extends JPanel
 
 		toggleZoom.addItemListener(this);
 
-		sphor = new Scrollbar(Scrollbar.HORIZONTAL, 0, MAXSCROLL, 0, MAXSCROLL);
-		spvert = new Scrollbar(Scrollbar.VERTICAL, 0, MAXSCROLL, 0, MAXSCROLL);
+		sphor = new JScrollBar(JScrollBar.HORIZONTAL, 0, MAXSCROLL, 0, MAXSCROLL);
+		spvert = new JScrollBar(JScrollBar.VERTICAL, 0, MAXSCROLL, 0, MAXSCROLL);
 		glob.add("East", spvert);
 		glob.add("South", sphor);
 
@@ -92,7 +110,7 @@ public class DrawingPanel extends JPanel
 		JPanel cur = new JPanel();
 		cur.setLayout(new FlowLayout());
 		JLabel l = new JLabel("Cursor");
-		l.setAlignment(JLabel.RIGHT);
+		l.setAlignmentX(JLabel.RIGHT_ALIGNMENT); // l.setAlignment(JLabel.RIGHT);
 		cur.add(l);
 		position = new JTextField(COORDSIZE);
 		position.setEditable(false);
@@ -106,6 +124,7 @@ public class DrawingPanel extends JPanel
 		add("South", bottomCoord);
 
 		new MouseHelp(can, mouseDisplay, "", "Zoom In", "Zoom out", InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
+		// new MouseHelp(can, mouseDisplay, "", "Zoom In", "Zoom out", InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
 		can.addMouseListener(this);
 		can.addMouseMotionListener(this); // cursor position
 		can.addMouseListener(canvasML);
@@ -293,10 +312,17 @@ public class DrawingPanel extends JPanel
      * 
      * @param me The MouseEvent object containing details about the mouse entered event.
      */
-	public void mouseEntered(MouseEvent me) {
-		if (toggleZoom.getState())
-			setHairCursor();
+
+	 public void mouseEntered(MouseEvent me) {
+		if (toggleZoom.isSelected()) { // Use isSelected instead of getState() in Swing
+			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+		}
 	}
+
+	// public void mouseEntered(MouseEvent me) {
+	// 	if (toggleZoom.getState())
+	// 		setHairCursor();
+	// }
 
     /**
      * Handles mouse exited events. Resets the cursor to the default cursor.
@@ -336,7 +362,7 @@ public class DrawingPanel extends JPanel
      * @param ae The adjustment event from the scrollbar.
      */
 	public void adjustmentValueChanged(AdjustmentEvent ae) {
-		Scrollbar s = (Scrollbar) ae.getSource();
+		JScrollBar s = (JScrollBar) ae.getSource();
 		if (s == sphor) {
 			can.moveX(s.getValue() / (MAXSCROLL - MAXSCROLL / (float) zoomStep));
 		} else {
