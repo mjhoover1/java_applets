@@ -4,6 +4,7 @@ package vasco.common;
 import javax.swing.*; // import java.awt.*;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.image.*;
