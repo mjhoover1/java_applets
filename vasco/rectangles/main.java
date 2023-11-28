@@ -6,6 +6,9 @@ package vasco.rectangles;
  */
 import vasco.common.*;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
 import javax.swing.*; // import java.awt.*;
 
 public class main extends CommonApplet implements GenericMain {
@@ -87,9 +90,9 @@ public class main extends CommonApplet implements GenericMain {
         buttonpanel.add(new appletSwitch(appletSwitch.RECTANGLES, this, topInterface));
 
         // Create a CentralMenu instance and add it to the button panel
-        centralmenu = new CentralMenu(drawcanvas, treeType, indStructP, this, helpArea, topBar, overviewButton, mp);
-        buttonpanel.add(centralmenu);
-        bplayout.setConstraints(centralmenu, butpan);
+        centralMenu = new CentralMenu(drawcanvas, treeType, indStructP, this, helpArea, topBar, overviewButton, mp);
+        buttonpanel.add(centralMenu);
+        bplayout.setConstraints(centralMenu, butpan);
         
         // Add animp to the button panel
         buttonpanel.add(animp);

@@ -1,7 +1,10 @@
 package vasco.rectangles;
 /* $Id: GreenRect.java,v 1.1.1.1 2002/09/25 05:48:37 brabec Exp $ */
 import vasco.common.*;
-import java.awt.*;
+
+import java.awt.Color;
+
+import javax.swing.*; // import java.awt.*;
 
 public class GreenRect extends DRectangle implements GenElement {
 

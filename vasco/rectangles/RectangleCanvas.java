@@ -5,8 +5,11 @@ import vasco.common.*;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
 
-import org.w3c.dom.events.MouseEvent;
-
+import java.awt.event.MouseEvent;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.InputEvent;
+import java.awt.event.ItemListener;
 import java.util.*;
 import vasco.drawable.*;
 
@@ -404,8 +407,8 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	 * @param i   The index.
 	 * @param ops The choice of operations.
 	 */
-	public void setTree(int i, JComboBox ops) {
-		String op = ops.getSelectedItem();
+	public void setTree(int i, JComboBox<String> ops) {
+		String op = (String) ops.getSelectedItem();
 		pstruct = pstrs[i];
 //		System.out.println("pstruct " + pstruct);
 //		System.out.println("ops " + ops);
@@ -415,7 +418,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 //		System.out.println("After count " + ops.getItemCount());
 //		System.out.println("pstruct " + pstruct);
 		try {
-			ops.select(op);
+				ops.setSelectedItem(op);
 		} catch (Exception e) {
 		}
 

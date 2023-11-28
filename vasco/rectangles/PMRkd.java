@@ -9,6 +9,9 @@ package vasco.rectangles;
  */
 import vasco.common.*;
 import javax.swing.*; // import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.util.*;
 import vasco.drawable.*;
 

@@ -3,6 +3,9 @@ package vasco.rectangles;
 /* $Id: RectangleRTree.java,v 1.1.1.1 2002/09/25 05:48:37 brabec Exp $ */
 import vasco.common.*;
 import vasco.drawable.*;
+
+import java.awt.Rectangle;
+
 import javax.swing.*; // import java.awt.*;
 
 /**

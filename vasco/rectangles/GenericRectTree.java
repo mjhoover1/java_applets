@@ -2,6 +2,9 @@ package vasco.rectangles;
 
 /* $Id: GenericRectTree.java,v 1.1.1.1 2002/09/25 05:48:37 brabec Exp $ */
 import vasco.common.*;
+
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.util.*;
 import javax.swing.*; // import java.awt.*;
 import vasco.drawable.*;

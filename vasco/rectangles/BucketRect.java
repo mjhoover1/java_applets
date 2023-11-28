@@ -2,6 +2,9 @@ package vasco.rectangles;
 
 /* $Id: BucketRect.java,v 1.2 2004/11/20 22:38:48 brabec Exp $ */
 import vasco.common.*;
+
+import java.awt.Rectangle;
+
 import javax.swing.*; // import java.awt.*;
 
 /**

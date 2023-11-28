@@ -298,7 +298,7 @@ public class PointCanvas extends GenericCanvas implements FileIface {
     	rebuild();
     }
     
-  public void setTree(int i, JComboBox ops) {
+  public void setTree(int i, JComboBox<String> ops) {
 	setHandler(null);
 		String op = (String) ops.getSelectedItem();
     pstruct = pstrs[i];
@@ -310,6 +310,7 @@ public class PointCanvas extends GenericCanvas implements FileIface {
     setHelp();
     rebuild();
   }
+  
 
   public void rebuild() {
     pstruct.Clear();

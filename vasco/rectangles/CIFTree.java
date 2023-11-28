@@ -2,6 +2,14 @@ package vasco.rectangles;
 
 /* $Id: CIFTree.java,v 1.3 2003/09/05 16:33:12 brabec Exp $ */
 import vasco.common.*;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
