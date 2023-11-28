@@ -1,7 +1,9 @@
 /* $Id: NearestThread.java,v 1.2 2002/09/25 20:55:05 brabec Exp $ */
 package vasco.common;
 
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
+
+import java.awt.Color;
 import java.util.*;
 import vasco.drawable.*;
 

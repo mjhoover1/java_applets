@@ -3,6 +3,8 @@ package vasco.common;
 
 import vasco.drawable.*;
 import javax.swing.*; // import java.awt.*;
+
+import java.awt.Color;
 import java.util.*;
 
 public class QueryObject implements Drawable {
