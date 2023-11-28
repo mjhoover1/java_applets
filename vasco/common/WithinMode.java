@@ -6,7 +6,17 @@ import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
 //import java.util.*;
 import java.text.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
 public class WithinMode extends JDialog implements CommonConstants, ActionListener {
@@ -37,11 +47,16 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 		JLabel l = new JLabel("Query object:");
 		l.setForeground(Color.blue);
 		add(l);
-		point = new JCheckBox("Point", cg, false);
-		rectangle = new JCheckBox("Rectangle", cg, false);
-		polygon = new JCheckBox("Polygon", cg, false);
-		path = new JCheckBox("Path", cg, false);
-		sector = new JCheckBox("Sector", cg, false);
+        point = new JCheckBox("Point", false);
+        rectangle = new JCheckBox("Rectangle", false);
+        polygon = new JCheckBox("Polygon", false);
+        path = new JCheckBox("Path", false);
+        sector = new JCheckBox("Sector", false);
+		// point = new JCheckBox("Point", cg, false);
+		// rectangle = new JCheckBox("Rectangle", cg, false);
+		// polygon = new JCheckBox("Polygon", cg, false);
+		// path = new JCheckBox("Path", cg, false);
+		// sector = new JCheckBox("Sector", cg, false);
 
 		int startComp = getComponentCount();
 		if ((mask & QueryObject.QO_POINT) != 0) {
@@ -77,7 +92,13 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 
 		JCheckBox c = (JCheckBox) (((Container) getComponent(startComp)).getComponent(0));
 		// first component below label
-		cg.setSelectedCheckbox(c);
+		// cg.setSelected(cg.getSelection(), c); // cg.setSelectedCheckbox(c);
+		cg.add(point);
+        cg.add(rectangle);
+        cg.add(polygon);
+        cg.add(path);
+        cg.add(sector);
+        cg.setSelected(c.getModel(), true);
 
 		this.blend = new JCheckBox("Blend");
 		if (blend) {
@@ -96,7 +117,7 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 		}
 
 		if (container != null) {
-			Component[] comp = container.getComponents();
+			Component[] comp = container.getComponents(); // Added Component in case a problem
 			for (int i = 0; i < comp.length; i++)
 				add(comp[i]);
 		}
@@ -129,7 +150,7 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 
 		
 		setResizable(true);
-		show();
+		setVisible(true); // show();
 	}
 
 	public int getWithinMode() {
@@ -141,7 +162,7 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 	}
 
 	public boolean getBlend() {
-		return blend.getState();
+		return blend.isSelected(); // blend.getState();
 	}
 
 	public void actionPerformed(ActionEvent event) {
@@ -155,16 +176,26 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 				return;
 			}
 		}
-		if (point.getState())
+		if (point.isSelected())
 			mode = QueryObject.QO_POINT;
-		if (rectangle.getState())
+		if (rectangle.isSelected())
 			mode = QueryObject.QO_RECTANGLE;
-		if (polygon.getState())
+		if (polygon.isSelected())
 			mode = QueryObject.QO_POLYGON;
-		if (path.getState())
+		if (path.isSelected())
 			mode = QueryObject.QO_PATH;
-		if (sector.getState())
+		if (sector.isSelected())
 			mode = QueryObject.QO_SECTOR;
+		// if (point.getState())
+		// 	mode = QueryObject.QO_POINT;
+		// if (rectangle.getState())
+		// 	mode = QueryObject.QO_RECTANGLE;
+		// if (polygon.getState())
+		// 	mode = QueryObject.QO_POLYGON;
+		// if (path.getState())
+		// 	mode = QueryObject.QO_PATH;
+		// if (sector.getState())
+		// 	mode = QueryObject.QO_SECTOR;
 		dispose();
 	}
 }

@@ -4,6 +4,7 @@
  */
 package vasco.common;
 
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 
 import javax.swing.*; // import java.awt.*;

@@ -6,13 +6,21 @@ import javax.swing.event.*; // import java.awt.event.*;
 //import java.applet.*;
 import java.util.*;
 import java.text.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.TextEvent;
+// import java.awt.event.TextListener;
 import java.io.*;
 import java.net.*;
 import java.lang.*;
 
 public abstract class fileSelector extends JDialog implements ActionListener, ItemListener {
 
-    class RandomWindow extends JDialog implements TextListener, ActionListener {
+    class RandomWindow extends JDialog implements ActionListener {
   JButton load, merge, cancel;
 	JTextField tf;
 	int number;
@@ -27,7 +35,32 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
 	    add(new JLabel("Number of objects to generate:"));
 	    tf = new JTextField("20");
 	    add(tf);
-	    tf.addTextListener(this);
+	    // tf.addTextListener(this);
+      tf.getDocument().addDocumentListener(new DocumentListener() {
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            updateNumber();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            updateNumber();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            updateNumber();
+        }
+
+        private void updateNumber() {
+            String text = tf.getText();
+            try {
+                number = Integer.parseInt(text);
+            } catch (NumberFormatException ex) {
+                number = 20;
+            }
+        }
+      });
 
 	    number = 20;
 	    JPanel buts = new JPanel();
@@ -42,27 +75,27 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
 	    add(buts);
 	    pack();
 	    setResizable(false);
-	    show();
+      setVisible(true); // show();
 	}
 
-	public void textValueChanged(TextEvent te) {
-	    int nr;
-	    JTextField tf = (JTextField)te.getSource();
-	    try {
-		nr = Integer.parseInt(tf.getText());
-	    } catch (NumberFormatException exc) {
-		nr = -1;
-	    }
-	    if (nr < 0 || nr > 5000)
-		tf.setText(String.valueOf(number));
-	    else
-		number = nr;
-	}
+	// public void textValueChanged(TextEvent te) {
+	//     int nr;
+	//     JTextField tf = (JTextField)te.getSource();
+	//     try {
+	// 	nr = Integer.parseInt(tf.getText());
+	//     } catch (NumberFormatException exc) {
+	// 	nr = -1;
+	//     }
+	//     if (nr < 0 || nr > 5000)
+	// 	tf.setText(String.valueOf(number));
+	//     else
+	// 	number = nr;
+	// }
 
 	public void actionPerformed(ActionEvent ae) {
     JButton b = (JButton)ae.getSource();
 	    if (b != cancel) {
-		formVector(genRandom(number), b == load ? new Vector() : rcanvas.vectorOut());
+		formVector(genRandom(number), b == load ? new Vector<>() : rcanvas.vectorOut());
 	    }
 	    dispose();
 	}
@@ -71,7 +104,7 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
   protected FileIface rcanvas;
   protected JButton save, load, merge, delete, append;
   protected JButton cancel, clip, random;
-  protected java.awt.List imp;
+  protected fileList imp;
   protected JTextField fname;
   protected String actStr;
   protected String datatype;
@@ -92,7 +125,12 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
     fileListPanel.setLayout(new BorderLayout());
     fileListPanel.add("North", new JLabel("Existing files:"));
     fileListPanel.add("South", imp = new fileList(datatype));
-    imp.addItemListener(this);
+    //imp.addItemListener(this);
+    imp.addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            fname.setText(imp.getSelectedValue());
+        }
+    });
 
     JPanel fileNamePanel = new JPanel();
     fileNamePanel.setLayout(new BorderLayout());
@@ -206,7 +244,7 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
     }
 
     public void itemStateChanged(ItemEvent ie) {
-      fname.setText(imp.getSelectedItem());	
+      fname.setText(imp.getSelectedValue()); // fname.setText(imp.getSelectedItem());	
     }
 
 }

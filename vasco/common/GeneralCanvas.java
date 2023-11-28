@@ -4,8 +4,20 @@ package vasco.common;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
 
-import org.w3c.dom.events.MouseEvent;
+import java.awt.event.MouseEvent;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.*;
 
 // ------------- P Canvas -------------------
@@ -231,7 +243,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		final String RUNMODE_SUCCESS_S = "stop on success";
 
 		JButton start, stop, pauseresume;
-		Scrollbar progress;
+		JScrollBar progress;
 		MouseHelp starthelp, pauseresumehelp, stophelp;
 		JComboBox runmode;
 
@@ -241,13 +253,13 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
          * @param r The panel containing the animation controls.
          */
 		AnimationPanel(JPanel r) {
-			Scrollbar ranger;
+			JScrollBar ranger;
 			r.setLayout(new GridLayout(4, 1));
 
 			JPanel anim = new JPanel();
 			anim.setLayout(new GridLayout(1, 2));
 			anim.add(new JLabel("Speed"));
-			ranger = new Scrollbar(Scrollbar.HORIZONTAL, 5, 1, 0, 10);
+			ranger = new JScrollBar(JScrollBar.HORIZONTAL, 5, 1, 0, 10);
 			setWaitTime(100 * (15 - ranger.getValue()));
 			anim.add(ranger);
 			r.add(anim);
@@ -257,7 +269,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			JPanel progressPanel = new JPanel();
 			progressPanel.setLayout(new GridLayout(1, 2));
 			progressPanel.add(new JLabel("Progress"));
-			progressPanel.add(progress = new Scrollbar(Scrollbar.HORIZONTAL, 0, 1, 0, 0));
+			progressPanel.add(progress = new JScrollBar(JScrollBar.HORIZONTAL, 0, 1, 0, 0));
 			r.add(progressPanel);
 
 			new MouseHelp(progress, topInterface.getMouseDisplay(), "Drag to view animation progress", "", "");
@@ -274,8 +286,8 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			r.add(buts);
 
 			runmode = new JComboBox();
-			runmode.add(RUNMODE_CONTINUOUS_S);
-			runmode.add(RUNMODE_OBJECT_S);
+			runmode.addItem(RUNMODE_CONTINUOUS_S); // runmode.add(RUNMODE_CONTINUOUS_S);
+			runmode.addItem(RUNMODE_OBJECT_S);
 			JPanel runmodeP = new JPanel();
 			runmodeP.setLayout(new BorderLayout());
 			runmodeP.add("West", new JLabel("Run Mode:"));
@@ -296,7 +308,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
          */		
 		void setOverlap() {
 			if (runmode.getItemCount() == 2)
-				runmode.add(RUNMODE_SUCCESS_S);
+				runmode.addItem(RUNMODE_SUCCESS_S);
 		}
 
         /**
@@ -304,7 +316,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
          */
 		void setNearest() {
 			if (runmode.getItemCount() == 3)
-				runmode.remove(RUNMODE_SUCCESS_S);
+				runmode.removeItem(RUNMODE_SUCCESS_S);
 		}
 
         /**
@@ -435,7 +447,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
      * Clears the canvas.
      */
 	public void clear() {
-		historyList = new Vector();
+		historyList = new Vector<>();
 	};
 
     /**

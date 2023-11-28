@@ -199,8 +199,8 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 	        // Show the color legend dialog.
 			if (dialog != null)
 				dialog.dispose();
-			dialog = new ColorHelp(operations.getSelectedItem(), rcanvas.getAppletType());
-			dialog.setVisible(true) // Replace dialog.show() with dialog.setVisible(true)
+			dialog = new ColorHelp((String) operations.getSelectedItem(), rcanvas.getAppletType()); // Casting to String here
+			dialog.setVisible(true); // Replace dialog.show() with dialog.setVisible(true)
 		}
 
 		if (obj == undo) {
