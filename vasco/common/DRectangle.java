@@ -1,7 +1,10 @@
 /* $Id: DRectangle.java,v 1.2 2007/10/28 15:38:13 jagan Exp $ */
 package vasco.common;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import javax.swing.*; // import java.awt.*;
 import vasco.drawable.*;
 
 /**
