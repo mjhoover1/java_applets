@@ -5,6 +5,8 @@ package vasco.lines;
 // import java.awt.Label;
 // import java.awt.Panel;
 
+import java.awt.GridBagLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
