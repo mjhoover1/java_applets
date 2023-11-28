@@ -15,7 +15,7 @@ class CoordCanvas extends JPanel {
 
   CoordCanvas(int x, int row) {
     int h = 20; // guess
-    setSize(x, h);
+    setPreferredSize(new Dimension(x, h)); // setSize(x, h);
     Xsize = x; Ysize = h; rowToDisplay = row;
     mess = "";
   }

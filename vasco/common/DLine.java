@@ -2,7 +2,10 @@
 package vasco.common;
 
 import vasco.drawable.*;
-import java.awt.*;
+
+import java.awt.Color;
+
+import javax.swing.*; // import java.awt.*;
 
 /**
  * Class representing a drawable line segment in a 2D space. This class defines
@@ -476,5 +479,4 @@ public class DLine implements Drawable {
 		dt.drawArc(pt1.x - dist, pt1.y - dist, 2 * dist, 2 * dist, 90 - angle, 180);
 		dt.drawArc(pt2.x - dist, pt2.y - dist, 2 * dist, 2 * dist, -90 - angle, 180);
 	}
-
 }
