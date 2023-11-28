@@ -3,7 +3,14 @@ package vasco.common;
 import javax.swing.*; // import java.awt.*;
 import java.util.*;
 import javax.swing.event.*; // import java.awt.event.*;
+import javax.swing.text.PlainDocument;
+
 import java.text.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.TextListener;
 import java.lang.Math.*;
 
 // Implements a slider with log-scale units
@@ -40,7 +47,7 @@ public class LoosenessFactor implements AdjustmentListener {
     maxD.setLayout(new GridLayout(1, 3));
     maxD.add(new JLabel("Looseness:"));
 
-    Scrollbar maxDChoice = new Scrollbar(Scrollbar.HORIZONTAL, 
+    JScrollBar maxDChoice = new JScrollBar(JScrollBar.HORIZONTAL, 
 					(int) ((initialValue)), 
                                         1, (int) (startValue), 
                                         (int) (finishValue));
@@ -61,14 +68,14 @@ public class LoosenessFactor implements AdjustmentListener {
   }
 
  public void adjustmentValueChanged(AdjustmentEvent ae) { 
-    Scrollbar ch = (Scrollbar) ae.getSource();
+    JScrollBar ch = (JScrollBar) ae.getSource();
     double kk = logScale(ch.getValue());
     pstr.setLoosenessFactor(kk);
     currentLoosenessFactor.setText(valueToString(kk - 1.0));
   }
 
 
-public class Bucket implements TextListener {
+public class Bucket implements DocumentListener {
   BucketIface bi;
 
   public Bucket(TopInterface ti, String lab, BucketIface b) {
@@ -76,25 +83,38 @@ public class Bucket implements TextListener {
 
     JPanel buck = new JPanel();
     buck.setLayout(new BorderLayout());
-    buck.add("West", new JLabel(lab));
+    buck.add(new JLabel(lab), BorderLayout.WEST); // buck.add("West", new JLabel(lab));
     JTextField bsize = new JTextField(Integer.toString(bi.getBucket()), 2);
     new MouseHelp(bsize, ti.getMouseDisplay(), "Set " + lab, "", "");
-    buck.add("East", bsize);
-    bsize.addTextListener(this);
+    buck.add(bsize, BorderLayout.EAST); // buck.add("East", bsize);
+  
+    bsize.getDocument().addDocumentListener(this); // bsize.addTextListener(this);
     ti.getPanel().add(buck);
   }
 
-  public void textValueChanged(TextEvent te) {
-    JTextField tf = (JTextField)te.getSource();
-    int nr;
+
+  public void insertUpdate(DocumentEvent e) {
+    updateBucket(e);
+  }
+
+  public void removeUpdate(DocumentEvent e) {
+    updateBucket(e);
+  }
+
+  public void changedUpdate(DocumentEvent e) {
+    updateBucket(e);
+  }
+
+  private void updateBucket(DocumentEvent e) {
     try {
-      nr = Integer.parseInt(tf.getText());
-      if (nr < 1 || nr > 99) 
-	tf.setText(Integer.toString(nr = bi.getBucket()));
+      JTextField tf = (JTextField) e.getDocument().getProperty("owner");
+      int nr = Integer.parseInt(tf.getText());
+      if (nr < 1 || nr > 99)
+        tf.setText(Integer.toString(nr = bi.getBucket()));
+      bi.setBucket(nr);
     } catch (NumberFormatException exc) {
-      tf.setText(Integer.toString(nr = bi.getBucket()));
+      // Handle the exception
     }
-    bi.setBucket(nr);
   }
 }
  

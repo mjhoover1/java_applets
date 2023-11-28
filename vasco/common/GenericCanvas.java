@@ -4,6 +4,8 @@ import java.awt.Panel;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.JPanel;
+
 /**
  * Abstract class representing a generic canvas that extends GeneralCanvas and
  * implements RebuildTree, MouseListener, and MouseMotionListener interfaces.
@@ -19,7 +21,7 @@ public abstract class GenericCanvas extends GeneralCanvas implements RebuildTree
      * @param m        The panel containing the canvas.
      * @param ti       The top-level interface.
      */
-	public GenericCanvas(DRectangle can, DrawingTarget dt, DrawingTarget overview, Panel m, TopInterface ti) {
+	public GenericCanvas(DRectangle can, DrawingTarget dt, DrawingTarget overview, JPanel m, TopInterface ti) {
 		super(can, dt, overview, m, ti);
 	}
 
