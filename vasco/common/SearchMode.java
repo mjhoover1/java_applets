@@ -5,10 +5,11 @@ import vasco.drawable.*;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.*;
 
-class SearchMode extends Container implements CommonConstants {
+class SearchMode extends JPanel implements CommonConstants {
     JCheckBox m1, m2, m3, m4;
 
     SearchMode(int mask) {
@@ -45,14 +46,14 @@ class SearchMode extends Container implements CommonConstants {
 	  add(p);
       }
 
-      m1.setState(true);
+	  m1.setSelected(true); // m1.setState(true);
     }
 
     int getSearchMode() {
-	return ((m1.getState() ? SEARCHMODE_CONTAINS : 0) | 
-		(m2.getState() ? SEARCHMODE_OVERLAPS : 0) | 
-		(m3.getState() ? SEARCHMODE_CROSSES : 0) |
-		(m4.getState() ? SEARCHMODE_ISCONTAINED : 0));
+        return ((m1.isSelected() ? SEARCHMODE_CONTAINS : 0) |
+                (m2.isSelected() ? SEARCHMODE_OVERLAPS : 0) |
+                (m3.isSelected() ? SEARCHMODE_CROSSES : 0) |
+                (m4.isSelected() ? SEARCHMODE_ISCONTAINED : 0));
     }
 
   }
