@@ -6,7 +6,14 @@ import vasco.drawable.*;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
 
-import org.w3c.dom.events.MouseEvent;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.InputEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
 
 import java.util.*;
 
@@ -300,7 +307,7 @@ public class RegionCanvas extends GenericCanvas
   }
  
   public void switchTree(int i, JComboBox ops){
-    String op = ops.getSelectedItem();
+    String op = (String) ops.getSelectedItem();
 
     cb = null;
     sChoice = null;
@@ -315,7 +322,7 @@ public class RegionCanvas extends GenericCanvas
     ops.removeAll();
     pstruct.reInit(ops);
     try {
-      ops.select(op);
+      ops.setSelectedItem(op);
     } catch(Exception e) {};
     if (runningThread != null){
       terminate();

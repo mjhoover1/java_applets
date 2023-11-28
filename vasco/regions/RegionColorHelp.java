@@ -3,6 +3,12 @@ import vasco.common.*;
 
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
+
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.util.*;
 
 public class RegionColorHelp extends ColorHelp{

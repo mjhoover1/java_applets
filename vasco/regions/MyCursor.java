@@ -2,6 +2,9 @@ package vasco.regions;
 import vasco.common.*;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
+
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.util.*;
 
 public class MyCursor{

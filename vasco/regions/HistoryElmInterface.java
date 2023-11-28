@@ -1,6 +1,6 @@
 package vasco.regions;
 import java.util.*;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
 
 public interface HistoryElmInterface{
 

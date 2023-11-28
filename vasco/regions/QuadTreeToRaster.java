@@ -2,6 +2,10 @@ package vasco.regions;
  
 import vasco.common.*;
 import javax.swing.*; // import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.*;
   
 public class QuadTreeToRaster{ 

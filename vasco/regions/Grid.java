@@ -1,6 +1,13 @@
 package vasco.regions;
 import vasco.common.*;
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import javax.swing.*; // import java.awt.*;
  
 public class Grid{
   public int size;

@@ -1,5 +1,7 @@
 package vasco.regions;
-import java.awt.*;
+import java.awt.Color;
+
+import javax.swing.*; // import java.awt.*;
 
 public class Colors{
   public static final Color GRID        = Color.lightGray;

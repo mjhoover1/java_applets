@@ -3,7 +3,10 @@ package vasco.regions;
 import vasco.common.*;
 import vasco.drawable.*;
  
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
+
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.*;
 
 public class ConvertVector extends SearchVector{

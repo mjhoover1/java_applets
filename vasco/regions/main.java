@@ -4,7 +4,9 @@ import vasco.common.*;
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
 // import java.applet.*;
-import java.util.*;  
+import java.util.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.io.*;
 
 public class main extends CommonApplet implements GenericMain {
@@ -72,10 +74,10 @@ public class main extends CommonApplet implements GenericMain {
 
     buttonpanel.add(new appletSwitch(appletSwitch.AREA, this, topInterface));
   
-    centralmenu = new RegionCentralMenu((RegionCanvas)drawcanvas, treeType, indStructP, this, 
+    centralMenu = new RegionCentralMenu((RegionCanvas)drawcanvas, treeType, indStructP, this, 
 				  helpArea, topBar, overviewButton, mp); 
-    buttonpanel.add(centralmenu);
-    bplayout.setConstraints(centralmenu, butpan);
+    buttonpanel.add(centralMenu);
+    bplayout.setConstraints(centralMenu, butpan);
     buttonpanel.add(animp);
   
     JLabel date = new JLabel(CompileDate.compileDate);

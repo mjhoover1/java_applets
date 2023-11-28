@@ -4,6 +4,9 @@ import vasco.common.*;
 import vasco.drawable.*;
 
 import javax.swing.*; // import java.awt.*;
+
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.*;
  
 public class RegionQuad extends RegionStructure {

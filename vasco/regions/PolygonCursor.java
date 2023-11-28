@@ -3,6 +3,9 @@ package vasco.regions;
 import vasco.common.*;
 import vasco.drawable.*;
 import javax.swing.*; // import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Polygon;
 import java.util.*;
    
 public class PolygonCursor implements CursorStyleInterface{

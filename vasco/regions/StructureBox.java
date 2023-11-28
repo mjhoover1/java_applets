@@ -3,6 +3,11 @@ import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
 // import java.applet.*;
 import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.*;
 
 public class StructureBox extends JDialog implements ActionListener {
@@ -15,15 +20,16 @@ public class StructureBox extends JDialog implements ActionListener {
     this.row = row;
     this.col = col;
     setLayout(new BorderLayout());
-    ta = new JTextArea("", row, col, JTextArea.SCROLLBARS_BOTH);
+    ta = new JTextArea("", row, col);
     ta.setEditable(false);
-    add("Center", ta);
+    JScrollPane scrollPane = new JScrollPane(ta);
+    add(scrollPane, BorderLayout.CENTER);
     pack(); 
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
     setLocation(( screen.width - getSize().width ) / 2,
 	 ( screen.height - getSize().height ) / 2 );
     setResizable(false);
-    show();
+    setVisible(true);
   }
  
   public void setText(String text){

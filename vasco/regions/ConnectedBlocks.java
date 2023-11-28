@@ -1,5 +1,8 @@
 package vasco.regions;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
+
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.*;
 
 public class ConnectedBlocks{

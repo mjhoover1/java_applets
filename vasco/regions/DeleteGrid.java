@@ -1,5 +1,7 @@
 package vasco.regions;
-import java.awt.*;
+import java.awt.Point;
+
+import javax.swing.*; // import java.awt.*;
 
 public class DeleteGrid extends Point{
   DeleteGrid(Point p){

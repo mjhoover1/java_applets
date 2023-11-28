@@ -1,7 +1,10 @@
 package vasco.regions;
 
 import vasco.common.*;
-import java.awt.*;
+
+import java.awt.Rectangle;
+
+import javax.swing.*; // import java.awt.*;
 
 public class BinaryArray{
   protected Grid grid;

@@ -1,5 +1,7 @@
 package vasco.regions;
-import java.awt.*;
+import javax.swing.*; // import java.awt.*;
+
+import java.awt.Polygon;
 import java.util.*;
 
 public class CBlock{
