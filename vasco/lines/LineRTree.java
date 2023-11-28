@@ -2,6 +2,9 @@ package vasco.lines;
 /* $Id: LineRTree.java,v 1.1.1.1 2002/09/25 05:48:36 brabec Exp $ */
 import vasco.common.*;
 import vasco.drawable.*;
+
+import java.awt.Rectangle;
+
 import javax.swing.*; // import java.awt.*;
 
 public class LineRTree extends LineStructure {
