@@ -5,6 +5,9 @@ import java.util.*;
 import javax.swing.JApplet; // import java.applet.Applet;
 import javax.swing.*; // import java.awt.*;
 import java.net.*;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.io.*;
 
 /**
