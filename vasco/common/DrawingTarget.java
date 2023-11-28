@@ -2,7 +2,11 @@
 package vasco.common;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.*; // import java.awt.*;
 import javax.swing.event.*; // import java.awt.event.*;
