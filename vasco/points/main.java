@@ -7,6 +7,11 @@ package vasco.points;
 // import java.awt.event.MouseListener;
 // import java.awt.event.MouseMotionListener;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -38,7 +43,7 @@ public class main extends CommonApplet implements GenericMain {
 	drawcanvas = new PointCanvas(new DRectangle(0, 0, SIZE, SIZE), 
 				     can, overviewCanvas,
 				     animp, topInterface);
-	DrawingPanel dpanel = new DrawingPanel(can, (RebuildTree)drawcanvas, 
+	DrawingPanel dpanel = new DrawingPanel(can, (RebuildTree) drawcanvas, 
 			(MouseListener)drawcanvas, (MouseMotionListener)drawcanvas, mp);
 
 	overviewDialog = new OverviewWindow(overviewCanvas, (RebuildTree)drawcanvas, mp);
@@ -96,9 +101,9 @@ public class main extends CommonApplet implements GenericMain {
 
 	buttonpanel.add(new appletSwitch(appletSwitch.POINTS, this, topInterface));
 
-	centralmenu = new CentralMenu(drawcanvas, treeType, indStructP, this, helpArea, topBar, overviewButton, mp);
-	buttonpanel.add(centralmenu);
-	bplayout.setConstraints(centralmenu, butpan);
+	centralMenu = new CentralMenu(drawcanvas, treeType, indStructP, this, helpArea, topBar, overviewButton, mp);
+	buttonpanel.add(centralMenu);
+	bplayout.setConstraints(centralMenu, butpan);
 	buttonpanel.add(animp);
 
 	JLabel date = new JLabel(CompileDate.compileDate);

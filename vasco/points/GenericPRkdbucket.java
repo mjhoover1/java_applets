@@ -1,4 +1,6 @@
 package vasco.points;
+import java.awt.Color;
+import java.awt.Rectangle;
 /* $Id: GenericPRkdbucket.java,v 1.2 2007/10/28 15:38:17 jagan Exp $ */
 // import java.awt.Choice;
 // import java.awt.Color;

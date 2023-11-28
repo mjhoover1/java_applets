@@ -1,4 +1,8 @@
 package vasco.points;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.InputEvent;
+import java.awt.event.ItemEvent;
 /* $Id: PointCanvas.java,v 1.3 2007/10/28 15:38:18 jagan Exp $ */
 // import java.awt.Choice;
 // import java.awt.Color;
@@ -6,14 +10,12 @@ package vasco.points;
 // import java.awt.Point;
 // import java.awt.event.InputEvent;
 // import java.awt.event.ItemEvent;
-// import java.awt.event.MouseEvent;
+import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-
-import org.w3c.dom.events.MouseEvent;
 
 import vasco.common.ColorHelp;
 import vasco.common.DLine;
@@ -283,7 +285,7 @@ public class PointCanvas extends GenericCanvas implements FileIface {
     	rebuild();
     }
     
-    public void useRegionStruct(RebuildTree r,Choice ops)
+    public void useRegionStruct(RebuildTree r,JComboBox ops)
     {
     	RegionCanvas lc=new RegionCanvas(can,dt,overview,animp,ti);
     	RegionStructure p=new RasterStructure(this,can,dt,ti,r,lc.grid);
@@ -296,14 +298,14 @@ public class PointCanvas extends GenericCanvas implements FileIface {
     	rebuild();
     }
     
-  public void setTree(int i, Choice ops) {
+  public void setTree(int i, JComboBox ops) {
 	setHandler(null);
-    String op = ops.getSelectedItem();
+		String op = (String) ops.getSelectedItem();
     pstruct = pstrs[i];
     ops.removeAll();
     pstruct.reInit(ops);
     try {
-      ops.select(op);
+			ops.setSelectedItem(op);
     } catch(Exception e) {};
     setHelp();
     rebuild();

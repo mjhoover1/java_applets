@@ -3,6 +3,10 @@ package vasco.points;
 import vasco.common.*;
 import vasco.drawable.*;
 import javax.swing.*; // import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.*;
 
 public class MXTree extends PointStructure implements MaxDecompIface {
