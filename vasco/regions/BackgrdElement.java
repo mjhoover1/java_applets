@@ -1,43 +1,43 @@
 package vasco.regions;
-import vasco.common.*;
-
-import javax.swing.*; // import java.awt.*;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.util.*;
-  
-public class BackgrdElement extends  ConvertGenElement{
-  
-  Grid grid;
-  Rectangle rec;
-  Color color;
 
-  // grid row, sCol, and eCol
-  public BackgrdElement(Grid grid, Rectangle rec, Color color){
-    this.grid = grid;
-    this.rec = rec;
-    this.color = color;
-  } 
+import vasco.common.DrawingTarget;
 
-  
-  public void fillElementFirst(DrawingTarget g){
-  }
+public class BackgrdElement extends ConvertGenElement {
 
-  public void fillElementNext(DrawingTarget g){
-  }
+	Grid grid;
+	Rectangle rec;
+	Color color;
 
-  public void drawElementFirst(DrawingTarget g){
-    // draw the background
-    g.setColor(color);
-    g.fillRect(rec.x, rec.y, rec.width, rec.height);
-    // draw the grid
-    if (grid.gridOn)
-      grid.display(g);
-  }
+	// grid row, sCol, and eCol
+	public BackgrdElement(Grid grid, Rectangle rec, Color color) {
+		this.grid = grid;
+		this.rec = rec;
+		this.color = color;
+	}
 
-  public void drawElementNext(DrawingTarget g){
-  }
+	@Override
+	public void fillElementFirst(DrawingTarget g) {
+	}
+
+	@Override
+	public void fillElementNext(DrawingTarget g) {
+	}
+
+	@Override
+	public void drawElementFirst(DrawingTarget g) {
+		// draw the background
+		g.setColor(color);
+		g.fillRect(rec.x, rec.y, rec.width, rec.height);
+		// draw the grid
+		if (grid.gridOn)
+			grid.display(g);
+	}
+
+	@Override
+	public void drawElementNext(DrawingTarget g) {
+	}
 
 }
-

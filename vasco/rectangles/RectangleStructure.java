@@ -1,10 +1,16 @@
 package vasco.rectangles;
 
+// import java.awt.*;
+import javax.swing.JComboBox;
+
 /* $Id: RectangleStructure.java,v 1.2 2007/10/28 15:38:20 jagan Exp $ */
-import vasco.common.*;
-import javax.swing.*; // import java.awt.*;
+import vasco.common.CommonConstants;
+import vasco.common.DRectangle;
+import vasco.common.RebuildTree;
+import vasco.common.SpatialStructure;
+import vasco.common.TopInterface;
 //import java.util.*;
-import vasco.drawable.*;
+import vasco.drawable.Drawable;
 
 /**
  * Represents the abstract base class for spatial structures that manage
@@ -30,8 +36,10 @@ public abstract class RectangleStructure extends SpatialStructure implements Com
 	 *
 	 * @param ops The operations Choice menu to which the operations will be added.
 	 */
-	public void reInit(JComboBox ops) {
+	@Override
+	public void reInit(JComboBox<String> ops) {
 		super.reInit(ops);
+		JComboBox<String> availOps = ops; // Add this line to fix the type safety issue
 		availOps.addItem("Insert");
 		availOps.addItem("Move");
 		availOps.addItem("Move vertex");
@@ -48,6 +56,7 @@ public abstract class RectangleStructure extends SpatialStructure implements Com
 	 * @param d The drawable object to insert.
 	 * @return True if the insertion was successful, false otherwise.
 	 */
+	@Override
 	public boolean Insert(Drawable d) {
 		return Insert((DRectangle) d);
 	}

@@ -1,49 +1,45 @@
 package vasco.regions;
 
-import vasco.common.*;
-import javax.swing.*; // import java.awt.*;
-import java.util.*;
- 
-public class CursorStyle{
-  protected Vector v;
-  boolean valid;
+import java.util.Vector;
 
-  public CursorStyle(){
-    v = new Vector();
-    valid = true;
-  } 
+import vasco.common.DrawingTarget;
 
-  public void setValid(boolean valid){
-    this.valid = valid;
-  }
+public class CursorStyle {
+	protected Vector v;
+	boolean valid;
 
-  public boolean getValid(){
-    return valid;
-  }
+	public CursorStyle() {
+		v = new Vector();
+		valid = true;
+	}
 
-  public void add(CursorStyleInterface cs){
-    v.addElement(cs);
-  }
-   
-  public void display(DrawingTarget dt){
-    for(int x = 0; x < v.size(); x++)
-      ((CursorStyleInterface)v.elementAt(x)).display(dt);
-  }  
+	public void setValid(boolean valid) {
+		this.valid = valid;
+	}
 
-  public boolean equals(Object obj){
-    if (obj == null)
-      return false;
+	public boolean getValid() {
+		return valid;
+	}
 
-    if (v.size() != ((CursorStyle)obj).v.size())
-      return false;
+	public void add(CursorStyleInterface cs) {
+		v.addElement(cs);
+	}
 
-    for(int x = 0; x < v.size(); x++)
-      if ((!((CursorStyleInterface)v.elementAt(x)).
-	   equals(((CursorStyle)obj).v.elementAt(x))))
-	return false;
+	public void display(DrawingTarget dt) {
+		for (int x = 0; x < v.size(); x++)
+			((CursorStyleInterface) v.elementAt(x)).display(dt);
+	}
 
-    return true;
-  } 
+	@Override
+	public boolean equals(Object obj) {
+		if ((obj == null) || (v.size() != ((CursorStyle) obj).v.size()))
+			return false;
+
+		for (int x = 0; x < v.size(); x++)
+			if ((!((CursorStyleInterface) v.elementAt(x)).equals(((CursorStyle) obj).v.elementAt(x))))
+				return false;
+
+		return true;
+	}
 
 }
-

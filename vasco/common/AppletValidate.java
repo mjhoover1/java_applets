@@ -2,5 +2,5 @@
 package vasco.common;
 
 public interface AppletValidate {
-    public void globalValidate();
+	public void globalValidate();
 }

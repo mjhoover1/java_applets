@@ -1,24 +1,35 @@
 package vasco.drawable;
+
 import java.awt.Color;
-import javax.swing.*; // import java.awt.*;
-import vasco.common.*;
+
+import vasco.common.DLine;
+import vasco.common.DPoint;
+import vasco.common.DRectangle;
+import vasco.common.DrawingTarget;
 
 public interface Drawable {
-    public void draw(DrawingTarget g);
-    public void directDraw(Color c, DrawingTarget g);
+	public void draw(DrawingTarget g);
 
-    public void drawBuffer(Color c, DrawingTarget dt, double dist);
+	public void directDraw(Color c, DrawingTarget g);
 
-    public DRectangle getBB();
-    public boolean hasArea();
+	public void drawBuffer(Color c, DrawingTarget dt, double dist);
 
-    public double distance(DPoint p);
-    public double[] distance(DPoint p, double [] k);
-    public double distance(DLine p);
-    public double[] distance(DLine p, double[] k);
-    public double distance(DRectangle p);
-    public double[] distance(DRectangle p, double[] k);
+	public DRectangle getBB();
 
-    public boolean intersects(DRectangle r);
+	public boolean hasArea();
+
+	public double distance(DPoint p);
+
+	public double[] distance(DPoint p, double[] k);
+
+	public double distance(DLine p);
+
+	public double[] distance(DLine p, double[] k);
+
+	public double distance(DRectangle p);
+
+	public double[] distance(DRectangle p, double[] k);
+
+	public boolean intersects(DRectangle r);
 
 }

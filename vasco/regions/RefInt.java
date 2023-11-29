@@ -1,21 +1,22 @@
 package vasco.regions;
-public class RefInt{
-  int value;
-  
-  RefInt(){
-    value = 0;
-  }
 
-  RefInt(int v){
-    value = v;
-  }
+public class RefInt {
+	int value;
 
-  public int getValue(){
-    return value;
-  }
+	RefInt() {
+		value = 0;
+	}
 
-  public void setValue(int v){
-    value = v;
-  }
+	RefInt(int v) {
+		value = v;
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int v) {
+		value = v;
+	}
 
 }

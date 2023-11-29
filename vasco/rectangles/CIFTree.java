@@ -1,8 +1,5 @@
 package vasco.rectangles;
 
-/* $Id: CIFTree.java,v 1.3 2003/09/05 16:33:12 brabec Exp $ */
-import vasco.common.*;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -10,10 +7,31 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
-import javax.swing.*; // import java.awt.*;
-import javax.swing.event.*; // import java.awt.event.*;
-import vasco.drawable.*;
+import java.util.Vector;
+
+// import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+/* $Id: CIFTree.java,v 1.3 2003/09/05 16:33:12 brabec Exp $ */
+import vasco.common.DPoint;
+import vasco.common.DRectangle;
+import vasco.common.DrawingTarget;
+import vasco.common.MaxDecomp;
+import vasco.common.MaxDecompIface;
+import vasco.common.NNElement;
+import vasco.common.QueryObject;
+import vasco.common.QueueBlock;
+import vasco.common.RebuildTree;
+import vasco.common.SVElement;
+import vasco.common.SearchVector;
+import vasco.common.TopInterface;
+import vasco.common.YellowBlock;
+import vasco.drawable.Drawable;
+import vasco.drawable.NNDrawable;
 
 /**
  * CIFTree is an implementation of a quadtree structure for managing rectangular
@@ -42,6 +60,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	/**
 	 * Clears the CIFTree, removing all rectangles.
 	 */
+	@Override
 	public void Clear() {
 		super.Clear();
 		ROOT = null;
@@ -52,6 +71,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 *
 	 * @return boolean indicating if the tree is order dependent.
 	 */
+	@Override
 	public boolean orderDependent() {
 		return false;
 	}
@@ -61,9 +81,11 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 *
 	 * @param c Choice of rectangles to initialize the tree.
 	 */
-	public void reInit(JComboBox c) {
+	@Override
+	public void reInit(JComboBox<String> c) {
 		super.reInit(c);
 		new MaxDecomp(topInterface, 9, this);
+		JComboBox<String> availOps = c;
 		availOps.addItem("Show bintree");
 	}
 
@@ -73,6 +95,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 * @param P The rectangle to be inserted.
 	 * @return boolean indicating if the insertion was successful.
 	 */
+	@Override
 	public boolean Insert(DRectangle P) {
 		boolean[] res = new boolean[1];
 		ROOT = insert(P, ROOT, wholeCanvas.x + wholeCanvas.width / 2, wholeCanvas.y + wholeCanvas.height / 2,
@@ -88,6 +111,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 *
 	 * @param qu The query point used to determine the rectangle to delete.
 	 */
+	@Override
 	public void Delete(DPoint qu) {
 		if (ROOT == null)
 			return;
@@ -103,6 +127,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 *
 	 * @param d The rectangle to be deleted.
 	 */
+	@Override
 	public void DeleteDirect(Drawable d) {
 		if (ROOT == null)
 			return;
@@ -117,6 +142,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 * @param mode The search mode (e.g., intersect, contain).
 	 * @return SearchVector containing search results.
 	 */
+	@Override
 	public SearchVector Search(QueryObject r, int mode) {
 		SearchVector res = new SearchVector();
 		searchVector = new Vector();
@@ -130,6 +156,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 * @param p The query point.
 	 * @return SearchVector containing the nearest rectangle(s).
 	 */
+	@Override
 	public SearchVector Nearest(QueryObject p) {
 		SearchVector v = new SearchVector();
 		if (ROOT != null) {
@@ -146,6 +173,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 * @param dist The maximum distance within which to search.
 	 * @return SearchVector containing the nearest rectangle(s).
 	 */
+	@Override
 	public SearchVector Nearest(QueryObject p, double dist) {
 		SearchVector v = new SearchVector();
 		if (ROOT != null) {
@@ -174,6 +202,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 * @param qu The query object.
 	 * @return The nearest rectangle.
 	 */
+	@Override
 	public Drawable NearestFirst(QueryObject qu) {
 		if (ROOT == null)
 			return null;
@@ -188,6 +217,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 * @param dist The search range distance.
 	 * @return Array of rectangles within the specified range.
 	 */
+	@Override
 	public Drawable[] NearestRange(QueryObject qu, double dist) {
 		if (ROOT == null)
 			return null;
@@ -200,6 +230,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 *
 	 * @return A string representing the name of the structure.
 	 */
+	@Override
 	public String getName() {
 		return "MX-CIF Quadtree";
 	}
@@ -211,6 +242,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 * @param g    The drawing target.
 	 * @param view The view rectangle within which to draw.
 	 */
+	@Override
 	public void drawContents(DrawingTarget g, Rectangle view) {
 		drawC(ROOT, g, wholeCanvas.x + wholeCanvas.width / 2, wholeCanvas.y + wholeCanvas.height / 2,
 				wholeCanvas.width / 2, wholeCanvas.height / 2, view);
@@ -223,6 +255,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 *
 	 * @return The maximum decomposition level.
 	 */
+	@Override
 	public int getMaxDecomp() {
 		return maxDecomp;
 	}
@@ -232,6 +265,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 *
 	 * @param b The new maximum decomposition level.
 	 */
+	@Override
 	public void setMaxDecomp(int b) {
 		maxDecomp = b;
 		reb.rebuild();
@@ -569,7 +603,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	/**
 	 * Draws the binary tree structure within the CIF tree, for a specific point in
 	 * the canvas.
-	 * 
+	 *
 	 * @param p  The point in the canvas coordinates.
 	 * @param dt The drawing target.
 	 */
@@ -632,6 +666,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 			 *
 			 * @param g The graphics context used for drawing.
 			 */
+			@Override
 			public void paint(Graphics g) {
 				bintreecounter = 1;
 				g.setColor(Color.blue);
@@ -754,6 +789,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 		 *
 		 * @param e The action event.
 		 */
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			JButton src = (JButton) e.getSource();
 			if (src == close)
@@ -972,7 +1008,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 
 		/**
 		 * Performs a query to find the nearest rectangle to a given query object.
-		 * 
+		 *
 		 * @param qu The query object.
 		 * @return The nearest rectangle to the query object, or null if none found.
 		 */
@@ -984,7 +1020,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 		/**
 		 * Overloaded method to perform a nearest neighbor query and store intermediate
 		 * search results.
-		 * 
+		 *
 		 * @param qu The query object.
 		 * @param v  A vector to store intermediate search results.
 		 */
@@ -995,7 +1031,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 		/**
 		 * Performs a query to find all rectangles within a specified distance of a
 		 * query object.
-		 * 
+		 *
 		 * @param qu   The query object.
 		 * @param dist The maximum distance to consider.
 		 * @return An array of rectangles within the specified distance of the query
@@ -1008,7 +1044,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 		/**
 		 * Performs a comprehensive nearest neighbor query with constraints on distance
 		 * and number of elements.
-		 * 
+		 *
 		 * @param qu      The query object.
 		 * @param ret     A vector to store intermediate search results.
 		 * @param dist    The maximum distance to consider.
@@ -1053,7 +1089,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 		/**
 		 * Performs a query to find the nearest internal node in the CIF tree to a query
 		 * point.
-		 * 
+		 *
 		 * @param qu The query point.
 		 * @return The nearest internal node to the query point.
 		 */
@@ -1093,32 +1129,32 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 	 * (DRectVector).
 	 */
 	class CIFbnode {
-	    CIFbnode[] SON; // Children of the binary node
-	    DRectVector rv; // Collection of rectangles
+		CIFbnode[] SON; // Children of the binary node
+		DRectVector rv; // Collection of rectangles
 
-	    /**
-	     * Constructs a CIFbnode with no children and an empty collection of rectangles.
-	     */
-	    CIFbnode() {
-	        SON = new CIFbnode[2];
-	        SON[0] = SON[1] = null; // Initializing children to null
-	        rv = new DRectVector(); // Initializing the collection of rectangles
-	    }
+		/**
+		 * Constructs a CIFbnode with no children and an empty collection of rectangles.
+		 */
+		CIFbnode() {
+			SON = new CIFbnode[2];
+			SON[0] = SON[1] = null; // Initializing children to null
+			rv = new DRectVector(); // Initializing the collection of rectangles
+		}
 	}
 
 	/**
-	 * Represents a Cartesian-Interval Forest (CIF) tree node.
-	 * Each CIFcnode can have a binary node for each axis (x and y) and up to four children.
+	 * Represents a Cartesian-Interval Forest (CIF) tree node. Each CIFcnode can
+	 * have a binary node for each axis (x and y) and up to four children.
 	 */
 	class CIFcnode {
-	    final int NRDIRS = 4; // Number of directions (quadrants) in the CIF tree
+		final int NRDIRS = 4; // Number of directions (quadrants) in the CIF tree
 
 		CIFbnode BIN[] = new CIFbnode[2]; // Binary nodes for 'x' and 'y' coordinates
 		CIFcnode SON[] = new CIFcnode[NRDIRS]; // Initializing children for four directions
 
-	    /**
-	     * Constructs a CIFcnode with no binary nodes and no children.
-	     */
+		/**
+		 * Constructs a CIFcnode with no binary nodes and no children.
+		 */
 		CIFcnode() {
 			BIN[0] = BIN[1] = null;
 			SON[0] = SON[1] = SON[2] = SON[3] = null;

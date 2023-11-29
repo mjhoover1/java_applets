@@ -1,32 +1,40 @@
 package vasco.rectangles;
-/* $Id: GreenRect.java,v 1.1.1.1 2002/09/25 05:48:37 brabec Exp $ */
-import vasco.common.*;
 
 import java.awt.Color;
 
-import javax.swing.*; // import java.awt.*;
+/* $Id: GreenRect.java,v 1.1.1.1 2002/09/25 05:48:37 brabec Exp $ */
+import vasco.common.DRectangle;
+import vasco.common.DrawingTarget;
+import vasco.common.GenElement;
 
 public class GreenRect extends DRectangle implements GenElement {
 
-  GreenRect(DRectangle r) {
-    super(r.x, r.y, r.width, r.height);
-  }
+	GreenRect(DRectangle r) {
+		super(r.x, r.y, r.width, r.height);
+	}
 
-  public void fillElementFirst(DrawingTarget g) { };
+	@Override
+	public void fillElementFirst(DrawingTarget g) {
+	}
 
-  public void fillElementNext(DrawingTarget g) { };
+	@Override
+	public void fillElementNext(DrawingTarget g) {
+	}
 
-  public void drawElementFirst(DrawingTarget g) {
-    g.setColor(Color.green);
-    g.drawRect(x, y, width, height);
-  };
+	@Override
+	public void drawElementFirst(DrawingTarget g) {
+		g.setColor(Color.green);
+		g.drawRect(x, y, width, height);
+	}
 
-  public void drawElementNext(DrawingTarget g) {
-    drawElementFirst(g);
-  };
+	@Override
+	public void drawElementNext(DrawingTarget g) {
+		drawElementFirst(g);
+	}
 
-  public int pauseMode() {
-    return BASIC;
-  }
+	@Override
+	public int pauseMode() {
+		return BASIC;
+	}
 
 }

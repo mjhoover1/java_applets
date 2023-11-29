@@ -1,13 +1,14 @@
 /* $Id: appletSwitch.java,v 1.3 2003/01/30 04:05:52 brabec Exp $ */
 package vasco.common;
 
-import javax.swing.*; // import java.awt.*;
-// import java.applet.*;
-import javax.swing.event.*; // import java.awt.event.*;
-
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.net.*;
+import java.net.MalformedURLException;
+
+// import java.awt.*;
+import javax.swing.JApplet;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
 
 /**
  * Represents a switch panel for different applet demonstrations in a spatial
@@ -36,7 +37,7 @@ public class appletSwitch extends JPanel implements ItemListener {
 	 * @param ti TopInterface instance for accessing mouse display.
 	 */
 	public appletSwitch(int iv, JApplet ac, TopInterface ti) {
-		ch = new JComboBox();
+		JComboBox<String> ch = new JComboBox<>();
 		new MouseHelp(ch, ti.getMouseDisplay(), "Go to other spatial demo applets", "", "");
 		ch.addItem("Point Applet");
 		ch.addItem("Line Applet");
@@ -54,6 +55,7 @@ public class appletSwitch extends JPanel implements ItemListener {
 	 *
 	 * @param ie The item event triggered by a change in the choice component.
 	 */
+	@Override
 	public void itemStateChanged(ItemEvent ie) {
 		try {
 			// Navigate to the selected applet's URL

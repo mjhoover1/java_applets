@@ -1,11 +1,7 @@
 /* $Id: GeneralCanvas.java,v 1.8 2007/10/28 15:38:13 jagan Exp $ */
 package vasco.common;
 
-import javax.swing.*; // import java.awt.*;
-import javax.swing.event.*; // import java.awt.event.*;
-
-import java.awt.event.MouseEvent;
-
+import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -16,83 +12,100 @@ import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.*;
+import java.util.Vector;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 
 // ------------- P Canvas -------------------
 
 /**
- * Abstract class representing a general canvas with common functionality for drawing and handling mouse events.
- * This class serves as a base for creating custom canvas elements in a graphical user interface, 
- * with support for animation and interaction via mouse events.
+ * Abstract class representing a general canvas with common functionality for
+ * drawing and handling mouse events. This class serves as a base for creating
+ * custom canvas elements in a graphical user interface, with support for
+ * animation and interaction via mouse events.
  */
 public abstract class GeneralCanvas implements CanvasIface, CommonConstants, MouseListener, MouseMotionListener {
 
-    // Drawing targets for the canvas
-    protected DrawingTarget offscrG; // Offscreen graphics target
-    protected DrawingTarget overview; // Overview graphics target
-    protected DrawingTarget[] allDrawingTargets; // Array of all drawing targets
+	// Drawing targets for the canvas
+	protected DrawingTarget offscrG; // Offscreen graphics target
+	protected DrawingTarget overview; // Overview graphics target
+	protected DrawingTarget[] allDrawingTargets; // Array of all drawing targets
 
-    // Bounding rectangle of the entire canvas
-    protected DRectangle wholeCanvas; // Defines the size and position of the canvas
+	// Bounding rectangle of the entire canvas
+	protected DRectangle wholeCanvas; // Defines the size and position of the canvas
 
-    // Offscreen image for double buffering and last mouse position
-    Image offscr;
-    protected Point lastP; // Stores the last mouse position in screen coordinates
+	// Offscreen image for double buffering and last mouse position
+	Image offscr;
+	protected Point lastP; // Stores the last mouse position in screen coordinates
 
-    // Animation-related variables for controlling animations within the canvas
-    int waitTime; // Wait time between animation frames
-    protected int successMode; // Mode indicating successful animation completion
-    protected int searchMode; // Current mode of search animation
-    protected WithinStats withinStats; // Stores statistics for 'within' search operations
-    protected int gridLevel; // Current level of the grid for drawing
-    AnimationPanel animPanel; // Panel for controlling animation settings
-    protected QueryObject lastNear; // Last object near a query point
-    protected QueryObject lastWindow; // Last object in a query window
-    protected Vector polyRange; // Stores a range of polygon points for queries
-    protected boolean gridOn; // Flag to indicate if the grid should be drawn
-    protected DSector sec; // Sector object for sector-based queries
-    public Vector historyList = new Vector(); // History of actions for undo functionality
+	// Animation-related variables for controlling animations within the canvas
+	int waitTime; // Wait time between animation frames
+	protected int successMode; // Mode indicating successful animation completion
+	protected int searchMode; // Current mode of search animation
+	protected WithinStats withinStats; // Stores statistics for 'within' search operations
+	protected int gridLevel; // Current level of the grid for drawing
+	AnimationPanel animPanel; // Panel for controlling animation settings
+	protected QueryObject lastNear; // Last object near a query point
+	protected QueryObject lastWindow; // Last object in a query window
+	protected Vector polyRange; // Stores a range of polygon points for queries
+	protected boolean gridOn; // Flag to indicate if the grid should be drawn
+	protected DSector sec; // Sector object for sector-based queries
+	public Vector historyList = new Vector(); // History of actions for undo functionality
 
-    // Top-level interface and the thread controlling the canvas
-    protected TopInterface topInterface; // Interface for top-level application interaction
-    protected VascoThread runningThread; // Thread for handling canvas operations
+	// Top-level interface and the thread controlling the canvas
+	protected TopInterface topInterface; // Interface for top-level application interaction
+	protected VascoThread runningThread; // Thread for handling canvas operations
 
-    /**
-     * Inner class representing statistics for the 'within' operation.
-     * This class is used to store and manage data related to the within search operation, 
-     * such as mode, distance, and blending options.
-     */
-    public class WithinStats implements IDEval {
-        int mode; // Mode of the within operation
-        double dist; // Distance parameter for the operation
-        boolean blend; // Flag to indicate if blending is to be used
+	/**
+	 * Inner class representing statistics for the 'within' operation. This class is
+	 * used to store and manage data related to the within search operation, such as
+	 * mode, distance, and blending options.
+	 */
+	public class WithinStats implements IDEval {
+		int mode; // Mode of the within operation
+		double dist; // Distance parameter for the operation
+		boolean blend; // Flag to indicate if blending is to be used
 
-        // Default constructor
-        public WithinStats() {
-        }
+		// Default constructor
+		public WithinStats() {
+		}
 
-        /**
-         * Sets the values for the within statistics.
-         * 
-         * @param mode  The mode of operation.
-         * @param dist  The distance for the operation.
-         * @param blend The blending flag.
-         */
-        public void setValues(int mode, double dist, boolean blend) {
-            this.mode = mode;
-            this.dist = dist;
-            this.blend = blend;
-        }
+		/**
+		 * Sets the values for the within statistics.
+		 *
+		 * @param mode  The mode of operation.
+		 * @param dist  The distance for the operation.
+		 * @param blend The blending flag.
+		 */
+		public void setValues(int mode, double dist, boolean blend) {
+			this.mode = mode;
+			this.dist = dist;
+			this.blend = blend;
+		}
 
-        // Getters for the properties
-        public boolean getBlend() { return blend; }
-        public double getDist() { return dist; }
-        public int getValue() { return mode; }
-    }
+		// Getters for the properties
+		public boolean getBlend() {
+			return blend;
+		}
 
-    // Constants representing different types of mouse events
+		public double getDist() {
+			return dist;
+		}
+
+		@Override
+		public int getValue() {
+			return mode;
+		}
+	}
+
+	// Constants representing different types of mouse events
 	public final static int MOUSE_ENTERED = 0;
 	public final static int MOUSE_EXITED = 1;
 	public final static int MOUSE_PRESSED = 2;
@@ -101,17 +114,16 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	public final static int MOUSE_RELEASED = 5;
 	public final static int MOUSE_CLICKED = 6;
 
-    /**
-     * Constructor for GeneralCanvas.
-     * Initializes a new canvas with given parameters, sets up drawing targets, 
-     * and configures the animation panel.
-     *
-     * @param can      The bounding rectangle of the canvas.
-     * @param dt       The primary drawing target.
-     * @param overview The overview drawing target.
-     * @param m        The panel containing the canvas.
-     * @param ti       The top-level interface.
-     */
+	/**
+	 * Constructor for GeneralCanvas. Initializes a new canvas with given
+	 * parameters, sets up drawing targets, and configures the animation panel.
+	 *
+	 * @param can      The bounding rectangle of the canvas.
+	 * @param dt       The primary drawing target.
+	 * @param overview The overview drawing target.
+	 * @param m        The panel containing the canvas.
+	 * @param ti       The top-level interface.
+	 */
 	public GeneralCanvas(DRectangle can, DrawingTarget dt, DrawingTarget overview, JPanel m, TopInterface ti) {
 		topInterface = ti;
 		animPanel = new AnimationPanel(m);
@@ -133,107 +145,144 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		sec = new DSector(new DPoint(wholeCanvas.x / 2, wholeCanvas.y / 2), 50, 50);
 	}
 
-    /**
-     * Abstract method to get the current operation's name.
-     *
-     * @return The name of the current operation.
-     */
+	/**
+	 * Abstract method to get the current operation's name.
+	 *
+	 * @return The name of the current operation.
+	 */
 	abstract protected String getCurrentOperationName();
-
+	
+	
 	protected OpFeature getCurrentOpFeature() {
-	    int op = getCurrentOperation();
-	    return safeGetOpFeature(op);
-	}
-
-	/**
-	 * Safely gets the OpFeature object for the given operation ID.
-	 *
-	 * @param operationId The ID of the operation.
-	 * @return The corresponding OpFeature object, or a default one if not found.
-	 */
-	private OpFeature safeGetOpFeature(int operationId) {
-	    for (OpFeature feature : opFeature) {
-	        if (feature.ID == operationId) {
-	            return feature;
-	        }
-	    }
-	    return getDefaultOpFeature(); // Return a default feature or handle it as needed
-	}
-
-	/**
-	 * Provides a default OpFeature object to handle undefined operations.
-	 *
-	 * @return A default OpFeature object.
-	 */
-	private OpFeature getDefaultOpFeature() {
-	    // Define and return a default OpFeature object
-	    // Adjust the default feature details as per your requirement
-	    return new OpFeature("DefaultOperation", -1, "Default help text", "H1", "H2", "H3", 0);
-	}
-
-	/**
-	 * Method to get the current operation's ID based on its name.
-	 *
-	 * @return The ID of the current operation, or a default value if the name is unrecognized.
-	 */
-	protected int getCurrentOperation() {
-	    String opName = getCurrentOperationName();
-	    if (opName == null) {
-	        return handleUndefinedOperation(); // Handle the case where operation name is null
-	    }
-	    for (int i = 0; i < opFeature.length; i++) {
-	        if (opFeature[i].name.equals(opName)) {
-	            return opFeature[i].ID;
-	        }
-	    }
-	    return handleUndefinedOperation(); // Handle the case where operation name is unrecognized
-	}
-
-	/**
-	 * Handle undefined operations by returning a default operation ID or taking other appropriate actions.
-	 *
-	 * @return Default operation ID or an appropriate value indicating undefined operation.
-	 */
-	private int handleUndefinedOperation() {
-	    // Log error, show default operation, or return a special value indicating undefined operation.
-	    // For example, return -1 or a specific ID for a default operation.
-	    return -1; // or any appropriate default value
+		int i;
+		int op = getCurrentOperation();
+		for (i = 0; i < opFeature.length; i++)
+			if (opFeature[i] != null) {
+				if (opFeature[i].ID == op)
+					break;
+			}
+		if (i >= opFeature.length) {
+			return null;
+		}
+		return opFeature[i].getFeature();
 	}
 
     /**
-     * Abstract method to get the search mode mask for the current operation.
+     * Abstract method to get the current operation's ID.
      *
-     * @return The search mode mask.
+     * @return The ID of the current operation.
      */
+	protected int getCurrentOperation() {
+		String op = getCurrentOperationName();
+		if (op != null) {
+			for (int i = 0; i < opFeature.length; i++)
+				if (opFeature[i] != null) {
+					if (opFeature[i].name.equals(op))
+						return opFeature[i].ID;
+				}
+		}
+		return -1;
+	}
+
+//	protected OpFeature getCurrentOpFeature() {
+//		int op = getCurrentOperation();
+//		return safeGetOpFeature(op);
+//	}
+//
+//	/**
+//	 * Safely gets the OpFeature object for the given operation ID.
+//	 *
+//	 * @param operationId The ID of the operation.
+//	 * @return The corresponding OpFeature object, or a default one if not found.
+//	 */
+//	private OpFeature safeGetOpFeature(int operationId) {
+//		for (OpFeature feature : opFeature) {
+//			if (feature.ID == operationId) {
+//				return feature;
+//			}
+//		}
+//		return getDefaultOpFeature(); // Return a default feature or handle it as needed
+//	}
+//
+//	/**
+//	 * Provides a default OpFeature object to handle undefined operations.
+//	 *
+//	 * @return A default OpFeature object.
+//	 */
+//	private OpFeature getDefaultOpFeature() {
+//		// Define and return a default OpFeature object
+//		// Adjust the default feature details as per your requirement
+//		return new OpFeature("DefaultOperation", -1, "Default help text", "H1", "H2", "H3", 0);
+//	}
+//
+//	/**
+//	 * Method to get the current operation's ID based on its name.
+//	 *
+//	 * @return The ID of the current operation, or a default value if the name is
+//	 *         unrecognized.
+//	 */
+//	protected int getCurrentOperation() {
+//		String opName = getCurrentOperationName();
+//		if (opName == null) {
+//			return handleUndefinedOperation(); // Handle the case where operation name is null
+//		}
+//		for (OpFeature element : opFeature) {
+//			if (element.name.equals(opName)) {
+//				return element.ID;
+//			}
+//		}
+//		return handleUndefinedOperation(); // Handle the case where operation name is unrecognized
+//	}
+//
+//	/**
+//	 * Handle undefined operations by returning a default operation ID or taking
+//	 * other appropriate actions.
+//	 *
+//	 * @return Default operation ID or an appropriate value indicating undefined
+//	 *         operation.
+//	 */
+//	private int handleUndefinedOperation() {
+//		// Log error, show default operation, or return a special value indicating
+//		// undefined operation.
+//		// For example, return -1 or a specific ID for a default operation.
+//		return -1; // or any appropriate default value
+//	}
+
+	/**
+	 * Abstract method to get the search mode mask for the current operation.
+	 *
+	 * @return The search mode mask.
+	 */
 	abstract protected int getSearchModeMask();
 
-    /**
-     * Abstract method to get the allowed overlap query objects for the current operation.
-     *
-     * @return The allowed overlap query objects.
-     */
+	/**
+	 * Abstract method to get the allowed overlap query objects for the current
+	 * operation.
+	 *
+	 * @return The allowed overlap query objects.
+	 */
 	abstract protected int getAllowedOverlapQueryObjects();
 
-    /**
-     * Abstract method to perform the 'nearest' operation.
-     *
-     * @param p   The query object for the 'nearest' operation.
-     * @param dist The distance for the 'nearest' operation.
-     * @param off The drawing targets.
-     */
+	/**
+	 * Abstract method to perform the 'nearest' operation.
+	 *
+	 * @param p    The query object for the 'nearest' operation.
+	 * @param dist The distance for the 'nearest' operation.
+	 * @param off  The drawing targets.
+	 */
 	abstract protected void nearest(QueryObject p, double dist, DrawingTarget[] off);
 
 	/**
-     * Abstract method to perform the 'search' operation.
-     *
-     * @param s   The query object for the 'search' operation.
-     * @param off The drawing targets.
-     */
+	 * Abstract method to perform the 'search' operation.
+	 *
+	 * @param s   The query object for the 'search' operation.
+	 * @param off The drawing targets.
+	 */
 	abstract protected void search(QueryObject s, DrawingTarget[] off);
 
-    /**
-     * Abstract method to set the help text for the current operation.
-     */
+	/**
+	 * Abstract method to set the help text for the current operation.
+	 */
 	protected void setHelp() {
 		OpFeature of = getCurrentOpFeature();
 		topInterface.getHelpArea().setText(Tools.formatHelp(of.helpText, topInterface.getHelpArea().getColumns()));
@@ -242,6 +291,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 
 	// abstract protected void setHelp();
 
+	@Override
 	public void itemStateChanged(ItemEvent ie) {
 		// operation selection has changed
 		polyRange = new Vector();
@@ -273,8 +323,9 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	}
 
 	/**
-     * Class representing an animation panel with controls for starting, pausing, and stopping the animation.
-     */
+	 * Class representing an animation panel with controls for starting, pausing,
+	 * and stopping the animation.
+	 */
 	class AnimationPanel implements ActionListener, AdjustmentListener {
 		final String RUNMODE_CONTINUOUS_S = "continuous";
 		final String RUNMODE_OBJECT_S = "stop on object";
@@ -286,10 +337,10 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		JComboBox runmode;
 
 		/**
-         * Constructs an AnimationPanel with controls for animation.
-         *
-         * @param r The panel containing the animation controls.
-         */
+		 * Constructs an AnimationPanel with controls for animation.
+		 *
+		 * @param r The panel containing the animation controls.
+		 */
 		AnimationPanel(JPanel r) {
 			JScrollBar ranger;
 			r.setLayout(new GridLayout(4, 1));
@@ -297,7 +348,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			JPanel anim = new JPanel();
 			anim.setLayout(new GridLayout(1, 2));
 			anim.add(new JLabel("Speed"));
-			ranger = new JScrollBar(JScrollBar.HORIZONTAL, 5, 1, 0, 10);
+			ranger = new JScrollBar(Adjustable.HORIZONTAL, 5, 1, 0, 10);
 			setWaitTime(100 * (15 - ranger.getValue()));
 			anim.add(ranger);
 			r.add(anim);
@@ -307,7 +358,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			JPanel progressPanel = new JPanel();
 			progressPanel.setLayout(new GridLayout(1, 2));
 			progressPanel.add(new JLabel("Progress"));
-			progressPanel.add(progress = new JScrollBar(JScrollBar.HORIZONTAL, 0, 1, 0, 10));
+			progressPanel.add(progress = new JScrollBar(Adjustable.HORIZONTAL, 0, 1, 0, 10));
 			r.add(progressPanel);
 
 			new MouseHelp(progress, topInterface.getMouseDisplay(), "Drag to view animation progress", "", "");
@@ -341,34 +392,34 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			stop.addActionListener(this);
 		}
 
-        /**
-         * Sets the overlap mode for the animation panel.
-         */		
+		/**
+		 * Sets the overlap mode for the animation panel.
+		 */
 		void setOverlap() {
 			if (runmode.getItemCount() == 2)
 				runmode.addItem(RUNMODE_SUCCESS_S);
 		}
 
-        /**
-         * Sets the nearest mode for the animation panel.
-         */
+		/**
+		 * Sets the nearest mode for the animation panel.
+		 */
 		void setNearest() {
 			if (runmode.getItemCount() == 3)
 				runmode.removeItem(RUNMODE_SUCCESS_S);
 		}
 
-        /**
-         * Initializes the progress bar with the specified number of steps.
-         *
-         * @param nrSteps The number of steps for the progress bar.
-         */
+		/**
+		 * Initializes the progress bar with the specified number of steps.
+		 *
+		 * @param nrSteps The number of steps for the progress bar.
+		 */
 		void initProgress(int nrSteps) {
 			progress.setMaximum(nrSteps);
 		}
 
-        /**
-         * Resets the buttons in the animation panel.
-         */
+		/**
+		 * Resets the buttons in the animation panel.
+		 */
 		void resetButtons() {
 			start.setLabel("Start");
 			pauseresume.setLabel("Pause");
@@ -377,11 +428,11 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			stop.setEnabled(false);
 		}
 
-        /**
-         * Gets the success mode based on the selected run mode.
-         *
-         * @return The success mode.
-         */
+		/**
+		 * Gets the success mode based on the selected run mode.
+		 *
+		 * @return The success mode.
+		 */
 		int getSuccess() {
 			if (runmode.getSelectedItem().equals(RUNMODE_CONTINUOUS_S))
 				return CommonConstants.RUNMODE_CONTINUOUS;
@@ -393,11 +444,12 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			return -1;
 		}
 
-        /**
-         * Handles adjustment events for sliders.
-         *
-         * @param ae The adjustment event.
-         */
+		/**
+		 * Handles adjustment events for sliders.
+		 *
+		 * @param ae The adjustment event.
+		 */
+		@Override
 		public void adjustmentValueChanged(AdjustmentEvent ae) {
 			if (ae.getSource() != progress)
 				setWaitTime(100 * (15 - ae.getValue()));
@@ -405,20 +457,21 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 				setProgress(progress.getValue());
 		}
 
-        /**
-         * Sets the pause state for the animation panel.
-         */
+		/**
+		 * Sets the pause state for the animation panel.
+		 */
 		public void setPause() {
 			pauseresume.setLabel("Resume");
 			pauseresumehelp.backHelp();
 			pauseresumehelp.show();
 		}
 
-        /**
-         * Handles action events for buttons.
-         *
-         * @param ae The action event.
-         */
+		/**
+		 * Handles action events for buttons.
+		 *
+		 * @param ae The action event.
+		 */
+		@Override
 		public void actionPerformed(ActionEvent ae) {
 			Object src = ae.getSource();
 			if (runningThread == null)
@@ -452,50 +505,50 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 
 	/* ------------- file load / save ------------ */
 
-    /**
-     * Abstract method to get the applet type.
-     *
-     * @return The applet type.
-     */
+	/**
+	 * Abstract method to get the applet type.
+	 *
+	 * @return The applet type.
+	 */
 	public abstract int getAppletType();
 
-    /**
-     * Abstract method to get the count of structures.
-     *
-     * @return The count of structures.
-     */
+	/**
+	 * Abstract method to get the count of structures.
+	 *
+	 * @return The count of structures.
+	 */
 	public abstract int getStructCount();
 
-    /**
-     * Abstract method to get the name of a structure.
-     *
-     * @param i The index of the structure.
-     * @return The name of the structure.
-     */
+	/**
+	 * Abstract method to get the name of a structure.
+	 *
+	 * @param i The index of the structure.
+	 * @return The name of the structure.
+	 */
 	public abstract String getStructName(int i);
 
-    /**
-     * Abstract method to get the current name.
-     *
-     * @return The current name.
-     */
+	/**
+	 * Abstract method to get the current name.
+	 *
+	 * @return The current name.
+	 */
 	public abstract String getCurrentName();
 
-    /**
-     * Clears the canvas.
-     */
+	/**
+	 * Clears the canvas.
+	 */
 	public void clear() {
 		historyList = new Vector<>();
-	};
+	}
 
-    /**
-     * Abstract method to rebuild structures.
-     */
+	/**
+	 * Abstract method to rebuild structures.
+	 */
 	public abstract void rebuild();
 
-    /**
-     * Undoes the last action.
-     */
+	/**
+	 * Undoes the last action.
+	 */
 	public void undo() {
 		// TODO - do more efficiently for structures independent on the insertion order
 		if (historyList.size() > 0) {
@@ -520,30 +573,36 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 
 	/* ----- drawing utilities ----------- */
 
-	// Method to draw the background on a specified DrawingTarget with a default color
+	// Method to draw the background on a specified DrawingTarget with a default
+	// color
+	@Override
 	public void drawBackground(DrawingTarget g) {
 		drawBackground(g, Color.white);
 	}
 
-	// Method to draw the background on a specified DrawingTarget with a specified color
+	// Method to draw the background on a specified DrawingTarget with a specified
+	// color
+	@Override
 	public void drawBackground(DrawingTarget g, Color c) {
 		g.setColor(c);
 		g.fillRect(wholeCanvas.x, wholeCanvas.y, wholeCanvas.width, wholeCanvas.height);
 	}
 
 	// Abstract method to draw the contents on a specified DrawingTarget
+	@Override
 	abstract public void drawContents(DrawingTarget g);
 
 	// Method to draw a grid on a specified DrawingTarget
+	@Override
 	public void drawGrid(DrawingTarget g) {
-	    // Check if grid should be drawn
+		// Check if grid should be drawn
 		if (gridLevel == 0 || !gridOn)
 			return;
 		g.setColor(Color.lightGray);
 		double canvasWidth = Math.min(wholeCanvas.width, wholeCanvas.height);
 		double add = canvasWidth / (int) Math.pow(2, gridLevel);
 
-	    // Draw horizontal and vertical lines to form the grid
+		// Draw horizontal and vertical lines to form the grid
 		for (double line = add; line < canvasWidth; line += add) {
 			g.drawLine(wholeCanvas.x, wholeCanvas.y + line, wholeCanvas.x + wholeCanvas.width, wholeCanvas.y + line);
 			g.drawLine(wholeCanvas.x + line, wholeCanvas.y, wholeCanvas.x + line, wholeCanvas.y + wholeCanvas.height);
@@ -585,7 +644,8 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 					.directDraw(Color.orange, offscrG);
 	}
 
-	// Method to redraw the polygon by drawing orange lines between consecutive points
+	// Method to redraw the polygon by drawing orange lines between consecutive
+	// points
 	protected void redrawPolygon() {
 		offscrG.redraw();
 		for (int i = 0; i < polyRange.size(); i++)
@@ -611,22 +671,26 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	}
 
 	// Method to set the progress bar value
+	@Override
 	public void setProgressBar(int step) {
 		animPanel.progress.setValue(step);
 		animPanel.progress.validate();
 	}
 
 	// Method to initialize the progress bar with a given step
+	@Override
 	public void initProgress(int step) {
 		animPanel.initProgress(step);
 	}
 
 	// Method to get the delay time
+	@Override
 	public int getDelay() {
 		return waitTime;
 	}
 
 	// Method to get the success mode from the animation panel
+	@Override
 	public int getSuccessMode() {
 		return animPanel.getSuccess();
 	}
@@ -676,6 +740,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	}
 
 	// Method to set the animation panel to pause state
+	@Override
 	public void setPause() {
 		animPanel.setPause();
 	}
@@ -693,6 +758,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	}
 
 	// Synchronized method to reset the animation panel buttons
+	@Override
 	public synchronized void reset() {
 		animPanel.resetButtons();
 	}
@@ -740,7 +806,8 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 
 	}
 
-	// Class extending OpFeature to include an array of features and an evaluation function
+	// Class extending OpFeature to include an array of features and an evaluation
+	// function
 	public class OpFeatures extends OpFeature {
 		private OpFeature[] oa;
 		private IDEval ie;
@@ -751,10 +818,11 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			this.ie = ie;
 		}
 
+		@Override
 		public OpFeature getFeature() {
-			for (int i = 0; i < oa.length; i++)
-				if (oa[i].ID == ie.getValue()) {
-					return oa[i];
+			for (OpFeature element : oa)
+				if (element.ID == ie.getValue()) {
+					return element;
 				}
 			return null;
 		}
@@ -793,18 +861,22 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	}
 
 	// Handles mouse enter events
+	@Override
 	public void mouseEntered(MouseEvent me) {
-	};
+	}
 
 	// Handles mouse exit events
+	@Override
 	public void mouseExited(MouseEvent me) {
-	};
+	}
 
 	// Handles mouse click events
+	@Override
 	public void mouseClicked(MouseEvent me) {
 	}
 
 	// Handles mouse press events
+	@Override
 	public void mousePressed(MouseEvent me) {
 		Point scrCoord = offscrG.adjustPoint(me.getPoint());
 		DPoint p = offscrG.transPointT(scrCoord);
@@ -902,7 +974,8 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		// mouseDragged(me);
 	}
 
-    // Handles mouse move events
+	// Handles mouse move events
+	@Override
 	public void mouseMoved(MouseEvent me) {
 		int op = getCurrentOperation();
 		DPoint p = offscrG.transPointT(offscrG.adjustPoint(me.getPoint()));
@@ -925,7 +998,8 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		}
 	}
 
-    // Handles mouse drag events
+	// Handles mouse drag events
+	@Override
 	public void mouseDragged(MouseEvent me) {
 		// System.out.println("IN");
 
@@ -954,7 +1028,8 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		// System.out.println("OUT");
 	}
 
-    // Handles mouse release events
+	// Handles mouse release events
+	@Override
 	public void mouseReleased(MouseEvent me) {
 		Point scrCoord = offscrG.adjustPoint(me.getPoint());
 		DPoint p = offscrG.transPointT(scrCoord);

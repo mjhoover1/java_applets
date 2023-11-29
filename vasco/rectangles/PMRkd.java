@@ -1,5 +1,12 @@
 package vasco.rectangles;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.util.Vector;
+
+// import java.awt.*;
+import javax.swing.JComboBox;
+
 /**
  * PMRkd - PMR Rectangle k-d Tree
  *
@@ -7,16 +14,27 @@ package vasco.rectangles;
  *
  * @version $Id: PMRkd.java,v 1.2 2004/11/20 22:38:48 brabec Exp $
  */
-import vasco.common.*;
-import javax.swing.*; // import java.awt.*;
-
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.util.*;
-import vasco.drawable.*;
+import vasco.common.Bucket;
+import vasco.common.BucketIface;
+import vasco.common.DPoint;
+import vasco.common.DRectangle;
+import vasco.common.DrawingTarget;
+import vasco.common.MaxDecomp;
+import vasco.common.MaxDecompIface;
+import vasco.common.NNElement;
+import vasco.common.QueryObject;
+import vasco.common.QueueBlock;
+import vasco.common.RebuildTree;
+import vasco.common.SVElement;
+import vasco.common.SearchVector;
+import vasco.common.TopInterface;
+import vasco.common.YellowBlock;
+import vasco.drawable.Drawable;
+import vasco.drawable.NNDrawable;
 
 /**
- * PMRkd class represents a PMR Rectangle k-d Tree for storing and querying rectangles in two-dimensional space.
+ * PMRkd class represents a PMR Rectangle k-d Tree for storing and querying
+ * rectangles in two-dimensional space.
  */
 class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 
@@ -24,15 +42,15 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	RNode ROOT;
 	int maxDecomp;
 
-    /**
-     * Constructs a PMRkd tree with the given parameters.
-     *
-     * @param can The canvas representing the space.
-     * @param md  The maximum decomposition level.
-     * @param bs  The maximum bucket size.
-     * @param p   The parent interface.
-     * @param r   The rebuild tree.
-     */
+	/**
+	 * Constructs a PMRkd tree with the given parameters.
+	 *
+	 * @param can The canvas representing the space.
+	 * @param md  The maximum decomposition level.
+	 * @param bs  The maximum bucket size.
+	 * @param p   The parent interface.
+	 * @param r   The rebuild tree.
+	 */
 	public PMRkd(DRectangle can, int md, int bs, TopInterface p, RebuildTree r) {
 		super(can, p, r);
 		ROOT = null;
@@ -45,7 +63,8 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	 *
 	 * @param c The choice used for reinitialization.
 	 */
-	public void reInit(JComboBox c) {
+	@Override
+	public void reInit(JComboBox<String> c) {
 		super.reInit(c);
 		ROOT = null;
 		new MaxDecomp(topInterface, 18, this);
@@ -55,6 +74,7 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	/**
 	 * Clears the PMR Rectangle k-d Tree.
 	 */
+	@Override
 	public void Clear() {
 		super.Clear();
 		ROOT = null;
@@ -65,6 +85,7 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	 *
 	 * @return True if order is dependent, false otherwise.
 	 */
+	@Override
 	public boolean orderDependent() {
 		return true;
 	}
@@ -75,6 +96,7 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	 * @param t The rectangle to insert.
 	 * @return True if the insertion was successful, false otherwise.
 	 */
+	@Override
 	public boolean Insert(DRectangle t) {
 		boolean res = true;
 		if (ROOT == null) {
@@ -98,6 +120,7 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	 *
 	 * @param qu The point to delete.
 	 */
+	@Override
 	public void Delete(DPoint qu) {
 		if (ROOT != null) {
 			PMRkdIncNearest kdin = new PMRkdIncNearest(ROOT);
@@ -116,6 +139,7 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	 *
 	 * @param qu The drawable object to delete.
 	 */
+	@Override
 	public void DeleteDirect(Drawable qu) {
 		if (ROOT != null) {
 			DRectangle p = (DRectangle) qu;
@@ -134,6 +158,7 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	 * @param qu The query object.
 	 * @return A SearchVector containing the nearest neighbor.
 	 */
+	@Override
 	public SearchVector Nearest(QueryObject qu) {
 		SearchVector v = new SearchVector();
 		if (ROOT != null) {
@@ -148,8 +173,10 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	 *
 	 * @param qu   The query object.
 	 * @param dist The maximum distance to consider.
-	 * @return A SearchVector containing the nearest neighbor(s) within the specified distance.
+	 * @return A SearchVector containing the nearest neighbor(s) within the
+	 *         specified distance.
 	 */
+	@Override
 	public SearchVector Nearest(QueryObject qu, double dist) {
 		SearchVector v = new SearchVector();
 		if (ROOT != null) {
@@ -165,6 +192,7 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	 * @param p The query object.
 	 * @return The nearest neighbor as a Drawable object.
 	 */
+	@Override
 	public Drawable NearestFirst(QueryObject p) {
 		if (ROOT == null)
 			return null;
@@ -179,6 +207,7 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	 * @param dist The maximum distance to consider.
 	 * @return An array of Drawable objects within the specified range.
 	 */
+	@Override
 	public Drawable[] NearestRange(QueryObject p, double dist) {
 		if (ROOT == null)
 			return null;
@@ -187,12 +216,14 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	}
 
 	/**
-	 * Searches the PMR Rectangle k-d Tree for objects matching the query object and mode.
+	 * Searches the PMR Rectangle k-d Tree for objects matching the query object and
+	 * mode.
 	 *
 	 * @param query The query object.
 	 * @param mode  The search mode.
 	 * @return A SearchVector containing the matching objects.
 	 */
+	@Override
 	public SearchVector Search(QueryObject query, int mode) {
 		processedRectangles = new Vector();
 		SearchVector sv = new SearchVector();
@@ -202,11 +233,13 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	}
 
 	/**
-	 * Draws the contents of the PMR Rectangle k-d Tree on a drawing target within the specified view.
+	 * Draws the contents of the PMR Rectangle k-d Tree on a drawing target within
+	 * the specified view.
 	 *
 	 * @param g    The drawing target.
 	 * @param view The view rectangle.
 	 */
+	@Override
 	public void drawContents(DrawingTarget g, Rectangle view) {
 		if (ROOT != null)
 			drawC(ROOT, g, true, wholeCanvas, view);
@@ -217,45 +250,49 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	 *
 	 * @return The name of the PMR Rectangle k-d Tree.
 	 */
+	@Override
 	public String getName() {
 		return "PMR Rectangle k-d Tree";
 	}
 
 	/* ---------------- interface implementation ---------- */
-    /**
-     * Retrieves the maximum decomposition level.
-     *
-     * @return The maximum decomposition level.
-     */
+	/**
+	 * Retrieves the maximum decomposition level.
+	 *
+	 * @return The maximum decomposition level.
+	 */
+	@Override
 	public int getMaxDecomp() {
 		return maxDecomp;
 	}
 
-    /**
-     * Sets the maximum decomposition level.
-     *
-     * @param b The maximum decomposition level to set.
-     */
+	/**
+	 * Sets the maximum decomposition level.
+	 *
+	 * @param b The maximum decomposition level to set.
+	 */
+	@Override
 	public void setMaxDecomp(int b) {
 		maxDecomp = b;
 		reb.rebuild();
 	}
 
-    /**
-     * Retrieves the maximum bucket size.
-     *
-     * @return The maximum bucket size.
-     */
+	/**
+	 * Retrieves the maximum bucket size.
+	 *
+	 * @return The maximum bucket size.
+	 */
+	@Override
 	public int getBucket() {
 		return maxBucketSize;
 	}
 
-
-    /**
-     * Sets the maximum bucket size.
-     *
-     * @param b The maximum bucket size to set.
-     */
+	/**
+	 * Sets the maximum bucket size.
+	 *
+	 * @param b The maximum bucket size to set.
+	 */
+	@Override
 	public void setBucket(int b) {
 		maxBucketSize = b;
 		reb.rebuild();
@@ -266,16 +303,18 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	Vector searchVector;
 	Vector processedRectangles;
 
-    /**
-     * This private method is used to search for rectangles within a specified query area.
-     *
-     * @param r      The root node of the k-d tree.
-     * @param query  The query object representing the search area.
-     * @param xcoord A boolean indicating whether the search is based on x-coordinate.
-     * @param block  The current block representing the search area.
-     * @param v      The search vector to store the results.
-     * @param mode   The search mode.
-     */
+	/**
+	 * This private method is used to search for rectangles within a specified query
+	 * area.
+	 *
+	 * @param r      The root node of the k-d tree.
+	 * @param query  The query object representing the search area.
+	 * @param xcoord A boolean indicating whether the search is based on
+	 *               x-coordinate.
+	 * @param block  The current block representing the search area.
+	 * @param v      The search vector to store the results.
+	 * @param mode   The search mode.
+	 */
 	private void search(RNode r, QueryObject query, boolean xcoord, DRectangle block, SearchVector v, int mode) {
 		v.addElement(new SVElement(new YellowBlock(block, r == null || r.NODETYPE != GRAY), searchVector));
 
@@ -297,7 +336,7 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 			return;
 		}
 
-		if (xcoord) {             // Code for x-coordinate search
+		if (xcoord) { // Code for x-coordinate search
 			DRectangle left = new DRectangle(block.x, block.y, block.width / 2, block.height);
 			DRectangle right = new DRectangle(block.x + block.width / 2, block.y, block.width / 2, block.height);
 			if (!query.intersects(left))
@@ -310,7 +349,7 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 				searchVector.removeElementAt(searchVector.size() - 1);
 				search(r.son[RIGHT], query, !xcoord, right, v, mode);
 			}
-		} else {             // Code for y-coordinate search
+		} else { // Code for y-coordinate search
 			DRectangle left = new DRectangle(block.x, block.y, block.width, block.height / 2);
 			DRectangle right = new DRectangle(block.x, block.y + block.height / 2, block.width, block.height / 2);
 			if (!query.intersects(left))
@@ -326,16 +365,17 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 		}
 	}
 
-    /**
-     * Inserts a rectangle into the k-d tree.
-     *
-     * @param p      The rectangle to insert.
-     * @param r      The root node of the k-d tree.
-     * @param xcoord A boolean indicating whether the insertion is based on x-coordinate.
-     * @param block  The current block representing the search area.
-     * @param md     The maximum depth for insertion.
-     * @return True if the insertion was successful, false otherwise.
-     */
+	/**
+	 * Inserts a rectangle into the k-d tree.
+	 *
+	 * @param p      The rectangle to insert.
+	 * @param r      The root node of the k-d tree.
+	 * @param xcoord A boolean indicating whether the insertion is based on
+	 *               x-coordinate.
+	 * @param block  The current block representing the search area.
+	 * @param md     The maximum depth for insertion.
+	 * @return True if the insertion was successful, false otherwise.
+	 */
 	boolean insert(DRectangle p, RNode r, boolean xcoord, DRectangle block, int md) {
 		boolean ok = md > 0;
 
@@ -403,14 +443,15 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 		return ok;
 	}
 
-    /**
-     * Deletes a rectangle from the k-d tree.
-     *
-     * @param del    The rectangle to delete.
-     * @param r      The root node of the k-d tree.
-     * @param xcoord A boolean indicating whether the deletion is based on x-coordinate.
-     * @param block  The current block representing the search area.
-     */
+	/**
+	 * Deletes a rectangle from the k-d tree.
+	 *
+	 * @param del    The rectangle to delete.
+	 * @param r      The root node of the k-d tree.
+	 * @param xcoord A boolean indicating whether the deletion is based on
+	 *               x-coordinate.
+	 * @param block  The current block representing the search area.
+	 */
 	private void delete(DRectangle del, RNode r, boolean xcoord, DRectangle block) {
 		if (xcoord) {
 			if (del.x < block.x + block.width / 2) {
@@ -462,11 +503,12 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	/**
 	 * Draws the given RNode in a drawing target using the specified parameters.
 	 *
-	 * @param r       The RNode to draw.
-	 * @param g       The drawing target.
-	 * @param xcoord  Indicates whether to draw based on x-coordinates or y-coordinates.
-	 * @param block   The DRectangle representing the block to draw within.
-	 * @param view    The Rectangle representing the view.
+	 * @param r      The RNode to draw.
+	 * @param g      The drawing target.
+	 * @param xcoord Indicates whether to draw based on x-coordinates or
+	 *               y-coordinates.
+	 * @param block  The DRectangle representing the block to draw within.
+	 * @param view   The Rectangle representing the view.
 	 */
 	private void drawC(RNode r, DrawingTarget g, boolean xcoord, DRectangle block, Rectangle view) {
 		if (!g.visible(block))
@@ -500,9 +542,9 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 		}
 	}
 
-    /**
-     * This class represents a queue element for the k-d tree search.
-     */
+	/**
+	 * This class represents a queue element for the k-d tree search.
+	 */
 	abstract class PMRkdQueueElement {
 		double[] keys;
 
@@ -511,7 +553,6 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 		}
 	}
 
-	
 	/**
 	 * Represents a leaf node in the PMRkdQueue.
 	 */
@@ -550,11 +591,11 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 			v = new Vector();
 		}
 
-	    /**
-	     * Enqueues a PMRkdQueueElement in the queue.
-	     *
-	     * @param qe The PMRkdQueueElement to enqueue.
-	     */
+		/**
+		 * Enqueues a PMRkdQueueElement in the queue.
+		 *
+		 * @param qe The PMRkdQueueElement to enqueue.
+		 */
 		void Enqueue(PMRkdQueueElement qe) {
 			v.addElement(qe);
 			for (int i = v.size() - 1; i > 0; i--) {
@@ -596,48 +637,49 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 			}
 		}
 
-	    /**
-	     * Gets the first element in the queue.
-	     *
-	     * @return The first element in the queue.
-	     */
+		/**
+		 * Gets the first element in the queue.
+		 *
+		 * @return The first element in the queue.
+		 */
 		PMRkdQueueElement First() {
 			PMRkdQueueElement q = (PMRkdQueueElement) v.elementAt(0);
 			return q;
 		}
 
-	    /**
-	     * Deletes the first element in the queue.
-	     */
+		/**
+		 * Deletes the first element in the queue.
+		 */
 		void DeleteFirst() {
 			v.removeElementAt(0);
 		}
 
-	    /**
-	     * Dequeues and returns the first element in the queue.
-	     *
-	     * @return The dequeued element.
-	     */
+		/**
+		 * Dequeues and returns the first element in the queue.
+		 *
+		 * @return The dequeued element.
+		 */
 		PMRkdQueueElement Dequeue() {
 			PMRkdQueueElement q = (PMRkdQueueElement) v.elementAt(0);
 			v.removeElementAt(0);
 			return q;
 		}
 
-	    /**
-	     * Checks if the queue is empty.
-	     *
-	     * @return True if the queue is empty, false otherwise.
-	     */
+		/**
+		 * Checks if the queue is empty.
+		 *
+		 * @return True if the queue is empty, false otherwise.
+		 */
 		boolean isEmpty() {
 			return (v.size() == 0);
 		}
 
-	    /**
-	     * Creates a Vector representation of the queue elements.
-	     *
-	     * @return A Vector containing queue elements as GreenRect or QueueBlock objects.
-	     */
+		/**
+		 * Creates a Vector representation of the queue elements.
+		 *
+		 * @return A Vector containing queue elements as GreenRect or QueueBlock
+		 *         objects.
+		 */
 		Vector makeVector() {
 			Vector r = new Vector();
 			for (int i = 0; i < v.size(); i++) {
@@ -653,64 +695,67 @@ class PMRkd extends RectangleStructure implements BucketIface, MaxDecompIface {
 	}
 
 	/**
-	 * This class represents a utility for performing incremental nearest neighbor queries on a k-d tree.
+	 * This class represents a utility for performing incremental nearest neighbor
+	 * queries on a k-d tree.
 	 */
 	class PMRkdIncNearest {
 
 		PMRkdQueue q;
 
-	    /**
-	     * Constructs a new PMRkdIncNearest instance with the given root RNode.
-	     *
-	     * @param rt The root RNode of the k-d tree.
-	     */
+		/**
+		 * Constructs a new PMRkdIncNearest instance with the given root RNode.
+		 *
+		 * @param rt The root RNode of the k-d tree.
+		 */
 		PMRkdIncNearest(RNode rt) {
 			q = new PMRkdQueue();
 			double[] zero = { 0, 0 };
 			q.Enqueue(new PMRkdQINode(zero, rt, wholeCanvas, true));
 		}
 
-	    /**
-	     * Performs a nearest neighbor query using the given QueryObject.
-	     *
-	     * @param qu The QueryObject representing the query.
-	     * @return The nearest neighbor DRectangle found, or null if none is found.
-	     */
+		/**
+		 * Performs a nearest neighbor query using the given QueryObject.
+		 *
+		 * @param qu The QueryObject representing the query.
+		 * @return The nearest neighbor DRectangle found, or null if none is found.
+		 */
 		DRectangle Query(QueryObject qu) {
 			DRectangle[] ar = Query(qu, new SearchVector(), Double.MAX_VALUE, 1);
 			return (ar.length == 0) ? null : ar[0];
 		}
 
-	    /**
-	     * Performs a nearest neighbor query using the given QueryObject and stores the result in the given SearchVector.
-	     *
-	     * @param qu The QueryObject representing the query.
-	     * @param v  The SearchVector to store the query result.
-	     */
+		/**
+		 * Performs a nearest neighbor query using the given QueryObject and stores the
+		 * result in the given SearchVector.
+		 *
+		 * @param qu The QueryObject representing the query.
+		 * @param v  The SearchVector to store the query result.
+		 */
 		void Query(QueryObject qu, SearchVector v) {
 			Query(qu, v, Double.MAX_VALUE, Integer.MAX_VALUE);
 		}
 
-	    /**
-	     * Performs a nearest neighbor query using the given QueryObject and maximum distance.
-	     *
-	     * @param qu   The QueryObject representing the query.
-	     * @param dist The maximum distance for the query.
-	     * @return An array of DRectangles representing the query results.
-	     */
+		/**
+		 * Performs a nearest neighbor query using the given QueryObject and maximum
+		 * distance.
+		 *
+		 * @param qu   The QueryObject representing the query.
+		 * @param dist The maximum distance for the query.
+		 * @return An array of DRectangles representing the query results.
+		 */
 		DRectangle[] Query(QueryObject qu, double dist) {
 			return Query(qu, new SearchVector(), dist, Integer.MAX_VALUE);
 		}
 
-	    /**
-	     * Private helper method for performing the nearest neighbor query.
-	     *
-	     * @param qu      The QueryObject representing the query.
-	     * @param ret     The SearchVector to store the query result.
-	     * @param dist    The maximum distance for the query.
-	     * @param nrelems The maximum number of query results to retrieve.
-	     * @return An array of DRectangles representing the query results.
-	     */
+		/**
+		 * Private helper method for performing the nearest neighbor query.
+		 *
+		 * @param qu      The QueryObject representing the query.
+		 * @param ret     The SearchVector to store the query result.
+		 * @param dist    The maximum distance for the query.
+		 * @param nrelems The maximum number of query results to retrieve.
+		 * @return An array of DRectangles representing the query results.
+		 */
 		private DRectangle[] Query(QueryObject qu, SearchVector ret, double dist, int nrelems) {
 			Vector rect = new Vector();
 			final double cf[] = { 0, 0.5 };

@@ -1,33 +1,38 @@
 package vasco.regions;
-import vasco.common.*;
 
-import javax.swing.*; // import java.awt.*;
+import vasco.common.DrawingTarget;
+import vasco.common.GenElement;
 
-public class ConvertGenElement implements GenElement{
-  protected boolean mCopy;
+public class ConvertGenElement implements GenElement {
+	protected boolean mCopy;
 
-  public ConvertGenElement(){
-    mCopy = true;
-  }
+	public ConvertGenElement() {
+		mCopy = true;
+	}
 
-  public boolean makeCopy(){
-    return mCopy;
-  }
+	public boolean makeCopy() {
+		return mCopy;
+	}
 
-  public void fillElementFirst(DrawingTarget g){
-  }
+	@Override
+	public void fillElementFirst(DrawingTarget g) {
+	}
 
-  public void fillElementNext(DrawingTarget g){
-  }
+	@Override
+	public void fillElementNext(DrawingTarget g) {
+	}
 
-  public void drawElementFirst(DrawingTarget g){
-  }
+	@Override
+	public void drawElementFirst(DrawingTarget g) {
+	}
 
-  public void drawElementNext(DrawingTarget g){
-  }
+	@Override
+	public void drawElementNext(DrawingTarget g) {
+	}
 
-  public int pauseMode(){
-    return 0;
-  }
+	@Override
+	public int pauseMode() {
+		return 0;
+	}
 
 }

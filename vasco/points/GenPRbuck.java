@@ -1,53 +1,68 @@
 package vasco.points;
 
+import java.awt.Choice;
+import java.util.Vector;
+
+// import java.awt.*;
+import javax.swing.JComboBox;
+
 /* $Id: GenPRbuck.java,v 1.1.1.1 2002/09/25 05:48:36 brabec Exp $ */
-import vasco.common.*;
-import javax.swing.*; // import java.awt.*;
-import java.util.*;
+import vasco.common.DPoint;
+import vasco.common.DRectangle;
+import vasco.common.RebuildTree;
+import vasco.common.TopInterface;
 
 /**
- * GenPRbuck is an abstract class extending GenericPRbucket.
- * It serves as a foundational class for implementing PR quadtrees with bucketing.
- * This class provides methods for initializing and manipulating the structure of the PR quadtree.
+ * GenPRbuck is an abstract class extending GenericPRbucket. It serves as a
+ * foundational class for implementing PR quadtrees with bucketing. This class
+ * provides methods for initializing and manipulating the structure of the PR
+ * quadtree.
  */
 public abstract class GenPRbuck extends GenericPRbucket {
 
-    /**
-     * Constructor for initializing a new GenPRbuck instance.
-     *
-     * @param can A {@link DRectangle} object defining the canvas area for the quadtree.
-     * @param b   The bucket size for the quadtree.
-     * @param md  The maximum depth of the quadtree.
-     * @param p   A {@link TopInterface} instance for top-level interface interactions.
-     * @param r   A {@link RebuildTree} instance for managing tree rebuilding operations.
-     */
+	/**
+	 * Constructor for initializing a new GenPRbuck instance.
+	 *
+	 * @param can A {@link DRectangle} object defining the canvas area for the
+	 *            quadtree.
+	 * @param b   The bucket size for the quadtree.
+	 * @param md  The maximum depth of the quadtree.
+	 * @param p   A {@link TopInterface} instance for top-level interface
+	 *            interactions.
+	 * @param r   A {@link RebuildTree} instance for managing tree rebuilding
+	 *            operations.
+	 */
 	public GenPRbuck(DRectangle can, int b, int md, TopInterface p, RebuildTree r) {
 		super(can, b, md, p, r);
 	}
 
-    /**
-     * Reinitializes the GenPRbuck instance with new options.
-     *
-     * @param ao A {@link Choice} object containing various options for reinitialization.
-     */
-	public void reInit(JComboBox ao) {
+	/**
+	 * Reinitializes the GenPRbuck instance with new options.
+	 *
+	 * @param ao A {@link Choice} object containing various options for
+	 *           reinitialization.
+	 */
+	@Override
+	public void reInit(JComboBox<String> ao) {
 		super.reInit(ao);
 	}
 
-    /**
-     * Inserts a point into the PR quadtree and updates its structure accordingly.
-     * This method handles the division of nodes and ensures that points are placed correctly.
-     *
-     * @param p    The {@link DPoint} to be inserted.
-     * @param R    The current {@link PRbucketNode} in the quadtree.
-     * @param X    The X-coordinate of the node.
-     * @param Y    The Y-coordinate of the node.
-     * @param lx   The local x-axis length for the node.
-     * @param ly   The local y-axis length for the node.
-     * @param md   The maximum depth for the quadtree.
-     * @param ok   An array of boolean flags indicating the status of insertion.
-     * @return     The updated {@link PRbucketNode} after insertion.
-     */
+	/**
+	 * Inserts a point into the PR quadtree and updates its structure accordingly.
+	 * This method handles the division of nodes and ensures that points are placed
+	 * correctly.
+	 *
+	 * @param p  The {@link DPoint} to be inserted.
+	 * @param R  The current {@link PRbucketNode} in the quadtree.
+	 * @param X  The X-coordinate of the node.
+	 * @param Y  The Y-coordinate of the node.
+	 * @param lx The local x-axis length for the node.
+	 * @param ly The local y-axis length for the node.
+	 * @param md The maximum depth for the quadtree.
+	 * @param ok An array of boolean flags indicating the status of insertion.
+	 * @return The updated {@link PRbucketNode} after insertion.
+	 */
+	@Override
 	PRbucketNode insert(DPoint p, PRbucketNode R, double X, double Y, double lx, double ly, int md, boolean[] ok) {
 		PRbucketNode T, U;
 		int Q;

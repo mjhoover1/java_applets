@@ -1,13 +1,29 @@
 package vasco.points;
 
-/* $Id: GenericPRbucket.java,v 1.2 2007/10/28 15:38:17 jagan Exp $ */
-import vasco.common.*;
-import vasco.drawable.*;
-import javax.swing.*; // import java.awt.*;
-
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.util.*;
+import java.util.Vector;
+
+// import java.awt.*;
+import javax.swing.JComboBox;
+
+/* $Id: GenericPRbucket.java,v 1.2 2007/10/28 15:38:17 jagan Exp $ */
+import vasco.common.BucketIface;
+import vasco.common.DPoint;
+import vasco.common.DRectangle;
+import vasco.common.DrawingTarget;
+import vasco.common.MaxDecomp;
+import vasco.common.MaxDecompIface;
+import vasco.common.NNElement;
+import vasco.common.QueryObject;
+import vasco.common.QueueBlock;
+import vasco.common.RebuildTree;
+import vasco.common.SVElement;
+import vasco.common.SearchVector;
+import vasco.common.TopInterface;
+import vasco.common.YellowBlock;
+import vasco.drawable.Drawable;
+import vasco.drawable.NNDrawable;
 
 /**
  * GenericPRbucket is an abstract class providing a skeletal implementation of a
@@ -94,7 +110,7 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 * Quadtree with specified settings. The GenericPRbucket class represents a PR
 	 * Quadtree with bucketing functionality, used for efficient spatial data
 	 * management.
-	 * 
+	 *
 	 * @param can The bounding rectangle of the spatial area covered by the
 	 *            Quadtree.
 	 * @param b   The maximum number of points (bucket size) allowed in a leaf node
@@ -120,7 +136,8 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 *
 	 * @param ao The choice settings to configure the Quadtree.
 	 */
-	public void reInit(JComboBox ao) {
+	@Override
+	public void reInit(JComboBox<String> ao) {
 		super.reInit(ao);
 		new MaxDecomp(topInterface, 9, this);
 		ao.addItem("Nearest");
@@ -131,6 +148,7 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 * Clears the PR Quadtree, resetting it to its initial state. This method
 	 * removes all points and resets the root of the Quadtree.
 	 */
+	@Override
 	public void Clear() {
 		super.Clear();
 		ROOT = null;
@@ -144,6 +162,7 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 * @param p The point to be inserted.
 	 * @return true if the point is successfully inserted, false otherwise.
 	 */
+	@Override
 	public boolean Insert(DPoint p) {
 		boolean[] ok = new boolean[1];
 		ok[0] = true;
@@ -160,6 +179,7 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 *
 	 * @param p The point to be deleted.
 	 */
+	@Override
 	public void Delete(DPoint p) {
 		if (ROOT == null)
 			return;
@@ -176,6 +196,7 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 *
 	 * @param d The drawable object to be deleted.
 	 */
+	@Override
 	public void DeleteDirect(Drawable d) {
 		if (ROOT == null)
 			return;
@@ -192,6 +213,7 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 * @param mode The search mode (e.g., nearest, within range).
 	 * @return A SearchVector containing the search results.
 	 */
+	@Override
 	public SearchVector Search(QueryObject q, int mode) {
 		SearchVector res = new SearchVector();
 		searchVector = new Vector();
@@ -208,6 +230,7 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 * @return The nearest drawable object to the query point, or null if the tree
 	 *         is empty.
 	 */
+	@Override
 	public Drawable NearestFirst(QueryObject p) {
 		if (ROOT == null)
 			return null;
@@ -223,6 +246,7 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 * @param p The query object for the nearest neighbor search.
 	 * @return A SearchVector containing points nearest to the query object.
 	 */
+	@Override
 	public SearchVector Nearest(QueryObject p) {
 		SearchVector v = new SearchVector();
 		if (ROOT != null) {
@@ -241,6 +265,7 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 * @param dist The maximum distance from the query point.
 	 * @return A SearchVector of points within the specified distance.
 	 */
+	@Override
 	public SearchVector Nearest(QueryObject p, double dist) {
 		SearchVector v = new SearchVector();
 		if (ROOT != null) {
@@ -259,6 +284,7 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 * @param dist The distance range within which to find points.
 	 * @return An array of Drawable objects within the specified distance range.
 	 */
+	@Override
 	public Drawable[] NearestRange(QueryObject p, double dist) {
 		PRbucketIncNearest near = new PRbucketIncNearest(ROOT);
 		return near.Query(p, dist);
@@ -271,6 +297,7 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 * @param g    The drawing target on which to draw the tree contents.
 	 * @param view The view rectangle (currently ignored).
 	 */
+	@Override
 	public void drawContents(DrawingTarget g, Rectangle view) { // view ignored
 		drawC(ROOT, g, wholeCanvas.x, wholeCanvas.y, wholeCanvas.width, wholeCanvas.height);
 	}
@@ -280,9 +307,10 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 * Retrieves the maximum bucket size of the Quadtree. This method provides
 	 * access to the maximum number of points that can be contained within a leaf
 	 * node of the Quadtree.
-	 * 
+	 *
 	 * @return The maximum bucket size.
 	 */
+	@Override
 	public int getBucket() {
 		return maxBucketSize;
 	}
@@ -292,9 +320,10 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 * configuration of the maximum number of points that can be contained within a
 	 * leaf node of the Quadtree. After setting the new bucket size, the Quadtree is
 	 * rebuilt.
-	 * 
+	 *
 	 * @param b The new maximum bucket size to set.
 	 */
+	@Override
 	public void setBucket(int b) {
 		maxBucketSize = b;
 		reb.rebuild();
@@ -303,9 +332,10 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	/**
 	 * Retrieves the maximum decomposition level of the Quadtree. This method
 	 * provides access to the maximum depth to which the Quadtree can be subdivided.
-	 * 
+	 *
 	 * @return The maximum decomposition level.
 	 */
+	@Override
 	public int getMaxDecomp() {
 		return maxDecomp;
 	}
@@ -314,9 +344,10 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	 * Sets the maximum decomposition level of the Quadtree. This method allows the
 	 * configuration of the maximum depth to which the Quadtree can be subdivided.
 	 * After setting the new decomposition level, the Quadtree is rebuilt.
-	 * 
+	 *
 	 * @param b The new maximum decomposition level to set.
 	 */
+	@Override
 	public void setMaxDecomp(int b) {
 		maxDecomp = b;
 		reb.rebuild();
@@ -485,7 +516,8 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 			for (int i = 0; i < r.points.size(); i++) {
 				DPoint p = (DPoint) r.points.elementAt(i);
 				p.draw(g);
-			} else {
+			}
+		else {
 			if (r.NODETYPE == GRAY) {
 				drawC(r.SON[0], g, minx, miny + wy / 2, wx / 2, wy / 2);
 				drawC(r.SON[1], g, minx + wx / 2, miny + wy / 2, wx / 2, wy / 2);
@@ -497,21 +529,22 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 
 	// ----------------------- Incremental Nearest -----------------
 	/**
-	 * Abstract class representing an element in a priority queue used for incremental nearest neighbor search in a PR Quadtree.
-	 * This class serves as a base for different types of elements that can be enqueued in the search process, 
-	 * such as tree nodes or individual points. Each element is associated with a key value 
-	 * used to determine its priority in the queue.
+	 * Abstract class representing an element in a priority queue used for
+	 * incremental nearest neighbor search in a PR Quadtree. This class serves as a
+	 * base for different types of elements that can be enqueued in the search
+	 * process, such as tree nodes or individual points. Each element is associated
+	 * with a key value used to determine its priority in the queue.
 	 */
 	abstract class PRbucketQueueElement {
-	    // Key used for prioritizing this element in the queue
-	    double key;
+		// Key used for prioritizing this element in the queue
+		double key;
 
-	    /**
-	     * Constructs a new PRbucketQueueElement with a specified key.
-	     * The key is used to determine the element's priority in the queue.
-	     * 
-	     * @param k The key value associated with this queue element.
-	     */
+		/**
+		 * Constructs a new PRbucketQueueElement with a specified key. The key is used
+		 * to determine the element's priority in the queue.
+		 *
+		 * @param k The key value associated with this queue element.
+		 */
 		PRbucketQueueElement(double k) {
 			key = k;
 		}

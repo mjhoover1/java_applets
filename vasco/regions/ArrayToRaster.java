@@ -1,50 +1,39 @@
 package vasco.regions;
-import vasco.common.*;
-import javax.swing.*; // import java.awt.*;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.util.*;
-  
-public class ArrayToRaster{ 
-  protected Grid grid;
-  protected Raster raster;
+import java.util.Vector;
 
-  public ArrayToRaster(Grid grid){
-    this.grid = grid;
-    raster = new Raster(this.grid);
-  }
- 
-  public Raster convert(ConvertVector sv){
-    int x;
-    ContainerElement container = null;
+public class ArrayToRaster {
+	protected Grid grid;
+	protected Raster raster;
 
-    sv.constructRegion();
+	public ArrayToRaster(Grid grid) {
+		this.grid = grid;
+		raster = new Raster(this.grid);
+	}
 
-    for(x = 0; x < grid.cellCount; x++){
-	container = new ContainerElement(null, grid, null);
-	container.addElement(new BackgrdElement(grid, new Rectangle(0, 0, 512, 512),  
-						Colors.UNKNOWN));
-	container.addElement(new GridElement(grid, x, grid.cellCount));
+	public Raster convert(ConvertVector sv) {
+		int x;
+		ContainerElement container = null;
 
-	container.addElement(
-	     new RectangleElement( 
-	      new Rectangle(0, x * grid.cellSize, 512, grid.cellSize),
-	      Color.green, 1, false, false));
-	 
-	container.addElement(
-	      new RectangleElement( 
-	       new Rectangle(1, 
-			     x * grid.cellSize + 1, 
-			     512 - 2,  
-			     grid.cellSize - 2),
-	       Color.blue, 1, false, false)); 
+		sv.constructRegion();
 
-	sv.addElement(new ConvertElement(container, new Vector())); 
-    } // for x
+		for (x = 0; x < grid.cellCount; x++) {
+			container = new ContainerElement(null, grid, null);
+			container.addElement(new BackgrdElement(grid, new Rectangle(0, 0, 512, 512), Colors.UNKNOWN));
+			container.addElement(new GridElement(grid, x, grid.cellCount));
 
-    return raster;
-  }
+			container.addElement(new RectangleElement(new Rectangle(0, x * grid.cellSize, 512, grid.cellSize),
+					Color.green, 1, false, false));
 
+			container.addElement(new RectangleElement(
+					new Rectangle(1, x * grid.cellSize + 1, 512 - 2, grid.cellSize - 2), Color.blue, 1, false, false));
+
+			sv.addElement(new ConvertElement(container, new Vector()));
+		} // for x
+
+		return raster;
+	}
 
 }

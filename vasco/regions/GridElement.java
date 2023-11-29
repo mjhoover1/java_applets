@@ -1,63 +1,62 @@
 package vasco.regions;
-import vasco.common.*;
-
-import javax.swing.*; // import java.awt.*;
 
 import java.awt.Rectangle;
-import java.util.*;
-  
-public class GridElement extends  ConvertGenElement{
-  
-  public static final int UNKNOWN_MODE = 0;
-  public static final int RASTER_MODE = 1;
-  public static final int QUAD_MODE = 2;
 
-  Grid grid;
-  int row;
-  int col;
-  Rectangle rec;
-  int mode;
+import vasco.common.DrawingTarget;
 
-  public GridElement(Grid grid, Rectangle rec){
-    this.grid = grid;
-    this.rec = rec;
-    row = 0;
-    col = 0;
-    mode = QUAD_MODE;
-  }
- 
-  // grid row, sCol, and eCol
-  public GridElement(Grid grid, int row, int col){
-    this.grid = grid;
-    this.row = row;
-    this.col = col;
-    rec = null;
-    mode = RASTER_MODE;
-  } 
+public class GridElement extends ConvertGenElement {
 
-  
-  public void fillElementFirst(DrawingTarget g){
-  }
+	public static final int UNKNOWN_MODE = 0;
+	public static final int RASTER_MODE = 1;
+	public static final int QUAD_MODE = 2;
 
-  public void fillElementNext(DrawingTarget g){
-  }
+	Grid grid;
+	int row;
+	int col;
+	Rectangle rec;
+	int mode;
 
-  public void drawElementFirst(DrawingTarget g){
-    switch(mode){
-    case RASTER_MODE:
-      grid.drawContents(g, row, col);
-      break;
-    case QUAD_MODE:
-      grid.drawContents(g, rec);
-      break;
-    default:
-      break;
-    }
-  }
+	public GridElement(Grid grid, Rectangle rec) {
+		this.grid = grid;
+		this.rec = rec;
+		row = 0;
+		col = 0;
+		mode = QUAD_MODE;
+	}
 
-  public void drawElementNext(DrawingTarget g){
-  }
+	// grid row, sCol, and eCol
+	public GridElement(Grid grid, int row, int col) {
+		this.grid = grid;
+		this.row = row;
+		this.col = col;
+		rec = null;
+		mode = RASTER_MODE;
+	}
+
+	@Override
+	public void fillElementFirst(DrawingTarget g) {
+	}
+
+	@Override
+	public void fillElementNext(DrawingTarget g) {
+	}
+
+	@Override
+	public void drawElementFirst(DrawingTarget g) {
+		switch (mode) {
+		case RASTER_MODE:
+			grid.drawContents(g, row, col);
+			break;
+		case QUAD_MODE:
+			grid.drawContents(g, rec);
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void drawElementNext(DrawingTarget g) {
+	}
 
 }
-
-

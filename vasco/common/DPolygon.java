@@ -1,16 +1,15 @@
 /* $Id: DPolygon.java,v 1.1.1.1 2002/09/25 05:48:35 brabec Exp $ */
 package vasco.common;
 
-import javax.swing.*; // import java.awt.*;
-
 import java.awt.Color;
-import java.util.*;
-import vasco.drawable.*;
+import java.util.Vector;
+
 //============================================================================
 //
 //  POLYGON
 //
 //============================================================================
+import vasco.drawable.Drawable;
 
 //	A polygon, as it is used here, is a single closed planar region
 //	with no interior holes, defined by a non-self-intersecting closed
@@ -18,38 +17,42 @@ import vasco.drawable.*;
 //	is considered to be all points on the interior of the border,
 //	including the border lines.
 /**
- * Class representing a polygon, defined as a single closed planar region 
- * with a non-self-intersecting closed loop of line segments.
- * This loop need not be convex and includes all points on the interior of the border.
+ * Class representing a polygon, defined as a single closed planar region with a
+ * non-self-intersecting closed loop of line segments. This loop need not be
+ * convex and includes all points on the interior of the border.
  */
 public class DPolygon implements Drawable, ArealObject {
 
-    /**
-     * Determines if the polygon has an area.
-     * 
-     * @return true since a polygon by definition has an area.
-     */
+	/**
+	 * Determines if the polygon has an area.
+	 *
+	 * @return true since a polygon by definition has an area.
+	 */
+	@Override
 	public boolean hasArea() {
 		return true;
 	}
 
-    /**
-     * Draws the polygon using the provided DrawingTarget object.
-     * 
-     * @param g The DrawingTarget on which the polygon is to be drawn.
-     */
+	/**
+	 * Draws the polygon using the provided DrawingTarget object.
+	 *
+	 * @param g The DrawingTarget on which the polygon is to be drawn.
+	 */
+	@Override
 	public void draw(DrawingTarget g) {
 		for (int i = 0; i < size; i++) {
 			(new DLine(border[i], border[(i + 1) % size])).draw(g);
 		}
 	}
 
-    /**
-     * Draws the polygon directly with a specified color using the provided DrawingTarget object.
-     * 
-     * @param c The color to use for drawing.
-     * @param g The DrawingTarget on which the polygon is to be drawn.
-     */
+	/**
+	 * Draws the polygon directly with a specified color using the provided
+	 * DrawingTarget object.
+	 *
+	 * @param c The color to use for drawing.
+	 * @param g The DrawingTarget on which the polygon is to be drawn.
+	 */
+	@Override
 	public void directDraw(Color c, DrawingTarget g) {
 		for (int i = 0; i < size; i++) {
 			(new DLine(border[i], border[(i + 1) % size])).directDraw(c, g);
@@ -61,50 +64,51 @@ public class DPolygon implements Drawable, ArealObject {
 	int size; // total number of border points
 	protected DRectangle boundingbox; // bounding rectangle of polygon
 
-    /**
-     * Returns the number of vertices in the polygon.
-     *
-     * @return The size of the polygon, i.e., the number of vertices.
-     */
+	/**
+	 * Returns the number of vertices in the polygon.
+	 *
+	 * @return The size of the polygon, i.e., the number of vertices.
+	 */
 	public int Size() {
 		return size;
-	}; // Returns the number of vertices
+	} // Returns the number of vertices
 
-    /**
-     * Retrieves a specific vertex of the polygon.
-     *
-     * @param i The index of the vertex to be retrieved.
-     * @return The vertex at the specified index.
-     */
+	/**
+	 * Retrieves a specific vertex of the polygon.
+	 *
+	 * @param i The index of the vertex to be retrieved.
+	 * @return The vertex at the specified index.
+	 */
 	public DPoint vertex(int i) {
 		return border[i]; // Returns i'th vertex
 	}
 
-    /**
-     * Creates and returns a line segment (DLine) that represents an edge of the polygon.
-     *
-     * @param i The index of the starting vertex of the edge.
-     * @return The line segment from vertex i to vertex (i+1).
-     */
+	/**
+	 * Creates and returns a line segment (DLine) that represents an edge of the
+	 * polygon.
+	 *
+	 * @param i The index of the starting vertex of the edge.
+	 * @return The line segment from vertex i to vertex (i+1).
+	 */
 	DLine Edge(int i) {
 		return new DLine(border[i], border[(i + 1) % size]);
-	};
+	}
 
-    /**
-     * Provides access to the array of points that define the polygon's border.
-     *
-     * @return An array of DPoint objects representing the polygon's border.
-     */
+	/**
+	 * Provides access to the array of points that define the polygon's border.
+	 *
+	 * @return An array of DPoint objects representing the polygon's border.
+	 */
 	DPoint[] getborder() {
 		return border;
 	} // Returns a pointer to the
 		// Array of points that
 		// defines its border
 
-    /**
-     * Constructor for creating an empty polygon.
-     * Initializes an empty border, sets size to 0, and defines a default bounding box.
-     */
+	/**
+	 * Constructor for creating an empty polygon. Initializes an empty border, sets
+	 * size to 0, and defines a default bounding box.
+	 */
 	public DPolygon() {
 		// -------
 		//
@@ -116,11 +120,11 @@ public class DPolygon implements Drawable, ArealObject {
 		boundingbox = new DRectangle(0, 0, 0, 0);
 	}
 
-    /**
-     * Copy constructor for creating a polygon that is a copy of another polygon.
-     *
-     * @param g The DPolygon object to be copied.
-     */
+	/**
+	 * Copy constructor for creating a polygon that is a copy of another polygon.
+	 *
+	 * @param g The DPolygon object to be copied.
+	 */
 	public DPolygon(DPolygon g) {
 		// -------
 		//
@@ -134,11 +138,11 @@ public class DPolygon implements Drawable, ArealObject {
 		// have been enforced when the copied polygon was originally created.
 	}
 
-    /**
-     * Constructs a DPolygon object with specified vertices.
-     * 
-     * @param vec Array of DPoint objects representing the vertices of the polygon.
-     */
+	/**
+	 * Constructs a DPolygon object with specified vertices.
+	 *
+	 * @param vec Array of DPoint objects representing the vertices of the polygon.
+	 */
 	public DPolygon(DPoint[] vec) {
 		// -------
 		//
@@ -167,12 +171,12 @@ public class DPolygon implements Drawable, ArealObject {
 
 	}
 
-    /**
-     * Constructor that creates a DPolygon from a given DRectangle.
-     * It initializes the polygon with the corners of the rectangle.
-     *
-     * @param r The DRectangle object to create the polygon from.
-     */
+	/**
+	 * Constructor that creates a DPolygon from a given DRectangle. It initializes
+	 * the polygon with the corners of the rectangle.
+	 *
+	 * @param r The DRectangle object to create the polygon from.
+	 */
 	public DPolygon(DRectangle r) {
 		// -------
 		//
@@ -184,18 +188,18 @@ public class DPolygon implements Drawable, ArealObject {
 		border[0] = new DPoint(r.x, r.y);
 		border[1] = new DPoint(r.x, r.y + r.height);
 		border[2] = new DPoint(r.x + r.width, r.y + r.height);
-		;
+
 		border[3] = new DPoint(r.x + r.width, r.y);
 
 		boundingbox = r;
 	}
 
-    /**
-     * Returns the first corner of the polygon border.
-     * Resets the current position for iterating through polygon corners.
-     *
-     * @return The first corner of the polygon.
-     */
+	/**
+	 * Returns the first corner of the polygon border. Resets the current position
+	 * for iterating through polygon corners.
+	 *
+	 * @return The first corner of the polygon.
+	 */
 	DPoint FirstCorner() {
 		// --------------------
 		//
@@ -205,12 +209,12 @@ public class DPolygon implements Drawable, ArealObject {
 		return border[current];
 	}
 
-    /**
-     * Returns the next corner of the polygon border from the current position.
-     * Updates the current position to this corner.
-     *
-     * @return The next corner in the polygon border.
-     */
+	/**
+	 * Returns the next corner of the polygon border from the current position.
+	 * Updates the current position to this corner.
+	 *
+	 * @return The next corner in the polygon border.
+	 */
 	DPoint NextCorner() {
 		// -------------------
 		//
@@ -222,12 +226,12 @@ public class DPolygon implements Drawable, ArealObject {
 		return border[current];
 	}
 
-    /**
-     * Returns the previous corner of the polygon border from the current position.
-     * Updates the current position to this corner.
-     *
-     * @return The previous corner in the polygon border.
-     */
+	/**
+	 * Returns the previous corner of the polygon border from the current position.
+	 * Updates the current position to this corner.
+	 *
+	 * @return The previous corner in the polygon border.
+	 */
 
 	DPoint PrevCorner() {
 		// -------------------
@@ -240,12 +244,12 @@ public class DPolygon implements Drawable, ArealObject {
 		return border[current];
 	}
 
-    /**
-     * Returns the last corner of the polygon border.
-     * Updates the current position to the last corner.
-     *
-     * @return The last corner of the polygon border.
-     */
+	/**
+	 * Returns the last corner of the polygon border. Updates the current position
+	 * to the last corner.
+	 *
+	 * @return The last corner of the polygon border.
+	 */
 	DPoint LastCorner() {
 		// -------------------
 		//
@@ -255,12 +259,12 @@ public class DPolygon implements Drawable, ArealObject {
 		return border[current];
 	}
 
-    /**
-     * Returns the current corner of the polygon border.
-     * Does not change the current position.
-     *
-     * @return The current corner of the polygon border.
-     */
+	/**
+	 * Returns the current corner of the polygon border. Does not change the current
+	 * position.
+	 *
+	 * @return The current corner of the polygon border.
+	 */
 	DPoint ThisCorner() {
 		// -------------------
 		//
@@ -269,12 +273,12 @@ public class DPolygon implements Drawable, ArealObject {
 		return border[current];
 	}
 
-    /**
-     * Returns the first edge of the polygon border.
-     * Advances the current position to the second point of this edge.
-     *
-     * @return The first edge of the polygon border.
-     */
+	/**
+	 * Returns the first edge of the polygon border. Advances the current position
+	 * to the second point of this edge.
+	 *
+	 * @return The first edge of the polygon border.
+	 */
 	DLine FirstEdge() {
 		// ------------------
 		//
@@ -283,12 +287,12 @@ public class DPolygon implements Drawable, ArealObject {
 		return new DLine(FirstCorner(), NextCorner());
 	}
 
-    /**
-     * Returns the next edge of the polygon border.
-     * Advances the current position to the second point of this edge.
-     *
-     * @return The next edge of the polygon border.
-     */
+	/**
+	 * Returns the next edge of the polygon border. Advances the current position to
+	 * the second point of this edge.
+	 *
+	 * @return The next edge of the polygon border.
+	 */
 	DLine NextEdge() {
 		// -----------------
 		//
@@ -297,12 +301,12 @@ public class DPolygon implements Drawable, ArealObject {
 		return new DLine(ThisCorner(), NextCorner());
 	}
 
-    /**
-     * Returns the previous edge of the polygon border.
-     * Leaves the current position at the second point of this edge.
-     *
-     * @return The previous edge of the polygon border.
-     */
+	/**
+	 * Returns the previous edge of the polygon border. Leaves the current position
+	 * at the second point of this edge.
+	 *
+	 * @return The previous edge of the polygon border.
+	 */
 	DLine PrevEdge() {
 		// -----------------
 		//
@@ -315,24 +319,24 @@ public class DPolygon implements Drawable, ArealObject {
 		return new DLine(p1, p2);
 	}
 
-    /**
-     * Returns the last edge of the polygon border.
-     * Advances the current position to the second point of this edge.
-     *
-     * @return The last edge of the polygon border.
-     */
+	/**
+	 * Returns the last edge of the polygon border. Advances the current position to
+	 * the second point of this edge.
+	 *
+	 * @return The last edge of the polygon border.
+	 */
 	DLine LastEdge() {
 		// -----------------
 		//
 		return new DLine(LastCorner(), NextCorner());
 	}
 
-    /**
-     * Returns the current edge of the polygon border.
-     * Shifts the current corner back to the start of this edge and forward to the end.
-     *
-     * @return The current edge of the polygon border.
-     */
+	/**
+	 * Returns the current edge of the polygon border. Shifts the current corner
+	 * back to the start of this edge and forward to the end.
+	 *
+	 * @return The current edge of the polygon border.
+	 */
 	DLine ThisEdge() {
 		// -----------------
 		//
@@ -341,26 +345,27 @@ public class DPolygon implements Drawable, ArealObject {
 		return new DLine(p1, p2);
 	}
 
-    /**
-     * Gets the bounding box of the polygon.
-     *
-     * @return The DRectangle representing the bounding box of the polygon.
-     */
+	/**
+	 * Gets the bounding box of the polygon.
+	 *
+	 * @return The DRectangle representing the bounding box of the polygon.
+	 */
+	@Override
 	public DRectangle getBB() {
 		// ---------------------
 		//
 		return boundingbox;
 	}
 
-    /**
-     * Compares this polygon to another polygon to determine if they are equal.
-     * Equality is based on having the same border irrespective of the starting
-     * position or the direction (clockwise or counterclockwise) in which the border
-     * is stored.
-     *
-     * @param g The DPolygon to compare with.
-     * @return true if the polygons have the same border, false otherwise.
-     */
+	/**
+	 * Compares this polygon to another polygon to determine if they are equal.
+	 * Equality is based on having the same border irrespective of the starting
+	 * position or the direction (clockwise or counterclockwise) in which the border
+	 * is stored.
+	 *
+	 * @param g The DPolygon to compare with.
+	 * @return true if the polygons have the same border, false otherwise.
+	 */
 	public boolean equals(DPolygon g) {
 		// -------------------
 		// NOTE: the concept of == defined here is that the two polygons
@@ -375,7 +380,7 @@ public class DPolygon implements Drawable, ArealObject {
 		if (size != g.size)
 			return false; // sizes aren't the same
 
-        // Find the first matching point
+		// Find the first matching point
 		firstmatch = 0;
 		while ((firstmatch < size) && (!border[firstmatch].equals(g.border[0])))
 			firstmatch++;
@@ -408,14 +413,14 @@ public class DPolygon implements Drawable, ArealObject {
 
 	}
 
-    /**
-     * Determines if the border of the polygon is non-self-intersecting.
-     * A border is non-self-intersecting if no two border edges intersect each other.
-     * This method is static and takes a Vector of DPoints specifying a path.
-     *
-     * @param v The vector of DPoints specifying a path.
-     * @return true if the path specified by the vector does not self-intersect.
-     */
+	/**
+	 * Determines if the border of the polygon is non-self-intersecting. A border is
+	 * non-self-intersecting if no two border edges intersect each other. This
+	 * method is static and takes a Vector of DPoints specifying a path.
+	 *
+	 * @param v The vector of DPoints specifying a path.
+	 * @return true if the path specified by the vector does not self-intersect.
+	 */
 	public static boolean non_self_intersecting(Vector v) { // vector of DPoints, specifies path
 		DPoint[] brd = new DPoint[v.size()];
 		v.copyInto(brd);
@@ -435,12 +440,12 @@ public class DPolygon implements Drawable, ArealObject {
 		return true;
 	}
 
-    /**
-     * Determines if the border of this polygon is non-self-intersecting.
-     * A border is non-self-intersecting if no two border edges intersect each other.
-     *
-     * @return true if this polygon's border does not self-intersect.
-     */
+	/**
+	 * Determines if the border of this polygon is non-self-intersecting. A border
+	 * is non-self-intersecting if no two border edges intersect each other.
+	 *
+	 * @return true if this polygon's border does not self-intersect.
+	 */
 	public boolean non_self_intersecting() {
 		// ---------------------
 		//
@@ -480,12 +485,13 @@ public class DPolygon implements Drawable, ArealObject {
 
 	// ----------------- CONTAINS -----------------
 
-    /**
-     * Determines if a given point is contained within the polygon.
-     *
-     * @param p The DPoint to check for containment within the polygon.
-     * @return true if the point is inside the polygon, false otherwise.
-     */
+	/**
+	 * Determines if a given point is contained within the polygon.
+	 *
+	 * @param p The DPoint to check for containment within the polygon.
+	 * @return true if the point is inside the polygon, false otherwise.
+	 */
+	@Override
 	public boolean contains(DPoint p) {
 		// ----------
 		//
@@ -513,12 +519,13 @@ public class DPolygon implements Drawable, ArealObject {
 		return (intersections % 2 != 0); // odd means yes; even means no.
 	}
 
-    /**
-     * Determines if a given line is wholly contained within the polygon.
-     *
-     * @param l The DLine to check for containment within the polygon.
-     * @return true if the line is completely inside the polygon, false otherwise.
-     */
+	/**
+	 * Determines if a given line is wholly contained within the polygon.
+	 *
+	 * @param l The DLine to check for containment within the polygon.
+	 * @return true if the line is completely inside the polygon, false otherwise.
+	 */
+	@Override
 	public boolean contains(DLine l) {
 		DLine edge;
 
@@ -536,12 +543,14 @@ public class DPolygon implements Drawable, ArealObject {
 		return (contains(l.p1));
 	}
 
-    /**
-     * Determines if a given rectangle is wholly contained within the polygon.
-     *
-     * @param r The DRectangle to check for containment within the polygon.
-     * @return true if the rectangle is completely inside the polygon, false otherwise.
-     */
+	/**
+	 * Determines if a given rectangle is wholly contained within the polygon.
+	 *
+	 * @param r The DRectangle to check for containment within the polygon.
+	 * @return true if the rectangle is completely inside the polygon, false
+	 *         otherwise.
+	 */
+	@Override
 	public boolean contains(DRectangle r) {
 		// ----------
 		//
@@ -567,12 +576,13 @@ public class DPolygon implements Drawable, ArealObject {
 		return contains(new DPoint(r.x, r.y));
 	}
 
-    /**
-     * Determines if a given path is wholly contained within the polygon.
-     *
-     * @param p The DPath to check for containment within the polygon.
-     * @return true if the path is completely inside the polygon, false otherwise.
-     */
+	/**
+	 * Determines if a given path is wholly contained within the polygon.
+	 *
+	 * @param p The DPath to check for containment within the polygon.
+	 * @return true if the path is completely inside the polygon, false otherwise.
+	 */
+	@Override
 	public boolean contains(DPath p) {
 		for (int i = 0; i < p.Size() - 1; i++)
 			if (!contains(p.Edge(i)))
@@ -580,12 +590,14 @@ public class DPolygon implements Drawable, ArealObject {
 		return true;
 	}
 
-    /**
-     * Determines if another polygon is wholly contained within this polygon.
-     *
-     * @param p The DPolygon to check for containment within this polygon.
-     * @return true if the other polygon is completely inside this polygon, false otherwise.
-     */
+	/**
+	 * Determines if another polygon is wholly contained within this polygon.
+	 *
+	 * @param p The DPolygon to check for containment within this polygon.
+	 * @return true if the other polygon is completely inside this polygon, false
+	 *         otherwise.
+	 */
+	@Override
 	public boolean contains(DPolygon p) {
 		for (int i = 0; i < p.Size(); i++)
 			if (!contains(p.Edge(i)))
@@ -595,12 +607,12 @@ public class DPolygon implements Drawable, ArealObject {
 
 	// ------------ INTERSECTS ---------------------
 
-    /**
-     * Checks if the polygon intersects with a specified line.
-     * 
-     * @param l The line to check for intersection.
-     * @return true if the line intersects the polygon, false otherwise.
-     */
+	/**
+	 * Checks if the polygon intersects with a specified line.
+	 *
+	 * @param l The line to check for intersection.
+	 * @return true if the line intersects the polygon, false otherwise.
+	 */
 	public boolean intersects(DLine l) {
 		// ----------
 		//
@@ -623,32 +635,33 @@ public class DPolygon implements Drawable, ArealObject {
 		return (contains(l.p1));
 	}
 
-    /**
-     * Determines if a given rectangle intersects with this polygon.
-     * The method first checks if the bounding box of the polygon intersects with
-     * the rectangle. It then checks if any edge of the polygon intersects with
-     * the rectangle. Lastly, it checks if the rectangle is wholly contained within
-     * the polygon.
-     *
-     * @param r The DRectangle to check for intersection with the polygon.
-     * @return true if the rectangle intersects with the polygon, false otherwise.
-     */
+	/**
+	 * Determines if a given rectangle intersects with this polygon. The method
+	 * first checks if the bounding box of the polygon intersects with the
+	 * rectangle. It then checks if any edge of the polygon intersects with the
+	 * rectangle. Lastly, it checks if the rectangle is wholly contained within the
+	 * polygon.
+	 *
+	 * @param r The DRectangle to check for intersection with the polygon.
+	 * @return true if the rectangle intersects with the polygon, false otherwise.
+	 */
+	@Override
 	public boolean intersects(DRectangle r) {
 		// ----------
 		//
 		// Tell if a Rectangle intersects a Polygon
 		//
 		DLine edge;
-        // Check if the bounding boxes intersect
+		// Check if the bounding boxes intersect
 		if (!r.intersects(getBB()))
 			return false; // no intersection is possible
 
-        // Check if any vertex of the polygon is inside the rectangle
+		// Check if any vertex of the polygon is inside the rectangle
 		if (r.contains(border[0]))
 			return true; // At least one vertex of g is inside r
 
 		// first check to see if any part of the border intersects the rectangle
-        // Check if any edge of the polygon intersects the rectangle
+		// Check if any edge of the polygon intersects the rectangle
 		for (int i = size - 1; i >= 0; --i) {
 			edge = Edge(i);
 			if (r.intersects(edge))
@@ -658,108 +671,119 @@ public class DPolygon implements Drawable, ArealObject {
 		// If it passes through the above loop, no border line intersects
 		// the rectangle. Now we need to check for point in polygon to
 		// eliminate wholly enclosing case
-        // Lastly, check if the rectangle is wholly contained within the polygon
+		// Lastly, check if the rectangle is wholly contained within the polygon
 		return contains(new DPoint(r.x, r.y));
 	}
 
 	// ------------------ DISTANCE ---------------------
 
-    /**
-     * Calculates the distance from the polygon to a specified point.
-     * 
-     * @param p The point to calculate the distance to.
-     * @return The distance from the polygon to the point.
-     */
+	/**
+	 * Calculates the distance from the polygon to a specified point.
+	 *
+	 * @param p The point to calculate the distance to.
+	 * @return The distance from the polygon to the point.
+	 */
+	@Override
 	public double distance(DPoint p) {
 		return p.distance(this);
 	}
 
-    /**
-     * Calculates the distance from this polygon to a given point and stores the result in the provided array.
-     *
-     * @param p The point to calculate the distance to.
-     * @param k An array where the calculated distance is stored.
-     * @return The array k containing the calculated distance.
-     */
+	/**
+	 * Calculates the distance from this polygon to a given point and stores the
+	 * result in the provided array.
+	 *
+	 * @param p The point to calculate the distance to.
+	 * @param k An array where the calculated distance is stored.
+	 * @return The array k containing the calculated distance.
+	 */
+	@Override
 	public double[] distance(DPoint p, double[] k) {
 		p.distance(this, k);
 		return k;
 	}
 
-    /**
-     * Calculates the distance from this polygon to a given line.
-     *
-     * @param l The line to calculate the distance to.
-     * @return The calculated distance.
-     */
+	/**
+	 * Calculates the distance from this polygon to a given line.
+	 *
+	 * @param l The line to calculate the distance to.
+	 * @return The calculated distance.
+	 */
+	@Override
 	public double distance(DLine l) {
 		return l.distance(this);
 	}
 
-    /**
-     * Calculates the distance from this polygon to a given line and stores the result in the provided array.
-     *
-     * @param l The line to calculate the distance to.
-     * @param k An array where the calculated distance is stored.
-     * @return The array k containing the calculated distance.
-     */
+	/**
+	 * Calculates the distance from this polygon to a given line and stores the
+	 * result in the provided array.
+	 *
+	 * @param l The line to calculate the distance to.
+	 * @param k An array where the calculated distance is stored.
+	 * @return The array k containing the calculated distance.
+	 */
+	@Override
 	public double[] distance(DLine l, double[] k) {
 		l.distance(this, k);
 		return k;
 	}
 
-    /**
-     * Calculates the distance from this polygon to a given rectangle.
-     *
-     * @param l The rectangle to calculate the distance to.
-     * @return The calculated distance.
-     */
+	/**
+	 * Calculates the distance from this polygon to a given rectangle.
+	 *
+	 * @param l The rectangle to calculate the distance to.
+	 * @return The calculated distance.
+	 */
+	@Override
 	public double distance(DRectangle l) {
 		return l.distance(this);
 	}
 
-    /**
-     * Calculates the distance from this polygon to a given rectangle and stores the result in the provided array.
-     *
-     * @param l The rectangle to calculate the distance to.
-     * @param k An array where the calculated distance is stored.
-     * @return The array k containing the calculated distance.
-     */
+	/**
+	 * Calculates the distance from this polygon to a given rectangle and stores the
+	 * result in the provided array.
+	 *
+	 * @param l The rectangle to calculate the distance to.
+	 * @param k An array where the calculated distance is stored.
+	 * @return The array k containing the calculated distance.
+	 */
+	@Override
 	public double[] distance(DRectangle l, double[] k) {
 		l.distance(this, k);
 		return k;
 	}
 
-    /**
-     * Calculates the distance from this polygon to another polygon.
-     *
-     * @param l The other polygon to calculate the distance to.
-     * @return The calculated distance.
-     */
+	/**
+	 * Calculates the distance from this polygon to another polygon.
+	 *
+	 * @param l The other polygon to calculate the distance to.
+	 * @return The calculated distance.
+	 */
 	public double distance(DPolygon l) {
 		return l.distance(this);
 	}
 
-    /**
-     * Calculates the distance from this polygon to another polygon and stores the result in the provided array.
-     *
-     * @param l The other polygon to calculate the distance to.
-     * @param k An array where the calculated distance is stored.
-     * @return The array k containing the calculated distance.
-     */
+	/**
+	 * Calculates the distance from this polygon to another polygon and stores the
+	 * result in the provided array.
+	 *
+	 * @param l The other polygon to calculate the distance to.
+	 * @param k An array where the calculated distance is stored.
+	 * @return The array k containing the calculated distance.
+	 */
 	public double[] distance(DPolygon l, double[] k) {
 		l.distance(this, k);
 		return k;
 	}
 
-    /**
-     * Draws a buffer around the polygon with a specified color and distance.
-     * Note: This method is currently empty and will be implemented in future.
-     *
-     * @param c The color of the buffer.
-     * @param dt The DrawingTarget on which the buffer is to be drawn.
-     * @param dist The distance of the buffer from the polygon.
-     */
+	/**
+	 * Draws a buffer around the polygon with a specified color and distance. Note:
+	 * This method is currently empty and will be implemented in future.
+	 *
+	 * @param c    The color of the buffer.
+	 * @param dt   The DrawingTarget on which the buffer is to be drawn.
+	 * @param dist The distance of the buffer from the polygon.
+	 */
+	@Override
 	public void drawBuffer(Color c, DrawingTarget dt, double dist) {
 		// empty till the real algorithm is developed
 	}

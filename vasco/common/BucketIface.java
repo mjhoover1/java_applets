@@ -2,6 +2,7 @@
 package vasco.common;
 
 public interface BucketIface {
-  public void setBucket(int b);
-  public int getBucket();
+	public void setBucket(int b);
+
+	public int getBucket();
 }

@@ -1,14 +1,16 @@
 /* $Id: Tools.java,v 1.3 2007/10/28 15:38:14 jagan Exp $ */
 package vasco.common;
 
-import java.util.*;
-import javax.swing.JApplet; // import java.applet.Applet;
-import javax.swing.*; // import java.awt.*;
-import java.net.*;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Vector;
+
+// import java.awt.*;
+import javax.swing.JApplet; // import java.applet.Applet;
 
 /**
  * This class provides utility methods for various operations.
@@ -19,25 +21,26 @@ public class Tools {
 	static String localServer = "localhost";
 	static int portNumber = 1602;
 
-	static public JApplet currentApplet = null; // keeps track of the current running applet to easily switch between them
+	static public JApplet currentApplet = null; // keeps track of the current running applet to easily switch between
+												// them
 
-    /**
-     * Displays an error message using a message box.
-     *
-     * @param msg The error message to be displayed.
-     */
+	/**
+	 * Displays an error message using a message box.
+	 *
+	 * @param msg The error message to be displayed.
+	 */
 	public static void errorMessage(String msg) {
 		MessageBox mb = new MessageBox(msg);
 		// mb.show();
 	}
 
-    /**
-     * Formats a string to break lines at a specified width.
-     *
-     * @param s     The input string to be formatted.
-     * @param width The maximum width for each line.
-     * @return The formatted string.
-     */
+	/**
+	 * Formats a string to break lines at a specified width.
+	 *
+	 * @param s     The input string to be formatted.
+	 * @param width The maximum width for each line.
+	 * @return The formatted string.
+	 */
 	public static String formatHelp(String s, int width) {
 		int i;
 		int index = 0;
@@ -56,11 +59,11 @@ public class Tools {
 		return s;
 	}
 
-    /**
-     * Draws coordinates on the specified graphics object.
-     *
-     * @param g The Graphics object on which coordinates are to be drawn.
-     */
+	/**
+	 * Draws coordinates on the specified graphics object.
+	 *
+	 * @param g The Graphics object on which coordinates are to be drawn.
+	 */
 	public static void drawCoordinates(Graphics g) {
 		g.setColor(Color.black);
 		String s1 = "[512, 512]";
@@ -80,7 +83,8 @@ public class Tools {
 	 *
 	 * @param datatype The datatype of the data.
 	 * @param filename The name of the file to retrieve.
-	 * @return An array of strings representing the content of the file, or an empty array if the file is not found.
+	 * @return An array of strings representing the content of the file, or an empty
+	 *         array if the file is not found.
 	 */
 	public static String[] getFile(String datatype, String filename) {
 		BufferedReader is;
@@ -93,7 +97,7 @@ public class Tools {
 		return new String[0];
 		/*
 		 * if (filename == null || filename.compareTo("") == 0) return new String[0];
-		 * 
+		 *
 		 * Vector v = new Vector(); try { try { socket = new Socket(serverName,
 		 * portNumber); } catch(Exception e) { socket = new Socket(localServer,
 		 * portNumber); } is = new BufferedReader(new
@@ -136,7 +140,8 @@ public class Tools {
 	 * Retrieves the list of files in a directory from the server.
 	 *
 	 * @param datatype The datatype of the data.
-	 * @return An array of strings representing the list of files in the directory, or an empty array if no response is received.
+	 * @return An array of strings representing the list of files in the directory,
+	 *         or an empty array if no response is received.
 	 */
 	public static String[] getDir(String datatype) {
 		BufferedReader is;
@@ -159,13 +164,13 @@ public class Tools {
 		 */
 	}
 
-    /**
-     * Puts data into a file on the server.
-     *
-     * @param datatype The datatype of the data.
-     * @param filename The name of the file.
-     * @param data     The data to be written to the file.
-     */
+	/**
+	 * Puts data into a file on the server.
+	 *
+	 * @param datatype The datatype of the data.
+	 * @param filename The name of the file.
+	 * @param data     The data to be written to the file.
+	 */
 	public static void putFile(String datatype, String filename, String[] data) {
 		writeFile(datatype, filename, data, "SAVE");
 	}
@@ -194,7 +199,8 @@ public class Tools {
 	}
 
 	/**
-	 * Writes data to a file on the server using the specified operation and optionally displays a message.
+	 * Writes data to a file on the server using the specified operation and
+	 * optionally displays a message.
 	 *
 	 * @param datatype The datatype of the data.
 	 * @param filename The name of the file to which data will be written.

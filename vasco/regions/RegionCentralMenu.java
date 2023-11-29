@@ -1,48 +1,43 @@
 package vasco.regions;
-import vasco.common.*;
-import javax.swing.*; // import java.awt.*;
-import javax.swing.event.*; // import java.awt.event.*;
 
 import java.awt.event.ActionEvent;
-// import java.applet.*;
-import java.util.*;
 
-public class RegionCentralMenu extends CentralMenu{
+// import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
-  RegionCanvas regionCanvas;
+import vasco.common.AppletValidate;
+import vasco.common.CentralMenu;
+import vasco.common.MouseDisplay;
 
-    public RegionCentralMenu(RegionCanvas rc, String treeMode, JPanel indStructP, 
-		       AppletValidate av, JTextArea helpArea, JLabel topBar,
-		       JButton overviewButton, MouseDisplay md) {
-      super(rc, treeMode, indStructP, av, helpArea, topBar, overviewButton, md);
-      regionCanvas = rc;
-    }
+public class RegionCentralMenu extends CentralMenu {
 
-    public void actionPerformed(ActionEvent event) {
-	Object obj = event.getSource();
+	RegionCanvas regionCanvas;
 
-	if (regionCanvas.pstruct.si != null){
-	  regionCanvas.pstruct.si.dispose();
-	  regionCanvas.pstruct.si = null;
+	public RegionCentralMenu(RegionCanvas rc, String treeMode, JPanel indStructP, AppletValidate av, JTextArea helpArea,
+			JLabel topBar, JButton overviewButton, MouseDisplay md) {
+		super(rc, treeMode, indStructP, av, helpArea, topBar, overviewButton, md);
+		regionCanvas = rc;
 	}
-	
-	if (obj instanceof JButton && ((JButton)obj).
-	    getLabel().equals("Operation Color Legend")) {
-	  if (dialog != null)
-	    dialog.dispose();
-	  dialog = new RegionColorHelp((String) operations.getSelectedItem(), 
-		       regionCanvas.getAppletType(), regionCanvas.getCurrentName());
-	  dialog.show();
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		Object obj = event.getSource();
+
+		if (regionCanvas.pstruct.si != null) {
+			regionCanvas.pstruct.si.dispose();
+			regionCanvas.pstruct.si = null;
+		}
+
+		if (obj instanceof JButton && ((JButton) obj).getLabel().equals("Operation Color Legend")) {
+			if (dialog != null)
+				dialog.dispose();
+			dialog = new RegionColorHelp((String) operations.getSelectedItem(), regionCanvas.getAppletType(),
+					regionCanvas.getCurrentName());
+			dialog.show();
+		} else
+			super.actionPerformed(event);
 	}
-	else
-	  super.actionPerformed(event);
-    }
 }
-
-
-
-
-
-
-
-

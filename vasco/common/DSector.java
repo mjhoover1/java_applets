@@ -1,15 +1,15 @@
 /* $Id: DSector.java,v 1.1.1.1 2002/09/25 05:48:36 brabec Exp $ */
 package vasco.common;
 
-import javax.swing.*; // import java.awt.*;
-
 import java.awt.Color;
-import java.util.*;
-import vasco.drawable.*;
+import java.util.Vector;
+
+import vasco.drawable.Drawable;
 
 /**
  * Class representing a sector (a pie-shaped section of a circle) in 2D space.
- * It extends the DPolygon class and implements Drawable and ArealObject interfaces.
+ * It extends the DPolygon class and implements Drawable and ArealObject
+ * interfaces.
  */
 public class DSector extends DPolygon implements Drawable, ArealObject {
 	private DPoint vertex; // The vertex (center) of the sector
@@ -17,62 +17,62 @@ public class DSector extends DPolygon implements Drawable, ArealObject {
 	int extent; // The angular extent of the sector in degrees
 	DRectangle wholeCanvas = new DRectangle(0, 0, 512, 512); // A default bounding rectangle for the sector
 
-    /**
-     * Constructs a sector with the specified vertex, start angle, and extent.
-     *
-     * @param vertex     The center point of the sector.
-     * @param startAngle The starting angle of the sector in degrees.
-     * @param extent     The angular extent of the sector in degrees.
-     */
+	/**
+	 * Constructs a sector with the specified vertex, start angle, and extent.
+	 *
+	 * @param vertex     The center point of the sector.
+	 * @param startAngle The starting angle of the sector in degrees.
+	 * @param extent     The angular extent of the sector in degrees.
+	 */
 	public DSector(DPoint vertex, int startAngle, int extent) {
 		super();
 		setSector(vertex, startAngle, extent);
 	}
 
-    /**
-     * Adjusts the vertex of the sector to a new position.
-     *
-     * @param p The new vertex position.
-     */
+	/**
+	 * Adjusts the vertex of the sector to a new position.
+	 *
+	 * @param p The new vertex position.
+	 */
 	public void adjustVertex(DPoint p) {
 		vertex = p;
 		setSector();
 	}
 
-    /**
-     * Adjusts the starting angle of the sector based on a given point.
-     *
-     * @param p The point used to define the new starting angle.
-     */
+	/**
+	 * Adjusts the starting angle of the sector based on a given point.
+	 *
+	 * @param p The point used to define the new starting angle.
+	 */
 	public void adjustStart(DPoint p) {
 		startAngle = (int) (Math.atan2(p.y - vertex.y, p.x - vertex.x) / Math.PI * 180);
 		setSector();
 	}
 
-    /**
-     * Adjusts the extent of the sector based on a given point.
-     *
-     * @param p The point used to define the new extent angle.
-     */
+	/**
+	 * Adjusts the extent of the sector based on a given point.
+	 *
+	 * @param p The point used to define the new extent angle.
+	 */
 	public void adjustExtent(DPoint p) {
 		extent = (int) ((Math.atan2(p.y - vertex.y, p.x - vertex.x) / Math.PI * 180) - startAngle + 2 * 360) % 360;
 		setSector();
 	}
 
-    /**
-     * Sets or updates the sector with the current vertex, start angle, and extent.
-     */
+	/**
+	 * Sets or updates the sector with the current vertex, start angle, and extent.
+	 */
 	public void setSector() {
 		setSector(vertex, startAngle, extent);
 	}
 
-    /**
-     * Sets or updates the sector with specified vertex, start angle, and extent.
-     *
-     * @param vertex     The vertex (center) of the sector.
-     * @param startAngle The starting angle of the sector.
-     * @param extent     The angular extent of the sector.
-     */
+	/**
+	 * Sets or updates the sector with specified vertex, start angle, and extent.
+	 *
+	 * @param vertex     The vertex (center) of the sector.
+	 * @param startAngle The starting angle of the sector.
+	 * @param extent     The angular extent of the sector.
+	 */
 	public void setSector(DPoint vertex, int startAngle, int extent) {
 		this.vertex = vertex;
 		this.startAngle = startAngle;
@@ -94,13 +94,15 @@ public class DSector extends DPolygon implements Drawable, ArealObject {
 			boundingbox = boundingbox.union(new DRectangle(border[i].x, border[i].y, 0, 0));
 	}
 
-    /**
-     * Checks if another object is equal to this sector.
-     * Two sectors are considered equal if they have the same vertex, start angle, and extent.
-     *
-     * @param obj The object to compare with this sector.
-     * @return true if the given object is a sector with the same properties, false otherwise.
-     */
+	/**
+	 * Checks if another object is equal to this sector. Two sectors are considered
+	 * equal if they have the same vertex, start angle, and extent.
+	 *
+	 * @param obj The object to compare with this sector.
+	 * @return true if the given object is a sector with the same properties, false
+	 *         otherwise.
+	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof DSector) {
 			DSector r = (DSector) obj;
@@ -109,41 +111,43 @@ public class DSector extends DPolygon implements Drawable, ArealObject {
 		return false;
 	}
 
-    /**
-     * Draws the sector on a DrawingTarget.
-     * The sector is drawn as a pie-shaped arc defined by its vertex, start angle, and extent.
-     *
-     * @param g The DrawingTarget to draw on.
-     */
+	/**
+	 * Draws the sector on a DrawingTarget. The sector is drawn as a pie-shaped arc
+	 * defined by its vertex, start angle, and extent.
+	 *
+	 * @param g The DrawingTarget to draw on.
+	 */
+	@Override
 	public void draw(DrawingTarget g) {
 		super.draw(g);
 		g.drawArc(vertex.x - 25, vertex.y - 25, 50, 50, -startAngle - extent, extent);
 	}
 
-    /**
-     * Directly draws the sector with a specified color on a DrawingTarget.
-     *
-     * @param c The color to use for drawing.
-     * @param g The DrawingTarget to draw on.
-     */
+	/**
+	 * Directly draws the sector with a specified color on a DrawingTarget.
+	 *
+	 * @param c The color to use for drawing.
+	 * @param g The DrawingTarget to draw on.
+	 */
+	@Override
 	public void directDraw(Color c, DrawingTarget g) {
 		super.directDraw(c, g);
 		g.setColor(c);
 		g.directDrawArc(c, vertex.x - 25, vertex.y - 25, 50, 50, -startAngle - extent, extent);
 	}
 
-    /**
-     * Calculates the border points of the sector.
-     * This method is used to compute the points defining the sector's border,
-     * taking into account the wholeCanvas and the sector's angles.
-     *
-     * @param vertex The vertex (center) of the sector.
-     * @param a      The starting angle in degrees.
-     * @param e      The angular extent in degrees.
-     * @return An array of DPoint objects representing the border of the sector.
-     */
+	/**
+	 * Calculates the border points of the sector. This method is used to compute
+	 * the points defining the sector's border, taking into account the wholeCanvas
+	 * and the sector's angles.
+	 *
+	 * @param vertex The vertex (center) of the sector.
+	 * @param a      The starting angle in degrees.
+	 * @param e      The angular extent in degrees.
+	 * @return An array of DPoint objects representing the border of the sector.
+	 */
 	private DPoint[] getBorder(DPoint vertex, int a, int e) {
-        // Implementation details for calculating the sector's border
+		// Implementation details for calculating the sector's border
 		double x1 = vertex.x;
 		double y1 = vertex.y;
 		double a1 = a / 180.0 * Math.PI;

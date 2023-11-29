@@ -2,5 +2,5 @@
 package vasco.common;
 
 public interface Comparable {
-    public double sortBy();
+	public double sortBy();
 }

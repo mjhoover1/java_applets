@@ -1,11 +1,9 @@
 /* $Id: DLine.java,v 1.1.1.1 2002/09/25 05:48:35 brabec Exp $ */
 package vasco.common;
 
-import vasco.drawable.*;
-
 import java.awt.Color;
 
-import javax.swing.*; // import java.awt.*;
+import vasco.drawable.Drawable;
 
 /**
  * Class representing a drawable line segment in a 2D space. This class defines
@@ -66,6 +64,7 @@ public class DLine implements Drawable {
 	 * @param p The point to calculate the distance to.
 	 * @return The distance between the line segment and the point.
 	 */
+	@Override
 	public double distance(DPoint p) {
 		return p.distance(this);
 	}
@@ -79,6 +78,7 @@ public class DLine implements Drawable {
 	 * @return The same array passed as the parameter with the calculated distance
 	 *         stored in it.
 	 */
+	@Override
 	public double[] distance(DPoint p, double[] d) {
 		p.distance(this, d);
 		return d;
@@ -93,6 +93,7 @@ public class DLine implements Drawable {
 	 * @return The same array passed as the parameter with the calculated distance
 	 *         stored in it.
 	 */
+	@Override
 	public double[] distance(DLine p, double[] d) {
 		d[0] = distance(p);
 		return d;
@@ -106,6 +107,7 @@ public class DLine implements Drawable {
 	 * @param l2 The other line segment to calculate the distance to.
 	 * @return The distance between the two line segments.
 	 */
+	@Override
 	public double distance(DLine l2) {
 		// Implementation of distance calculation based on line classification
 //     --------
@@ -195,6 +197,7 @@ public class DLine implements Drawable {
 	 * @return The same array passed as the parameter with the calculated distance
 	 *         stored in it.
 	 */
+	@Override
 	public double[] distance(DRectangle r, double[] key) {
 		key[0] = distance(r);
 		key[1] = 0;
@@ -208,6 +211,7 @@ public class DLine implements Drawable {
 	 * @param r The DRectangle to calculate the distance to.
 	 * @return The minimum distance between this line segment and the DRectangle.
 	 */
+	@Override
 	public double distance(DRectangle r) {
 		if (r.contains(p1) || r.contains(p2))
 			return 0.0;
@@ -232,33 +236,35 @@ public class DLine implements Drawable {
 		return dmin;
 	}
 
-    /**
-     * Calculates the distance between this line segment and a DPolygon, storing the result in the provided array.
-     *
-     * @param g The DPolygon to calculate the distance to.
-     * @param k An array where the calculated distance will be stored.
-     * @return The same array passed as the parameter with the calculated distance stored in it.
-     */
+	/**
+	 * Calculates the distance between this line segment and a DPolygon, storing the
+	 * result in the provided array.
+	 *
+	 * @param g The DPolygon to calculate the distance to.
+	 * @param k An array where the calculated distance will be stored.
+	 * @return The same array passed as the parameter with the calculated distance
+	 *         stored in it.
+	 */
 	public double[] distance(DPolygon g, double[] k) {
 		k[0] = distance(g);
 		k[1] = 0;
 		return k;
 	}
 
-    /**
-     * Calculates the distance between this line segment and a DPolygon.
-     * Iterates through the edges of the polygon to find the minimum distance.
-     *
-     * @param g The DPolygon to calculate the distance to.
-     * @return The minimum distance between this line segment and the DPolygon.
-     */
+	/**
+	 * Calculates the distance between this line segment and a DPolygon. Iterates
+	 * through the edges of the polygon to find the minimum distance.
+	 *
+	 * @param g The DPolygon to calculate the distance to.
+	 * @return The minimum distance between this line segment and the DPolygon.
+	 */
 	public double distance(DPolygon g)
 //     ----------------
 //
 //  Returns Euclidean distance between l and g
 //
 	{
-        // Implementation for calculating the distance from the line to the polygon
+		// Implementation for calculating the distance from the line to the polygon
 		double thisdist;
 		double dist = Double.MAX_VALUE;
 		DLine edge;
@@ -319,15 +325,17 @@ public class DLine implements Drawable {
 		}
 	}
 
-    /**
-     * Determines if this line segment intersects with a given rectangle.
-     * The intersection is checked by determining if any part of the line
-     * lies within the bounds of the rectangle or if the line's endpoints
-     * touch or cross the edges of the rectangle.
-     *
-     * @param r The DRectangle to check for intersection with.
-     * @return true if the line segment intersects with the rectangle, false otherwise.
-     */
+	/**
+	 * Determines if this line segment intersects with a given rectangle. The
+	 * intersection is checked by determining if any part of the line lies within
+	 * the bounds of the rectangle or if the line's endpoints touch or cross the
+	 * edges of the rectangle.
+	 *
+	 * @param r The DRectangle to check for intersection with.
+	 * @return true if the line segment intersects with the rectangle, false
+	 *         otherwise.
+	 */
+	@Override
 	public boolean intersects(DRectangle r) {
 		return r.intersects(this);
 	}
@@ -338,52 +346,57 @@ public class DLine implements Drawable {
 	 *
 	 * @param g The DrawingTarget on which to draw the line.
 	 */
+	@Override
 	public void draw(DrawingTarget g) {
 		g.drawLine(p1.x, p1.y, p2.x, p2.y);
 	}
 
-    /**
-     * Draws the line directly onto a DrawingTarget with a specified color.
-     * This method bypasses the usual styling and directly renders the line.
-     *
-     * @param c The color to use for drawing the line.
-     * @param g The DrawingTarget on which to draw the line.
-     */
+	/**
+	 * Draws the line directly onto a DrawingTarget with a specified color. This
+	 * method bypasses the usual styling and directly renders the line.
+	 *
+	 * @param c The color to use for drawing the line.
+	 * @param g The DrawingTarget on which to draw the line.
+	 */
+	@Override
 	public void directDraw(Color c, DrawingTarget g) {
 		g.directLine(c, p1.x, p1.y, p2.x, p2.y);
 	}
 
-    /**
-     * Gets the bounding box of the line segment.
-     * The bounding box is the smallest rectangle that completely contains the line segment.
-     *
-     * @return A DRectangle representing the bounding box of the line segment.
-     */
+	/**
+	 * Gets the bounding box of the line segment. The bounding box is the smallest
+	 * rectangle that completely contains the line segment.
+	 *
+	 * @return A DRectangle representing the bounding box of the line segment.
+	 */
+	@Override
 	public DRectangle getBB() {
 		return bbox;
 	}
 
-    /**
-     * Determines whether the line segment has an area.
-     * A line segment, being one-dimensional, does not cover any area.
-     *
-     * @return false as a line segment does not have an area.
-     */
+	/**
+	 * Determines whether the line segment has an area. A line segment, being
+	 * one-dimensional, does not cover any area.
+	 *
+	 * @return false as a line segment does not have an area.
+	 */
+	@Override
 	public boolean hasArea() {
 		return false;
 	}
 
-    /**
-     * Provides a string representation of the line segment.
-     * The string includes the coordinates of the two endpoints of the line.
-     *
-     * @return A string representing the line segment.
-     */
+	/**
+	 * Provides a string representation of the line segment. The string includes the
+	 * coordinates of the two endpoints of the line.
+	 *
+	 * @return A string representing the line segment.
+	 */
+	@Override
 	public String toString() {
 		return "DLine: [" + p1.toString() + ", " + p2.toString() + "]";
 	}
 
-    // Constants for classifying relationships between two line segments
+	// Constants for classifying relationships between two line segments
 	final static int Parallel = 0;
 	final static int NotParallel = 1;
 	final static int Intersecting = 2;
@@ -440,16 +453,18 @@ public class DLine implements Drawable {
 		}
 	}
 
-    /**
-     * Draws a buffered representation of the line segment onto a DrawingTarget.
-     * This method creates a visual buffer around the line segment with a specified thickness.
-     * The buffer is visualized by drawing parallel lines on either side of the original line
-     * and connecting their endpoints with semicircular arcs.
-     *
-     * @param c    The color to use for drawing the buffered line.
-     * @param dt   The DrawingTarget on which to draw the buffered line.
-     * @param dist The distance from the original line to the parallel lines, representing half the thickness of the buffer.
-     */
+	/**
+	 * Draws a buffered representation of the line segment onto a DrawingTarget.
+	 * This method creates a visual buffer around the line segment with a specified
+	 * thickness. The buffer is visualized by drawing parallel lines on either side
+	 * of the original line and connecting their endpoints with semicircular arcs.
+	 *
+	 * @param c    The color to use for drawing the buffered line.
+	 * @param dt   The DrawingTarget on which to draw the buffered line.
+	 * @param dist The distance from the original line to the parallel lines,
+	 *             representing half the thickness of the buffer.
+	 */
+	@Override
 	public void drawBuffer(Color c, DrawingTarget dt, double dist) {
 
 		double dx, dy, esize;

@@ -1,66 +1,76 @@
 package vasco.rectangles;
 
+import java.util.Vector;
+
+// import java.awt.*;
+import javax.swing.JComboBox;
+
 /* $Id: PMRRectTree.java,v 1.2 2004/11/20 22:38:48 brabec Exp $ */
-import vasco.common.*;
-import java.util.*;
-import javax.swing.*; // import java.awt.*;
+import vasco.common.Bucket;
+import vasco.common.DRectangle;
+import vasco.common.RebuildTree;
+import vasco.common.TopInterface;
 
 /**
  * This class represents a PMR Rectangle Quadtree that extends GenericRectTree.
  */
 class PMRRectTree extends GenericRectTree {
 
-    /**
-     * Constructs a PMRRectTree with the given parameters.
-     *
-     * @param can The bounding rectangle for the tree.
-     * @param md  The maximum depth of the tree.
-     * @param bs  The maximum number of rectangles in a bucket.
-     * @param p   The top interface.
-     * @param r   The RebuildTree instance.
-     */
+	/**
+	 * Constructs a PMRRectTree with the given parameters.
+	 *
+	 * @param can The bounding rectangle for the tree.
+	 * @param md  The maximum depth of the tree.
+	 * @param bs  The maximum number of rectangles in a bucket.
+	 * @param p   The top interface.
+	 * @param r   The RebuildTree instance.
+	 */
 	public PMRRectTree(DRectangle can, int md, int bs, TopInterface p, RebuildTree r) {
 		super(can, md, bs, p, r);
 	}
 
-    /**
-     * Reinitializes the PMRRectTree with the given choice.
-     *
-     * @param c The choice used for reinitialization.
-     */
-	public void reInit(JComboBox c) {
+	/**
+	 * Reinitializes the PMRRectTree with the given choice.
+	 *
+	 * @param c The choice used for reinitialization.
+	 */
+	@Override
+	public void reInit(JComboBox<String> c) {
 		super.reInit(c);
 		new Bucket(topInterface, "Splitting Threshold", this);
 	}
 
-    /**
-     * Gets the name of the PMRRectTree.
-     *
-     * @return The name of the PMRRectTree.
-     */
+	/**
+	 * Gets the name of the PMRRectTree.
+	 *
+	 * @return The name of the PMRRectTree.
+	 */
+	@Override
 	public String getName() {
 		return "PMR Rectangle Quadtree";
 	}
 
-    /**
-     * Checks if the order of insertion matters for this tree.
-     *
-     * @return True if order matters, false otherwise.
-     */
+	/**
+	 * Checks if the order of insertion matters for this tree.
+	 *
+	 * @return True if order matters, false otherwise.
+	 */
+	@Override
 	public boolean orderDependent() {
 		return true;
 	}
 
 	// ------------------------------
-    /**
-     * Inserts a rectangle into the tree locally.
-     *
-     * @param q     The RNode to insert into.
-     * @param r     The rectangle to insert.
-     * @param block The block rectangle.
-     * @param md    The maximum depth.
-     * @return True if the insertion was successful, false otherwise.
-     */
+	/**
+	 * Inserts a rectangle into the tree locally.
+	 *
+	 * @param q     The RNode to insert into.
+	 * @param r     The rectangle to insert.
+	 * @param block The block rectangle.
+	 * @param md    The maximum depth.
+	 * @return True if the insertion was successful, false otherwise.
+	 */
+	@Override
 	boolean localInsert(RNode q, DRectangle r, DRectangle block, int md) {
 		boolean ok = true;
 		if (q.NODETYPE == WHITE) {

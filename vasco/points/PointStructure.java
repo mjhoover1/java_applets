@@ -26,7 +26,7 @@ abstract public class PointStructure extends SpatialStructure implements CommonC
 
 	/**
 	 * Constructs a new PointStructure.
-	 * 
+	 *
 	 * @param can The bounding rectangle for the spatial structure.
 	 * @param ti  The top interface for interacting with the spatial structure.
 	 * @param r   The rebuild tree for dynamic modification of the spatial
@@ -38,32 +38,37 @@ abstract public class PointStructure extends SpatialStructure implements CommonC
 
 	/**
 	 * Reinitializes the spatial structure with new operations.
-	 * 
+	 *
 	 * @param ops The set of operations to be available in the spatial structure.
 	 */
-	public void reInit(JComboBox ops) {
+	@Override
+	public void reInit(JComboBox<String> ops) {
 		super.reInit(ops);
+		JComboBox<String> availOps = ops;
 		availOps.addItem("Insert");
 		availOps.addItem("Move");
 		availOps.addItem("Delete");
 		availOps.addItem("Overlap");
 	}
 
+
+
 	/**
 	 * Inserts a drawable object into the spatial structure. This is a wrapper
 	 * method that casts the drawable object to a DPoint and calls the abstract
 	 * Insert method.
-	 * 
+	 *
 	 * @param r The drawable object to be inserted.
 	 * @return true if the insertion is successful, false otherwise.
 	 */
+	@Override
 	public boolean Insert(Drawable r) {
 		return Insert((DPoint) r);
 	}
 
 	/**
 	 * Abstract method to insert a point into the spatial structure.
-	 * 
+	 *
 	 * @param p The point to be inserted.
 	 * @return true if the insertion is successful, false otherwise.
 	 */
@@ -79,7 +84,7 @@ abstract public class PointStructure extends SpatialStructure implements CommonC
 
 		/**
 		 * Constructs a new XComparable object for a given point.
-		 * 
+		 *
 		 * @param p The point to be compared.
 		 */
 		public XComparable(DPoint p) {
@@ -88,9 +93,10 @@ abstract public class PointStructure extends SpatialStructure implements CommonC
 
 		/**
 		 * Returns the X coordinate of the point for comparison.
-		 * 
+		 *
 		 * @return The X coordinate of the point.
 		 */
+		@Override
 		public double sortBy() {
 			return p.x;
 		}
@@ -104,7 +110,7 @@ abstract public class PointStructure extends SpatialStructure implements CommonC
 
 		/**
 		 * Constructs a new YComparable object for a given point.
-		 * 
+		 *
 		 * @param p The point to be compared.
 		 */
 		public YComparable(DPoint p) {
@@ -113,9 +119,10 @@ abstract public class PointStructure extends SpatialStructure implements CommonC
 
 		/**
 		 * Returns the Y coordinate of the point for comparison.
-		 * 
+		 *
 		 * @return The Y coordinate of the point.
 		 */
+		@Override
 		public double sortBy() {
 			return p.y;
 		}
@@ -123,13 +130,13 @@ abstract public class PointStructure extends SpatialStructure implements CommonC
 
 	/*
 	 * double compareToX(DPoint a, DPoint b) { return a.x - b.x; }
-	 * 
+	 *
 	 * double compareToY(DPoint a, DPoint b) { return a.y - b.y; }
 	 */
 
 	/**
 	 * Returns the opposite quadrant of a given quadrant.
-	 * 
+	 *
 	 * @param Q The quadrant for which the opposite is to be found.
 	 * @return The opposite quadrant.
 	 */
@@ -149,7 +156,7 @@ abstract public class PointStructure extends SpatialStructure implements CommonC
 
 	/**
 	 * Returns the clockwise quadrant of a given quadrant.
-	 * 
+	 *
 	 * @param Q The quadrant for which the clockwise quadrant is to be found.
 	 * @return The clockwise quadrant.
 	 */
@@ -171,7 +178,7 @@ abstract public class PointStructure extends SpatialStructure implements CommonC
 	 * Determines the counter-clockwise quadrant relative to a given quadrant. This
 	 * method is used to identify the adjacent quadrant in a counter-clockwise
 	 * direction.
-	 * 
+	 *
 	 * @param Q The initial quadrant for which the counter-clockwise adjacent
 	 *          quadrant is sought. Quadrants are represented by the constants NW,
 	 *          NE, SE, and SW.

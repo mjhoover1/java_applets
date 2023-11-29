@@ -1,14 +1,14 @@
 package vasco.regions;
-import vasco.common.*;
- 
-import javax.swing.*; // import java.awt.*;
-import java.util.*;
 
-public class ConvertElement extends SVElement{
+import java.util.Vector;
 
-  public ConvertElement(GenElement e, Vector c){
-    super(e, c);
-  }
+import vasco.common.GenElement;
+import vasco.common.SVElement;
+
+public class ConvertElement extends SVElement {
+
+	public ConvertElement(GenElement e, Vector c) {
+		super(e, c);
+	}
 
 }
-

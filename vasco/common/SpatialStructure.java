@@ -1,13 +1,17 @@
 /* $Id: SpatialStructure.java,v 1.3 2007/10/28 15:38:13 jagan Exp $ */
 package vasco.common;
 
-import vasco.drawable.*;
-import javax.swing.*; // import java.awt.*;
-
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.*;
+import java.util.Vector;
+
+// import java.awt.*;
+import javax.swing.JComboBox;
+
+import vasco.drawable.Drawable;
+import vasco.drawable.DrawableIn;
+import vasco.drawable.DrawableOut;
 
 /**
  * Abstract base class for spatial structures in the Vasco framework. It defines
@@ -70,6 +74,7 @@ public abstract class SpatialStructure implements CommonConstants {
 			// System.out.println("run beg");
 		}
 
+		@Override
 		public void run() {
 			try {
 				Thread.sleep(500);
@@ -96,14 +101,14 @@ public abstract class SpatialStructure implements CommonConstants {
 		// System.out.println("Start");
 		cursorThread = new SwitchCursor();
 		cursorThread.start();
-	};
+	}
 
 	/**
 	 * Clears the spatial structure. This is an abstract method that must be
 	 * implemented by subclasses.
 	 */
 	public void Clear() {
-	};
+	}
 
 	/**
 	 * Inserts a point into the spatial structure. This method is not implemented in
@@ -160,7 +165,7 @@ public abstract class SpatialStructure implements CommonConstants {
 		if (cursorThread != null)
 			cursorThread.finish();
 		topInterface.setCursor(Cursor.getDefaultCursor());
-	};
+	}
 
 	/**
 	 * Abstract method for searching within the spatial structure.
@@ -223,7 +228,7 @@ public abstract class SpatialStructure implements CommonConstants {
 	 * @param level The level of detail or zoom level at which the grid is drawn.
 	 */
 	public void drawGrid(DrawingTarget g, int level) {
-	};
+	}
 
 	/**
 	 * Retrieves the name of the spatial structure.

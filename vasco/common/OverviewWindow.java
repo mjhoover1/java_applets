@@ -1,10 +1,7 @@
 /* $Id: OverviewWindow.java,v 1.2 2007/10/28 15:38:13 jagan Exp $ */
 package vasco.common;
 
-import javax.swing.*; // import java.awt.*;
-import javax.swing.event.*; // import java.awt.event.*;
-
-import java.awt.event.MouseEvent;
+import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -21,11 +18,22 @@ import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 //import java.applet.*;
 //import java.util.*;
-import java.text.*;
+import java.text.DecimalFormat;
+
+// import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 /* ---------------------------------------------------------------------
  *
@@ -33,7 +41,8 @@ import java.text.*;
  *
  */
 /**
- * OverviewWindow class provides a detailed overview window with zoom and scroll functionalities.
+ * OverviewWindow class provides a detailed overview window with zoom and scroll
+ * functionalities.
  */
 public class OverviewWindow extends JDialog
 		implements AdjustmentListener, MouseMotionListener, MouseListener, ComponentListener, ActionListener {
@@ -52,9 +61,9 @@ public class OverviewWindow extends JDialog
 	MouseDisplay mouseDisplay;
 	JButton close;
 
-    /**
-     * Inner class representing a canvas with basic setup for the overview window.
-     */
+	/**
+	 * Inner class representing a canvas with basic setup for the overview window.
+	 */
 	abstract class OverviewCanvas extends JPanel {
 		public OverviewCanvas() {
 			super();
@@ -62,10 +71,12 @@ public class OverviewWindow extends JDialog
 		}
 	}
 
-    /**
-     * LeftCanvas class extends OverviewCanvas to display specific information on the left side.
-     */
+	/**
+	 * LeftCanvas class extends OverviewCanvas to display specific information on
+	 * the left side.
+	 */
 	class LeftCanvas extends OverviewCanvas {
+		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
 			// g.setColor(Color.red);
@@ -88,10 +99,12 @@ public class OverviewWindow extends JDialog
 		}
 	}
 
-    /**
-     * RightCanvas class extends OverviewCanvas to display specific information on the right side.
-     */
+	/**
+	 * RightCanvas class extends OverviewCanvas to display specific information on
+	 * the right side.
+	 */
 	class RightCanvas extends OverviewCanvas {
+		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
 			// g.setColor(Color.red);
@@ -114,34 +127,34 @@ public class OverviewWindow extends JDialog
 		}
 	}
 
-    /**
-     * Creates a GridBagConstraints object with specified grid position, size, and fill behavior.
-     * This overloaded version provides default weights as 0.
-     *
-     * @param gx The grid x position (column) in the layout.
-     * @param gy The grid y position (row) in the layout.
-     * @param gw The number of columns the component occupies in the grid.
-     * @param gh The number of rows the component occupies in the grid.
-     * @param fill The fill behavior, which specifies how to distribute extra space.
-     * @return A GridBagConstraints object configured with the specified properties.
-     */
+	/**
+	 * Creates a GridBagConstraints object with specified grid position, size, and
+	 * fill behavior. This overloaded version provides default weights as 0.
+	 *
+	 * @param gx   The grid x position (column) in the layout.
+	 * @param gy   The grid y position (row) in the layout.
+	 * @param gw   The number of columns the component occupies in the grid.
+	 * @param gh   The number of rows the component occupies in the grid.
+	 * @param fill The fill behavior, which specifies how to distribute extra space.
+	 * @return A GridBagConstraints object configured with the specified properties.
+	 */
 	protected GridBagConstraints createConstraints(int gx, int gy, int gw, int gh, int fill) {
 		return createConstraints(gx, gy, gw, gh, fill, 0, 0);
 	}
 
-    /**
-     * Creates a GridBagConstraints object with specified grid position, size, fill behavior,
-     * and weight.
-     *
-     * @param gx The grid x position (column) in the layout.
-     * @param gy The grid y position (row) in the layout.
-     * @param gw The number of columns the component occupies in the grid.
-     * @param gh The number of rows the component occupies in the grid.
-     * @param fill The fill behavior, which specifies how to distribute extra space.
-     * @param wx The weight of the component in the x direction.
-     * @param wy The weight of the component in the y direction.
-     * @return A GridBagConstraints object configured with the specified properties.
-     */
+	/**
+	 * Creates a GridBagConstraints object with specified grid position, size, fill
+	 * behavior, and weight.
+	 *
+	 * @param gx   The grid x position (column) in the layout.
+	 * @param gy   The grid y position (row) in the layout.
+	 * @param gw   The number of columns the component occupies in the grid.
+	 * @param gh   The number of rows the component occupies in the grid.
+	 * @param fill The fill behavior, which specifies how to distribute extra space.
+	 * @param wx   The weight of the component in the x direction.
+	 * @param wy   The weight of the component in the y direction.
+	 * @return A GridBagConstraints object configured with the specified properties.
+	 */
 	protected GridBagConstraints createConstraints(int gx, int gy, int gw, int gh, int fill, int wx, int wy) {
 		GridBagConstraints dp = new GridBagConstraints();
 		dp.gridx = gx;
@@ -155,13 +168,15 @@ public class OverviewWindow extends JDialog
 		return dp;
 	}
 
-    /**
-     * Constructor for OverviewWindow. Sets up the window with necessary components and listeners.
-     *
-     * @param dc The DrawingCanvas to be displayed in this window.
-     * @param reb An instance of RebuildTree for redraw operations.
-     * @param mouseDisplay A MouseDisplay instance for displaying mouse-related information.
-     */
+	/**
+	 * Constructor for OverviewWindow. Sets up the window with necessary components
+	 * and listeners.
+	 *
+	 * @param dc           The DrawingCanvas to be displayed in this window.
+	 * @param reb          An instance of RebuildTree for redraw operations.
+	 * @param mouseDisplay A MouseDisplay instance for displaying mouse-related
+	 *                     information.
+	 */
 	public OverviewWindow(DrawingCanvas dc, RebuildTree reb, MouseDisplay mouseDisplay) {
 		super(new JFrame(), "Magnifying glass");
 		// setSize(150,150);
@@ -174,8 +189,8 @@ public class OverviewWindow extends JDialog
 
 		/*
 		 * setLayout(new BorderLayout());
-		 * 
-		 * 
+		 *
+		 *
 		 * Panel topCoor = new Panel(); topCoor.setLayout(new GridLayout(2, 2));
 		 * topCoor.add(ulx = new TextField(COORDSIZE)); topCoor.add(urx = new
 		 * TextField(COORDSIZE)); topCoor.add(uly = new TextField(COORDSIZE));
@@ -193,8 +208,8 @@ public class OverviewWindow extends JDialog
 		JPanel dcan = new JPanel();
 		dcan.setLayout(new BorderLayout());
 
-		sphor = new JScrollBar(JScrollBar.HORIZONTAL, 0, OVERVIEW_SIZE, 0, MAXSCROLL);
-		spvert = new JScrollBar(JScrollBar.VERTICAL, 0, OVERVIEW_SIZE, 0, MAXSCROLL);
+		sphor = new JScrollBar(Adjustable.HORIZONTAL, 0, OVERVIEW_SIZE, 0, MAXSCROLL);
+		spvert = new JScrollBar(Adjustable.VERTICAL, 0, OVERVIEW_SIZE, 0, MAXSCROLL);
 		spvert.addAdjustmentListener(this);
 		sphor.addAdjustmentListener(this);
 
@@ -215,9 +230,9 @@ public class OverviewWindow extends JDialog
 		 * glob.add("East", spvert); glob.add("South", sphor); Panel dp = new Panel();
 		 * dp.setSize(OVERVIEW_SIZE, OVERVIEW_SIZE); dp.add(can); glob.add("Center",
 		 * dp); add("Center", glob);
-		 * 
+		 *
 		 * Panel bottm = new Panel(); bottm.setLayout(new BorderLayout());
-		 * 
+		 *
 		 * Panel bottomCoor = new Panel(); bottomCoor.setLayout(new GridLayout(2, 2));
 		 * bottomCoor.add(llx = new TextField(COORDSIZE)); bottomCoor.add(lrx = new
 		 * TextField(COORDSIZE)); bottomCoor.add(lly = new TextField(COORDSIZE));
@@ -229,7 +244,7 @@ public class OverviewWindow extends JDialog
 		JPanel cur = new JPanel();
 		cur.setLayout(new FlowLayout());
 		JLabel l = new JLabel("Cursor");
-		l.setAlignmentX(JLabel.RIGHT); // l.setAlignment(JLabel.RIGHT);
+		l.setAlignmentX(SwingConstants.RIGHT); // l.setAlignment(JLabel.RIGHT);
 		cur.add(l);
 		position = new JTextField(2 * COORDSIZE);
 		position.setEditable(false);
@@ -257,9 +272,9 @@ public class OverviewWindow extends JDialog
 		// show();
 	}
 
-    /**
-     * Updates the coordinates displayed in the overview window.
-     */
+	/**
+	 * Updates the coordinates displayed in the overview window.
+	 */
 	private void updateCoords() {
 		DecimalFormat df = new DecimalFormat("0.##");
 		DPoint p;
@@ -280,21 +295,20 @@ public class OverviewWindow extends JDialog
 		// lry.setText(df.format(p.y) + "]");
 	}
 
-    /**
-     * Zooms in towards a specified point in the drawing canvas.
-     * The zooming is done incrementally to provide a smooth transition.
-     *
-     * @param p The point towards which the zooming is directed. It specifies the 
-     *          focal point of the zoom.
-     */
+	/**
+	 * Zooms in towards a specified point in the drawing canvas. The zooming is done
+	 * incrementally to provide a smooth transition.
+	 *
+	 * @param p The point towards which the zooming is directed. It specifies the
+	 *          focal point of the zoom.
+	 */
 	private void zoomIn(DPoint p) {
 		if (zoomStep < 64) {
 			DPoint center = can.getCenter();
 
 			double xdif = (p.x - center.x) / 10;
-			;
+
 			double ydif = (p.y - center.y) / 10;
-			;
 
 			double zs = zoomStep;
 			for (int i = 1; i <= 10; i++) {
@@ -312,12 +326,12 @@ public class OverviewWindow extends JDialog
 		}
 	}
 
-    /**
-     * Zooms out from a specified point in the drawing canvas.
-     * The zooming out process is gradual for a smoother visual effect.
-     *
-     * @param p The point from which the zooming out is initiated.
-     */
+	/**
+	 * Zooms out from a specified point in the drawing canvas. The zooming out
+	 * process is gradual for a smoother visual effect.
+	 *
+	 * @param p The point from which the zooming out is initiated.
+	 */
 	private void zoomOut(DPoint p) {
 		if (zoomStep > 1) {
 			DPoint center = can.getCenter();
@@ -342,12 +356,12 @@ public class OverviewWindow extends JDialog
 		}
 	}
 
-
-    /**
-     * Handles mouse clicked events for zooming in and out.
-     * 
-     * @param me MouseEvent that triggered the click.
-     */
+	/**
+	 * Handles mouse clicked events for zooming in and out.
+	 *
+	 * @param me MouseEvent that triggered the click.
+	 */
+	@Override
 	public void mouseClicked(MouseEvent me) {
 		int mask = MouseDisplay.getMouseButtons(me);
 		Point scrCoord = can.adjustPoint(me.getPoint());
@@ -359,68 +373,77 @@ public class OverviewWindow extends JDialog
 			zoomOut(p);
 	}
 
-    /**
-     * Handles mouse pressed event. This method is called when a mouse button is pressed
-     * on the component.
-     * 
-     * @param me The MouseEvent triggered when a mouse button is pressed.
-     */
+	/**
+	 * Handles mouse pressed event. This method is called when a mouse button is
+	 * pressed on the component.
+	 *
+	 * @param me The MouseEvent triggered when a mouse button is pressed.
+	 */
+	@Override
 	public void mousePressed(MouseEvent me) {
 	}
 
-    /**
-     * Handles mouse released event. This method is called when a mouse button is released
-     * over the component.
-     * 
-     * @param me The MouseEvent triggered when a mouse button is released.
-     */
+	/**
+	 * Handles mouse released event. This method is called when a mouse button is
+	 * released over the component.
+	 *
+	 * @param me The MouseEvent triggered when a mouse button is released.
+	 */
+	@Override
 	public void mouseReleased(MouseEvent me) {
 	}
 
-    /**
-     * Handles mouse entered event. This method is called when the mouse enters the component.
-     * 
-     * @param me The MouseEvent triggered when the mouse enters the component.
-     */
+	/**
+	 * Handles mouse entered event. This method is called when the mouse enters the
+	 * component.
+	 *
+	 * @param me The MouseEvent triggered when the mouse enters the component.
+	 */
+	@Override
 	public void mouseEntered(MouseEvent me) {
 	}
 
-    /**
-     * Handles mouse exited event. This method is called when the mouse exits the component.
-     * 
-     * @param me The MouseEvent triggered when the mouse exits the component.
-     */
+	/**
+	 * Handles mouse exited event. This method is called when the mouse exits the
+	 * component.
+	 *
+	 * @param me The MouseEvent triggered when the mouse exits the component.
+	 */
+	@Override
 	public void mouseExited(MouseEvent me) {
 	}
 
-    /**
-     * Handles mouse moved event. This method updates the cursor position display
-     * when the mouse is moved over the component.
-     * 
-     * @param me The MouseEvent triggered when the mouse is moved.
-     */
+	/**
+	 * Handles mouse moved event. This method updates the cursor position display
+	 * when the mouse is moved over the component.
+	 *
+	 * @param me The MouseEvent triggered when the mouse is moved.
+	 */
+	@Override
 	public void mouseMoved(MouseEvent me) {
 		DecimalFormat df = new DecimalFormat("0.##");
 		DPoint p = can.transPointT(me.getX(), me.getY());
 		position.setText(df.format(p.x) + ", " + df.format(p.y));
 	}
 
-    /**
-     * Handles mouse dragged event. This method updates the cursor position display
-     * when the mouse is dragged over the component.
-     * 
-     * @param me The MouseEvent triggered when the mouse is dragged.
-     */
+	/**
+	 * Handles mouse dragged event. This method updates the cursor position display
+	 * when the mouse is dragged over the component.
+	 *
+	 * @param me The MouseEvent triggered when the mouse is dragged.
+	 */
+	@Override
 	public void mouseDragged(MouseEvent me) {
 		DPoint p = can.transPointT(me.getX(), me.getY());
 		position.setText(p.x + ", " + p.y);
 	}
 
-    /**
-     * Handles adjustment value changes for scrollbars.
-     * 
-     * @param ae AdjustmentEvent that triggered the change.
-     */
+	/**
+	 * Handles adjustment value changes for scrollbars.
+	 *
+	 * @param ae AdjustmentEvent that triggered the change.
+	 */
+	@Override
 	public void adjustmentValueChanged(AdjustmentEvent ae) {
 		JScrollBar s = (JScrollBar) ae.getSource();
 		if (s == sphor) {
@@ -432,49 +455,54 @@ public class OverviewWindow extends JDialog
 		updateCoords();
 	}
 
-    /**
-     * Handles the component resized event. It adjusts the viewport of the drawing canvas
-     * to match its preferred size when the component is resized.
-     * 
-     * @param ce The ComponentEvent triggered when the component is resized.
-     */
+	/**
+	 * Handles the component resized event. It adjusts the viewport of the drawing
+	 * canvas to match its preferred size when the component is resized.
+	 *
+	 * @param ce The ComponentEvent triggered when the component is resized.
+	 */
+	@Override
 	public void componentResized(ComponentEvent ce) {
 //		 can.changeViewPort(new Rectangle(0, 0, can.getPreferredSize().width,
 //		 can.getPreferredSize().height));
-	};
+	}
 
-    /**
-     * Handles the component moved event. This method is called when the component's
-     * position changes.
-     * 
-     * @param ce The ComponentEvent triggered when the component is moved.
-     */
+	/**
+	 * Handles the component moved event. This method is called when the component's
+	 * position changes.
+	 *
+	 * @param ce The ComponentEvent triggered when the component is moved.
+	 */
+	@Override
 	public void componentMoved(ComponentEvent ce) {
-	};
+	}
 
-    /**
-     * Handles the component shown event. This method is called when the component
-     * becomes visible.
-     * 
-     * @param ce The ComponentEvent triggered when the component is shown.
-     */
+	/**
+	 * Handles the component shown event. This method is called when the component
+	 * becomes visible.
+	 *
+	 * @param ce The ComponentEvent triggered when the component is shown.
+	 */
+	@Override
 	public void componentShown(ComponentEvent ce) {
-	};
+	}
 
-    /**
-     * Handles the component hidden event. This method is called when the component
-     * is no longer visible.
-     * 
-     * @param ce The ComponentEvent triggered when the component is hidden.
-     */
+	/**
+	 * Handles the component hidden event. This method is called when the component
+	 * is no longer visible.
+	 *
+	 * @param ce The ComponentEvent triggered when the component is hidden.
+	 */
+	@Override
 	public void componentHidden(ComponentEvent ce) {
-	};
+	}
 
-    /**
-     * Handles action performed events, particularly for closing the dialog.
-     * 
-     * @param ae ActionEvent that triggered the action.
-     */
+	/**
+	 * Handles action performed events, particularly for closing the dialog.
+	 *
+	 * @param ae ActionEvent that triggered the action.
+	 */
+	@Override
 	public void actionPerformed(ActionEvent ae) {
 		dispose();
 	}

@@ -8,66 +8,73 @@ import java.awt.Rectangle;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import javax.swing.*; // import java.awt.*;
-import javax.swing.event.*; // import java.awt.event.*;
-
 public interface DrawingTarget {
-    public void addMouseListener(MouseListener ml);
-    public void addMouseMotionListener(MouseMotionListener ml);
-    public void removeMouseListener(MouseListener ml);
-    public void removeMouseMotionListener(MouseMotionListener ml);
+	public void addMouseListener(MouseListener ml);
 
-    public void changeHelp(int mask, String b1, String b2, String b3);
+	public void addMouseMotionListener(MouseMotionListener ml);
 
-    public Rectangle getView();
-    public Rectangle getOrig();
+	public void removeMouseListener(MouseListener ml);
 
-  public void drawRect(double xx, double yy, double ww, double hh);
-  
+	public void removeMouseMotionListener(MouseMotionListener ml);
 
-  public void fillRect(double xx, double yy, double ww, double hh);
+	public void changeHelp(int mask, String b1, String b2, String b3);
 
-  public void fillPoly(DPolygon p);
+	public Rectangle getView();
 
-  public void fillOval(double xx, double yy, int ww, int hh);
+	public Rectangle getOrig();
 
-  public void drawOval(double x, double y, int width, int height);
+	public void drawRect(double xx, double yy, double ww, double hh);
 
-  public void drawArc(double x, double y, double w, double h, int sA, int rA);
-  public void directDrawArc(Color c, double x, double y, double w, double h, 
-			    int sA, int rA);
+	public void fillRect(double xx, double yy, double ww, double hh);
 
-  public void drawOval(DPoint p, double width, double height);
-  public void fillOval(DPoint p, double width, double height);
-    // real sizable oval
+	public void fillPoly(DPolygon p);
 
-  public void drawLine(double x1, double y1, double x2, double y2);
+	public void fillOval(double xx, double yy, int ww, int hh);
 
-  public void directRect(Color c, double x, double y, double w, double h);
+	public void drawOval(double x, double y, int width, int height);
 
-  public void directThickRect(Color c, double xx, double yy, double ww,
-		              double hh, int thick);
-  public void directFillRect(Color c, double x, double y, double w, double h);
+	public void drawArc(double x, double y, double w, double h, int sA, int rA);
 
-  public void directLine(Color c, double x1, double y1, double x2, double y2);
+	public void directDrawArc(Color c, double x, double y, double w, double h, int sA, int rA);
 
-  public void directFillOval(Color c, double x, double y, int w, int h);
-  public void directDrawOval(Color c, double x, double y, int w, int h);
+	public void drawOval(DPoint p, double width, double height);
 
-  public void setColor(Color c);
+	public void fillOval(DPoint p, double width, double height);
+	// real sizable oval
 
-  public void redraw();
-  
-  public void drawString(String s, double x, double y);
-  public void drawString(String s, double x, double y, Font f);
-  public void directDrawString(String s, double x, double y);
+	public void drawLine(double x1, double y1, double x2, double y2);
 
-  Point adjustPoint(Point p);
-  DPoint transPointT(Point p);
-  //  DPoint transPointT(int x, int y);
-  Point transPoint(double x, double y);
+	public void directRect(Color c, double x, double y, double w, double h);
 
-  boolean visible(DRectangle r);
-  boolean visible(Rectangle r);
+	public void directThickRect(Color c, double xx, double yy, double ww, double hh, int thick);
+
+	public void directFillRect(Color c, double x, double y, double w, double h);
+
+	public void directLine(Color c, double x1, double y1, double x2, double y2);
+
+	public void directFillOval(Color c, double x, double y, int w, int h);
+
+	public void directDrawOval(Color c, double x, double y, int w, int h);
+
+	public void setColor(Color c);
+
+	public void redraw();
+
+	public void drawString(String s, double x, double y);
+
+	public void drawString(String s, double x, double y, Font f);
+
+	public void directDrawString(String s, double x, double y);
+
+	Point adjustPoint(Point p);
+
+	DPoint transPointT(Point p);
+
+	// DPoint transPointT(int x, int y);
+	Point transPoint(double x, double y);
+
+	boolean visible(DRectangle r);
+
+	boolean visible(Rectangle r);
 
 }

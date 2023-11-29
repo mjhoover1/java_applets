@@ -1,143 +1,161 @@
 package vasco.regions;
 
-import vasco.common.*;
-import vasco.drawable.*;
-
-import javax.swing.*; // import java.awt.*;
-
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.*;
- 
+
+// import java.awt.*;
+import javax.swing.JComboBox;
+
+import vasco.common.DPoint;
+import vasco.common.DRectangle;
+import vasco.common.DrawingTarget;
+import vasco.common.GenericCanvas;
+import vasco.common.QueryObject;
+import vasco.common.RebuildTree;
+import vasco.common.SearchVector;
+import vasco.common.TopInterface;
+import vasco.drawable.Drawable;
+
 public class RegionQuad extends RegionStructure {
 
-  public RegionQuad(GenericCanvas rc, DRectangle can, DrawingTarget dt, TopInterface p, RebuildTree r, Grid g) {
-    super(rc, can, dt, p, r, g, QUAD_MODE); 
-  }  
-     
-  /************** RegionStructure **************/
-  public int search(Point p){
-    return super.search(p);
-  }
+	public RegionQuad(GenericCanvas rc, DRectangle can, DrawingTarget dt, TopInterface p, RebuildTree r, Grid g) {
+		super(rc, can, dt, p, r, g, QUAD_MODE);
+	}
 
-  public int search(Node node, Point p){
-    return super.search(node, p);
-  } 
+	/************** RegionStructure **************/
+	@Override
+	public int search(Point p) {
+		return super.search(p);
+	}
 
- 
-  public void reInit(JComboBox ao) {
-    super.reInit(ao);
-    ao.addItem("To raster");
-    ao.addItem("To chain");
-    ao.addItem("To array"); 
-  }  
- 
-  public void Clear() {
-    super.Clear();
-    root = new Node(null, 0, 0, 512, 0, -1, 0, true);
-    /* clear the grid */
-    grid.Clear();
-  }
- 
-  public String getName(){
-    return "Region Tree"; 
-  }
+	@Override
+	public int search(Node node, Point p) {
+		return super.search(node, p);
+	}
 
-  public boolean orderDependent() {
-    return false;
-  } 
- 
-  public boolean Insert(Point p){
-    return super.Insert(p);
-  }
-  
-  public boolean Delete(Point p){
-    return super.Delete(p);
-  }
- 
-  public boolean Insert(Drawable r){
-    return true;
-  }
- 
-  public void Delete(DPoint p){
-  }
+	@Override
+	public void reInit(JComboBox<String> ao) {
+		super.reInit(ao);
+		ao.addItem("To raster");
+		ao.addItem("To chain");
+		ao.addItem("To array");
+	}
 
-  public void DeleteDirect(Drawable d){
-  }
- 
-  public SearchVector Search(QueryObject r, int mode){
-    return null;
-  }
- 
-  public SearchVector Nearest(QueryObject p){
-    return null;
-  }
+	@Override
+	public void Clear() {
+		super.Clear();
+		root = new Node(null, 0, 0, 512, 0, -1, 0, true);
+		/* clear the grid */
+		grid.Clear();
+	}
 
-  public SearchVector Nearest(QueryObject p, double dist){
-    return null;
-  }
+	@Override
+	public String getName() {
+		return "Region Tree";
+	}
 
-  public Drawable NearestFirst(QueryObject p){
-    return null;
-  }
+	@Override
+	public boolean orderDependent() {
+		return false;
+	}
 
-  public Drawable[] NearestRange(QueryObject p, double dist){
-    return null;
-  }
-     
-  public void drawContents(DrawingTarget g, Rectangle view){
-    super.drawContents(g, view);
-  }   
- 
-  public void convert(ConvertVector cv){
-    if (operation.equals("To quadtree")){
-      convertToQuadTree(cv);
-    }
-    else if (operation.equals("To array")){
-      convertToBinaryArray(cv);
-    }
-    else if (operation.equals("To raster")){
-      convertToRaster(cv);
-    }
-    else if (operation.equals("To chain")){
-      convertToChainCode(cv);
-    }
-  }
-  
-  public Node convertToQuadTree(ConvertVector cv){
-    return null;
-  }
+	@Override
+	public boolean Insert(Point p) {
+		return super.Insert(p);
+	}
 
-  public ChainCode convertToChainCode(ConvertVector cv){
-    ChainCode code = null;
- 
-    if (si == null)
-      si = new StructureBox("Chain Code", 7, 40);
-    code = (new QuadTreeToChain(root, grid, si)).convert(cv);
-    
+	@Override
+	public boolean Delete(Point p) {
+		return super.Delete(p);
+	}
 
-    return code;
-  }
+	@Override
+	public boolean Insert(Drawable r) {
+		return true;
+	}
 
-  public BinaryArray convertToBinaryArray(ConvertVector cv){
-    BinaryArray array;
+	@Override
+	public void Delete(DPoint p) {
+	}
 
-    array = (new QuadTreeToArray(root, grid)).convert(cv);
+	@Override
+	public void DeleteDirect(Drawable d) {
+	}
 
-    return null;
-  }
+	@Override
+	public SearchVector Search(QueryObject r, int mode) {
+		return null;
+	}
 
-  public Raster convertToRaster(ConvertVector cv){
-    Raster raster;
- 
-    raster = (new QuadTreeToRaster(root, grid)).convert(cv);
+	@Override
+	public SearchVector Nearest(QueryObject p) {
+		return null;
+	}
 
-    return raster;
-  } 
+	@Override
+	public SearchVector Nearest(QueryObject p, double dist) {
+		return null;
+	}
+
+	@Override
+	public Drawable NearestFirst(QueryObject p) {
+		return null;
+	}
+
+	@Override
+	public Drawable[] NearestRange(QueryObject p, double dist) {
+		return null;
+	}
+
+	@Override
+	public void drawContents(DrawingTarget g, Rectangle view) {
+		super.drawContents(g, view);
+	}
+
+	@Override
+	public void convert(ConvertVector cv) {
+		if (operation.equals("To quadtree")) {
+			convertToQuadTree(cv);
+		} else if (operation.equals("To array")) {
+			convertToBinaryArray(cv);
+		} else if (operation.equals("To raster")) {
+			convertToRaster(cv);
+		} else if (operation.equals("To chain")) {
+			convertToChainCode(cv);
+		}
+	}
+
+	@Override
+	public Node convertToQuadTree(ConvertVector cv) {
+		return null;
+	}
+
+	@Override
+	public ChainCode convertToChainCode(ConvertVector cv) {
+		ChainCode code = null;
+
+		if (si == null)
+			si = new StructureBox("Chain Code", 7, 40);
+		code = (new QuadTreeToChain(root, grid, si)).convert(cv);
+
+		return code;
+	}
+
+	@Override
+	public BinaryArray convertToBinaryArray(ConvertVector cv) {
+		BinaryArray array;
+
+		array = (new QuadTreeToArray(root, grid)).convert(cv);
+
+		return null;
+	}
+
+	@Override
+	public Raster convertToRaster(ConvertVector cv) {
+		Raster raster;
+
+		raster = (new QuadTreeToRaster(root, grid)).convert(cv);
+
+		return raster;
+	}
 }
-
- 
-
-
-
-

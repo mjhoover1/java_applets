@@ -1,11 +1,7 @@
 /* $Id: NearestThread.java,v 1.2 2002/09/25 20:55:05 brabec Exp $ */
 package vasco.common;
 
-import javax.swing.*; // import java.awt.*;
-
 import java.awt.Color;
-import java.util.*;
-import vasco.drawable.*;
 
 public class NearestThread extends VascoThread {
 	// --- use PCanvas for: 1) drawBackground, 2) drawGrid, 3) drawContents, 4)
@@ -56,6 +52,7 @@ public class NearestThread extends VascoThread {
 		blend = true;
 	}
 
+	@Override
 	public VascoThread makeCopy() {
 		NearestThread nw;
 
@@ -67,11 +64,13 @@ public class NearestThread extends VascoThread {
 		return nw;
 	}
 
+	@Override
 	public void drawQueryObject(DrawingTarget off) {
 		qo.drawBuffer(Color.gray, off, dist);
 		super.drawQueryObject(off);
 	}
 
+	@Override
 	public void fillQueryObject(DrawingTarget off) {
 		qo.fillBuffer(Color.gray, Color.white, off, dist);
 	}
@@ -82,24 +81,25 @@ public class NearestThread extends VascoThread {
 		return drawCurrentStep(dt);
 	}
 
+	@Override
 	public synchronized boolean drawCurrentStep(DrawingTarget[] off) {
 		pc.setProgressBar(getProgress());
 		NNElement re = (NNElement) v.elementAt(getProgress());
 
-		for (int i = 0; i < off.length; i++) {
-			pc.drawBackground(off[i], Color.lightGray);
-			qo.fillBuffer(Color.yellow, Color.lightGray, off[i], re.dist);
+		for (DrawingTarget element : off) {
+			pc.drawBackground(element, Color.lightGray);
+			qo.fillBuffer(Color.yellow, Color.lightGray, element, re.dist);
 			for (int j = 0; j < getProgress(); j++)
-				v.elementAt(j).ge.fillElementNext(off[i]);
-			re.fillQueue(off[i]);
-			re.ge.fillElementFirst(off[i]);
+				v.elementAt(j).ge.fillElementNext(element);
+			re.fillQueue(element);
+			re.ge.fillElementFirst(element);
 
-			pc.drawGrid(off[i]);
-			qo.drawBuffer(Color.yellow, off[i], re.dist);
-			drawQueryObject(off[i]);
-			pc.drawContents(off[i]);
+			pc.drawGrid(element);
+			qo.drawBuffer(Color.yellow, element, re.dist);
+			drawQueryObject(element);
+			pc.drawContents(element);
 
-			re.drawQueue(off[i]);
+			re.drawQueue(element);
 
 			int counter = 0;
 			for (int j = 0; j < getProgress(); j++) {
@@ -107,23 +107,24 @@ public class NearestThread extends VascoThread {
 				if (blend) {
 					// System.out.println((sr + counter * dr) + " " + (sg + counter * dg) + " " +
 					// (sb + counter * db));
-					off[i].setColor(
+					element.setColor(
 							new Color((int) (sr + counter * dr), (int) (sg + counter * dg), (int) (sb + counter * db)));
 					if (ne.isElement())
 						counter++;
 					// System.out.println("onFly counter" + counter);
 				} else
-					off[i].setColor(Color.blue);
-				ne.ge.drawElementNext(off[i]);
+					element.setColor(Color.blue);
+				ne.ge.drawElementNext(element);
 			}
-			re.ge.drawElementFirst(off[i]);
+			re.ge.drawElementFirst(element);
 
-			off[i].redraw();
+			element.redraw();
 		}
 		return (pc.getSuccessMode() != CommonConstants.RUNMODE_CONTINUOUS && (re.ge.pauseMode() == GenElement.SUCCESS
 				|| (re.ge.pauseMode() == GenElement.FAIL && pc.getSuccessMode() == CommonConstants.RUNMODE_OBJECT)));
 	}
 
+	@Override
 	public void run() {
 		if (v != null && v.size() > 0) {
 			setProgress(0);
@@ -140,34 +141,33 @@ public class NearestThread extends VascoThread {
 						sleep(pc.getDelay());
 					} catch (Exception e) {
 					}
-				;
 			} while (setProgress(getProgress() + 1));
 
-			for (int i = 0; i < off.length; i++) {
+			for (DrawingTarget element : off) {
 
-				pc.drawBackground(off[i], Color.lightGray);
+				pc.drawBackground(element, Color.lightGray);
 
-				qo.fillBuffer(Color.gray, Color.lightGray, off[i], dist);
+				qo.fillBuffer(Color.gray, Color.lightGray, element, dist);
 
 				for (int j = 0; j < v.size(); j++)
-					v.elementAt(j).ge.fillElementNext(off[i]);
+					v.elementAt(j).ge.fillElementNext(element);
 
-				qo.drawBuffer(Color.gray, off[i], dist);
-				pc.drawContents(off[i]);
-				drawQueryObject(off[i]);
+				qo.drawBuffer(Color.gray, element, dist);
+				pc.drawContents(element);
+				drawQueryObject(element);
 				int counter = 0;
 				for (int j = 0; j < v.size(); j++) {
 					NNElement ne = (NNElement) v.elementAt(j);
 					if (blend) {
-						off[i].setColor(new Color((int) (sr + counter * dr), (int) (sg + counter * dg),
+						element.setColor(new Color((int) (sr + counter * dr), (int) (sg + counter * dg),
 								(int) (sb + counter * db)));
 						if (ne.isElement())
 							counter++;
 					} else
-						off[i].setColor(Color.blue);
-					ne.ge.drawElementNext(off[i]);
+						element.setColor(Color.blue);
+					ne.ge.drawElementNext(element);
 				}
-				off[i].redraw();
+				element.redraw();
 			}
 		}
 		pc.reset();

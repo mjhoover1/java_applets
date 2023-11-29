@@ -6,8 +6,6 @@
  */
 package vasco.rectangles;
 
-import vasco.common.*;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -15,10 +13,32 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
-import javax.swing.*; // import java.awt.*;
-import javax.swing.event.*; // import java.awt.event.*;
-import vasco.drawable.*;
+import java.util.Vector;
+
+// import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import vasco.common.DPoint;
+import vasco.common.DRectangle;
+import vasco.common.DrawingTarget;
+import vasco.common.LoosenessFactor;
+import vasco.common.LoosenessFactorIface;
+import vasco.common.MaxDecomp;
+import vasco.common.MaxDecompIface;
+import vasco.common.NNElement;
+import vasco.common.QueryObject;
+import vasco.common.QueueBlock;
+import vasco.common.RebuildTree;
+import vasco.common.SVElement;
+import vasco.common.SearchVector;
+import vasco.common.TopInterface;
+import vasco.common.YellowBlock;
+import vasco.drawable.Drawable;
+import vasco.drawable.NNDrawable;
 
 public class LOOSETree extends RectangleStructure implements MaxDecompIface, LoosenessFactorIface {
 
@@ -45,6 +65,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	/**
 	 * Clears the LOOSETree.
 	 */
+	@Override
 	public void Clear() {
 		super.Clear();
 		ROOT = null;
@@ -52,25 +73,28 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 	/**
 	 * Checks if the order of operations is dependent.
-	 * 
+	 *
 	 * @return true if order-dependent, false otherwise
 	 */
+	@Override
 	public boolean orderDependent() {
 		return false;
 	}
 
 	/**
 	 * Reinitializes the object with the given choice.
-	 * 
+	 *
 	 * @param c The choice object
 	 */
-	public void reInit(JComboBox c) {
+	@Override
+	public void reInit(JComboBox<String> c) {
 //		System.out.println("c " + c.getItemCount());
 		super.reInit(c);
 //		System.out.println("after c " + c.getItemCount());
 //		System.out.print("this is " + this);
 		new MaxDecomp(topInterface, 9, this);
 		new LoosenessFactor(topInterface, 2.0, this);
+		JComboBox<String> availOps = c;
 		availOps.addItem("Motion Insensitivity");
 		availOps.addItem("Show Quadtree");
 //		System.out.print("availOps is " + availOps);
@@ -78,10 +102,11 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 	/**
 	 * Inserts a rectangle into the data structure.
-	 * 
+	 *
 	 * @param P The rectangle to insert
 	 * @return true if successful, false otherwise
 	 */
+	@Override
 	public boolean Insert(DRectangle P) {
 		boolean[] res = new boolean[1];
 		ROOT = insert(P, ROOT, wholeCanvas.x + wholeCanvas.width / 2, wholeCanvas.y + wholeCanvas.height / 2,
@@ -97,11 +122,12 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 	/**
 	 * Replaces rectangles in the data structure.
-	 * 
+	 *
 	 * @param OldRect The old rectangle to replace
 	 * @param NewRect The new rectangle to replace with
 	 * @return true if successful, false otherwise
 	 */
+	@Override
 	public boolean ReplaceRectangles(DRectangle OldRect, DRectangle NewRect) {
 
 		if (ROOT == null)
@@ -116,11 +142,12 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 	/**
 	 * Finds the enclosing quad block for a given rectangle.
-	 * 
+	 *
 	 * @param OldRect   The rectangle
 	 * @param nextLevel Whether to consider the next level
 	 * @return The enclosing quad block
 	 */
+	@Override
 	public DRectangle EnclosingQuadBlock(DRectangle OldRect, boolean nextLevel) {
 
 		if (ROOT == null)
@@ -132,9 +159,10 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 	/**
 	 * Deletes a point from the data structure.
-	 * 
+	 *
 	 * @param qu The point to delete
 	 */
+	@Override
 	public void Delete(DPoint qu) {
 		if (ROOT == null)
 			return;
@@ -147,9 +175,10 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 	/**
 	 * Deletes a drawable object directly.
-	 * 
+	 *
 	 * @param d The drawable object to delete
 	 */
+	@Override
 	public void DeleteDirect(Drawable d) {
 		if (ROOT == null)
 			return;
@@ -159,11 +188,12 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 	/**
 	 * Searches for objects that match the query.
-	 * 
+	 *
 	 * @param r    The query object
 	 * @param mode The search mode
 	 * @return A search vector containing matching objects
 	 */
+	@Override
 	public SearchVector Search(QueryObject r, int mode) {
 		SearchVector res = new SearchVector();
 		searchVector = new Vector();
@@ -173,10 +203,11 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 	/**
 	 * Finds the nearest object to a query point.
-	 * 
+	 *
 	 * @param p The query object
 	 * @return A search vector containing the nearest object
 	 */
+	@Override
 	public SearchVector Nearest(QueryObject p) {
 		SearchVector v = new SearchVector();
 		if (ROOT != null) {
@@ -188,11 +219,12 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 	/**
 	 * Finds objects within a specified distance of a query point.
-	 * 
+	 *
 	 * @param p    The query object
 	 * @param dist The maximum distance
 	 * @return A search vector containing matching objects
 	 */
+	@Override
 	public SearchVector Nearest(QueryObject p, double dist) {
 		SearchVector v = new SearchVector();
 		if (ROOT != null) {
@@ -204,7 +236,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 	/**
 	 * Finds the nearest point using a LOOSE query.
-	 * 
+	 *
 	 * @param qu The query point
 	 * @return The nearest point
 	 */
@@ -217,10 +249,11 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 	/**
 	 * Finds the nearest drawable object using a LOOSE query.
-	 * 
+	 *
 	 * @param qu The query object
 	 * @return The nearest drawable object
 	 */
+	@Override
 	public Drawable NearestFirst(QueryObject qu) {
 		if (ROOT == null)
 			return null;
@@ -230,11 +263,12 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 	/**
 	 * Finds drawable objects within a specified distance of a query object.
-	 * 
+	 *
 	 * @param qu   The query object
 	 * @param dist The maximum distance
 	 * @return An array of drawable objects matching the query
 	 */
+	@Override
 	public Drawable[] NearestRange(QueryObject qu, double dist) {
 		if (ROOT == null)
 			return null;
@@ -247,6 +281,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 *
 	 * @return The name of the tree.
 	 */
+	@Override
 	public String getName() {
 		return "Loose Quadtree";
 	}
@@ -257,6 +292,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 * @param g    The drawing target.
 	 * @param view The view rectangle.
 	 */
+	@Override
 	public void drawContents(DrawingTarget g, Rectangle view) {
 		drawC(ROOT, g, wholeCanvas.x + wholeCanvas.width / 2, wholeCanvas.y + wholeCanvas.height / 2,
 				wholeCanvas.width / 2, wholeCanvas.height / 2, view);
@@ -270,6 +306,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 *
 	 * @return The looseness factor.
 	 */
+	@Override
 	public double getLoosenessFactor() {
 		return loosenessfactor;
 	}
@@ -279,6 +316,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 *
 	 * @param b The new looseness factor to set.
 	 */
+	@Override
 	public void setLoosenessFactor(double b) {
 		loosenessfactor = b;
 		reb.rebuild();
@@ -291,6 +329,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 *
 	 * @return The maximum decomposition level.
 	 */
+	@Override
 	public int getMaxDecomp() {
 		return maxDecomp;
 	}
@@ -300,6 +339,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 *
 	 * @param b The new maximum decomposition level to set.
 	 */
+	@Override
 	public void setMaxDecomp(int b) {
 		maxDecomp = b;
 		reb.rebuild();
@@ -321,7 +361,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 		/**
 		 * Returns the size of the DRectVector.
-		 * 
+		 *
 		 * @return The size of the vector
 		 */
 		public int size() {
@@ -330,7 +370,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 		/**
 		 * Sets a DRectangle at the specified index.
-		 * 
+		 *
 		 * @param r The DRectangle to set
 		 * @param i The index at which to set the DRectangle
 		 */
@@ -340,7 +380,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 		/**
 		 * Appends a DRectangle to the end of the DRectVector.
-		 * 
+		 *
 		 * @param d The DRectangle to append
 		 */
 		public void append(DRectangle d) {
@@ -349,7 +389,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 		/**
 		 * Gets a DRectangle at the specified index.
-		 * 
+		 *
 		 * @param i The index of the DRectangle to get
 		 * @return The DRectangle at the specified index
 		 */
@@ -359,7 +399,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 		/**
 		 * Removes a DRectangle at the specified index.
-		 * 
+		 *
 		 * @param i The index of the DRectangle to remove
 		 */
 		public void remove(int i) {
@@ -383,7 +423,8 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	static final double vf[] = { -1, 1 };
 
 	/**
-	 * Returns the index of the other axis. If V is XAXIS, returns YAXIS, and vice versa.
+	 * Returns the index of the other axis. If V is XAXIS, returns YAXIS, and vice
+	 * versa.
 	 *
 	 * @param V The input axis (XAXIS or YAXIS).
 	 * @return The index of the other axis.
@@ -393,7 +434,8 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	}
 
 	/**
-	 * Returns the opposite direction index. If V is XAXIS, returns YAXIS, and vice versa.
+	 * Returns the opposite direction index. If V is XAXIS, returns YAXIS, and vice
+	 * versa.
 	 *
 	 * @param V The input direction (XAXIS or YAXIS).
 	 * @return The opposite direction index.
@@ -407,7 +449,8 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 * rectangle can still contain the NewRect, switches OldRect for NewRect and
 	 * returns true. No need to change the structure. Otherwise, returns false.
 	 *
-	 * @param T       The LOOSEcnode representing a node in the LOOSE data structure.
+	 * @param T       The LOOSEcnode representing a node in the LOOSE data
+	 *                structure.
 	 * @param OldRect The old rectangle to be replaced.
 	 * @param NewRect The new rectangle to replace the old one.
 	 * @param CX      The center x-coordinate of the enclosing quadtree block.
@@ -453,7 +496,8 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 * Deletes a rectangle represented by OldRect from the LOOSEcnode T.
 	 *
 	 * @param OldRect The rectangle to be deleted.
-	 * @param T       The LOOSEcnode representing a node in the LOOSE data structure.
+	 * @param T       The LOOSEcnode representing a node in the LOOSE data
+	 *                structure.
 	 */
 	public void delete(DRectangle OldRect, LOOSEcnode T) {
 
@@ -480,6 +524,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 * @param in The input DRectangle to expand
 	 * @return A new DRectangle expanded by the looseness factor
 	 */
+	@Override
 	public DRectangle expand(DRectangle in) {
 		return new DRectangle(in.x - (loosenessfactor - 1) * in.width / 2, in.y - (loosenessfactor - 1) * in.height / 2,
 				loosenessfactor * in.width, loosenessfactor * in.height);
@@ -789,10 +834,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 */
 	void drawR(LOOSEcnode r, DrawingTarget g, double CX, double CY, double LX, double LY, Rectangle view) {
 
-		if (!g.visible(new DRectangle(CX - LX, CY - LY, 2 * LX, 2 * LY)))
-			return;
-
-		if (r == null)
+		if (!g.visible(new DRectangle(CX - LX, CY - LY, 2 * LX, 2 * LY)) || (r == null))
 			return;
 
 		for (int i = 0; i < r.NRDIRS; i++) {
@@ -819,10 +861,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	 */
 	void drawC(LOOSEcnode r, DrawingTarget g, double CX, double CY, double LX, double LY, Rectangle view) {
 
-		if (!g.visible(new DRectangle(CX - LX, CY - LY, 2 * LX, 2 * LY)))
-			return;
-
-		if (r == null)
+		if (!g.visible(new DRectangle(CX - LX, CY - LY, 2 * LX, 2 * LY)) || (r == null))
 			return;
 
 		boolean drawAxes = false;
@@ -904,6 +943,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 			 *
 			 * @param g The graphics object for drawing
 			 */
+			@Override
 			public void paint(Graphics g) {
 				bintreecounter = 1;
 				g.setColor(Color.blue);
@@ -1030,6 +1070,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 		 *
 		 * @param e The ActionEvent
 		 */
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			JButton src = (JButton) e.getSource();
 			if (src == close)
@@ -1391,15 +1432,16 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	}
 
 	/**
-	 * The LOOSEbnode class represents a node in the LOOSE data structure, specifically used in the binary tree.
+	 * The LOOSEbnode class represents a node in the LOOSE data structure,
+	 * specifically used in the binary tree.
 	 */
 	class LOOSEbnode {
 		LOOSEbnode[] SON;
 		DRectVector rv;
 
-	    /**
-	     * Constructs an empty LOOSEbnode.
-	     */
+		/**
+		 * Constructs an empty LOOSEbnode.
+		 */
 		LOOSEbnode() {
 			SON = new LOOSEbnode[2];
 			SON[0] = SON[1] = null;
@@ -1408,7 +1450,8 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 	}
 
 	/**
-	 * The LOOSEcnode class represents a node in the LOOSE data structure, specifically used in the quadtree.
+	 * The LOOSEcnode class represents a node in the LOOSE data structure,
+	 * specifically used in the quadtree.
 	 */
 	class LOOSEcnode {
 		final int NRDIRS = 4;
@@ -1416,9 +1459,9 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 		LOOSEbnode BIN[] = new LOOSEbnode[2]; // indexed by 'x' and 'y' coordinates
 		LOOSEcnode SON[] = new LOOSEcnode[NRDIRS];
 
-	    /**
-	     * Constructs an empty LOOSEcnode.
-	     */
+		/**
+		 * Constructs an empty LOOSEcnode.
+		 */
 		LOOSEcnode() {
 			BIN[0] = BIN[1] = null;
 			SON[0] = SON[1] = SON[2] = SON[3] = null;

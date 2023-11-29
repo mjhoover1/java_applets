@@ -1,14 +1,12 @@
 /* $Id: DrawingPanel.java,v 1.1.1.1 2002/09/25 05:48:35 brabec Exp $ */
 package vasco.common;
 
-import javax.swing.*; // import java.awt.*;
-import javax.swing.event.*; // import java.awt.event.*;
-
-import java.awt.event.MouseEvent;
+import java.awt.Adjustable;
 
 // import org.w3c.dom.events.MouseEvent;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -21,11 +19,19 @@ import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 //import java.applet.*;
 //import java.util.*;
-import java.text.*;
+import java.text.DecimalFormat;
+
+// import java.awt.*;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JTextField;
 
 /* ---------------------------------------------------------------------
  *
@@ -54,15 +60,15 @@ public class DrawingPanel extends JPanel
 	MouseMotionListener canvasMML;
 	MouseListener zoomModeML;
 
-    /**
-     * Constructs a DrawingPanel with specified components and listeners.
-     * 
-     * @param dc DrawingCanvas for the drawing area.
-     * @param reb RebuildTree for updating the graphics.
-     * @param ml MouseListener for canvas mouse events.
-     * @param mml MouseMotionListener for canvas mouse motion events.
-     * @param mouseDisplay MouseDisplay for displaying mouse information.
-     */
+	/**
+	 * Constructs a DrawingPanel with specified components and listeners.
+	 *
+	 * @param dc           DrawingCanvas for the drawing area.
+	 * @param reb          RebuildTree for updating the graphics.
+	 * @param ml           MouseListener for canvas mouse events.
+	 * @param mml          MouseMotionListener for canvas mouse motion events.
+	 * @param mouseDisplay MouseDisplay for displaying mouse information.
+	 */
 	public DrawingPanel(DrawingCanvas dc, RebuildTree reb, MouseListener ml, MouseMotionListener mml,
 			MouseDisplay mouseDisplay) {
 		final int COORDSIZE = 16;
@@ -93,8 +99,8 @@ public class DrawingPanel extends JPanel
 
 		toggleZoom.addItemListener(this);
 
-		sphor = new JScrollBar(JScrollBar.HORIZONTAL, 0, MAXSCROLL, 0, MAXSCROLL);
-		spvert = new JScrollBar(JScrollBar.VERTICAL, 0, MAXSCROLL, 0, MAXSCROLL);
+		sphor = new JScrollBar(Adjustable.HORIZONTAL, 0, MAXSCROLL, 0, MAXSCROLL);
+		spvert = new JScrollBar(Adjustable.VERTICAL, 0, MAXSCROLL, 0, MAXSCROLL);
 		glob.add("East", spvert);
 		glob.add("South", sphor);
 
@@ -110,7 +116,7 @@ public class DrawingPanel extends JPanel
 		JPanel cur = new JPanel();
 		cur.setLayout(new FlowLayout());
 		JLabel l = new JLabel("Cursor");
-		l.setAlignmentX(JLabel.RIGHT_ALIGNMENT); // l.setAlignment(JLabel.RIGHT);
+		l.setAlignmentX(Component.RIGHT_ALIGNMENT); // l.setAlignment(JLabel.RIGHT);
 		cur.add(l);
 		position = new JTextField(COORDSIZE);
 		position.setEditable(false);
@@ -124,28 +130,31 @@ public class DrawingPanel extends JPanel
 		add("South", bottomCoord);
 
 		new MouseHelp(can, mouseDisplay, "", "Zoom In", "Zoom out", InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
-		// new MouseHelp(can, mouseDisplay, "", "Zoom In", "Zoom out", InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
+		// new MouseHelp(can, mouseDisplay, "", "Zoom In", "Zoom out",
+		// InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
 		can.addMouseListener(this);
 		can.addMouseMotionListener(this); // cursor position
 		can.addMouseListener(canvasML);
 		can.addMouseMotionListener(canvasMML);
 		updateCoords();
 		insets = new Insets(5, 5, 5, 5);
-	    setPreferredSize(new Dimension(512 + 28, 512 + 84)); // setting preferred size of drawing panel adding + # for scroll bars
+		setPreferredSize(new Dimension(512 + 28, 512 + 84)); // setting preferred size of drawing panel adding + # for
+																// scroll bars
 	}
 
-    /**
-     * Returns the insets of the panel.
-     * 
-     * @return The insets object representing the margin of this panel.
-     */
+	/**
+	 * Returns the insets of the panel.
+	 *
+	 * @return The insets object representing the margin of this panel.
+	 */
+	@Override
 	public Insets getInsets() {
 		return insets;
 	}
 
-    /**
-     * Updates the coordinate display fields with current values.
-     */
+	/**
+	 * Updates the coordinate display fields with current values.
+	 */
 	private void updateCoords() {
 		DecimalFormat df = new DecimalFormat("0.##");
 		DPoint p;
@@ -159,10 +168,11 @@ public class DrawingPanel extends JPanel
 		lr.setText("[" + df.format(p.x) + ", " + df.format(p.y) + "]");
 	}
 
-    /**
-     * Inner class to handle zooming mode when mouse is clicked.
-     */
+	/**
+	 * Inner class to handle zooming mode when mouse is clicked.
+	 */
 	public class ZoomMode extends MouseAdapter {
+		@Override
 		public void mouseClicked(MouseEvent me) {
 			Point scrCoord = can.adjustPoint(me.getPoint());
 			DPoint p = can.transPointT(scrCoord);
@@ -173,11 +183,12 @@ public class DrawingPanel extends JPanel
 		}
 	}
 
-    /**
-     * Handles item state changes, particularly for the zoom toggle checkbox.
-     * 
-     * @param ie The item event that triggered the change.
-     */
+	/**
+	 * Handles item state changes, particularly for the zoom toggle checkbox.
+	 *
+	 * @param ie The item event that triggered the change.
+	 */
+	@Override
 	public void itemStateChanged(ItemEvent ie) {
 		if (ie.getStateChange() == ItemEvent.SELECTED) {
 			mh = new MouseHelp(can, mouseDisplay, "Zoom In", "Zoom out", "",
@@ -195,19 +206,18 @@ public class DrawingPanel extends JPanel
 		}
 	}
 
-    /**
-     * Zooms into the graphics area.
-     * 
-     * @param p The point around which to zoom in.
-     */
+	/**
+	 * Zooms into the graphics area.
+	 *
+	 * @param p The point around which to zoom in.
+	 */
 	private void zoomIn(DPoint p) {
 		if (zoomStep < 64) {
 			DPoint center = can.getCenter();
 
 			double xdif = (p.x - center.x) / 10;
-			;
+
 			double ydif = (p.y - center.y) / 10;
-			;
 
 			double zs = zoomStep;
 			for (int i = 1; i <= 10; i++) {
@@ -225,19 +235,18 @@ public class DrawingPanel extends JPanel
 		}
 	}
 
-    /**
-     * Zooms out of the graphics area.
-     * 
-     * @param p The point around which to zoom out.
-     */
+	/**
+	 * Zooms out of the graphics area.
+	 *
+	 * @param p The point around which to zoom out.
+	 */
 	private void zoomOut(DPoint p) {
 		if (zoomStep > 1) {
 			DPoint center = can.getCenter();
 
 			double xdif = (p.x - center.x) / 10;
-			;
+
 			double ydif = (p.y - center.y) / 10;
-			;
 
 			double zs = zoomStep;
 
@@ -256,11 +265,12 @@ public class DrawingPanel extends JPanel
 		}
 	}
 
-    /**
-     * Handles mouse click events, particularly for zooming in and out.
-     * 
-     * @param me The mouse event that triggered the click.
-     */
+	/**
+	 * Handles mouse click events, particularly for zooming in and out.
+	 *
+	 * @param me The mouse event that triggered the click.
+	 */
+	@Override
 	public void mouseClicked(MouseEvent me) {
 		int mask = MouseDisplay.getMouseButtons(me);
 		mask = ~can.getOperationMask() & mask;
@@ -274,93 +284,106 @@ public class DrawingPanel extends JPanel
 			zoomOut(p);
 	}
 
-    /**
-     * Sets the cursor to the default cursor.
-     */
+	/**
+	 * Sets the cursor to the default cursor.
+	 */
 	void setDefaultCursor() {
 		setCursor(defCur);
 	}
 
-    /**
-     * Sets the cursor to a crosshair cursor.
-     */
+	/**
+	 * Sets the cursor to a crosshair cursor.
+	 */
 	void setHairCursor() {
 		setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 	}
 
-    /**
-     * Handles mouse press events. This method is currently empty and can be 
-     * overridden to provide custom functionality on mouse press.
-     * 
-     * @param me The MouseEvent object containing details about the mouse press event.
-     */
+	/**
+	 * Handles mouse press events. This method is currently empty and can be
+	 * overridden to provide custom functionality on mouse press.
+	 *
+	 * @param me The MouseEvent object containing details about the mouse press
+	 *           event.
+	 */
+	@Override
 	public void mousePressed(MouseEvent me) {
 	}
 
-    /**
-     * Handles mouse release events. This method is currently empty and can be 
-     * overridden to provide custom functionality on mouse release.
-     * 
-     * @param me The MouseEvent object containing details about the mouse release event.
-     */
+	/**
+	 * Handles mouse release events. This method is currently empty and can be
+	 * overridden to provide custom functionality on mouse release.
+	 *
+	 * @param me The MouseEvent object containing details about the mouse release
+	 *           event.
+	 */
+	@Override
 	public void mouseReleased(MouseEvent me) {
 	}
 
-    /**
-     * Handles mouse entered events. Changes the cursor to a crosshair if the 
-     * toggleZoom checkbox is selected.
-     * 
-     * @param me The MouseEvent object containing details about the mouse entered event.
-     */
+	/**
+	 * Handles mouse entered events. Changes the cursor to a crosshair if the
+	 * toggleZoom checkbox is selected.
+	 *
+	 * @param me The MouseEvent object containing details about the mouse entered
+	 *           event.
+	 */
 
-	 public void mouseEntered(MouseEvent me) {
+	@Override
+	public void mouseEntered(MouseEvent me) {
 		if (toggleZoom.isSelected()) { // Use isSelected instead of getState() in Swing
 			setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		}
 	}
 
 	// public void mouseEntered(MouseEvent me) {
-	// 	if (toggleZoom.getState())
-	// 		setHairCursor();
+	// if (toggleZoom.getState())
+	// setHairCursor();
 	// }
 
-    /**
-     * Handles mouse exited events. Resets the cursor to the default cursor.
-     * 
-     * @param me The MouseEvent object containing details about the mouse exited event.
-     */
+	/**
+	 * Handles mouse exited events. Resets the cursor to the default cursor.
+	 *
+	 * @param me The MouseEvent object containing details about the mouse exited
+	 *           event.
+	 */
+	@Override
 	public void mouseExited(MouseEvent me) {
 		setDefaultCursor();
 	}
 
-    /**
-     * Handles mouse moved events. Updates the position text field with the 
-     * current mouse coordinates on the drawing canvas.
-     * 
-     * @param me The MouseEvent object containing details about the mouse moved event.
-     */
+	/**
+	 * Handles mouse moved events. Updates the position text field with the current
+	 * mouse coordinates on the drawing canvas.
+	 *
+	 * @param me The MouseEvent object containing details about the mouse moved
+	 *           event.
+	 */
+	@Override
 	public void mouseMoved(MouseEvent me) {
 		DecimalFormat df = new DecimalFormat("0.##");
 		DPoint p = can.transPointT(me.getX(), me.getY());
 		position.setText(df.format(p.x) + ", " + df.format(p.y));
 	}
 
-    /**
-     * Handles mouse dragged events. Similar to mouseMoved, updates the position 
-     * text field with the current mouse coordinates while dragging.
-     * 
-     * @param me The MouseEvent object containing details about the mouse dragged event.
-     */
+	/**
+	 * Handles mouse dragged events. Similar to mouseMoved, updates the position
+	 * text field with the current mouse coordinates while dragging.
+	 *
+	 * @param me The MouseEvent object containing details about the mouse dragged
+	 *           event.
+	 */
+	@Override
 	public void mouseDragged(MouseEvent me) {
 		DPoint p = can.transPointT(me.getX(), me.getY());
 		position.setText(p.x + ", " + p.y);
 	}
 
-    /**
-     * Handles adjustment value changes for scrollbars.
-     * 
-     * @param ae The adjustment event from the scrollbar.
-     */
+	/**
+	 * Handles adjustment value changes for scrollbars.
+	 *
+	 * @param ae The adjustment event from the scrollbar.
+	 */
+	@Override
 	public void adjustmentValueChanged(AdjustmentEvent ae) {
 		JScrollBar s = (JScrollBar) ae.getSource();
 		if (s == sphor) {

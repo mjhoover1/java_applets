@@ -2,7 +2,9 @@
 package vasco.common;
 
 public interface RebuildTree {
-  void rebuild();
-  void redraw();
-  void redraw(DrawingTarget dt);
+	void rebuild();
+
+	void redraw();
+
+	void redraw(DrawingTarget dt);
 }

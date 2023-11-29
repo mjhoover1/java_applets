@@ -1,40 +1,44 @@
 package vasco.rectangles;
 
-/* $Id: GenRectTree.java,v 1.1.1.1 2002/09/25 05:48:37 brabec Exp $ */
-import vasco.common.*;
-import java.util.*;
 //import java.awt.*;
+import java.util.Vector;
+
+/* $Id: GenRectTree.java,v 1.1.1.1 2002/09/25 05:48:37 brabec Exp $ */
+import vasco.common.DRectangle;
+import vasco.common.RebuildTree;
+import vasco.common.TopInterface;
 
 /**
- * Represents a generic rectangle quadtree structure.
- * This abstract class serves as a base for more specific quadtree implementations.
+ * Represents a generic rectangle quadtree structure. This abstract class serves
+ * as a base for more specific quadtree implementations.
  */
 public abstract class GenRectTree extends GenericRectTree {
 
-    /**
-     * Constructs a new generic rectangle quadtree.
-     *
-     * @param can   The canvas area within which the quadtree operates.
-     * @param md    Maximum depth of the quadtree.
-     * @param bs    Bucket size for the nodes of the quadtree.
-     * @param p     Interface for higher-level operations and interactions.
-     * @param r     Utility for rebuilding tree structures.
-     */
+	/**
+	 * Constructs a new generic rectangle quadtree.
+	 *
+	 * @param can The canvas area within which the quadtree operates.
+	 * @param md  Maximum depth of the quadtree.
+	 * @param bs  Bucket size for the nodes of the quadtree.
+	 * @param p   Interface for higher-level operations and interactions.
+	 * @param r   Utility for rebuilding tree structures.
+	 */
 	public GenRectTree(DRectangle can, int md, int bs, TopInterface p, RebuildTree r) {
-        // Calls the constructor of the superclass (GenericRectTree) 
-        // with the specified configuration.
+		// Calls the constructor of the superclass (GenericRectTree)
+		// with the specified configuration.
 		super(can, md, bs, p, r);
 	}
 
-    /**
-     * Attempts to insert a rectangle into the quadtree.
-     *
-     * @param q      The current node of the quadtree.
-     * @param r      The rectangle to be inserted.
-     * @param block  The area of the canvas represented by the node.
-     * @param md     Remaining depth for insertion.
-     * @return       A boolean value indicating if the insertion was successful.
-     */
+	/**
+	 * Attempts to insert a rectangle into the quadtree.
+	 *
+	 * @param q     The current node of the quadtree.
+	 * @param r     The rectangle to be inserted.
+	 * @param block The area of the canvas represented by the node.
+	 * @param md    Remaining depth for insertion.
+	 * @return A boolean value indicating if the insertion was successful.
+	 */
+	@Override
 	boolean localInsert(RNode q, DRectangle r, DRectangle block, int md) {
 		boolean ok = true;
 		if (q.NODETYPE == WHITE) {

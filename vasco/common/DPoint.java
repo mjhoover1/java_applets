@@ -1,12 +1,10 @@
 /* $Id: DPoint.java,v 1.1.1.1 2002/09/25 05:48:35 brabec Exp $ */
 package vasco.common;
 
-import vasco.drawable.*;
-
 import java.awt.Color;
 import java.awt.Point;
 
-import javax.swing.*; // import java.awt.*;
+import vasco.drawable.Drawable;
 
 /**
  * Class representing a drawable point in a 2D space. This class is used to
@@ -66,6 +64,7 @@ public class DPoint implements Drawable {
 	 *         stored in the first element. This return allows for chaining
 	 *         operations or direct use.
 	 */
+	@Override
 	public double[] distance(DPoint p, double[] keys) {
 		keys[0] = distance(p);
 		return keys;
@@ -77,6 +76,7 @@ public class DPoint implements Drawable {
 	 * @param p The other point to which the distance is calculated.
 	 * @return The distance between this point and point p.
 	 */
+	@Override
 	public double distance(DPoint p) {
 		return Math.sqrt((p.x - x) * (p.x - x) + (p.y - y) * (p.y - y));
 	}
@@ -144,6 +144,7 @@ public class DPoint implements Drawable {
 	 * @param r The DRectangle to calculate the distance to.
 	 * @return The distance between this point and the DRectangle.
 	 */
+	@Override
 	public double distance(DRectangle r) {
 		double[] retVal = new double[2];
 		distance(r, retVal);
@@ -157,36 +158,39 @@ public class DPoint implements Drawable {
 	 * @param l The DLine to calculate the distance to.
 	 * @return The distance between this point and the DLine.
 	 */
+	@Override
 	public double distance(DLine l) {
 		double[] retVal = new double[2];
 		distance(l, retVal);
 		return retVal[0];
 	}
 
-    /**
-     * Calculates the distance between this point and a DLine, storing the result in the provided array.
-     * This method considers various cases such as the point being on the line, the line being vertical, etc.
-     *
-     * @param l    The DLine to calculate the distance to.
-     * @param dist An array where the calculated distance will be stored. 
-     *             The distance is stored in the first element of the array.
-     * @return The same array passed as the parameter with the calculated distance stored 
-     *         in the first element.
-     */
+	/**
+	 * Calculates the distance between this point and a DLine, storing the result in
+	 * the provided array. This method considers various cases such as the point
+	 * being on the line, the line being vertical, etc.
+	 *
+	 * @param l    The DLine to calculate the distance to.
+	 * @param dist An array where the calculated distance will be stored. The
+	 *             distance is stored in the first element of the array.
+	 * @return The same array passed as the parameter with the calculated distance
+	 *         stored in the first element.
+	 */
+	@Override
 	public double[] distance(DLine l, double[] dist) {
 		if (this.equals(l.p1) || this.equals(l.p2)) {
 			dist[0] = dist[1] = 0;
 			return dist;
 		}
 
-        dist[1] = 0; // The second element is not used in this context
+		dist[1] = 0; // The second element is not used in this context
 
-        // Calculate the vector components of the line
+		// Calculate the vector components of the line
 		double vx, vy, vxp, vyp, t;
 		vx = l.p2.x - l.p1.x;
 		vy = l.p2.y - l.p1.y;
 
-        // Special case handling for zero-length lines or vertical lines
+		// Special case handling for zero-length lines or vertical lines
 		if (vx == 0.0 && vy == 0.0) {
 			dist[0] = distance(l.p1);
 			return dist;
@@ -201,7 +205,7 @@ public class DPoint implements Drawable {
 			}
 		}
 
-        // General case: Compute the perpendicular distance from the point to the line
+		// General case: Compute the perpendicular distance from the point to the line
 		vxp = vy;
 		vyp = -vx;
 		t = (x + vxp / vyp * (l.p1.y - y) - l.p1.x) / (vx - vy * vxp / vyp);
@@ -215,18 +219,20 @@ public class DPoint implements Drawable {
 		return dist;
 	}
 
-    /**
-     * Calculates the distance between this point and a DRectangle, storing the result in the provided array.
-     * Considers whether the point is inside the rectangle and calculates the nearest edge distance accordingly.
-     *
-     * @param r      The DRectangle to calculate the distance to.
-     * @param retVal An array where the calculated distance will be stored. 
-     *               The distance is stored in the first element of the array.
-     * @return The same array passed as the parameter with the calculated distance stored 
-     *         in the first element.
-     */
+	/**
+	 * Calculates the distance between this point and a DRectangle, storing the
+	 * result in the provided array. Considers whether the point is inside the
+	 * rectangle and calculates the nearest edge distance accordingly.
+	 *
+	 * @param r      The DRectangle to calculate the distance to.
+	 * @param retVal An array where the calculated distance will be stored. The
+	 *               distance is stored in the first element of the array.
+	 * @return The same array passed as the parameter with the calculated distance
+	 *         stored in the first element.
+	 */
+	@Override
 	public double[] distance(DRectangle r, double[] retVal) {
-        // Implementation for calculating the distance from the point to the rectangle
+		// Implementation for calculating the distance from the point to the rectangle
 		if (r.contains(this)) {
 			retVal[0] = 0.0;
 			retVal[1] = Math.min(x - r.x, Math.min(r.x + r.width - x, Math.min(y - r.y, r.y + r.height - y)));
@@ -259,32 +265,33 @@ public class DPoint implements Drawable {
 		return retVal;
 	}
 
-    /**
-     * Calculates the distance between this point and a DPolygon.
-     * Returns the minimum distance from the point to any edge of the polygon.
-     *
-     * @param g The DPolygon to calculate the distance to.
-     * @return The minimum distance between this point and the DPolygon.
-     */
+	/**
+	 * Calculates the distance between this point and a DPolygon. Returns the
+	 * minimum distance from the point to any edge of the polygon.
+	 *
+	 * @param g The DPolygon to calculate the distance to.
+	 * @return The minimum distance between this point and the DPolygon.
+	 */
 	public double distance(DPolygon g) {
 		double[] k = new double[2];
 		distance(g, k);
 		return k[0];
 	}
 
-    /**
-     * Calculates the distance between this point and a DPolygon, storing the result in the provided array.
-     * Determines whether the point is inside the polygon and calculates the nearest edge distance if outside.
-     *
-     * @param g    The DPolygon to calculate the distance to.
-     * @param keys An array where the calculated distance will be stored. 
-     *             The minimum distance is stored in the first element.
-     * @return The same array passed as the parameter with the calculated distance stored 
-     *         in the first element.
-     */
+	/**
+	 * Calculates the distance between this point and a DPolygon, storing the result
+	 * in the provided array. Determines whether the point is inside the polygon and
+	 * calculates the nearest edge distance if outside.
+	 *
+	 * @param g    The DPolygon to calculate the distance to.
+	 * @param keys An array where the calculated distance will be stored. The
+	 *             minimum distance is stored in the first element.
+	 * @return The same array passed as the parameter with the calculated distance
+	 *         stored in the first element.
+	 */
 	public double[] distance(DPolygon g, double[] keys) {
 //     --------
-//  
+//
 //  Distance from a point to a polygon.
 //
 
@@ -319,7 +326,7 @@ public class DPoint implements Drawable {
 	}
 
 	// ---------------------------------------
-    // Constant representing the point size for drawing
+	// Constant representing the point size for drawing
 	protected final int PS = 6;
 
 	/**
@@ -328,6 +335,7 @@ public class DPoint implements Drawable {
 	 *
 	 * @param g The DrawingTarget on which to draw the point.
 	 */
+	@Override
 	public void draw(DrawingTarget g) {
 		g.fillOval(x, y, PS, PS);
 	}
@@ -339,6 +347,7 @@ public class DPoint implements Drawable {
 	 * @param c The color to draw the point.
 	 * @param g The DrawingTarget on which to draw the point.
 	 */
+	@Override
 	public void directDraw(Color c, DrawingTarget g) {
 		g.directFillOval(c, x, y, PS, PS);
 	}
@@ -349,6 +358,7 @@ public class DPoint implements Drawable {
 	 *
 	 * @return A DRectangle representing the bounding box of this point.
 	 */
+	@Override
 	public DRectangle getBB() {
 		return new DRectangle(x, y, 0, 0);
 	}
@@ -359,6 +369,7 @@ public class DPoint implements Drawable {
 	 *
 	 * @return false, indicating the point has no area.
 	 */
+	@Override
 	public boolean hasArea() {
 		return false;
 	}
@@ -368,6 +379,7 @@ public class DPoint implements Drawable {
 	 *
 	 * @return A string representing the coordinates of the point.
 	 */
+	@Override
 	public String toString() {
 		return "DPoint: [" + x + ", " + y + "];";
 	}
@@ -402,7 +414,7 @@ public class DPoint implements Drawable {
 		DPoint lk = new DPoint(l.p2.x - l.p1.x, l.p2.y - l.p1.y);
 		double denom = lk.x * lk.x + lk.y * lk.y;
 		if (denom < CommonConstants.accuracy) {
-			return InBetween;  // The line segment is very small, treat the point as being within it
+			return InBetween; // The line segment is very small, treat the point as being within it
 		} else {
 			double t = -(kj.x * lk.x + kj.y * lk.y) / denom;
 			if (t < -CommonConstants.accuracy)
@@ -421,19 +433,21 @@ public class DPoint implements Drawable {
 	 * @param dt   The DrawingTarget on which to draw the buffer.
 	 * @param dist The distance from the point to the edge of the buffer.
 	 */
+	@Override
 	public void drawBuffer(Color c, DrawingTarget dt, double dist) {
 		dt.setColor(c);
 		dt.drawOval(this, dist, dist);
 	}
 
 	// ----------------------- intersections -------------
-    /**
-     * Checks if the point intersects with a given rectangle.
-     * Essentially, it checks if the point is contained within the rectangle.
-     *
-     * @param r The DRectangle to check intersection with.
-     * @return true if the point is inside the rectangle, false otherwise.
-     */
+	/**
+	 * Checks if the point intersects with a given rectangle. Essentially, it checks
+	 * if the point is contained within the rectangle.
+	 *
+	 * @param r The DRectangle to check intersection with.
+	 * @return true if the point is inside the rectangle, false otherwise.
+	 */
+	@Override
 	public boolean intersects(DRectangle r) {
 		return r.contains(this);
 	}

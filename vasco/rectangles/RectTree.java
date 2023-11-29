@@ -11,36 +11,39 @@ import vasco.common.TopInterface;
  */
 public class RectTree extends GenRectTree {
 
-    /**
-     * Constructs a new Rectangle Quadtree.
-     *
-     * @param can   The canvas area within which the quadtree operates.
-     * @param md    Maximum depth of the quadtree.
-     * @param p     Interface for higher-level operations and interactions.
-     * @param r     Utility for rebuilding tree structures.
-     */
+	/**
+	 * Constructs a new Rectangle Quadtree.
+	 *
+	 * @param can The canvas area within which the quadtree operates.
+	 * @param md  Maximum depth of the quadtree.
+	 * @param p   Interface for higher-level operations and interactions.
+	 * @param r   Utility for rebuilding tree structures.
+	 */
 	public RectTree(DRectangle can, int md, TopInterface p, RebuildTree r) {
-        // Calls the constructor of the superclass (GenRectTree) 
-        // with a specific configuration suitable for rectangle quadtrees.
+		// Calls the constructor of the superclass (GenRectTree)
+		// with a specific configuration suitable for rectangle quadtrees.
 		super(can, md, 1, p, r);
 	}
 
-    /**
-     * Returns the name of the tree structure.
-     * 
-     * @return A string representing the name of this quadtree.
-     */
+	/**
+	 * Returns the name of the tree structure.
+	 *
+	 * @return A string representing the name of this quadtree.
+	 */
+	@Override
 	public String getName() {
 		return "Rectangle Quadtree";
 	}
 
-    /**
-     * Indicates whether the order of insertion affects the structure of the quadtree.
-     * 
-     * @return A boolean value indicating the order dependency of the quadtree.
-     *         In this case, it returns false, meaning the tree structure is
-     *         not dependent on the order of insertion.
-     */
+	/**
+	 * Indicates whether the order of insertion affects the structure of the
+	 * quadtree.
+	 *
+	 * @return A boolean value indicating the order dependency of the quadtree. In
+	 *         this case, it returns false, meaning the tree structure is not
+	 *         dependent on the order of insertion.
+	 */
+	@Override
 	public boolean orderDependent() {
 		return false;
 	}

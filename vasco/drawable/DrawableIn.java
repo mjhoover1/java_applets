@@ -2,20 +2,21 @@ package vasco.drawable;
 
 import java.awt.Color;
 
-import javax.swing.*; // import java.awt.*;
-import vasco.common.*;
+import vasco.common.DrawingTarget;
 
 public class DrawableIn extends GenDrawable {
-  public DrawableIn(Drawable r) {
-    super(r);
-  }
+	public DrawableIn(Drawable r) {
+		super(r);
+	}
 
-  public void drawElementNext(DrawingTarget g) {
-    g.setColor(Color.blue);
-    drawable.draw(g);
-  }
+	@Override
+	public void drawElementNext(DrawingTarget g) {
+		g.setColor(Color.blue);
+		drawable.draw(g);
+	}
 
-  public int pauseMode() {
-    return SUCCESS;
-  }
+	@Override
+	public int pauseMode() {
+		return SUCCESS;
+	}
 }
