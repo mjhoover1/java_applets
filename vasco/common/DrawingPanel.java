@@ -71,7 +71,7 @@ public class DrawingPanel extends JPanel
 	 */
 	public DrawingPanel(DrawingCanvas dc, RebuildTree reb, MouseListener ml, MouseMotionListener mml,
 			MouseDisplay mouseDisplay) {
-		final int COORDSIZE = 16;
+		final int COORDSIZE = 13;
 		can = dc;
 		this.mouseDisplay = mouseDisplay;
 		canvasML = ml;
@@ -109,25 +109,31 @@ public class DrawingPanel extends JPanel
 		sphor.addAdjustmentListener(this);
 		add("Center", glob);
 
-		JPanel bottomCoord = new JPanel();
-		bottomCoord.setLayout(new BorderLayout());
-		bottomCoord.add("West", ll = new JTextField(COORDSIZE));
+		// Bottom coordinates panel with FlowLayout
+	    JPanel bottomCoord = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5)); // Adjust horizontal and vertical gaps as needed
 
-		JPanel cur = new JPanel();
-		cur.setLayout(new FlowLayout());
-		JLabel l = new JLabel("Cursor");
-		l.setAlignmentX(Component.RIGHT_ALIGNMENT); // l.setAlignment(JLabel.RIGHT);
-		cur.add(l);
-		position = new JTextField(COORDSIZE);
-		position.setEditable(false);
-		cur.add(position);
-		bottomCoord.add("Center", cur);
-		bottomCoord.add("East", lr = new JTextField(COORDSIZE));
-		// lr.setAlignment(TextField.RIGHT);
-		ll.setEditable(false);
-		lr.setEditable(false);
+	    // Left coordinate JTextField
+	    ll = new JTextField(COORDSIZE);
+	    ll.setEditable(false);
+	    bottomCoord.add(ll);
 
-		add("South", bottomCoord);
+	    // Cursor label and position JTextField in a separate panel for better alignment
+	    JPanel cursorPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0)); // No gaps between label and text field
+	    JLabel cursorLabel = new JLabel("Cursor");
+	    cursorPanel.add(cursorLabel);
+
+	    position = new JTextField(COORDSIZE);
+	    position.setEditable(false);
+	    cursorPanel.add(position);
+
+	    bottomCoord.add(cursorPanel);
+
+	    // Right coordinate JTextField
+	    lr = new JTextField(COORDSIZE);
+	    lr.setEditable(false);
+	    bottomCoord.add(lr);
+
+	    add("South", bottomCoord);
 
 		new MouseHelp(can, mouseDisplay, "", "Zoom In", "Zoom out", InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
 		// new MouseHelp(can, mouseDisplay, "", "Zoom In", "Zoom out",
