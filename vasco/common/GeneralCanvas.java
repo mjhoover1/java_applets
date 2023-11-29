@@ -141,25 +141,63 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	abstract protected String getCurrentOperationName();
 
 	protected OpFeature getCurrentOpFeature() {
-		int i;
-		int op = getCurrentOperation();
-		for (i = 0; i < opFeature.length; i++)
-			if (opFeature[i].ID == op)
-				break;
-		return opFeature[i].getFeature();
+	    int op = getCurrentOperation();
+	    return safeGetOpFeature(op);
 	}
 
-    /**
-     * Abstract method to get the current operation's ID.
-     *
-     * @return The ID of the current operation.
-     */
+	/**
+	 * Safely gets the OpFeature object for the given operation ID.
+	 *
+	 * @param operationId The ID of the operation.
+	 * @return The corresponding OpFeature object, or a default one if not found.
+	 */
+	private OpFeature safeGetOpFeature(int operationId) {
+	    for (OpFeature feature : opFeature) {
+	        if (feature.ID == operationId) {
+	            return feature;
+	        }
+	    }
+	    return getDefaultOpFeature(); // Return a default feature or handle it as needed
+	}
+
+	/**
+	 * Provides a default OpFeature object to handle undefined operations.
+	 *
+	 * @return A default OpFeature object.
+	 */
+	private OpFeature getDefaultOpFeature() {
+	    // Define and return a default OpFeature object
+	    // Adjust the default feature details as per your requirement
+	    return new OpFeature("DefaultOperation", -1, "Default help text", "H1", "H2", "H3", 0);
+	}
+
+	/**
+	 * Method to get the current operation's ID based on its name.
+	 *
+	 * @return The ID of the current operation, or a default value if the name is unrecognized.
+	 */
 	protected int getCurrentOperation() {
-		String op = getCurrentOperationName();
-		for (int i = 0; i < opFeature.length; i++)
-			if (opFeature[i].name.equals(op))
-				return opFeature[i].ID;
-		return -1;
+	    String opName = getCurrentOperationName();
+	    if (opName == null) {
+	        return handleUndefinedOperation(); // Handle the case where operation name is null
+	    }
+	    for (int i = 0; i < opFeature.length; i++) {
+	        if (opFeature[i].name.equals(opName)) {
+	            return opFeature[i].ID;
+	        }
+	    }
+	    return handleUndefinedOperation(); // Handle the case where operation name is unrecognized
+	}
+
+	/**
+	 * Handle undefined operations by returning a default operation ID or taking other appropriate actions.
+	 *
+	 * @return Default operation ID or an appropriate value indicating undefined operation.
+	 */
+	private int handleUndefinedOperation() {
+	    // Log error, show default operation, or return a special value indicating undefined operation.
+	    // For example, return -1 or a specific ID for a default operation.
+	    return -1; // or any appropriate default value
 	}
 
     /**
@@ -269,7 +307,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			JPanel progressPanel = new JPanel();
 			progressPanel.setLayout(new GridLayout(1, 2));
 			progressPanel.add(new JLabel("Progress"));
-			progressPanel.add(progress = new JScrollBar(JScrollBar.HORIZONTAL, 0, 1, 0, 0));
+			progressPanel.add(progress = new JScrollBar(JScrollBar.HORIZONTAL, 0, 1, 0, 10));
 			r.add(progressPanel);
 
 			new MouseHelp(progress, topInterface.getMouseDisplay(), "Drag to view animation progress", "", "");

@@ -5,6 +5,7 @@ package vasco.lines;
 // import java.awt.Label;
 // import java.awt.Panel;
 
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JLabel;
@@ -87,9 +88,9 @@ public class main extends CommonApplet implements GenericMain {
     buttonpanel.add(new appletSwitch(appletSwitch.LINES, this, topInterface));
 
 
-    centralmenu = new CentralMenu(drawcanvas, treeType, indStructP, this, helpArea, topBar, overviewButton, mp);
-    buttonpanel.add(centralmenu);
-    bplayout.setConstraints(centralmenu, butpan);
+    centralMenu = new CentralMenu(drawcanvas, treeType, indStructP, this, helpArea, topBar, overviewButton, mp);
+    buttonpanel.add(centralMenu);
+    bplayout.setConstraints(centralMenu, butpan);
     buttonpanel.add(animp);
 
     JLabel date = new JLabel(CompileDate.compileDate);
@@ -103,7 +104,7 @@ public class main extends CommonApplet implements GenericMain {
     LineCanvas canvas=((LineCanvas)drawcanvas);
     if(treeType!=null && treeType.equals("Bucket PR Quadtree"))
     {
-    	canvas.setTree(4,this.centralmenu.operations);
+    	canvas.setTree(4,this.centralMenu.operations);
     }
     if(file!=null)
     {

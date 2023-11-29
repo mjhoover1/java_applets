@@ -638,6 +638,9 @@ public class RTree extends SpatialStructure implements ItemListener{
       mask = new boolean[0]; 
       setLayout(new BorderLayout());
 
+      // Initialize the JList before it's used
+      vis = new JList<>(new DefaultListModel<>()); // Initialize the JList with a DefaultListModel
+
       JPanel top = new JPanel();
       top.setLayout(new GridLayout(1, 4));
       top.add(new JLabel("Min"));

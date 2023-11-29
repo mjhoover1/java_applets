@@ -15,7 +15,7 @@ public class TopInterface {
     private JPanel specPanel;
     private MouseDisplay mouseDisplay;
     private JTextArea helpArea;
-    private JComponent cursor;
+    private Component cursor;
 
     /**
      * Constructs a TopInterface object with the specified components.
@@ -29,7 +29,7 @@ public class TopInterface {
         this.specPanel = specPanel;
         this.mouseDisplay = mouseDisplay;
         this.helpArea = helpArea;
-        this.cursor = (JComponent) cursor;
+        this.cursor = cursor;
     }
 
     /**
