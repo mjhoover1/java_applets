@@ -31,7 +31,7 @@ public class MouseDisplay extends JPanel {
 	 * @param im The image used for display
 	 */
 	public MouseDisplay(int sz, Image im) {
-		setSize(sz, HEIGHT);
+		setPreferredSize(new Dimension(sz, HEIGHT)); // setSize(sz, HEIGHT);
 		this.im = im;
 		b1 = b2 = b3 = "";
 	}

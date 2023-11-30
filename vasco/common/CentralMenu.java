@@ -29,7 +29,7 @@ import javax.swing.JTextArea;
  */
 public class CentralMenu extends JPanel implements ActionListener, ItemListener {
 	protected GeneralCanvas rcanvas; // Reference to the GeneralCanvas used in the application.
-	public JComboBox operations; // Choice component for selecting operations.
+	public JComboBox<String> operations = new JComboBox<>(); // Choice component for selecting operations.
 	protected SplitDialog dlg; // Reference to the SplitDialog used for splitting data structures.
 	protected JButton splitbut; // Button for opening the SplitDialog.
 	protected JDialog dialog; // Dialog for displaying color legends.
@@ -61,6 +61,7 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 	 */
 	public CentralMenu(GeneralCanvas rc, String treeMode, JPanel indStructP, AppletValidate av, JTextArea helpArea,
 			JLabel topBar, JButton overviewButton, MouseDisplay md) {
+				
 		GridBagLayout bplayout; // Initialize the GridBagLayout
 		setLayout(bplayout = new GridBagLayout()); // Set the layout for this panel to GridBagLayout
 		rcanvas = rc;
@@ -81,7 +82,6 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 		opanel.setLayout(new BorderLayout());
 		bplayout.setConstraints(opanel, butpan); // Apply constraints to the opanel Panel
 
-		JComboBox<String> operations = new JComboBox<>();
 		operations.addItemListener(rc);
 		dlg = new SplitDialog(rcanvas, operations, treeMode, topBar, av, md); // Initialize SplitDialog
 

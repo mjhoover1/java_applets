@@ -84,7 +84,7 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
 
 		// Pack the components and then set the size of the dialog
 		pack();
-		setSize(new Dimension(600, 400)); // Adjust width and height as needed
+		setPreferredSize(new Dimension(600, 400)); // setSize(new Dimension(600, 400)); // Adjust width and height as needed
 
 		setResizable(true); // This sets the data structure radio button pop up to be resizable
 

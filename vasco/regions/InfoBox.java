@@ -26,7 +26,7 @@ public class InfoBox extends JDialog implements ActionListener {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((screen.width - getSize().width) / 2, (screen.height - getSize().height) / 2);
 		setResizable(false);
-		show();
+		setVisible(true); // show();
 	}
 
 	@Override

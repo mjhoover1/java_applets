@@ -69,7 +69,7 @@ public class OverviewWindow extends JDialog
 	abstract class OverviewCanvas extends JPanel {
 		public OverviewCanvas() {
 			super();
-			setSize(80, OVERVIEW_SIZE);
+			setPreferredSize(new Dimension(80, OVERVIEW_SIZE)); // setSize(80, OVERVIEW_SIZE);
 		}
 	}
 

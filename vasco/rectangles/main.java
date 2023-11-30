@@ -1,5 +1,7 @@
 package vasco.rectangles;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -76,6 +78,11 @@ public class main extends CommonApplet implements GenericMain {
 
 		// Create a button panel
 		buttonpanel = new JPanel();
+//		buttonpanel.setBackground(Color.red);
+		
+		// Create a button panel
+//		JPanel buttompanel = new JPanel();
+//		buttompanel.setBackground(Color.blue);
 
 		// Set constraints for the button panel
 		GridBagConstraints bp = new GridBagConstraints();
@@ -117,6 +124,11 @@ public class main extends CommonApplet implements GenericMain {
 
 		// Add components to the applet
 		add(buttonpanel);
+		
+//		buttompanel.setPreferredSize(new Dimension(100, 100));
+//		buttompanel.add(mp);
+
+//		add(buttompanel);
 		add(mp);
 
 		// Validate the layout

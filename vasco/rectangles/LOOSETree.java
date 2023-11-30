@@ -8,6 +8,7 @@ package vasco.rectangles;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -929,7 +930,7 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 			 * @param dt The drawing target
 			 */
 			BinTreeCanvas(LOOSEcnode c, int w, int h, DrawingTarget dt) {
-				setSize(w, h);
+				setPreferredSize(new Dimension(w, h)); // setSize(w, h);
 				cn = c;
 				this.dt = dt;
 				bintreecounter = 1;
@@ -1055,14 +1056,14 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 
 			BinTreeCanvas bt = new BinTreeCanvas(cn, width, height, dt);
 			sp = new JScrollPane();
-			sp.setSize(300, 300);
+			sp.setPreferredSize(new Dimension(300, 300)); // sp.setSize(300, 300);
 			add("Center", sp);
 			sp.add(bt);
 			close = new JButton("Close");
 			close.addActionListener(this);
 			add("South", close);
 			pack();
-			show();
+			setVisible(true); // show();
 		}
 
 		/**

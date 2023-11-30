@@ -10,7 +10,7 @@ import java.awt.event.MouseAdapter;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 
-import org.w3c.dom.events.MouseEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * Class providing mouse-over help functionality for components. When the mouse
@@ -44,7 +44,7 @@ public class MouseHelp extends MouseAdapter implements ItemListener {
 	 * @param b3 Third help message.
 	 */
 	public MouseHelp(JComponent c, MouseDisplay md, String b1, String b2, String b3) {
-		this(c, md, b1, b2, b3, InputEvent.BUTTON1_DOWN_MASK); // InputEvent.BUTTON1_MASK);
+		this(c, md, b1, b2, b3, InputEvent.BUTTON1_MASK); // InputEvent.BUTTON1_MASK);
 	}
 
 	/**

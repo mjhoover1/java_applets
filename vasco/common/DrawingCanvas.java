@@ -3,6 +3,7 @@ package vasco.common;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -34,7 +35,7 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	public DrawingCanvas(Rectangle o, Rectangle viewPort, Image im, MouseDisplay md) {
 		i = im;
 		this.viewPort = viewPort;
-		setSize(viewPort.width, viewPort.height);
+		setPreferredSize(new Dimension(viewPort.width, viewPort.height)); // setSize(viewPort.width, viewPort.height);
 		offscr = i.getGraphics();
 		orig = target = o;
 		mh = null;

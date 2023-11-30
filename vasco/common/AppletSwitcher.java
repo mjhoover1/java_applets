@@ -86,7 +86,7 @@ public class AppletSwitcher extends Thread implements AppletStub {
 		app.removeAll();
 		// new Dialog(new Frame()).add(realApplet);
 		app.add(realApplet);
-		realApplet.setSize(s);
+		realApplet.setPreferredSize(s); // realApplet.setSize(s);
 		realApplet.init();
 		realApplet.start();
 
