@@ -66,12 +66,12 @@ abstract public class RegionStructure extends SpatialStructure implements Common
 	public void reInit(JComboBox<String> ops) {
 		super.reInit(ops);
 		JComboBox<String> availOps = ops;
-		availOps.addItem("Insert");
-		availOps.addItem("Move");
-		availOps.addItem("Delete");
-		availOps.addItem("U Move");
-		availOps.addItem("Copy");
-		availOps.addItem("Select");
+		addItemIfNotExists(availOps, "Insert");
+		addItemIfNotExists(availOps, "Move");
+		addItemIfNotExists(availOps, "Delete");
+		addItemIfNotExists(availOps, "U Move");
+		addItemIfNotExists(availOps, "Copy");
+		addItemIfNotExists(availOps, "Select");
 	}
 
 	@Override

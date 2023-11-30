@@ -45,13 +45,11 @@ abstract public class PointStructure extends SpatialStructure implements CommonC
 	public void reInit(JComboBox<String> ops) {
 		super.reInit(ops);
 		JComboBox<String> availOps = ops;
-		availOps.addItem("Insert");
-		availOps.addItem("Move");
-		availOps.addItem("Delete");
-		availOps.addItem("Overlap");
+		addItemIfNotExists(availOps, "Insert");
+		addItemIfNotExists(availOps, "Move");
+		addItemIfNotExists(availOps, "Delete");
+		addItemIfNotExists(availOps, "Overlap");
 	}
-
-
 
 	/**
 	 * Inserts a drawable object into the spatial structure. This is a wrapper

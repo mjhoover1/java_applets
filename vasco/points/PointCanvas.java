@@ -320,11 +320,14 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 	@Override
 	public void setTree(int i, JComboBox<String> ops) {
 		setHandler(null);
-		String op = (String) ops.getSelectedItem();
 		pstruct = pstrs[i];
 		ops.removeAll();
 		pstruct.reInit(ops);
 		try {
+			String op = (String) ops.getSelectedItem();
+			if (op == null) {
+				op = "Insert";
+			}
 			ops.setSelectedItem(op);
 		} catch (Exception e) {
 		}

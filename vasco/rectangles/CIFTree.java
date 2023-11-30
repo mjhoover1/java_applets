@@ -87,7 +87,7 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 		super.reInit(c);
 		new MaxDecomp(topInterface, 9, this);
 		JComboBox<String> availOps = c;
-		availOps.addItem("Show bintree");
+		addItemIfNotExists(availOps, "Show bintree");
 	}
 
 	/**

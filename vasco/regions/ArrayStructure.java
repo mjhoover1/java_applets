@@ -37,11 +37,11 @@ public class ArrayStructure extends RegionStructure {
 	}
 
 	@Override
-	public void reInit(JComboBox ao) {
+	public void reInit(JComboBox<String> ao) {
 		super.reInit(ao);
-		ao.addItem("To quadtree");
-		ao.addItem("To raster");
-		ao.addItem("To chain");
+		addItemIfNotExists(ao, "To quadtree");
+		addItemIfNotExists(ao, "To raster");
+		addItemIfNotExists(ao, "To chain");
 	}
 
 	@Override

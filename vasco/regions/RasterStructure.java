@@ -39,9 +39,9 @@ public class RasterStructure extends RegionStructure {
 	@Override
 	public void reInit(JComboBox<String> ao) {
 		super.reInit(ao);
-		ao.addItem("To quadtree");
-		ao.addItem("To array");
-		ao.addItem("To chain");
+		addItemIfNotExists(ao, "To quadtree");
+		addItemIfNotExists(ao, "To array");
+		addItemIfNotExists(ao, "To chain");
 	}
 
 	@Override

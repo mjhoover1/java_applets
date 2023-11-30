@@ -28,8 +28,8 @@ public class PointRTree extends PointStructure {
 	public void reInit(JComboBox<String> ops) {
 		super.reInit(ops);
 		rt.reInit(ops);
-		ops.addItem("Nearest");
-		ops.addItem("Within");
+		addItemIfNotExists(ops, "Nearest");
+		addItemIfNotExists(ops, "Within");
 	}
 
 	@Override

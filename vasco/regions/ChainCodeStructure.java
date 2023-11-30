@@ -38,11 +38,11 @@ public class ChainCodeStructure extends RegionStructure {
 	}
 
 	@Override
-	public void reInit(JComboBox ao) {
+	public void reInit(JComboBox<String> ao) {
 		super.reInit(ao);
-		ao.addItem("To quadtree");
-		ao.addItem("To array");
-		ao.addItem("To raster");
+		addItemIfNotExists(ao, "To quadtree");
+		addItemIfNotExists(ao, "To array");
+		addItemIfNotExists(ao, "To raster");
 	}
 
 	@Override

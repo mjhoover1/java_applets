@@ -140,8 +140,8 @@ abstract class GenericPRbucket extends PointStructure implements MaxDecompIface,
 	public void reInit(JComboBox<String> ao) {
 		super.reInit(ao);
 		new MaxDecomp(topInterface, 9, this);
-		ao.addItem("Nearest");
-		ao.addItem("Within");
+		addItemIfNotExists(ao, "Nearest");
+		addItemIfNotExists(ao, "Within");
 	}
 
 	/**

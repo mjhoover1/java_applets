@@ -122,11 +122,11 @@ public class DelaunayTriangulation extends PointStructure implements Indexable {
 		Clear();
 		topInterface.getPanel().removeAll();
 		JComboBox<String> availOps = ops;
-		availOps.addItem("Insert");
-		availOps.addItem("Move");
-		availOps.addItem("Delete");
-		availOps.addItem("Nearest Vertex");
-		availOps.addItem("Line Index");
+		addItemIfNotExists(availOps, "Insert");
+		addItemIfNotExists(availOps, "Move");
+		addItemIfNotExists(availOps, "Delete");
+		addItemIfNotExists(availOps, "Nearest Vertex");
+		addItemIfNotExists(availOps, "Line Index");
 		new ShowPM2Combo(topInterface);
 	}
 

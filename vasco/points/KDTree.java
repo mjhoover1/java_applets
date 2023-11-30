@@ -34,8 +34,8 @@ public class KDTree extends PointStructure {
 	@Override
 	public void reInit(JComboBox<String> ao) {
 		super.reInit(ao);
-		ao.addItem("Nearest");
-		ao.addItem("Within");
+		addItemIfNotExists(ao, "Nearest");
+		addItemIfNotExists(ao, "Within");
 	}
 
 	@Override

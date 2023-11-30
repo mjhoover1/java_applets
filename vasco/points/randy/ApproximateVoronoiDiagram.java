@@ -185,10 +185,10 @@ public class ApproximateVoronoiDiagram extends PointStructure implements MaxDeco
 		Clear();
 		topInterface.getPanel().removeAll();
 		JComboBox<String> availOps = ops;
-		availOps.addItem("Insert");
-		availOps.addItem("Move");
-		availOps.addItem("Delete");
-		availOps.addItem("Nearest Site");
+		addItemIfNotExists(availOps, "Insert");
+		addItemIfNotExists(availOps, "Move");
+		addItemIfNotExists(availOps, "Delete");
+		addItemIfNotExists(availOps, "Nearest Site");
 		showColorCombo = new ShowColorCombo(topInterface);
 		decomposeMaximallyCombo = new DecomposeMaximallyCombo(topInterface);
 		maxDecompCombo = new MaxDecompCombo(topInterface);

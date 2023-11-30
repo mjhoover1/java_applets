@@ -40,14 +40,14 @@ public abstract class RectangleStructure extends SpatialStructure implements Com
 	public void reInit(JComboBox<String> ops) {
 		super.reInit(ops);
 		JComboBox<String> availOps = ops; // Add this line to fix the type safety issue
-		availOps.addItem("Insert");
-		availOps.addItem("Move");
-		availOps.addItem("Move vertex");
-		availOps.addItem("Move edge");
-		availOps.addItem("Delete");
-		availOps.addItem("Overlap");
-		availOps.addItem("Nearest");
-		availOps.addItem("Within");
+		addItemIfNotExists(availOps, "Insert");
+		addItemIfNotExists(availOps, "Move");
+		addItemIfNotExists(availOps, "Move vertex");
+		addItemIfNotExists(availOps, "Move edge");
+		addItemIfNotExists(availOps, "Delete");
+		addItemIfNotExists(availOps, "Overlap");
+		addItemIfNotExists(availOps, "Nearest");
+		addItemIfNotExists(availOps, "Within");
 	}
 
 	/**

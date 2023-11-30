@@ -96,8 +96,8 @@ public class LOOSETree extends RectangleStructure implements MaxDecompIface, Loo
 		new MaxDecomp(topInterface, 9, this);
 		new LoosenessFactor(topInterface, 2.0, this);
 		JComboBox<String> availOps = c;
-		availOps.addItem("Motion Insensitivity");
-		availOps.addItem("Show Quadtree");
+		addItemIfNotExists(availOps, "Motion Insensitivity");
+		addItemIfNotExists(availOps, "Show Quadtree");
 //		System.out.print("availOps is " + availOps);
 	}
 

@@ -239,12 +239,12 @@ public class VoronoiDiagram extends PointStructure implements Indexable {
 		Clear();
 		topInterface.getPanel().removeAll();
 		JComboBox<String> availOps = ops;
-		availOps.addItem("Insert");
-		availOps.addItem("Move");
-		availOps.addItem("Delete");
-		availOps.addItem("Nearest Site");
-		availOps.addItem("Line Index");
-		availOps.addItem("Vertex Index");
+		addItemIfNotExists(availOps, "Insert");
+		addItemIfNotExists(availOps, "Move");
+		addItemIfNotExists(availOps, "Delete");
+		addItemIfNotExists(availOps, "Nearest Site");
+		addItemIfNotExists(availOps, "Line Index");
+		addItemIfNotExists(availOps, "Vertex Index");
 		new ShowDTCombo(topInterface);
 		new ShowPM2Combo(topInterface);
 	}

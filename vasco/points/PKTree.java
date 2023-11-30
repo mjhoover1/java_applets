@@ -37,8 +37,8 @@ public class PKTree extends PointStructure implements BucketIface {
 	@Override
 	public void reInit(JComboBox<String> ao) {
 		super.reInit(ao);
-		ao.addItem("Nearest");
-		ao.addItem("Within");
+		addItemIfNotExists(ao, "Nearest");
+		addItemIfNotExists(ao, "Within");
 		new Bucket(topInterface, "Aggregation Threshold", this);
 	}
 

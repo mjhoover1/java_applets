@@ -22,7 +22,7 @@ public abstract class SpatialStructure implements CommonConstants {
 
 	public TopInterface topInterface;
 	public RebuildTree reb;
-	public JComboBox availOps;
+	public JComboBox<String> availOps = new JComboBox<>();
 	public DRectangle wholeCanvas;
 	private SwitchCursor cursorThread;
 
@@ -38,6 +38,19 @@ public abstract class SpatialStructure implements CommonConstants {
 		this.topInterface = topInterface;
 		reb = r;
 		wholeCanvas = w;
+	}
+
+	public static void addItemIfNotExists(JComboBox<String> comboBox, String item) {
+		boolean exists = false;
+		for (int i = 0; i < comboBox.getItemCount(); i++) {
+			if (item.equals(comboBox.getItemAt(i))) {
+				exists = true;
+				break;
+			}
+		}
+		if (!exists) {
+			comboBox.addItem(item);
+		}
 	}
 
 	/**

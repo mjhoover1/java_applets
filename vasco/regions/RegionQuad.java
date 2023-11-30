@@ -36,9 +36,9 @@ public class RegionQuad extends RegionStructure {
 	@Override
 	public void reInit(JComboBox<String> ao) {
 		super.reInit(ao);
-		ao.addItem("To raster");
-		ao.addItem("To chain");
-		ao.addItem("To array");
+		addItemIfNotExists(ao, "To raster");
+		addItemIfNotExists(ao, "To chain");
+		addItemIfNotExists(ao, "To array");
 	}
 
 	@Override
