@@ -5,12 +5,14 @@ import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -202,8 +204,15 @@ public class OverviewWindow extends JDialog
 		Container glob = this;
 		GridBagLayout gbl = new GridBagLayout();
 		glob.setLayout(gbl);
+        GridBagConstraints gbc = new GridBagConstraints();
+
 		left = new LeftCanvas();
 		right = new RightCanvas();
+
+		// Set preferred sizes for main components
+		left.setPreferredSize(new Dimension(100, OVERVIEW_SIZE));
+		right.setPreferredSize(new Dimension(100, OVERVIEW_SIZE));
+		can.setPreferredSize(new Dimension(OVERVIEW_SIZE, OVERVIEW_SIZE));
 
 		JPanel dcan = new JPanel();
 		dcan.setLayout(new BorderLayout());
@@ -213,17 +222,35 @@ public class OverviewWindow extends JDialog
 		spvert.addAdjustmentListener(this);
 		sphor.addAdjustmentListener(this);
 
-		gbl.setConstraints(left, createConstraints(0, 0, 1, 1, GridBagConstraints.VERTICAL));
-		glob.add(left);
+		// Setting constraints for left canvas
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbl.setConstraints(left, gbc); // gbl.setConstraints(left, createConstraints(0, 0, 1, 1, GridBagConstraints.VERTICAL));
+        glob.add(left);
 
-		dcan.add("West", can);
+		// Setting constraints for drawing canvas and scrollbars
+		dcan.add("Center", can); // dcan.add("West", can);
 		dcan.add("East", spvert);
 		dcan.add("South", sphor);
-		gbl.setConstraints(dcan, createConstraints(GridBagConstraints.RELATIVE, 0, 1, 1, GridBagConstraints.NONE));
 
-		glob.add(dcan);
-		gbl.setConstraints(right, createConstraints(GridBagConstraints.RELATIVE, 0, GridBagConstraints.REMAINDER, 1,
-				GridBagConstraints.BOTH));
+		gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbl.setConstraints(dcan, gbc); // gbl.setConstraints(dcan, createConstraints(GridBagConstraints.RELATIVE, 0, 1, 1, GridBagConstraints.NONE));
+        glob.add(dcan);
+
+		// Setting constraints for right canvas
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbl.setConstraints(right, gbc); // 		gbl.setConstraints(right, createConstraints(GridBagConstraints.RELATIVE, 0, GridBagConstraints.REMAINDER, 1, GridBagConstraints.BOTH));
 		glob.add(right);
 
 		/*
@@ -241,22 +268,35 @@ public class OverviewWindow extends JDialog
 		 * bottm.add("North", bottomCoor);
 		 */
 
+		// Cursor position panel
 		JPanel cur = new JPanel();
 		cur.setLayout(new FlowLayout());
 		JLabel l = new JLabel("Cursor");
-		l.setAlignmentX(SwingConstants.RIGHT); // l.setAlignment(JLabel.RIGHT);
+		// l.setAlignmentX(SwingConstants.RIGHT); // l.setAlignment(JLabel.RIGHT);
 		cur.add(l);
 		position = new JTextField(2 * COORDSIZE);
 		position.setEditable(false);
 		cur.add(position);
-		gbl.setConstraints(cur,
-				createConstraints(0, 1, GridBagConstraints.REMAINDER, 1, GridBagConstraints.HORIZONTAL));
+
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 3; // Span across three columns
+        gbc.gridheight = 1;
+        gbl.setConstraints(cur, gbc); // 		gbl.setConstraints(cur, createConstraints(0, 1, GridBagConstraints.REMAINDER, 1, GridBagConstraints.HORIZONTAL));
 		glob.add(cur);
 //    bottm.add("Center", cur);
 
+        // Close button
 		close = new JButton("Close");
 		close.addActionListener(this);
-		gbl.setConstraints(close, createConstraints(0, 2, GridBagConstraints.REMAINDER, 1, GridBagConstraints.BOTH));
+
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 3; // Span across three columns
+        gbc.gridheight = 1;
+        gbl.setConstraints(close, gbc); // gbl.setConstraints(close, createConstraints(0, 2, GridBagConstraints.REMAINDER, 1, GridBagConstraints.BOTH));
 		glob.add(close);
 
 		new MouseHelp(can, mouseDisplay, "Zoom In", "Zoom out", "", InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK);
@@ -267,10 +307,22 @@ public class OverviewWindow extends JDialog
 		sphor.invalidate();
 		validate();
 		pack();
+
+		// Set a minimum size to ensure the window is not too small
+		setMinimumSize(new Dimension(400, 300));
+
+		centerDialogOnScreen();
 		// setSize(300, 300);
-		setResizable(false);
+		setResizable(true);
 		// show();
 	}
+
+    private void centerDialogOnScreen() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = Math.min(screenSize.width, getWidth());
+        int height = Math.min(screenSize.height, getHeight());
+        setLocation((screenSize.width - width) / 2, (screenSize.height - height) / 2);
+    }
 
 	/**
 	 * Updates the coordinates displayed in the overview window.
