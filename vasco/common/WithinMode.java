@@ -117,6 +117,29 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
             JRadioButton radioButton = new JRadioButton(label, cg.getButtonCount() == 0);
             cg.add(radioButton);
             add(radioButton);
+            // Assign the radioButton to the corresponding class variable
+            assignRadioButton(label, radioButton);
+        }
+    }
+    
+    // New method to assign the radio button to the correct class variable
+    private void assignRadioButton(String label, JRadioButton radioButton) {
+        switch (label) {
+            case "Point":
+                point = radioButton;
+                break;
+            case "Rectangle":
+                rectangle = radioButton;
+                break;
+            case "Polygon":
+                polygon = radioButton;
+                break;
+            case "Path":
+                path = radioButton;
+                break;
+            case "Sector":
+                sector = radioButton;
+                break;
         }
     }
 	

@@ -234,25 +234,31 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 
 		if (runningThread != null)
 			terminate();
+		
+		int currOperation = getCurrentOperation();
 
-		if (getCurrentOperation() == OPFEATURE_WINDOW) {
-			animPanel.setOverlap();
-			SearchMode sm = new SearchMode(getSearchModeMask());
-			WithinMode wm = new WithinMode(sm, getAllowedOverlapQueryObjects());
-			searchMode = sm.getSearchMode();
-			withinStats.setValues(wm.getWithinMode(), wm.getWithinDist(), wm.getBlend());
-			if (lastWindow != null) {
-				search(lastWindow, allDrawingTargets);
+		if (currOperation != previousOpfeature) {
+			if (currOperation == OPFEATURE_WINDOW) {
+				animPanel.setOverlap();
+				SearchMode sm = new SearchMode(getSearchModeMask());
+				WithinMode wm = new WithinMode(sm, getAllowedOverlapQueryObjects());
+				searchMode = sm.getSearchMode();
+				withinStats.setValues(wm.getWithinMode(), wm.getWithinDist(), wm.getBlend());
+				if (lastWindow != null) {
+					search(lastWindow, allDrawingTargets);
+				}
+			}
+
+			if (currOperation == OPFEATURE_NEAREST || currOperation == OPFEATURE_WITHIN) {
+				animPanel.setNearest();
+				WithinMode wm = new WithinMode(getCurrentOperation() == OPFEATURE_WITHIN);
+				withinStats.setValues(wm.getWithinMode(), wm.getWithinDist(), wm.getBlend());
+				if (lastNear != null)
+					nearest(lastNear, withinStats.getDist(), allDrawingTargets);
 			}
 		}
-
-		if (getCurrentOperation() == OPFEATURE_NEAREST || getCurrentOperation() == OPFEATURE_WITHIN) {
-			animPanel.setNearest();
-			WithinMode wm = new WithinMode(getCurrentOperation() == OPFEATURE_WITHIN);
-			withinStats.setValues(wm.getWithinMode(), wm.getWithinDist(), wm.getBlend());
-			if (lastNear != null)
-				nearest(lastNear, withinStats.getDist(), allDrawingTargets);
-		}
+		
+		previousOpfeature = currOperation;
 
 		setHelp();
 		redraw();
@@ -767,6 +773,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	// Array of operation features and associated constants
 	protected OpFeature[] opFeature;
 
+	protected int previousOpfeature = 0;
 	protected final static int OPFEATURE_INSERT = 1;
 	protected final static int OPFEATURE_DELETE = 2;
 	protected final static int OPFEATURE_MOVE = 3;
