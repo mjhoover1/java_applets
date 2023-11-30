@@ -220,7 +220,7 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 
 		if (obj == splitbut) {
 			// Show the SplitDialog for data structure splitting.
-			dlg.show();
+			dlg.setVisible(true); // This should show the SplitDialog when the button is clicked
 		}
 		if (obj == load) {
 			// Terminate and load a data set from the data server.

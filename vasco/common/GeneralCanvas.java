@@ -374,7 +374,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			stophelp = new MouseHelp(stop, topInterface.getMouseDisplay(), "Stop animation", "", "");
 			r.add(buts);
 
-			runmode = new JComboBox();
+			JComboBox<String> runmode = new JComboBox<>();
 			runmode.addItem(RUNMODE_CONTINUOUS_S); // runmode.add(RUNMODE_CONTINUOUS_S);
 			runmode.addItem(RUNMODE_OBJECT_S);
 			JPanel runmodeP = new JPanel();

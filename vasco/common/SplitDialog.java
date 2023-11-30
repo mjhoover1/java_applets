@@ -133,10 +133,10 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
 	 * Shows the SplitDialog and sets the "visible" flag to true.
 	 */
 	@Override
-	public void show() {
-		visible = true;
-		super.setVisible(true); // super.show();
-	}
+	public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        this.visible = visible; // Keep track of visibility state if needed
+    }
 
 	/**
 	 * Disposes of the SplitDialog and sets the "visible" flag to false.

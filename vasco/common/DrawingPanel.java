@@ -50,7 +50,7 @@ public class DrawingPanel extends JPanel
 	// JScrollPane sphor, spvert;
 	static final int MAXSCROLL = 512; // make equal to CANSIZE
 	RebuildTree rt;
-	JTextField ul, ur, ll, lr, position;
+	JTextField upper_left_coord, upper_right_coord, lower_left_coord, lower_right_coord, position_coordinates;
 	DrawingCanvas can;
 	MouseHelp mh; // help for canvas
 	JCheckBox toggleZoom;
@@ -88,13 +88,13 @@ public class DrawingPanel extends JPanel
 
 		JPanel hor = new JPanel();
 		hor.setLayout(new GridLayout(1, 3));
-		hor.add(ul = new JTextField(COORDSIZE));
+		hor.add(upper_left_coord = new JTextField(COORDSIZE));
 		hor.add(toggleZoom = new JCheckBox("Zoom In/Out Mode", false));
 		new MouseHelp(toggleZoom, mouseDisplay, "Switch to zoom mode", "", "", "Switch to operation mode", "", "");
-		hor.add(ur = new JTextField(COORDSIZE));
+		hor.add(upper_right_coord = new JTextField(COORDSIZE));
 		// ur.setAlignment(TextField.RIGHT);
-		ul.setEditable(false);
-		ur.setEditable(false);
+		upper_left_coord.setEditable(false);
+		upper_right_coord.setEditable(false);
 		glob.add("North", hor);
 
 		toggleZoom.addItemListener(this);
@@ -113,38 +113,36 @@ public class DrawingPanel extends JPanel
 	    JPanel bottomCoord = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5)); // Adjust horizontal and vertical gaps as needed
 
 	    // Left coordinate JTextField
-	    ll = new JTextField(COORDSIZE);
-	    ll.setEditable(false);
-	    bottomCoord.add(ll);
+	    lower_left_coord = new JTextField(COORDSIZE);
+	    lower_left_coord.setEditable(false);
+	    bottomCoord.add(lower_left_coord);
 
 	    // Cursor label and position JTextField in a separate panel for better alignment
 	    JPanel cursorPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0)); // No gaps between label and text field
 	    JLabel cursorLabel = new JLabel("Cursor");
 	    cursorPanel.add(cursorLabel);
 
-	    position = new JTextField(COORDSIZE);
-	    position.setEditable(false);
-	    cursorPanel.add(position);
+	    position_coordinates = new JTextField(COORDSIZE);
+	    position_coordinates.setEditable(false);
+	    cursorPanel.add(position_coordinates);
 
 	    bottomCoord.add(cursorPanel);
 
 	    // Right coordinate JTextField
-	    lr = new JTextField(COORDSIZE);
-	    lr.setEditable(false);
-	    bottomCoord.add(lr);
+	    lower_right_coord = new JTextField(COORDSIZE);
+	    lower_right_coord.setEditable(false);
+	    bottomCoord.add(lower_right_coord);
 
 	    add("South", bottomCoord);
 
 		new MouseHelp(can, mouseDisplay, "", "Zoom In", "Zoom out", InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
-		// new MouseHelp(can, mouseDisplay, "", "Zoom In", "Zoom out",
-		// InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
 		can.addMouseListener(this);
 		can.addMouseMotionListener(this); // cursor position
 		can.addMouseListener(canvasML);
 		can.addMouseMotionListener(canvasMML);
 		updateCoords();
 		insets = new Insets(5, 5, 5, 5);
-		setPreferredSize(new Dimension(512 + 28, 512 + 84)); // setting preferred size of drawing panel adding + # for
+		setPreferredSize(new Dimension(512 + 28, 512 + 82)); // setting preferred size of drawing panel adding + # for
 																// scroll bars
 	}
 
@@ -165,13 +163,13 @@ public class DrawingPanel extends JPanel
 		DecimalFormat df = new DecimalFormat("0.##");
 		DPoint p;
 		p = can.getUL();
-		ul.setText("[" + df.format(p.x) + ", " + df.format(p.y) + "]");
+		upper_left_coord.setText("[" + df.format(p.x) + ", " + df.format(p.y) + "]");
 		p = can.getUR();
-		ur.setText("[" + df.format(p.x) + ", " + df.format(p.y) + "]");
+		upper_right_coord.setText("[" + df.format(p.x) + ", " + df.format(p.y) + "]");
 		p = can.getLL();
-		ll.setText("[" + df.format(p.x) + ", " + df.format(p.y) + "]");
+		lower_left_coord.setText("[" + df.format(p.x) + ", " + df.format(p.y) + "]");
 		p = can.getLR();
-		lr.setText("[" + df.format(p.x) + ", " + df.format(p.y) + "]");
+		lower_right_coord.setText("[" + df.format(p.x) + ", " + df.format(p.y) + "]");
 	}
 
 	/**
@@ -368,7 +366,7 @@ public class DrawingPanel extends JPanel
 	public void mouseMoved(MouseEvent me) {
 		DecimalFormat df = new DecimalFormat("0.##");
 		DPoint p = can.transPointT(me.getX(), me.getY());
-		position.setText(df.format(p.x) + ", " + df.format(p.y));
+		position_coordinates.setText(df.format(p.x) + ", " + df.format(p.y));
 	}
 
 	/**
@@ -381,7 +379,7 @@ public class DrawingPanel extends JPanel
 	@Override
 	public void mouseDragged(MouseEvent me) {
 		DPoint p = can.transPointT(me.getX(), me.getY());
-		position.setText(p.x + ", " + p.y);
+		position_coordinates.setText(p.x + ", " + p.y);
 	}
 
 	/**

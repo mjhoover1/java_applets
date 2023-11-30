@@ -18,9 +18,9 @@ import javax.swing.JPanel;
 public class MouseDisplay extends JPanel {
 
 	private Image im;
-	private static int HGHT = 80;
-	private static String middleBut = "[<ALT>+click]";
-	private static String rightBut = "[<CTRL>+click]";
+	private static final int HEIGHT = 80;
+	private static final String middleBut = "[<ALT>+click]";
+	private static final String rightBut = "[<CTRL>+click]";
 
 	String b1, b2, b3;
 
@@ -31,7 +31,7 @@ public class MouseDisplay extends JPanel {
 	 * @param im The image used for display
 	 */
 	public MouseDisplay(int sz, Image im) {
-		setSize(sz, HGHT);
+		setSize(sz, HEIGHT);
 		this.im = im;
 		b1 = b2 = b3 = "";
 	}
@@ -45,12 +45,9 @@ public class MouseDisplay extends JPanel {
 	 * @param b3   Label for button 3
 	 */
 	public void show(int mask, String b1, String b2, String b3) {
-		if ((mask & InputEvent.BUTTON1_MASK) != 0)
-			this.b1 = b1;
-		if ((mask & InputEvent.BUTTON2_MASK) != 0)
-			this.b2 = b2;
-		if ((mask & InputEvent.BUTTON3_MASK) != 0)
-			this.b3 = b3;
+		if ((mask & InputEvent.BUTTON1_MASK) != 0) this.b1 = b1;
+		if ((mask & InputEvent.BUTTON2_MASK) != 0) this.b2 = b2;
+		if ((mask & InputEvent.BUTTON3_MASK) != 0) this.b3 = b3;
 		repaint();
 	}
 
@@ -68,12 +65,9 @@ public class MouseDisplay extends JPanel {
 	 * @param mask The mouse event mask for the button to clear
 	 */
 	public void clear(int mask) {
-		if ((mask & InputEvent.BUTTON1_MASK) != 0)
-			b1 = "";
-		if ((mask & InputEvent.BUTTON2_MASK) != 0)
-			b2 = "";
-		if ((mask & InputEvent.BUTTON3_MASK) != 0)
-			b3 = "";
+		if ((mask & InputEvent.BUTTON1_MASK) != 0) b1 = "";
+		if ((mask & InputEvent.BUTTON2_MASK) != 0) b2 = "";
+		if ((mask & InputEvent.BUTTON3_MASK) != 0) b3 = "";
 		repaint();
 	}
 
@@ -85,12 +79,9 @@ public class MouseDisplay extends JPanel {
 	 */
 	public static int getMouseButtons(MouseEvent me) {
 		int ret = 0;
-		if (me.isAltDown())
-			ret |= InputEvent.BUTTON2_MASK;
-		if (me.isControlDown())
-			ret |= InputEvent.BUTTON3_MASK;
-		if (!me.isAltDown() && !me.isControlDown())
-			ret |= InputEvent.BUTTON1_MASK;
+		if (me.isAltDown()) ret |= InputEvent.BUTTON2_MASK;
+		if (me.isControlDown()) ret |= InputEvent.BUTTON3_MASK;
+		if (!me.isAltDown() && !me.isControlDown()) ret |= InputEvent.BUTTON1_MASK;
 		return ret;
 	}
 
