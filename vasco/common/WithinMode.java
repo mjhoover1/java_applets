@@ -14,6 +14,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 //import java.util.*;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 //import vasco.drawable.*;
 // import java.awt.*;
@@ -24,10 +26,13 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+
+
 public class WithinMode extends JDialog implements CommonConstants, ActionListener {
-	JCheckBox point, polygon, rectangle, path, sector;
+	JRadioButton point, polygon, rectangle, path, sector;
 	ButtonGroup cg;
 	JButton ok;
 	JTextField dist;
@@ -48,64 +53,24 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 	}
 
 	private void setup(int mask, boolean distanceYes, boolean blend, Container container) {
-		resDist = Double.MAX_VALUE;
+	    resDist = Double.MAX_VALUE;
+	    cg = new ButtonGroup();
+	    setLayout(new GridLayout(0, 1)); // Set layout with 0 rows, 1 column. Rows will be added as needed.
+	    
+	    JLabel l = new JLabel("Query object:");
+	    l.setForeground(Color.blue);
+	    add(l);
 
-		cg = new ButtonGroup();
-		JLabel l = new JLabel("Query object:");
-		l.setForeground(Color.blue);
-		add(l);
-		point = new JCheckBox("Point", false);
-		rectangle = new JCheckBox("Rectangle", false);
-		polygon = new JCheckBox("Polygon", false);
-		path = new JCheckBox("Path", false);
-		sector = new JCheckBox("Sector", false);
-		// point = new JCheckBox("Point", cg, false);
-		// rectangle = new JCheckBox("Rectangle", cg, false);
-		// polygon = new JCheckBox("Polygon", cg, false);
-		// path = new JCheckBox("Path", cg, false);
-		// sector = new JCheckBox("Sector", cg, false);
+        addRadioButton("Point", QueryObject.QO_POINT, mask);
+        addRadioButton("Rectangle", QueryObject.QO_RECTANGLE, mask);
+        addRadioButton("Polygon", QueryObject.QO_POLYGON, mask);
+        addRadioButton("Path", QueryObject.QO_PATH, mask);
+        addRadioButton("Sector", QueryObject.QO_SECTOR, mask);
 
-		int startComp = getComponentCount();
-		if ((mask & QueryObject.QO_POINT) != 0) {
-			JPanel p = new JPanel();
-			p.setLayout(new BorderLayout());
-			p.add("West", point);
-			add(p);
-		}
-		if ((mask & QueryObject.QO_RECTANGLE) != 0) {
-			JPanel p = new JPanel();
-			p.setLayout(new BorderLayout());
-			p.add("West", rectangle);
-			add(p);
-		}
-		if ((mask & QueryObject.QO_POLYGON) != 0) {
-			JPanel p = new JPanel();
-			p.setLayout(new BorderLayout());
-			p.add("West", polygon);
-			add(p);
-		}
-		if ((mask & QueryObject.QO_PATH) != 0) {
-			JPanel p = new JPanel();
-			p.setLayout(new BorderLayout());
-			p.add("West", path);
-			add(p);
-		}
-		if ((mask & QueryObject.QO_SECTOR) != 0) {
-			JPanel p = new JPanel();
-			p.setLayout(new BorderLayout());
-			p.add("West", sector);
-			add(p);
-		}
-
-		JCheckBox c = (JCheckBox) (((Container) getComponent(startComp)).getComponent(0));
-		// first component below label
-		// cg.setSelected(cg.getSelection(), c); // cg.setSelectedCheckbox(c);
-		cg.add(point);
-		cg.add(rectangle);
-		cg.add(polygon);
-		cg.add(path);
-		cg.add(sector);
-		cg.setSelected(c.getModel(), true);
+	    // Select the first checkbox if any are present
+//	    if (point != null) {
+//	        cg.setSelected(point.getModel(), true);
+//	    }
 
 		this.blend = new JCheckBox("Blend");
 		if (blend) {
@@ -114,39 +79,27 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 
 		this.distanceYes = distanceYes;
 		if (distanceYes) {
-			JPanel pn = new JPanel();
-			pn.setLayout(new BorderLayout());
-			dist = new JTextField(initDist);
-			dist.setEditable(true);
-			pn.add("West", new JLabel("Max Distance"));
-			pn.add("East", dist);
-			add(pn);
+            JPanel distPanel = new JPanel(new BorderLayout());
+			dist = new JTextField(initDist); // dist.setEditable(true);
+			distPanel.add(new JLabel("Max Distance"), BorderLayout.WEST);
+            distPanel.add(dist, BorderLayout.CENTER);
+            add(distPanel);
 		}
 
-		if (container != null) {
-			Component[] comp = container.getComponents(); // Added Component in case a problem
-			for (Component element : comp)
-				add(element);
-		}
+        if (container != null) {
+            for (Component comp : container.getComponents()) {
+                add(comp);
+            }
+        }
 
 		ok = new JButton("Continue");
-
 		ok.addActionListener(this);
 		add(ok);
-		setLayout(new GridLayout(getComponentCount(), 1));
+		
+//		setLayout(new GridLayout(1, getComponentCount()));
+		
 		pack();
-
-		// Get the screen size
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int width = screenSize.width;
-		int height = screenSize.height;
-
-		// Calculate the position to center the dialog
-		int x = (width - getWidth()) / 2;
-		int y = (height - getHeight()) / 2;
-
-		// Set the location of the dialog
-		setLocation(x, y);
+	    centerDialogOnScreen();
 
 		addWindowListener(new WindowAdapter() { // Add window listener to handle window closing event
 			@Override
@@ -158,6 +111,19 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 		setResizable(true);
 		setVisible(true); // show();
 	}
+	
+    private void addRadioButton(String label, int queryObjectOption, int mask) {
+        if ((mask & queryObjectOption) != 0) {
+            JRadioButton radioButton = new JRadioButton(label, cg.getButtonCount() == 0);
+            cg.add(radioButton);
+            add(radioButton);
+        }
+    }
+	
+    private void centerDialogOnScreen() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((screenSize.width - getWidth()) / 2, (screenSize.height - getHeight()) / 2);
+    }
 
 	public int getWithinMode() {
 		return mode;
@@ -172,37 +138,27 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
-		if (distanceYes) {
-			try {
-				NumberFormat nf = NumberFormat.getInstance();
-				resDist = nf.parse(dist.getText()).doubleValue();
-				if (resDist < 0)
-					return;
-			} catch (Exception exc) {
-				return;
-			}
-		}
-		if (point.isSelected())
-			mode = QueryObject.QO_POINT;
-		if (rectangle.isSelected())
-			mode = QueryObject.QO_RECTANGLE;
-		if (polygon.isSelected())
-			mode = QueryObject.QO_POLYGON;
-		if (path.isSelected())
-			mode = QueryObject.QO_PATH;
-		if (sector.isSelected())
-			mode = QueryObject.QO_SECTOR;
-		// if (point.getState())
-		// mode = QueryObject.QO_POINT;
-		// if (rectangle.getState())
-		// mode = QueryObject.QO_RECTANGLE;
-		// if (polygon.getState())
-		// mode = QueryObject.QO_POLYGON;
-		// if (path.getState())
-		// mode = QueryObject.QO_PATH;
-		// if (sector.getState())
-		// mode = QueryObject.QO_SECTOR;
-		dispose();
-	}
+    public void actionPerformed(ActionEvent event) {
+        if (distanceYes) {
+            try {
+                NumberFormat nf = NumberFormat.getInstance();
+                resDist = nf.parse(dist.getText()).doubleValue();
+                if (resDist < 0) return;
+            } catch (Exception exc) {
+                return;
+            }
+        }
+
+        mode = getSelectedMode();
+        dispose();
+    }
+
+    private int getSelectedMode() {
+        if (point.isSelected()) return QueryObject.QO_POINT;
+        if (rectangle.isSelected()) return QueryObject.QO_RECTANGLE;
+        if (polygon.isSelected()) return QueryObject.QO_POLYGON;
+        if (path.isSelected()) return QueryObject.QO_PATH;
+        if (sector.isSelected()) return QueryObject.QO_SECTOR;
+        return -1; // default or error case
+    }
 }

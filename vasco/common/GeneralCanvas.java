@@ -184,70 +184,6 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		return -1;
 	}
 
-//	protected OpFeature getCurrentOpFeature() {
-//		int op = getCurrentOperation();
-//		return safeGetOpFeature(op);
-//	}
-//
-//	/**
-//	 * Safely gets the OpFeature object for the given operation ID.
-//	 *
-//	 * @param operationId The ID of the operation.
-//	 * @return The corresponding OpFeature object, or a default one if not found.
-//	 */
-//	private OpFeature safeGetOpFeature(int operationId) {
-//		for (OpFeature feature : opFeature) {
-//			if (feature.ID == operationId) {
-//				return feature;
-//			}
-//		}
-//		return getDefaultOpFeature(); // Return a default feature or handle it as needed
-//	}
-//
-//	/**
-//	 * Provides a default OpFeature object to handle undefined operations.
-//	 *
-//	 * @return A default OpFeature object.
-//	 */
-//	private OpFeature getDefaultOpFeature() {
-//		// Define and return a default OpFeature object
-//		// Adjust the default feature details as per your requirement
-//		return new OpFeature("DefaultOperation", -1, "Default help text", "H1", "H2", "H3", 0);
-//	}
-//
-//	/**
-//	 * Method to get the current operation's ID based on its name.
-//	 *
-//	 * @return The ID of the current operation, or a default value if the name is
-//	 *         unrecognized.
-//	 */
-//	protected int getCurrentOperation() {
-//		String opName = getCurrentOperationName();
-//		if (opName == null) {
-//			return handleUndefinedOperation(); // Handle the case where operation name is null
-//		}
-//		for (OpFeature element : opFeature) {
-//			if (element.name.equals(opName)) {
-//				return element.ID;
-//			}
-//		}
-//		return handleUndefinedOperation(); // Handle the case where operation name is unrecognized
-//	}
-//
-//	/**
-//	 * Handle undefined operations by returning a default operation ID or taking
-//	 * other appropriate actions.
-//	 *
-//	 * @return Default operation ID or an appropriate value indicating undefined
-//	 *         operation.
-//	 */
-//	private int handleUndefinedOperation() {
-//		// Log error, show default operation, or return a special value indicating
-//		// undefined operation.
-//		// For example, return -1 or a specific ID for a default operation.
-//		return -1; // or any appropriate default value
-//	}
-
 	/**
 	 * Abstract method to get the search mode mask for the current operation.
 	 *
@@ -334,7 +270,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		JButton start, stop, pauseresume;
 		JScrollBar progress;
 		MouseHelp starthelp, pauseresumehelp, stophelp;
-		JComboBox runmode;
+		JComboBox<String> runmode = new JComboBox<>();
 
 		/**
 		 * Constructs an AnimationPanel with controls for animation.
@@ -374,7 +310,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			stophelp = new MouseHelp(stop, topInterface.getMouseDisplay(), "Stop animation", "", "");
 			r.add(buts);
 
-			JComboBox<String> runmode = new JComboBox<>();
+			// runmode = new JComboBox<>();
 			runmode.addItem(RUNMODE_CONTINUOUS_S); // runmode.add(RUNMODE_CONTINUOUS_S);
 			runmode.addItem(RUNMODE_OBJECT_S);
 			JPanel runmodeP = new JPanel();
