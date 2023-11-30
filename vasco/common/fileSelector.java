@@ -234,7 +234,7 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
 		}
 		if (btn == clip) {
 			PasteWindow pw = new PasteWindow(this, rcanvas.stringsOut(), helpmess, 2, "LOAD".equals(actStr));
-			pw.show();
+			pw.setVisible(true); // setVisible(true) instead of show()
 			dispose();
 		}
 		if (btn == delete && fname.getText().length() > 0) {

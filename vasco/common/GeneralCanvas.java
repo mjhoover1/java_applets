@@ -421,8 +421,8 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		 * Resets the buttons in the animation panel.
 		 */
 		void resetButtons() {
-			start.setLabel("Start");
-			pauseresume.setLabel("Pause");
+			start.setText("Start"); // setText instead of setLabel
+			pauseresume.setText("Pause"); // setText instead of setLabel
 			pauseresumehelp.frontHelp();
 			pauseresume.setEnabled(false);
 			stop.setEnabled(false);
@@ -461,7 +461,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		 * Sets the pause state for the animation panel.
 		 */
 		public void setPause() {
-			pauseresume.setLabel("Resume");
+			pauseresume.setText("Resume"); // setText instead of setLabel
 			pauseresumehelp.backHelp();
 			pauseresumehelp.show();
 		}
@@ -483,14 +483,14 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			}
 			if (src == start) {
 				start();
-				start.setLabel("Restart");
+				start.setText("Restart"); // .setText instead of setLabel
 				pauseresume.setEnabled(true);
 				stop.setEnabled(true);
 			}
 
 			if (src == pauseresume) {
-				if (pauseresume.getLabel().compareTo("Resume") == 0) {
-					pauseresume.setLabel("Pause");
+				if (pauseresume.getText().compareTo("Resume") == 0) { // getText() instead of getLabel()
+					pauseresume.setText("Pause"); // .setText instead of setLabel
 					pauseresumehelp.frontHelp();
 					pauseresumehelp.show();
 					resume();

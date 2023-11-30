@@ -31,12 +31,12 @@ public class RegionCentralMenu extends CentralMenu {
 			regionCanvas.pstruct.si = null;
 		}
 
-		if (obj instanceof JButton && ((JButton) obj).getLabel().equals("Operation Color Legend")) {
+		if (obj instanceof JButton && "Operation Color Legend".equals(((JButton) obj).getText())) { // use getText instead of getLabel
 			if (dialog != null)
 				dialog.dispose();
 			dialog = new RegionColorHelp((String) operations.getSelectedItem(), regionCanvas.getAppletType(),
 					regionCanvas.getCurrentName());
-			dialog.show();
+			dialog.setVisible(true); // Instead of dialog.show()
 		} else
 			super.actionPerformed(event);
 	}
