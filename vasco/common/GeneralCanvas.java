@@ -1003,5 +1003,16 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			redraw();
 		}
 	}
+	
+	public String comboBoxItemsToString(JComboBox<String> comboBox) {
+	    StringBuilder items = new StringBuilder();
+	    for (int i = 0; i < comboBox.getItemCount(); i++) {
+	        items.append(comboBox.getItemAt(i));
+	        if (i < comboBox.getItemCount() - 1) {
+	            items.append(", ");
+	        }
+	    }
+	    return items.toString();
+	}
 
 }

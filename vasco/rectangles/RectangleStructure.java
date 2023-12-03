@@ -42,7 +42,7 @@ public abstract class RectangleStructure extends SpatialStructure implements Com
 //		if (availOps != null) {
 //			availOps.removeAllItems();
 //		}
-		JComboBox<String> availOps = ops; // Add this line to fix the type safety issue
+		availOps = ops; // Add this line to fix the type safety issue
 		addItemIfNotExists(availOps, "Insert");
 		addItemIfNotExists(availOps, "Move");
 		addItemIfNotExists(availOps, "Move vertex");
