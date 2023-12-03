@@ -347,19 +347,32 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 
 	@Override
 	public void setTree(int i, JComboBox<String> ops) {
-		String op = (String) ops.getSelectedItem();
-		pstruct = pstrs[i];
-		ops.removeAllItems();
-		pstruct.reInit(ops);
+	    pstruct = pstrs[i];
+	    // Temporarily remove item listeners to prevent triggering events
+	    ItemListener[] listeners = ops.getItemListeners();
+	    for (ItemListener listener : listeners) {
+	        ops.removeItemListener(listener);
+	    }
 
-		try {
-			ops.setSelectedItem(op);
-		} catch (Exception e) {
-			// Handle the exception appropriately
-			e.printStackTrace();
-		}
-		setHelp();
-		rebuild();
+	    ops.removeAllItems();
+	    pstruct.reInit(ops);
+
+	    // Re-add item listeners
+	    for (ItemListener listener : listeners) {
+	        ops.addItemListener(listener);
+	    }
+
+	    // Set the selected item only if there are items in the JComboBox
+	    if (ops.getItemCount() > 0) {
+	        String op = (String) ops.getSelectedItem();
+	        if (op == null) {
+	            op = "Insert";
+	        }
+	        ops.setSelectedItem(op);
+	        setHelp();  // Call setHelp only if JComboBox is not empty
+	    }
+
+	    rebuild();
 	}
 
 	@Override

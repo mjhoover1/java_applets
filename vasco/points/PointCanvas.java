@@ -335,6 +335,37 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 		rebuild();
 	}
 
+	// @Override
+	// public void setTree(int i, JComboBox<String> ops) {
+	// 	setHandler(null);
+	//     pstruct = pstrs[i];
+	//     // Temporarily remove item listeners to prevent triggering events
+	//     ItemListener[] listeners = ops.getItemListeners();
+	//     for (ItemListener listener : listeners) {
+	//         ops.removeItemListener(listener);
+	//     }
+
+	//     ops.removeAllItems();
+	//     pstruct.reInit(ops);
+
+	//     // Re-add item listeners
+	//     for (ItemListener listener : listeners) {
+	//         ops.addItemListener(listener);
+	//     }
+
+	//     // Set the selected item only if there are items in the JComboBox
+	//     if (ops.getItemCount() > 0) {
+	//         String op = (String) ops.getSelectedItem();
+	//         if (op == null) {
+	//             op = "Insert";
+	//         }
+	//         ops.setSelectedItem(op);
+	//         setHelp();  // Call setHelp only if JComboBox is not empty
+	//     }
+
+	//     rebuild();
+	// }
+
 	@Override
 	public void rebuild() {
 		pstruct.Clear();

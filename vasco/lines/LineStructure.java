@@ -24,14 +24,15 @@ public abstract class LineStructure extends SpatialStructure implements CommonCo
 	@Override
 	public void reInit(JComboBox<String> ops) {
 		super.reInit(ops);
-		addItemIfNotExists(ops, "Insert");
-		addItemIfNotExists(ops, "Move");
-		addItemIfNotExists(ops, "Move vertex");
-		addItemIfNotExists(ops, "Move edge");
-		addItemIfNotExists(ops, "Delete");
-		addItemIfNotExists(ops, "Overlap");
-		addItemIfNotExists(ops, "Nearest");
-		addItemIfNotExists(ops, "Within");
+	    addItemIfNotExists(ops, "Insert");
+	    addItemIfNotExists(ops, "Move");
+	    addItemIfNotExists(ops, "Move vertex");
+	    addItemIfNotExists(ops, "Move collection");
+	    addItemIfNotExists(ops, "Rotate collection");
+	    addItemIfNotExists(ops, "Delete");
+	    addItemIfNotExists(ops, "Overlap");
+	    addItemIfNotExists(ops, "Nearest");
+	    addItemIfNotExists(ops, "Within");
 	}
 
 	@Override
