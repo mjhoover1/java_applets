@@ -52,6 +52,17 @@ public abstract class SpatialStructure implements CommonConstants {
 			comboBox.addItem(item);
 		}
 	}
+	
+	public String comboBoxItemsToString(JComboBox<String> comboBox) {
+	    StringBuilder items = new StringBuilder();
+	    for (int i = 0; i < comboBox.getItemCount(); i++) {
+	        items.append(comboBox.getItemAt(i));
+	        if (i < comboBox.getItemCount() - 1) {
+	            items.append(", ");
+	        }
+	    }
+	    return items.toString();
+	}
 
 	/**
 	 * Reinitializes the spatial structure and its operations. Typically used when

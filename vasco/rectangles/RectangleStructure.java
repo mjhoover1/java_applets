@@ -39,6 +39,9 @@ public abstract class RectangleStructure extends SpatialStructure implements Com
 	@Override
 	public void reInit(JComboBox<String> ops) {
 		super.reInit(ops);
+//		if (availOps != null) {
+//			availOps.removeAllItems();
+//		}
 		JComboBox<String> availOps = ops; // Add this line to fix the type safety issue
 		addItemIfNotExists(availOps, "Insert");
 		addItemIfNotExists(availOps, "Move");
