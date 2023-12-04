@@ -67,7 +67,8 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
         addRadioButton("Path", QueryObject.QO_PATH, mask);
         addRadioButton("Sector", QueryObject.QO_SECTOR, mask);
 
-	    // Select the first checkbox if any are present
+	    // Select the first radiobutton if any are present
+        selectFirstAvailableRadioButton();
 //	    if (point != null) {
 //	        cg.setSelected(point.getModel(), true);
 //	    }
@@ -110,6 +111,20 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
 
 		setResizable(true);
 		setVisible(true); // show();
+	}
+	
+	private void selectFirstAvailableRadioButton() {
+	    if (point != null) {
+	        cg.setSelected(point.getModel(), true);
+	    } else if (rectangle != null) {
+	        cg.setSelected(rectangle.getModel(), true);
+	    } else if (polygon != null) {
+	        cg.setSelected(polygon.getModel(), true);
+	    } else if (path != null) {
+	        cg.setSelected(path.getModel(), true);
+	    } else if (sector != null) {
+	        cg.setSelected(sector.getModel(), true);
+	    }
 	}
 	
     private void addRadioButton(String label, int queryObjectOption, int mask) {
@@ -176,12 +191,12 @@ public class WithinMode extends JDialog implements CommonConstants, ActionListen
         dispose();
     }
 
-    private int getSelectedMode() {
-        if (point.isSelected()) return QueryObject.QO_POINT;
-        if (rectangle.isSelected()) return QueryObject.QO_RECTANGLE;
-        if (polygon.isSelected()) return QueryObject.QO_POLYGON;
-        if (path.isSelected()) return QueryObject.QO_PATH;
-        if (sector.isSelected()) return QueryObject.QO_SECTOR;
-        return -1; // default or error case
-    }
+	private int getSelectedMode() {
+	    if (point != null && point.isSelected()) return QueryObject.QO_POINT;
+	    if (rectangle != null && rectangle.isSelected()) return QueryObject.QO_RECTANGLE;
+	    if (polygon != null && polygon.isSelected()) return QueryObject.QO_POLYGON;
+	    if (path != null && path.isSelected()) return QueryObject.QO_PATH;
+	    if (sector != null && sector.isSelected()) return QueryObject.QO_SECTOR;
+	    return -1; // default or error case
+	}
 }
