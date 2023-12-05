@@ -121,7 +121,7 @@ public class DelaunayTriangulation extends PointStructure implements Indexable {
 	public void reInit(JComboBox<String> ops) {
 		Clear();
 		topInterface.getPanel().removeAll();
-		JComboBox<String> availOps = ops;
+		availOps = ops;
 		addItemIfNotExists(availOps, "Insert");
 		addItemIfNotExists(availOps, "Move");
 		addItemIfNotExists(availOps, "Delete");

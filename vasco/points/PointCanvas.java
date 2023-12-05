@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 /* $Id: PointCanvas.java,v 1.3 2007/10/28 15:38:18 jagan Exp $ */
 // import java.awt.Choice;
 // import java.awt.Color;
@@ -317,54 +318,54 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 		rebuild();
 	}
 
-	@Override
-	public void setTree(int i, JComboBox<String> ops) {
-		setHandler(null);
-		pstruct = pstrs[i];
-		ops.removeAll();
-		pstruct.reInit(ops);
-		try {
-			String op = (String) ops.getSelectedItem();
-			if (op == null) {
-				op = "Insert";
-			}
-			ops.setSelectedItem(op);
-		} catch (Exception e) {
-		}
-		setHelp();
-		rebuild();
-	}
-
 	// @Override
 	// public void setTree(int i, JComboBox<String> ops) {
 	// 	setHandler(null);
-	//     pstruct = pstrs[i];
-	//     // Temporarily remove item listeners to prevent triggering events
-	//     ItemListener[] listeners = ops.getItemListeners();
-	//     for (ItemListener listener : listeners) {
-	//         ops.removeItemListener(listener);
-	//     }
-
-	//     ops.removeAllItems();
-	//     pstruct.reInit(ops);
-
-	//     // Re-add item listeners
-	//     for (ItemListener listener : listeners) {
-	//         ops.addItemListener(listener);
-	//     }
-
-	//     // Set the selected item only if there are items in the JComboBox
-	//     if (ops.getItemCount() > 0) {
-	//         String op = (String) ops.getSelectedItem();
-	//         if (op == null) {
-	//             op = "Insert";
-	//         }
-	//         ops.setSelectedItem(op);
-	//         setHelp();  // Call setHelp only if JComboBox is not empty
-	//     }
-
-	//     rebuild();
+	// 	pstruct = pstrs[i];
+	// 	ops.removeAll();
+	// 	pstruct.reInit(ops);
+	// 	try {
+	// 		String op = (String) ops.getSelectedItem();
+	// 		if (op == null) {
+	// 			op = "Insert";
+	// 		}
+	// 		ops.setSelectedItem(op);
+	// 	} catch (Exception e) {
+	// 	}
+	// 	setHelp();
+	// 	rebuild();
 	// }
+
+	@Override
+	public void setTree(int i, JComboBox<String> ops) {
+		setHandler(null);
+	    pstruct = pstrs[i];
+	    // Temporarily remove item listeners to prevent triggering events
+	    ItemListener[] listeners = ops.getItemListeners();
+	    for (ItemListener listener : listeners) {
+	        ops.removeItemListener(listener);
+	    }
+
+	    ops.removeAllItems();
+	    pstruct.reInit(ops);
+
+	    // Re-add item listeners
+	    for (ItemListener listener : listeners) {
+	        ops.addItemListener(listener);
+	    }
+
+	    // Set the selected item only if there are items in the JComboBox
+	    if (ops.getItemCount() > 0) {
+	        String op = (String) ops.getSelectedItem();
+	        if (op == null) {
+	            op = "Insert";
+	        }
+	        ops.setSelectedItem(op);
+	        setHelp();  // Call setHelp only if JComboBox is not empty
+	    }
+
+	    rebuild();
+	}
 
 	@Override
 	public void rebuild() {

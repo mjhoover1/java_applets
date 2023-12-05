@@ -171,9 +171,6 @@ public class SplitDialog extends JDialog implements ActionListener, ItemListener
 			rcanvas.stop();
 			for (int i = 0; i < splitMethod.length; i++)
 				if (b == splitMethod[i]) {
-//					System.out.println("opChoice " + opChoice);
-//					System.out.println("i " + i);
-//					System.out.println("rcanvas " + i);
 					rcanvas.setTree(i, opChoice);
 					topBar.setText(rcanvas.getCurrentName() + " data structure");
 					opChoice.invalidate();
