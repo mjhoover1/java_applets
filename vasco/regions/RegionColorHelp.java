@@ -31,11 +31,11 @@ public class RegionColorHelp extends ColorHelp {
 	}
 
 	String structName;
-	Vector commonHelp = new Vector();
+	Vector<String> commonHelp = new Vector<String>();
 	Vector convertHelp = new Vector();
 
-	Vector commonColors = new Vector();
-	Vector convertColors = new Vector();
+	Vector<Color> commonColors = new Vector<>();
+	Vector<Color> convertColors = new Vector<>();
 
 	Vector help = new Vector();
 

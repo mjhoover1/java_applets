@@ -309,9 +309,7 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 		return false;
 	}
 
-	public void switchTree(int i, JComboBox ops) {
-		String op = (String) ops.getSelectedItem();
-
+	public void switchTree(int i, JComboBox<String> ops) {
 		cb = null;
 		sChoice = null;
 
@@ -321,13 +319,31 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 		}
 
 		pstruct = pstrs[i];
+		
+		// Temporarily remove item listeners to prevent triggering events
+	    ItemListener[] listeners = ops.getItemListeners();
+	    for (ItemListener listener : listeners) {
+	        ops.removeItemListener(listener);
+	    }
 
-		ops.removeAll();
+		ops.removeAllItems();
 		pstruct.reInit(ops);
-		try {
-			ops.setSelectedItem(op);
-		} catch (Exception e) {
-		}
+		
+	    // Re-add item listeners
+	    for (ItemListener listener : listeners) {
+	        ops.addItemListener(listener);
+	    }
+		
+	 // Set the selected item only if there are items in the JComboBox
+	    if (ops.getItemCount() > 0) {
+	        String op = (String) ops.getSelectedItem();
+	        if (op == null) {
+	            op = "Insert";
+	        }
+	        ops.setSelectedItem(op);
+//	        setHelp();  // Call setHelp only if JComboBox is not empty
+	    }
+	    
 		if (runningThread != null) {
 			terminate();
 			runningThread = null;
@@ -339,7 +355,7 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	}
 
 	@Override
-	public void setTree(int i, JComboBox ops) {
+	public void setTree(int i, JComboBox<String> ops) {
 		// if it is chain code
 		if (i == 3 && sChoice == null) {
 

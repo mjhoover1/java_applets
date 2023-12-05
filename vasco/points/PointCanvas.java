@@ -300,6 +300,20 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 		lc.pstruct = p;
 		setHandler(lc);
 		pstruct = p;
+		// TODO Figure out if this needs to be changed to removeAllItems
+		// Temporarily remove item listeners to prevent triggering events
+	    // ItemListener[] listeners = ops.getItemListeners();
+	    // for (ItemListener listener : listeners) {
+	    //     ops.removeItemListener(listener);
+	    // }
+
+		// ops.removeAllItems();
+		// pstruct.reInit(ops);
+		
+	    // // Re-add item listeners
+	    // for (ItemListener listener : listeners) {
+	    //     ops.addItemListener(listener);
+	    // }
 		ops.removeAll();
 		pstruct.reInit(ops);
 		setHelp();
@@ -312,29 +326,25 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 		lc.pstruct = p;
 		setHandler(lc);
 		pstruct = p;
+		// TODO Figure out if this needs to be changed to removeAllItems
+		// Temporarily remove item listeners to prevent triggering events
+	    // ItemListener[] listeners = ops.getItemListeners();
+	    // for (ItemListener listener : listeners) {
+	    //     ops.removeItemListener(listener);
+	    // }
+
+		// ops.removeAllItems();
+		// pstruct.reInit(ops);
+		
+	    // // Re-add item listeners
+	    // for (ItemListener listener : listeners) {
+	    //     ops.addItemListener(listener);
+	    // }
 		ops.removeAll();
 		pstruct.reInit(ops);
 		setHelp();
 		rebuild();
 	}
-
-	// @Override
-	// public void setTree(int i, JComboBox<String> ops) {
-	// 	setHandler(null);
-	// 	pstruct = pstrs[i];
-	// 	ops.removeAll();
-	// 	pstruct.reInit(ops);
-	// 	try {
-	// 		String op = (String) ops.getSelectedItem();
-	// 		if (op == null) {
-	// 			op = "Insert";
-	// 		}
-	// 		ops.setSelectedItem(op);
-	// 	} catch (Exception e) {
-	// 	}
-	// 	setHelp();
-	// 	rebuild();
-	// }
 
 	@Override
 	public void setTree(int i, JComboBox<String> ops) {

@@ -352,9 +352,11 @@ abstract public class RegionStructure extends SpatialStructure implements Common
 			node = quadSearch(root, new Point(rx, ry), size, nearest, -1);
 
 			/* nearest block */
-			nNode = (Node) nearest.elementAt(0);
-			cs.add(new ValidGridCursor(new Rectangle(nNode.x + (nNode.size / 2) - (size / 2),
-					nNode.y + (nNode.size / 2) - (size / 2), size, size), Colors.NEAREST_NODE));
+			if (!nearest.isEmpty()) { // Check if 'nearest' is not empty before accessing its elements
+				nNode = (Node) nearest.elementAt(0);
+				cs.add(new ValidGridCursor(new Rectangle(nNode.x + (nNode.size / 2) - (size / 2),
+						nNode.y + (nNode.size / 2) - (size / 2), size, size), Colors.NEAREST_NODE));
+			}
 		}
 
 		if (node == null) {
