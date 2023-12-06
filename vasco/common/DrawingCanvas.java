@@ -2,6 +2,7 @@
 package vasco.common;
 
 import java.awt.BasicStroke;
+import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -30,6 +31,9 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	private Rectangle viewPort;
 	private MouseHelp mh;
 	private MouseDisplay mouseDisplay;
+	
+    private BufferedImage offscreenImage;
+
 
 	// Constructor
 	public DrawingCanvas(Rectangle o, Rectangle viewPort, Image im, MouseDisplay md) {
@@ -40,7 +44,9 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 		orig = target = o;
 		mh = null;
 		mouseDisplay = md;
-	}
+        // Initialize the offscreen image
+        offscreenImage = new BufferedImage(viewPort.width, viewPort.height, BufferedImage.TYPE_INT_ARGB);
+    }
 
 	// Set the mouse display
 	public void setMouseDisplay(MouseDisplay md) {
@@ -71,17 +77,31 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	// Redraw the canvas
 	@Override
 	public void redraw() {
-		repaint(); // Use repaint() instead of paint() paint(getGraphics());
+		paint(getGraphics());
+//		paintComponent(getGraphics());
+		// TODO need to use repaint() to make the canvas not flicker but in order to use repaint all of the 
+		// drawing logic needs to be added to paintComponent
+//		repaint(); // Use repaint() instead of paint() paint(getGraphics());
 	}
 
-	// Paint method to draw on the canvas
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		if (g == null)
-			return;
-		g.drawImage(i, 0, 0, this);
-	}
+	// Overridden paintComponent method
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);  // Clears the panel
+
+        // Draw onto the offscreen image
+        Graphics2D offGraphics = offscreenImage.createGraphics();
+        offGraphics.drawImage(i, 0, 0, this);
+
+        // Your drawing logic here
+        // ...
+
+        // Dispose of the offscreen graphics context to release resources
+        offGraphics.dispose();
+
+        // Draw the offscreen image onto the component
+        g.drawImage(offscreenImage, 0, 0, this);
+    }
 
 	// // Paint method to draw on the canvas
 	// public void paint(Graphics g) {

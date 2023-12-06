@@ -211,11 +211,14 @@ abstract public class RegionStructure extends SpatialStructure implements Common
 		return -1;
 	}
 
-	public Node quadSearch(Node node, Point p, int size, Vector nearest, double dist) {
+	public Node quadSearch(Node node, Point p, int size, Vector<Node> nearest, double dist) {
 		Node n;
 		double d;
 
-		if ((node == null) || !node.inside(p))
+		if (node == null)
+			return null;
+
+		if (!node.inside(p))
 			return null;
 
 		Rectangle r = new Rectangle(node.x + (node.size / 2) - (size / 2), node.y + (node.size / 2) - (size / 2), size,
@@ -352,11 +355,9 @@ abstract public class RegionStructure extends SpatialStructure implements Common
 			node = quadSearch(root, new Point(rx, ry), size, nearest, -1);
 
 			/* nearest block */
-			if (!nearest.isEmpty()) { // Check if 'nearest' is not empty before accessing its elements
-				nNode = (Node) nearest.elementAt(0);
-				cs.add(new ValidGridCursor(new Rectangle(nNode.x + (nNode.size / 2) - (size / 2),
-						nNode.y + (nNode.size / 2) - (size / 2), size, size), Colors.NEAREST_NODE));
-			}
+			nNode = (Node) nearest.elementAt(0);
+			cs.add(new ValidGridCursor(new Rectangle(nNode.x + (nNode.size / 2) - (size / 2),
+					nNode.y + (nNode.size / 2) - (size / 2), size, size), Colors.NEAREST_NODE));
 		}
 
 		if (node == null) {
@@ -393,9 +394,30 @@ abstract public class RegionStructure extends SpatialStructure implements Common
 			cs.add(new ValidGridCursor(new Rectangle(node.x + 1, node.y + 1, node.size - 2, node.size - 2),
 					Colors.SELECTED_CELL, isValid));
 		}
+	    System.out.println("Selected Rectangle: left " + sRect.lr + " selected " + sRect.selected + " right " + sRect.ul);
+	    System.out.println("Operation: " + op);
+	    System.out.println("Mode: " + mode);
+	    System.out.println("Node is null: " + (node == null));
+	    System.out.println("Grid color at selected point: " + grid.getColor(gridC.x, gridC.y));
+	    System.out.println("Is Valid Move: " + isValid);
 
 		return cs;
 	}
+
+//	private void processGridCellHighlighting(Point gridC, Rectangle rc, int op) {
+//		boolean isValid;
+//		if ((grid.getColor(gridC.x, gridC.y) != 0 && op == 1) || (grid.getColor(gridC.x, gridC.y) == 0 && op == 2)) {
+//			isValid = false;
+//			selected = null;
+//		} else {
+//			isValid = true;
+//			selected = new Rectangle(gridC.x, gridC.y, 1, 1);
+//		}
+//
+//		Color color = (op == 12) ? Colors.SELECTED_AREA : Colors.SELECTED_CELL;
+//		cs.add(new ValidGridCursor(new Rectangle(rc.x + 1, rc.y + 1, rc.width - 2, rc.height - 2), color, isValid));
+//		cs.setValid(isValid);
+//	}
 
 	public Rectangle getSelected() {
 		return selected;

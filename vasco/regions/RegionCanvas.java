@@ -274,7 +274,7 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	}
 
-	public boolean selectCBlock(int i, JComboBox ops, Vector cb) {
+	public boolean selectCBlock(int i, JComboBox<String> ops, Vector cb) {
 		int no, x, index;
 
 		// find the number of valid connected blocks
@@ -536,51 +536,72 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	@Override
 	public void mouseExited(MouseEvent me) {
+		System.out.println("Mouse Exited");
 		redrawMode = OFFSCR_REDRAW;
 		redraw();
 		cursor.move(offscrG, null);
 		cursor.move(overview, null);
 	}
 
+	/**
+	 * Handles the mouse moved event within the canvas.
+	 * This method is synchronized to ensure thread safety during event handling.
+	 *
+	 * @param me The MouseEvent object that contains information about the mouse movement.
+	 */
 	@Override
 	synchronized public void mouseMoved(MouseEvent me) {
-		CursorStyle cs;
+	    CursorStyle cs;
 
-		// if doing conversion don't show any mouse
-		if (runningThread != null)
-			return;
+	    // If a conversion operation is in progress, the mouse cursor display is bypassed.
+	    if (runningThread != null)
+	        return;
 
-		Point mCor = offscrG.adjustPoint(me.getPoint());
-		Point rCor = transMouseToScr(mCor);
-		Point gCor = transScrToGrid(mCor);
+	    // Adjusts the mouse point coordinates to the offscreen graphics context.
+	    Point mCor = offscrG.adjustPoint(me.getPoint());
+	    // Translates the mouse coordinates from screen to the actual canvas coordinates.
+	    Point rCor = transMouseToScr(mCor);
+	    // Translates the canvas coordinates to grid coordinates.
+	    Point gCor = transScrToGrid(mCor);
 
-		int op = getCurrentOperation();
+	    // Retrieves the current operation mode.
+	    int op = getCurrentOperation();
+	    
+	    System.out.println("Mouse Coordinates in Canvas: " + mCor.x + " " + mCor.y);
+	    System.out.println("Translated Screen Coordinates: " + rCor.x + " " + rCor.y);
+	    System.out.println("Translated Grid Coordinates: " + gCor.x + " " + gCor.y);
+	    System.out.println("Current Operation: " + op);
 
-		if (cb != null) {
-			CBlock b;
+	    // Checks if the user is interacting with a connected block.
+	    if (cb != null) {
+	        CBlock b;
 
-			cs = new CursorStyle();
-			// mouse is on a connected block
-			if (((b = ConnectedBlocks.inBlock(cb, grid, gCor.x, gCor.y)) != null) && b.valid)
-				cs.add(new PolygonCursor(b.p, Colors.SELECTED_CELL));
+	        cs = new CursorStyle();
+	        // If the mouse is over a valid connected block, updates the cursor style.
+	        if (((b = ConnectedBlocks.inBlock(cb, grid, gCor.x, gCor.y)) != null) && b.valid)
+	            cs.add(new PolygonCursor(b.p, Colors.SELECTED_CELL));
 
-			if (cursor.isDifferentCursor(cs)) {
-				redrawMode = OFFSCR_REDRAW;
-				redraw();
+	        // If the cursor style has changed, triggers a redraw of the canvas.
+	        if (cursor.isDifferentCursor(cs)) {
+	            redrawMode = OFFSCR_REDRAW;
+	            redraw();
 
-				cursor.move(offscrG, cs);
-				cursor.move(overview, cs);
-
-			}
-		} else {
-			if (cursor.isDifferentCursor(pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect))) {
-				redrawMode = OFFSCR_REDRAW;
-				redraw();
-				cs = pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect);
-				cursor.move(offscrG, cs);
-				cursor.move(overview, cs);
-			}
-		}
+	            cursor.move(offscrG, cs);
+	            cursor.move(overview, cs);
+	        }
+	        System.out.println("Mouse is over a connected block: " + b);
+	    } else {
+	        // If the cursor style is different based on the current operation and mouse location, triggers a redraw.
+	    	boolean isCursorDifferent = cursor.isDifferentCursor(pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect));
+	        System.out.println("Is Cursor Different: " + isCursorDifferent);	        
+	        if (isCursorDifferent) {
+	            redrawMode = OFFSCR_REDRAW;
+	            redraw();
+	            cs = pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect);
+	            cursor.move(offscrG, cs);
+	            cursor.move(overview, cs);
+	        }
+	    }
 	}
 
 	@Override

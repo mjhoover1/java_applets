@@ -30,6 +30,7 @@ public class ValidGridCursor implements CursorStyleInterface {
 			dt.directLine(color, rect.x, rect.y, rect.x + rect.width, rect.y + rect.height);
 			dt.directLine(color, rect.x + rect.width, rect.y, rect.x, rect.y + rect.height);
 		}
+	    System.out.println("Displaying ValidGridCursor: " + rect + ", Color: " + color + ", isValid: " + isValid);
 	}
 
 	@Override
