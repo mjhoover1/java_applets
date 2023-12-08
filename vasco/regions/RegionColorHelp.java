@@ -1,9 +1,11 @@
 package vasco.regions;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
 
@@ -176,22 +178,40 @@ public class RegionColorHelp extends ColorHelp {
 		add(close = new JButton("Close"));
 		close.addActionListener(this);
 		pack();
+		
+		centerDialogOnScreen();
+		setResizable(true);
 	}
+	
+    private void centerDialogOnScreen() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = Math.min(screenSize.width, getWidth());
+        int height = Math.min(screenSize.height, getHeight());
+        setLocation((screenSize.width - width) / 2, (screenSize.height - height) / 2);
+    }
 
 	@Override
 	protected JPanel createPanel(String text, Color c) {
 		JPanel p = new JPanel();
-		JPanel sub = new JPanel();
-		JLabel l = new JLabel("    ");
-		l.setBackground(c);
-		p.add(l);
+		JLabel l = new JLabel("    "); // The label that will have the background color.
+		l.setOpaque(true);              // Make the label opaque to show the background color.
+	    l.setBackground(c);             // Set the background color.
+	    
+	    p.add(l);                       // Add the colored label to the panel.
 
-		String[] form = format(text, 50);
+	    String[] form = format(text, 50); // Break the text into lines if necessary.
+	    
+	    JPanel sub = new JPanel(new GridLayout(form.length, 1)); // Create a sub-panel with a layout to hold the text.
+
 		sub.setLayout(new GridLayout(form.length, 1));
-		for (String element : form)
-			sub.add(new JLabel(element));
-		p.add(sub);
-		return p;
+		
+	    for (String element : form) {
+	        sub.add(new JLabel(element)); // Add each line of text as a new label to the sub-panel.
+	    }
+		
+	    p.add(sub);                      // Add the sub-panel with text to the main panel.
+		
+	    return p;                        // Return the complete panel.
 	}
 
 	@Override

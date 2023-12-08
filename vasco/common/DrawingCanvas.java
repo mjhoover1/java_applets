@@ -644,7 +644,9 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	    coloredLinesToDraw.clear();
 	    // Add the rectangle to the list for redrawing
 	    Rectangle rect = new Rectangle(x1, y1, x2 - x1, y2 - y1);
-	    addOrUpdateRectangle(rect, c);
+	    if (c != null) {
+	    	addOrUpdateRectangle(rect, c);
+	    }
 	}
 
 

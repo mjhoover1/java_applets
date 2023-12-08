@@ -413,7 +413,7 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	        SwingUtilities.invokeLater(() -> {
 	        	((DrawingCanvas) offscrG).paintImmediately(orig);
 //	            ((DrawingCanvas) offscrG).paintImmediately(((DrawingCanvas) offscrG).getBounds());
-	            ((DrawingCanvas) overview).paintImmediately(((DrawingCanvas) overview).getBounds());
+//	            ((DrawingCanvas) overview).paintImmediately(((DrawingCanvas) overview).getBounds());
 	        });
 		}
 	}
