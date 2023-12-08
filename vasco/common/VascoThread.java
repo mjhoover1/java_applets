@@ -3,6 +3,8 @@ package vasco.common;
 
 import java.awt.Color;
 
+import javax.swing.SwingUtilities;
+
 public abstract class VascoThread extends Thread {
 
 	protected DrawingTarget[] off;
@@ -85,14 +87,27 @@ public abstract class VascoThread extends Thread {
 	public int getProgress() {
 		return currentStep;
 	}
-
+	
 	public synchronized boolean setProgress(int step) {
-		if (step >= 0 && step < v.size()) {
-			currentStep = step;
-			redraw();
-			return true;
-		}
-		return false;
+	    if (step >= 0 && step < v.size()) {
+	        currentStep = step;
+	        SwingUtilities.invokeLater(new Runnable() {
+	            public void run() {
+	                redraw();
+	            }
+	        });
+	        return true;
+	    }
+	    return false;
 	}
+
+//	public synchronized boolean setProgress(int step) {
+//		if (step >= 0 && step < v.size()) {
+//			currentStep = step;
+//			redraw();
+//			return true;
+//		}
+//		return false;
+//	}
 
 }

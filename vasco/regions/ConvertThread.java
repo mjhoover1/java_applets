@@ -1,5 +1,9 @@
 package vasco.regions;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
+
 import vasco.common.CanvasIface;
 import vasco.common.DrawingTarget;
 import vasco.common.QueryObject;
@@ -38,40 +42,104 @@ public class ConvertThread extends VascoThread {
 		}
 		return false;
 	}
-
+	
 	@Override
 	public void run() {
-		if (v != null && ((ConvertVector) v).size() > 0) {
+	    if (v != null && ((ConvertVector) v).size() > 0) {
+	        setProgress(0);
+	        final int delay = pc.getDelay(); // Delay in milliseconds between steps
 
-			setProgress(0);
-			do {
-				if (drawCurrentStep()) {
-					pc.setPause();
-					suspend();
-				} else
-					try {
-						sleep(pc.getDelay());
-					} catch (Exception e) {
-					}
-			} while (setProgress(getProgress() + 1));
+	        // ActionListener for the timer that will perform the animation steps
+	        ActionListener timerAction = new ActionListener() {
+	            public void actionPerformed(ActionEvent evt) {
+	                if (!drawCurrentStep()) {
+	                    if (!setProgress(getProgress() + 1)) {
+	                        ((Timer)evt.getSource()).stop(); // Stop the timer
+	                        pc.reset();
+	                    }
+	                } else {
+	                    pc.setPause();
+	                    ((Timer)evt.getSource()).stop(); // Stop the timer
+	                }
+	            }
+	        };
 
-			/*
-			 * for(int j = 0; j < off.length; j++) { pc.drawBackground(off[j]);
-			 *
-			 * for (int i = 0; i < ((ConvertVector)v).size(); i++)
-			 * ((ConvertVector)v).elementAt(i).ge.fillElementNext(off[j]);
-			 * //pc.drawContents(off[j]);
-			 *
-			 * for (int i = 0; i < ((ConvertVector)v).size(); i++)
-			 * ((ConvertVector)v).elementAt(i).ge.drawElementNext(off[j]); }
-			 */
-		}
+	        // Create a new timer that calls the ActionListener at the specified delay
+	        Timer timer = new Timer(delay, timerAction);
 
-		for (DrawingTarget element : off)
-			element.redraw();
-
-		pc.reset();
+	        // Start the animation
+	        timer.start();
+	    } else {
+	        for (DrawingTarget element : off) {
+	            element.redraw();
+	        }
+	        pc.reset();
+	    }
 	}
+
+//	@Override
+//	public void run() {
+//	    if (v != null && ((ConvertVector) v).size() > 0) {
+//	        setProgress(0);
+//	        final Timer timer = new Timer(pc.getDelay(), null);
+//
+//	        ActionListener listener = new ActionListener() {
+//	            public void actionPerformed(ActionEvent evt) {
+//	                if (!drawCurrentStep()) {
+//	                    if (!setProgress(getProgress() + 1)) {
+//	                        timer.stop();
+//	                        pc.reset();
+//	                    }
+//	                } else {
+//	                    pc.setPause();
+//	                    timer.stop();
+//	                }
+//	            }
+//	        };
+//
+//	        timer.addActionListener(listener);
+//	        timer.start();
+//	    } else {
+//	        for (DrawingTarget element : off) {
+//	            element.redraw();
+//	        }
+//	        pc.reset();
+//	    }
+//	}
+//	
+//	@Override
+//	public void run() {
+//		if (v != null && ((ConvertVector) v).size() > 0) {
+//
+//			setProgress(0);
+//			do {
+//				if (drawCurrentStep()) {
+//					pc.setPause();
+//					suspend();
+//				} else
+//					try {
+//						sleep(pc.getDelay());
+//					} catch (Exception e) {
+//					}
+//			} while (setProgress(getProgress() + 1));
+//
+//			/*
+//			 * for(int j = 0; j < off.length; j++) { pc.drawBackground(off[j]);
+//			 *
+//			 * for (int i = 0; i < ((ConvertVector)v).size(); i++)
+//			 * ((ConvertVector)v).elementAt(i).ge.fillElementNext(off[j]);
+//			 * //pc.drawContents(off[j]);
+//			 *
+//			 * for (int i = 0; i < ((ConvertVector)v).size(); i++)
+//			 * ((ConvertVector)v).elementAt(i).ge.drawElementNext(off[j]); }
+//			 */
+//		}
+//
+//		for (DrawingTarget element : off)
+//			element.redraw();
+//
+//		pc.reset();
+//	}
 
 	@Override
 	public void redraw(DrawingTarget dt) {

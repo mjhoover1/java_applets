@@ -375,6 +375,7 @@ public class OverviewWindow extends JDialog
 					OVERVIEW_SIZE / zoomStep, 0, MAXSCROLL);
 			rt.redraw(can);
 			updateCoords();
+			can.paintImmediately(can.getBounds());
 		}
 	}
 
