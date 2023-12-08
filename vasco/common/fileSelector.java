@@ -2,7 +2,9 @@
 package vasco.common;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -186,8 +188,17 @@ public abstract class fileSelector extends JDialog implements ActionListener, It
 		p.setLayout(new GridLayout(1, p.getComponentCount()));
 		add("South", p);
 		pack();
-		setResizable(false);
+		
+		centerDialogOnScreen();
+		setResizable(true);
 	}
+	
+    private void centerDialogOnScreen() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = Math.min(screenSize.width, getWidth());
+        int height = Math.min(screenSize.height, getHeight());
+        setLocation((screenSize.width - width) / 2, (screenSize.height - height) / 2);
+    }
 
 	protected abstract String genRandom(int nr);
 
