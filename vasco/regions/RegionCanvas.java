@@ -288,16 +288,17 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	public boolean selectCBlock(int i, JComboBox<String> ops, Vector cb) {
 		int no, x, index;
-
+	
 		// find the number of valid connected blocks
 		no = 0;
 		index = 0;
-		for (x = 0; x < cb.size(); x++)
+		for (x = 0; x < cb.size(); x++) {
 			if (((CBlock) cb.elementAt(x)).valid) {
 				index = x;
 				no++;
 			}
-
+		}
+	
 		if (no == 0) {
 			if (ops != null) // only if I am changing the region structure
 				switchTree(i, ops);
@@ -313,12 +314,13 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 				pstruct.Insert((Point) b.v.elementAt(x));
 			redraw();
 			return true;
+		} else {
+			// Trigger the info box only if it's not already visible
+			if (!InfoBox.isCurrentlyVisible()) {
+				InfoBox.showInfoBox("Please, select a connected block. Move the cursor over a connected one and then click on it.");
+			}
+			return false;
 		}
-
-		// inform the user
-		new InfoBox("Please, select a connected block. Move the cursor over a connected one and then click on it.");
-
-		return false;
 	}
 
 	public void switchTree(int i, JComboBox<String> ops) {
