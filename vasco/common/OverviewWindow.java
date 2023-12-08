@@ -299,7 +299,7 @@ public class OverviewWindow extends JDialog
         gbl.setConstraints(close, gbc); // gbl.setConstraints(close, createConstraints(0, 2, GridBagConstraints.REMAINDER, 1, GridBagConstraints.BOTH));
 		glob.add(close);
 
-		new MouseHelp(can, mouseDisplay, "Zoom In", "Zoom out", "", InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK);
+		new MouseHelp(can, mouseDisplay, "", "Zoom in", "Zoom out", InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK);
 		can.addMouseListener(this);
 		can.addMouseMotionListener(this); // cursor position
 		// updateCoords();

@@ -89,7 +89,7 @@ public class DrawingPanel extends JPanel
 		JPanel hor = new JPanel();
 		hor.setLayout(new GridLayout(1, 3));
 		hor.add(upper_left_coord = new JTextField(COORDSIZE));
-		hor.add(toggleZoom = new JCheckBox("Zoom In/Out Mode", false));
+		hor.add(toggleZoom = new JCheckBox("Zoom in/out Mode", false));
 		new MouseHelp(toggleZoom, mouseDisplay, "Switch to zoom mode", "", "", "Switch to operation mode", "", "");
 		hor.add(upper_right_coord = new JTextField(COORDSIZE));
 		// ur.setAlignment(TextField.RIGHT);
@@ -135,7 +135,7 @@ public class DrawingPanel extends JPanel
 
 	    add("South", bottomCoord);
 
-		new MouseHelp(can, mouseDisplay, "", "Zoom In", "Zoom out", InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
+		new MouseHelp(can, mouseDisplay, "", "Zoom in", "Zoom out", InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
 		can.addMouseListener(this);
 		can.addMouseMotionListener(this); // cursor position
 		can.addMouseListener(canvasML);
@@ -184,6 +184,7 @@ public class DrawingPanel extends JPanel
 				zoomIn(p);
 			else
 				zoomOut(p);
+			repaint();
 		}
 	}
 
@@ -195,7 +196,7 @@ public class DrawingPanel extends JPanel
 	@Override
 	public void itemStateChanged(ItemEvent ie) {
 		if (ie.getStateChange() == ItemEvent.SELECTED) {
-			mh = new MouseHelp(can, mouseDisplay, "Zoom In", "Zoom out", "",
+			mh = new MouseHelp(can, mouseDisplay, "", "Zoom out", "Zoom in",
 					InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK);
 			can.removeMouseListener(canvasML);
 			can.removeMouseMotionListener(canvasMML);
@@ -215,28 +216,51 @@ public class DrawingPanel extends JPanel
 	 *
 	 * @param p The point around which to zoom in.
 	 */
+//	private void zoomIn(DPoint p) {
+//		if (zoomStep < 64) {
+//			DPoint center = can.getCenter();
+//
+//			double xdif = (p.x - center.x) / 10;
+//
+//			double ydif = (p.y - center.y) / 10;
+//
+//			double zs = zoomStep;
+//			for (int i = 1; i <= 10; i++) {
+//				zs = zoomStep + i * zoomStep / 10.0;
+//				can.zoom(new DPoint(center.x + i * xdif, center.y + i * ydif), zs);
+//				rt.redraw();
+//			}
+//			zoomStep *= 2;
+//			sphor.setValues(Math.round((MAXSCROLL - MAXSCROLL / (float) zoomStep) * can.getXperc()),
+//					MAXSCROLL / zoomStep, 0, MAXSCROLL);
+//			spvert.setValues(Math.round((MAXSCROLL - MAXSCROLL / (float) zoomStep) * can.getYperc()),
+//					MAXSCROLL / zoomStep, 0, MAXSCROLL);
+//			updateCoords();
+//			rt.redraw();
+//		}
+//		repaint();
+//	}
+	
 	private void zoomIn(DPoint p) {
-		if (zoomStep < 64) {
-			DPoint center = can.getCenter();
-
-			double xdif = (p.x - center.x) / 10;
-
-			double ydif = (p.y - center.y) / 10;
-
-			double zs = zoomStep;
-			for (int i = 1; i <= 10; i++) {
-				zs = zoomStep + i * zoomStep / 10.0;
-				can.zoom(new DPoint(center.x + i * xdif, center.y + i * ydif), zs);
-				rt.redraw();
-			}
-			zoomStep *= 2;
-			sphor.setValues(Math.round((MAXSCROLL - MAXSCROLL / (float) zoomStep) * can.getXperc()),
-					MAXSCROLL / zoomStep, 0, MAXSCROLL);
-			spvert.setValues(Math.round((MAXSCROLL - MAXSCROLL / (float) zoomStep) * can.getYperc()),
-					MAXSCROLL / zoomStep, 0, MAXSCROLL);
-			updateCoords();
-			rt.redraw();
-		}
+	    if (zoomStep < 64) {
+	        DPoint center = can.getCenter();
+	        double xdif = (p.x - center.x) / 10;
+	        double ydif = (p.y - center.y) / 10;
+	        double zs = zoomStep;
+	        for (int i = 1; i <= 10; i++) {
+	            zs = zoomStep + i * zoomStep / 10.0;
+	            can.zoom(new DPoint(center.x + i * xdif, center.y + i * ydif), zs);
+	            rt.redraw();
+	        }
+	        zoomStep *= 2;
+	        sphor.setValues(Math.round((MAXSCROLL - MAXSCROLL / (float) zoomStep) * can.getXperc()),
+	                        MAXSCROLL / zoomStep, 0, MAXSCROLL);
+	        spvert.setValues(Math.round((MAXSCROLL - MAXSCROLL / (float) zoomStep) * can.getYperc()),
+	                        MAXSCROLL / zoomStep, 0, MAXSCROLL);
+	        updateCoords();
+	        rt.redraw();
+	        can.paintImmediately(can.getBounds());
+	    }
 	}
 
 	/**
@@ -244,29 +268,52 @@ public class DrawingPanel extends JPanel
 	 *
 	 * @param p The point around which to zoom out.
 	 */
+//	private void zoomOut(DPoint p) {
+//		if (zoomStep > 1) {
+//			DPoint center = can.getCenter();
+//
+//			double xdif = (p.x - center.x) / 10;
+//
+//			double ydif = (p.y - center.y) / 10;
+//
+//			double zs = zoomStep;
+//
+//			for (int i = 1; i <= 10; i++) {
+//				zs = zoomStep - i * zoomStep / 20.0;
+//				can.zoom(new DPoint(center.x + i * xdif, center.y + i * ydif), zs);
+//				rt.redraw();
+//			}
+//			zoomStep /= 2;
+//			sphor.setValues(Math.round((MAXSCROLL - MAXSCROLL / (float) zoomStep) * can.getXperc()),
+//					MAXSCROLL / zoomStep, 0, MAXSCROLL);
+//			spvert.setValues(Math.round((MAXSCROLL - MAXSCROLL / (float) zoomStep) * can.getYperc()),
+//					MAXSCROLL / zoomStep, 0, MAXSCROLL);
+//			updateCoords();
+//			rt.redraw();
+//		}
+//	}
+	
+	
 	private void zoomOut(DPoint p) {
-		if (zoomStep > 1) {
-			DPoint center = can.getCenter();
-
-			double xdif = (p.x - center.x) / 10;
-
-			double ydif = (p.y - center.y) / 10;
-
-			double zs = zoomStep;
-
-			for (int i = 1; i <= 10; i++) {
-				zs = zoomStep - i * zoomStep / 20.0;
-				can.zoom(new DPoint(center.x + i * xdif, center.y + i * ydif), zs);
-				rt.redraw();
-			}
-			zoomStep /= 2;
-			sphor.setValues(Math.round((MAXSCROLL - MAXSCROLL / (float) zoomStep) * can.getXperc()),
-					MAXSCROLL / zoomStep, 0, MAXSCROLL);
-			spvert.setValues(Math.round((MAXSCROLL - MAXSCROLL / (float) zoomStep) * can.getYperc()),
-					MAXSCROLL / zoomStep, 0, MAXSCROLL);
-			updateCoords();
-			rt.redraw();
-		}
+	    if (zoomStep > 1) {
+	        DPoint center = can.getCenter();
+	        double xdif = (p.x - center.x) / 10;
+	        double ydif = (p.y - center.y) / 10;
+	        double zs = zoomStep;
+	        for (int i = 1; i <= 10; i++) {
+	            zs = zoomStep - i * zoomStep / 20.0;
+	            can.zoom(new DPoint(center.x + i * xdif, center.y + i * ydif), zs);
+	            rt.redraw();
+	        }
+	        zoomStep /= 2;
+	        sphor.setValues(Math.round((MAXSCROLL - MAXSCROLL / (float) zoomStep) * can.getXperc()),
+	                        MAXSCROLL / zoomStep, 0, MAXSCROLL);
+	        spvert.setValues(Math.round((MAXSCROLL - MAXSCROLL / (float) zoomStep) * can.getYperc()),
+	                        MAXSCROLL / zoomStep, 0, MAXSCROLL);
+	        updateCoords();
+	        rt.redraw();
+	        can.paintImmediately(can.getBounds());
+	    }
 	}
 
 	/**
@@ -331,7 +378,6 @@ public class DrawingPanel extends JPanel
 	 * @param me The MouseEvent object containing details about the mouse entered
 	 *           event.
 	 */
-
 	@Override
 	public void mouseEntered(MouseEvent me) {
 		if (toggleZoom.isSelected()) { // Use isSelected instead of getState() in Swing

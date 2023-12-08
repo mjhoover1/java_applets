@@ -3,6 +3,8 @@ package vasco.common;
 
 import java.awt.BasicStroke;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -12,10 +14,17 @@ import java.awt.Image; // May need to remove if Swing replacement
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Stroke;
 
 // import java.awt.*;
 import javax.swing.JPanel;
+
+import vasco.regions.CBlock;
+import vasco.regions.Colors;
+import vasco.regions.ConnectedBlocks;
+import vasco.regions.CursorStyle;
+import vasco.regions.PolygonCursor;
 
 /* -------------------------------------------
  * Drawing Canvas - provides drawing functions for the application
@@ -33,6 +42,10 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	private MouseDisplay mouseDisplay;
 	
     private BufferedImage offscreenImage;
+    
+    private List<ColoredRectangle> coloredRectanglesToDraw = new ArrayList<>();
+    private List<ColoredLine> coloredLinesToDraw = new ArrayList<>();
+
 
 
 	// Constructor
@@ -73,35 +86,202 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	public int getOperationMask() {
 		return mh.getMask();
 	}
+	
+	 // Method to add or update a colored rectangle
+    public void addOrUpdateRectangle(Rectangle rect, Color color) {
+        ColoredRectangle newColoredRect = new ColoredRectangle(rect, color);
+        coloredRectanglesToDraw.remove(newColoredRect); // Remove existing rectangle with the same color
+        coloredRectanglesToDraw.add(newColoredRect); // Add the new rectangle
+        repaint();
+    }
+    
+ // Method to add a colored line for redrawing, ensuring only two lines are stored
+    public void addColoredLine(Point start, Point end, Color color) {
+        if (coloredLinesToDraw.size() >= 2) {
+            coloredLinesToDraw.clear(); // Clear last two lines forming X
+        }
+        coloredLinesToDraw.add(new ColoredLine(start, end, color)); // Add the new line
+        repaint();
+    }
+    
+    public void clearRectangles() {
+    	coloredRectanglesToDraw.clear();
+    	repaint();
+    }
+    
+    public void clearLines() {
+	    coloredLinesToDraw.clear();
+    	repaint();
+    }
+
 
 	// Redraw the canvas
-	@Override
 	public void redraw() {
-		paint(getGraphics());
+		// paint(getGraphics());
 //		paintComponent(getGraphics());
 		// TODO need to use repaint() to make the canvas not flicker but in order to use repaint all of the 
 		// drawing logic needs to be added to paintComponent
-//		repaint(); // Use repaint() instead of paint() paint(getGraphics());
+		repaint(); // Use repaint() instead of paint() paint(getGraphics());
 	}
 
-	// Overridden paintComponent method
+	  // Override update() and make sure the 
+ 	 // background is not cleared. 
+//	 @Override
+//	public void update (Graphics g) {
+//		paint (g);
+//	}
+	
+//    public void addRectangleToDraw(Rectangle rect) {
+//    	coloredRectanglesToDraw.add(rect);
+//        repaint();
+//    }
+//
+//    public void clearRectangles() {
+//    	coloredRectanglesToDraw.clear();
+//        repaint();
+//    }
+    
     @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);  // Clears the panel
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); // Clears the panel
 
-        // Draw onto the offscreen image
-        Graphics2D offGraphics = offscreenImage.createGraphics();
-        offGraphics.drawImage(i, 0, 0, this);
+        Graphics2D g2d = (Graphics2D) g;
+	    Graphics2D offGraphics = offscreenImage.createGraphics();
 
-        // Your drawing logic here
-        // ...
+        g2d.drawImage(offscreenImage, 0, 0, this);
 
-        // Dispose of the offscreen graphics context to release resources
-        offGraphics.dispose();
+        // Draw the rectangles from the list
+        for (ColoredRectangle cr : coloredRectanglesToDraw) {
+            g2d.setColor(cr.color);
+            Rectangle rect = cr.rectangle;
+            g2d.drawRect(rect.x, rect.y, rect.width, rect.height);
+        }
+        
+        // Draw the lines
+        for (ColoredLine cl : coloredLinesToDraw) {
+            g2d.setColor(cl.color);
+            g2d.drawLine(cl.start.x, cl.start.y, cl.end.x, cl.end.y);
+        }
+        
+        // Set anti-aliasing for smoother graphics
+	    offGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Draw the offscreen image onto the component
-        g.drawImage(offscreenImage, 0, 0, this);
+	    // Clear the offscreen image
+	    offGraphics.setColor(getBackground());
+	    offGraphics.fillRect(0, 0, offscreenImage.getWidth(), offscreenImage.getHeight());
+
+	    // Draw the base image
+	    offGraphics.drawImage(i, 0, 0, this);
+
+	    // Dispose of the offscreen graphics context to release resources
+	    offGraphics.dispose();
+
+	    // Draw the offscreen image onto the component
+//	    g2d.drawImage(offscreenImage, 0, 0, this);
     }
+
+	// Overridden paintComponent method
+//	@Override
+//	protected void paintComponent(Graphics g) {
+//	    super.paintComponent(g); // Clears the panel
+
+	    // Cast to Graphics2D for more advanced graphics capabilities
+//	    Graphics2D g2d = (Graphics2D) g;
+//
+//	    // Draw onto the offscreen image
+//	    Graphics2D offGraphics = offscreenImage.createGraphics();
+//
+//	    // Set anti-aliasing for smoother graphics
+//	    offGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//
+//	    // Clear the offscreen image
+//	    offGraphics.setColor(getBackground());
+//	    offGraphics.fillRect(0, 0, offscreenImage.getWidth(), offscreenImage.getHeight());
+//
+//	    // Draw the base image
+//	    offGraphics.drawImage(i, 0, 0, this);
+//
+//	    // Dispose of the offscreen graphics context to release resources
+//	    offGraphics.dispose();
+//
+//	    // Draw the offscreen image onto the component
+//	    g2d.drawImage(offscreenImage, 0, 0, this);
+//	}
+
+// 	private void highlightGridElements(Graphics2D g) {
+// 	    // Logic to highlight grid elements based on the cursor position and state
+// 	    // This might involve drawing rectangles, lines, or points on the grid
+// 	    Point mousePosition = getMousePosition(); // Get current mouse position
+
+// 	    if (mousePosition != null) {
+// 	        // Convert screen coordinates to grid coordinates
+// //	        Point gridPosition = transScrToGrid(mousePosition);
+
+// 	        // Check if the mouse is over a valid grid cell or connected block
+// 	        // and highlight if necessary
+// 	        // You might need to access the state of the grid or cursor to determine
+// 	        // what needs to be highlighted
+// 	        // For example:
+// 	        // g.setColor(Color.RED);
+// 	        // g.drawRect(gridPosition.x, gridPosition.y, cellSize, cellSize);
+// 	        // ...
+
+// 	        // You can also use the cursor's current style to determine what to draw
+// 	        // For example, if the cursor indicates a selected area, draw that area
+// 	    }
+	    
+//	    CursorStyle cs;
+//
+//	    // If a conversion operation is in progress, the mouse cursor display is bypassed.
+////	    if (runningThread != null)
+////	        return;
+//
+//	    // Adjusts the mouse point coordinates to the offscreen graphics context.
+//	    Point mCor = offscrG.adjustPoint(me.getPoint());
+//	    // Translates the mouse coordinates from screen to the actual canvas coordinates.
+//	    Point rCor = transMouseToScr(mCor);
+//	    // Translates the canvas coordinates to grid coordinates.
+//	    Point gCor = transScrToGrid(mCor);
+//
+//	    // Retrieves the current operation mode.
+//	    int op = getCurrentOperation();
+//	    
+//	    System.out.println("Mouse Coordinates in Canvas: " + mCor.x + " " + mCor.y);
+//	    System.out.println("Translated Screen Coordinates: " + rCor.x + " " + rCor.y);
+//	    System.out.println("Translated Grid Coordinates: " + gCor.x + " " + gCor.y);
+//	    System.out.println("Current Operation: " + op);
+//
+//	    // Checks if the user is interacting with a connected block.
+//	    if (cb != null) {
+//	        CBlock b;
+//
+//	        cs = new CursorStyle();
+//	        // If the mouse is over a valid connected block, updates the cursor style.
+//	        if (((b = ConnectedBlocks.inBlock(cb, grid, gCor.x, gCor.y)) != null) && b.valid)
+//	            cs.add(new PolygonCursor(b.p, Colors.SELECTED_CELL));
+//
+//	        // If the cursor style has changed, triggers a redraw of the canvas.
+//	        if (cursor.isDifferentCursor(cs)) {
+//	            redrawMode = OFFSCR_REDRAW;
+//	            redraw();
+//
+//	            cursor.move(offscrG, cs);
+//	            cursor.move(overview, cs);
+//	        }
+//	        System.out.println("Mouse is over a connected block: " + b);
+//	    } else {
+//	        // If the cursor style is different based on the current operation and mouse location, triggers a redraw.
+//	    	boolean isCursorDifferent = cursor.isDifferentCursor(pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect));
+//	        System.out.println("Is Cursor Different: " + isCursorDifferent);	        
+//	        if (isCursorDifferent) {
+//	            redrawMode = OFFSCR_REDRAW;
+//	            redraw();
+//	            cs = pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect);
+//	            cursor.move(offscrG, cs);
+//	            cursor.move(overview, cs);
+//	        }
+//	    }
+	// }
 
 	// // Paint method to draw on the canvas
 	// public void paint(Graphics g) {
@@ -109,6 +289,62 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	// return;
 	// g.drawImage(i, 0, 0, this);
 	// }
+    
+    class ColoredRectangle {
+        Rectangle rectangle;
+        Color color;
+
+        ColoredRectangle(Rectangle rectangle, Color color) {
+            this.rectangle = rectangle;
+            this.color = color;
+        }
+        
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            ColoredRectangle that = (ColoredRectangle) obj;
+            return color.equals(that.color);
+        }
+
+        @Override
+        public int hashCode() {
+            return color.hashCode();
+        }
+    }
+    
+
+    public class ColoredLine {
+        private Point start;
+        private Point end;
+        private Color color;
+
+        public ColoredLine(Point start, Point end, Color color) {
+            this.start = start;
+            this.end = end;
+            this.color = color;
+        }
+
+        public Point getStart() {
+            return start;
+        }
+
+        public void setStart(Point start) {
+            this.start = start;
+        }
+
+        public Point getEnd() {
+            return end;
+        }
+
+        public void setEnd(Point end) {
+            this.end = end;
+        }
+
+        public Color getColor() {
+            return color;
+        }
+    }
 
 	// Get the current view rectangle
 	@Override
@@ -132,7 +368,11 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 		target = new Rectangle(0, 0, (int) (factor * orig.width), (int) (factor * orig.height));
 		moveX(percX);
 		moveY(percY);
+		
+//	    repaint(); // Trigger a redraw of the canvas
 	}
+	
+	
 
 	// Move along the X-axis
 	void moveX(double p) {
@@ -354,6 +594,12 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	// Draw a line from (x1, y1) to (x2, y2)
 	@Override
 	public void drawLine(double x1, double y1, double x2, double y2) {
+		// Clear the Green Boxes in the Colored Rectangles since a new grid is being drawn of a new Data Structure had been selected
+//		if (!coloredRectanglesToDraw.isEmpty()) {
+//			
+//		}
+//		coloredRectanglesToDraw.clear();
+		
 		Point new1 = transPoint(x1, y1);
 		Point new2 = transPoint(x2, y2);
 		offscr.drawLine(new1.x, new1.y, new2.x, new2.y);
@@ -372,24 +618,35 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	public void directLine(Color c, double x1, double y1, double x2, double y2) {
 		Graphics cur = getGraphics();
 		cur.setColor(c);
-		Point new1 = transPoint(x1, y1);
-		Point new2 = transPoint(x2, y2);
-		cur.drawLine(new1.x, new1.y, new2.x, new2.y);
+		Point start  = transPoint(x1, y1);
+		Point end = transPoint(x2, y2);
+		cur.drawLine(start.x, start.y, end.x, end.y);
+		
+        // Add the line to the list for redrawing
+        addColoredLine(start, end, c);
 	}
 
 	// Draw a rectangle directly using the graphics object with a specified color
+	// Draw a rectangle directly using the graphics object with a specified color
 	@Override
 	public void directRect(Color c, double x, double y, double w, double h) {
-		Graphics cur = getGraphics();
-		cur.setColor(c);
-		Point newo = transPoint(x, y);
-		Point newv = transVector(w, h);
-		int x1 = Math.max(0, newo.x);
-		int y1 = Math.max(0, newo.y);
-		int x2 = Math.min(orig.width, newo.x + newv.x);
-		int y2 = Math.min(orig.height, newo.y + newv.y);
-		cur.drawRect(x1, y1, x2 - x1, y2 - y1);
+	    Graphics cur = getGraphics();
+	    cur.setColor(c);
+	    Point newo = transPoint(x, y);
+	    Point newv = transVector(w, h);
+	    int x1 = Math.max(0, newo.x);
+	    int y1 = Math.max(0, newo.y);
+	    int x2 = Math.min(orig.width, newo.x + newv.x);
+	    int y2 = Math.min(orig.height, newo.y + newv.y);
+	    cur.drawRect(x1, y1, x2 - x1, y2 - y1);
+
+	    // Empty of current lines forming X because a new rect means the mouse moved
+	    coloredLinesToDraw.clear();
+	    // Add the rectangle to the list for redrawing
+	    Rectangle rect = new Rectangle(x1, y1, x2 - x1, y2 - y1);
+	    addOrUpdateRectangle(rect, c);
 	}
+
 
 	// Draw a thick rectangle directly using the graphics object with a specified
 	// color and thickness

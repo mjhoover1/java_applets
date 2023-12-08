@@ -1,9 +1,14 @@
 package vasco.regions;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -72,6 +77,11 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	private int sIndex = -1;
 	private JComboBox sChoice = null;
+	
+	private Point currentMousePosition;
+	
+//	private boolean newStruct = false;
+
 
 	public RegionCanvas(DRectangle can, DrawingTarget dt, DrawingTarget over, JPanel animp, TopInterface ti) {// ,
 																												// CentralMenu
@@ -260,9 +270,92 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 		return new RegionFileSelector(this, op, topInterface);
 	}
 
+//	@Override
+//	public void drawContents(DrawingTarget g) {
+//		pstruct.drawContents(g, g.getView());
+//		
+//	    // Retrieves the current operation mode.
+//	    int op = getCurrentOperation();
+//	    if (currentMousePosition != null) {
+//		    // Translates the mouse coordinates from screen to the actual canvas coordinates.
+//		    Point rCor = transMouseToScr(currentMousePosition);
+//	        // If the cursor style is different based on the current operation and mouse location, triggers a redraw.
+//	    	boolean isCursorDifferent = cursor.isDifferentCursor(pstruct.mouseMoved(rCor.x, rCor.y, currentMousePosition.x, currentMousePosition.y, op, sRect));
+//	        System.out.println("Is Cursor Different: " + isCursorDifferent);	        
+//	        if (isCursorDifferent) {
+////	            redrawMode = OFFSCR_REDRAW;
+////	            redraw();
+//	            CursorStyle cs = pstruct.mouseMoved(rCor.x, rCor.y, currentMousePosition.x, currentMousePosition.y, op, sRect);
+//	            cursor.move(offscrG, cs);
+//	            cursor.move(overview, cs);
+//	        }
+//	    }
+//	    // Draw a rectangle around the grid cell under the mouse cursor
+////	    if (currentMousePosition != null) {
+////	        Point gridCoord = transScrToGrid(currentMousePosition);
+////	        Rectangle cellBounds = new Rectangle(gridCoord.x * gridSize, 
+////	                                             gridCoord.y * gridSize, 
+////	                                             gridSize, gridSize);
+////	        g.setColor(Color.BLUE);
+////	        g.drawRect(cellBounds.x, cellBounds.y, 
+////	                   cellBounds.width, cellBounds.height);
+////	    }
+//	}
+	
 	@Override
 	public void drawContents(DrawingTarget g) {
-		pstruct.drawContents(g, g.getView());
+	    pstruct.drawContents(g, g.getView());
+
+	    // Retrieve the current operation mode.
+//	    int op = getCurrentOperation();
+//
+//	    // Check if the current mouse position is available.
+//	    if (currentMousePosition != null) {
+//	        // Translate the mouse coordinates to canvas coordinates.
+//	        Point rCor = transMouseToScr(currentMousePosition);
+//
+//	        // Check if the cursor style should be updated based on the operation and mouse location.
+//	        boolean isCursorDifferent = cursor.isDifferentCursor(pstruct.mouseMoved(rCor.x, rCor.y, currentMousePosition.x, currentMousePosition.y, op, sRect));
+//	        if (isCursorDifferent) {
+//	            CursorStyle cs = pstruct.mouseMoved(rCor.x, rCor.y, currentMousePosition.x, currentMousePosition.y, op, sRect);
+//	            cursor.move(offscrG, cs);
+//	            cursor.move(overview, cs);
+//	        }
+//
+//	        // Draw a blue outline around the grid cell under the mouse cursor.
+//	        Point gridCoord = transScrToGrid(currentMousePosition);
+//	        Rectangle cellBounds = new Rectangle(gridCoord.x * gridSize, gridCoord.y * gridSize, gridSize, gridSize);
+//	        g.setColor(Color.BLUE);
+//	        g.drawRect(cellBounds.x, cellBounds.y, cellBounds.width, cellBounds.height);
+//	        
+//	        
+////		    Point center_gridCoord = grid.getGridCoor(currentMousePosition);
+//		    
+//		    // Determine the rectangle representing the grid quadrant
+////		    Rectangle gridQuadrant = grid.getScreenCoor(new Point(center_gridCoord.x, center_gridCoord.y));
+//
+//		    // Highlight the center of the spatial grid in green.
+////		    int centerSize = 16; // Size of the center marker
+////		    Rectangle centerMarker = new Rectangle(center_gridCoord.x - centerSize / 2, center_gridCoord.y - centerSize / 2, centerSize, centerSize);
+////		    g.setColor(Color.GREEN);
+////		    g.drawRect(gridQuadrant.x, gridQuadrant.y, gridQuadrant.width, gridQuadrant.height); // g.drawRect(centerMarker.x, centerMarker.y, centerMarker.width, centerMarker.height);
+//
+//	    }
+	    // Calculate the center of the current view in spatial coordinates.
+//	    DPoint centerSpatial = ((DrawingCanvas) g).getCenter();
+//	 // Transform the center point from spatial to screen coordinates.
+//	    Point centerScreen = ((DrawingCanvas) g).transPoint(centerSpatial.x, centerSpatial.y);
+	    
+//	    Point gridCoord = grid.getGridCoor(currentMousePosition);
+//	    
+//	    // Determine the rectangle representing the grid quadrant
+//	    Rectangle gridQuadrant = grid.getScreenCoor(new Point(gridCoord.x, gridCoord.y));
+//
+//	    // Highlight the center of the spatial grid in green.
+//	    int centerSize = 16; // Size of the center marker
+//	    Rectangle centerMarker = new Rectangle(gridCoord.x - centerSize / 2, gridCoord.y - centerSize / 2, centerSize, centerSize);
+//	    g.setColor(Color.GREEN);
+//	    g.drawRect(gridQuadrant.x, gridQuadrant.y, gridQuadrant.width, gridQuadrant.height); // g.drawRect(centerMarker.x, centerMarker.y, centerMarker.width, centerMarker.height);
 	}
 
 	@Override
@@ -536,11 +629,13 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	@Override
 	public void mouseExited(MouseEvent me) {
-		System.out.println("Mouse Exited");
+		// System.out.println("Mouse Exited");
 		redrawMode = OFFSCR_REDRAW;
 		redraw();
 		cursor.move(offscrG, null);
 		cursor.move(overview, null);
+		((DrawingCanvas) offscrG).clearRectangles();
+		((DrawingCanvas) offscrG).clearLines();
 	}
 
 	/**
@@ -567,10 +662,10 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	    // Retrieves the current operation mode.
 	    int op = getCurrentOperation();
 	    
-	    System.out.println("Mouse Coordinates in Canvas: " + mCor.x + " " + mCor.y);
-	    System.out.println("Translated Screen Coordinates: " + rCor.x + " " + rCor.y);
-	    System.out.println("Translated Grid Coordinates: " + gCor.x + " " + gCor.y);
-	    System.out.println("Current Operation: " + op);
+	    // System.out.println("Mouse Coordinates in Canvas: " + mCor.x + " " + mCor.y);
+	    // System.out.println("Translated Screen Coordinates: " + rCor.x + " " + rCor.y);
+	    // System.out.println("Translated Grid Coordinates: " + gCor.x + " " + gCor.y);
+	    // System.out.println("Current Operation: " + op);
 
 	    // Checks if the user is interacting with a connected block.
 	    if (cb != null) {
@@ -589,11 +684,11 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	            cursor.move(offscrG, cs);
 	            cursor.move(overview, cs);
 	        }
-	        System.out.println("Mouse is over a connected block: " + b);
+	        // System.out.println("Mouse is over a connected block: " + b);
 	    } else {
 	        // If the cursor style is different based on the current operation and mouse location, triggers a redraw.
 	    	boolean isCursorDifferent = cursor.isDifferentCursor(pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect));
-	        System.out.println("Is Cursor Different: " + isCursorDifferent);	        
+	        // System.out.println("Is Cursor Different: " + isCursorDifferent);	        
 	        if (isCursorDifferent) {
 	            redrawMode = OFFSCR_REDRAW;
 	            redraw();
@@ -602,6 +697,11 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	            cursor.move(overview, cs);
 	        }
 	    }
+	    // Update the current mouse position
+	    currentMousePosition = offscrG.adjustPoint(me.getPoint());
+	    
+	    // Trigger a redraw to update the highlight
+	    redraw();
 	}
 
 	@Override
@@ -626,6 +726,10 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 			break;
 
 		default:
+//			if (newStruct) {
+//				((DrawingCanvas) offscrG).clearRectangles();
+//				newStruct = false;
+//			}
 			drawBackground(offscrG);
 			if (runningThread != null)
 				runningThread.refill();

@@ -16,6 +16,11 @@ import vasco.common.RebuildTree;
 import vasco.common.SpatialStructure;
 import vasco.common.TopInterface;
 
+/**
+ * The RegionStructure class represents an abstract spatial structure for handling regions in a graphics application.
+ * It provides methods for managing regions, inserting, deleting, and selecting elements within the structure.
+ * This class serves as the base class for specific region structures like QuadTreeRegionStructure, ArrayRegionStructure, and ChainRegionStructure.
+ */
 abstract public class RegionStructure extends SpatialStructure implements CommonConstants {
 
 	public static final int QUAD_MODE = 0;
@@ -35,6 +40,17 @@ abstract public class RegionStructure extends SpatialStructure implements Common
 	public StructureBox si = null;
 	public DrawingTarget dt;
 
+    /**
+     * Initializes a new RegionStructure with the specified parameters.
+     *
+     * @param rCanvas The GenericCanvas associated with this region structure.
+     * @param can     The DRectangle representing the canvas.
+     * @param dt      The DrawingTarget for rendering.
+     * @param ti      The TopInterface.
+     * @param r       The RebuildTree instance.
+     * @param g       The Grid instance.
+     * @param m       The mode of the region structure (QUAD_MODE, ARRAY_MODE, or CHAIN_MODE).
+     */
 	RegionStructure(GenericCanvas rCanvas, DRectangle can, DrawingTarget dt, TopInterface ti, RebuildTree r, Grid g,
 			int m) {
 		super(can, ti, r);
@@ -355,9 +371,11 @@ abstract public class RegionStructure extends SpatialStructure implements Common
 			node = quadSearch(root, new Point(rx, ry), size, nearest, -1);
 
 			/* nearest block */
-			nNode = (Node) nearest.elementAt(0);
-			cs.add(new ValidGridCursor(new Rectangle(nNode.x + (nNode.size / 2) - (size / 2),
-					nNode.y + (nNode.size / 2) - (size / 2), size, size), Colors.NEAREST_NODE));
+			if (nearest.size() > 0) {
+				nNode = (Node) nearest.elementAt(0);
+				cs.add(new ValidGridCursor(new Rectangle(nNode.x + (nNode.size / 2) - (size / 2),
+						nNode.y + (nNode.size / 2) - (size / 2), size, size), Colors.NEAREST_NODE));
+			}
 		}
 
 		if (node == null) {
@@ -394,12 +412,12 @@ abstract public class RegionStructure extends SpatialStructure implements Common
 			cs.add(new ValidGridCursor(new Rectangle(node.x + 1, node.y + 1, node.size - 2, node.size - 2),
 					Colors.SELECTED_CELL, isValid));
 		}
-	    System.out.println("Selected Rectangle: left " + sRect.lr + " selected " + sRect.selected + " right " + sRect.ul);
-	    System.out.println("Operation: " + op);
-	    System.out.println("Mode: " + mode);
-	    System.out.println("Node is null: " + (node == null));
-	    System.out.println("Grid color at selected point: " + grid.getColor(gridC.x, gridC.y));
-	    System.out.println("Is Valid Move: " + isValid);
+	    // System.out.println("Selected Rectangle: left " + sRect.lr + " selected " + sRect.selected + " right " + sRect.ul);
+	    // System.out.println("Operation: " + op);
+	    // System.out.println("Mode: " + mode);
+	    // System.out.println("Node is null: " + (node == null));
+	    // System.out.println("Grid color at selected point: " + grid.getColor(gridC.x, gridC.y));
+	    // System.out.println("Is Valid Move: " + isValid);
 
 		return cs;
 	}

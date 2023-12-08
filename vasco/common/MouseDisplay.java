@@ -117,6 +117,7 @@ public class MouseDisplay extends JPanel {
 		if (b3.length() > 0)
 			mdG.drawString(rightBut, dim.width / 2 + im.getWidth(this) / 2,
 					dim.height - im.getHeight(this) / 2 + fm.getHeight());
+		
 	}
 
 	/**
