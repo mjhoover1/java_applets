@@ -18,6 +18,7 @@ import java.util.Vector;
 // import java.awt.*;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import vasco.common.ColorHelp;
 import vasco.common.DPoint;
@@ -270,92 +271,10 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 		return new RegionFileSelector(this, op, topInterface);
 	}
 
-//	@Override
-//	public void drawContents(DrawingTarget g) {
-//		pstruct.drawContents(g, g.getView());
-//		
-//	    // Retrieves the current operation mode.
-//	    int op = getCurrentOperation();
-//	    if (currentMousePosition != null) {
-//		    // Translates the mouse coordinates from screen to the actual canvas coordinates.
-//		    Point rCor = transMouseToScr(currentMousePosition);
-//	        // If the cursor style is different based on the current operation and mouse location, triggers a redraw.
-//	    	boolean isCursorDifferent = cursor.isDifferentCursor(pstruct.mouseMoved(rCor.x, rCor.y, currentMousePosition.x, currentMousePosition.y, op, sRect));
-//	        System.out.println("Is Cursor Different: " + isCursorDifferent);	        
-//	        if (isCursorDifferent) {
-////	            redrawMode = OFFSCR_REDRAW;
-////	            redraw();
-//	            CursorStyle cs = pstruct.mouseMoved(rCor.x, rCor.y, currentMousePosition.x, currentMousePosition.y, op, sRect);
-//	            cursor.move(offscrG, cs);
-//	            cursor.move(overview, cs);
-//	        }
-//	    }
-//	    // Draw a rectangle around the grid cell under the mouse cursor
-////	    if (currentMousePosition != null) {
-////	        Point gridCoord = transScrToGrid(currentMousePosition);
-////	        Rectangle cellBounds = new Rectangle(gridCoord.x * gridSize, 
-////	                                             gridCoord.y * gridSize, 
-////	                                             gridSize, gridSize);
-////	        g.setColor(Color.BLUE);
-////	        g.drawRect(cellBounds.x, cellBounds.y, 
-////	                   cellBounds.width, cellBounds.height);
-////	    }
-//	}
 	
 	@Override
 	public void drawContents(DrawingTarget g) {
 	    pstruct.drawContents(g, g.getView());
-
-	    // Retrieve the current operation mode.
-//	    int op = getCurrentOperation();
-//
-//	    // Check if the current mouse position is available.
-//	    if (currentMousePosition != null) {
-//	        // Translate the mouse coordinates to canvas coordinates.
-//	        Point rCor = transMouseToScr(currentMousePosition);
-//
-//	        // Check if the cursor style should be updated based on the operation and mouse location.
-//	        boolean isCursorDifferent = cursor.isDifferentCursor(pstruct.mouseMoved(rCor.x, rCor.y, currentMousePosition.x, currentMousePosition.y, op, sRect));
-//	        if (isCursorDifferent) {
-//	            CursorStyle cs = pstruct.mouseMoved(rCor.x, rCor.y, currentMousePosition.x, currentMousePosition.y, op, sRect);
-//	            cursor.move(offscrG, cs);
-//	            cursor.move(overview, cs);
-//	        }
-//
-//	        // Draw a blue outline around the grid cell under the mouse cursor.
-//	        Point gridCoord = transScrToGrid(currentMousePosition);
-//	        Rectangle cellBounds = new Rectangle(gridCoord.x * gridSize, gridCoord.y * gridSize, gridSize, gridSize);
-//	        g.setColor(Color.BLUE);
-//	        g.drawRect(cellBounds.x, cellBounds.y, cellBounds.width, cellBounds.height);
-//	        
-//	        
-////		    Point center_gridCoord = grid.getGridCoor(currentMousePosition);
-//		    
-//		    // Determine the rectangle representing the grid quadrant
-////		    Rectangle gridQuadrant = grid.getScreenCoor(new Point(center_gridCoord.x, center_gridCoord.y));
-//
-//		    // Highlight the center of the spatial grid in green.
-////		    int centerSize = 16; // Size of the center marker
-////		    Rectangle centerMarker = new Rectangle(center_gridCoord.x - centerSize / 2, center_gridCoord.y - centerSize / 2, centerSize, centerSize);
-////		    g.setColor(Color.GREEN);
-////		    g.drawRect(gridQuadrant.x, gridQuadrant.y, gridQuadrant.width, gridQuadrant.height); // g.drawRect(centerMarker.x, centerMarker.y, centerMarker.width, centerMarker.height);
-//
-//	    }
-	    // Calculate the center of the current view in spatial coordinates.
-//	    DPoint centerSpatial = ((DrawingCanvas) g).getCenter();
-//	 // Transform the center point from spatial to screen coordinates.
-//	    Point centerScreen = ((DrawingCanvas) g).transPoint(centerSpatial.x, centerSpatial.y);
-	    
-//	    Point gridCoord = grid.getGridCoor(currentMousePosition);
-//	    
-//	    // Determine the rectangle representing the grid quadrant
-//	    Rectangle gridQuadrant = grid.getScreenCoor(new Point(gridCoord.x, gridCoord.y));
-//
-//	    // Highlight the center of the spatial grid in green.
-//	    int centerSize = 16; // Size of the center marker
-//	    Rectangle centerMarker = new Rectangle(gridCoord.x - centerSize / 2, gridCoord.y - centerSize / 2, centerSize, centerSize);
-//	    g.setColor(Color.GREEN);
-//	    g.drawRect(gridQuadrant.x, gridQuadrant.y, gridQuadrant.width, gridQuadrant.height); // g.drawRect(centerMarker.x, centerMarker.y, centerMarker.width, centerMarker.height);
 	}
 
 	@Override
@@ -489,6 +408,13 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 			historyList = history.switchGrid(oldRes, oldCellSize, oldGrid, grid);
 			rebuild();
+		
+	        // Use paintImmediately to update the canvas immediately
+	        SwingUtilities.invokeLater(() -> {
+	        	((DrawingCanvas) offscrG).paintImmediately(orig);
+//	            ((DrawingCanvas) offscrG).paintImmediately(((DrawingCanvas) offscrG).getBounds());
+	            ((DrawingCanvas) overview).paintImmediately(((DrawingCanvas) overview).getBounds());
+	        });
 		}
 	}
 
