@@ -19,6 +19,7 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -580,16 +581,18 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 
 	// Method to redraw the whole canvas
 	public void redraw() {
-		drawBackground(offscrG);
-		if (runningThread != null)
-			runningThread.refill();
-		drawGrid(offscrG);
-		drawContents(offscrG);
-		if (runningThread != null)
-			runningThread.redraw();
-		offscrG.redraw();
 
-		redraw(overview);
+			drawBackground(offscrG);
+			if (runningThread != null)
+				runningThread.refill();
+			drawGrid(offscrG);
+			drawContents(offscrG);
+			if (runningThread != null)
+				runningThread.redraw();
+			offscrG.redraw();
+
+	
+			redraw(overview);
 	}
 
 	// Method to redraw a specified DrawingTarget

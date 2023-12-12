@@ -17,6 +17,7 @@ import java.util.Vector;
 
 // import java.awt.*;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -261,15 +262,37 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	public String getCurrentName() {
 		return pstruct.getName();
 	}
-
+	
 	@Override
 	public void clear() {
-		super.clear();
-		pstruct.MessageStart();
-		pstruct.Clear();
-		history = new HistoryList(new Vector());
-		pstruct.MessageEnd();
+	    super.clear();
+	    pstruct.MessageStart();
+	    pstruct.Clear();
+	    history = new HistoryList(new Vector());
+	    pstruct.MessageEnd();
+	    
+	    // Redraw the canvas
+	    redraw();
+
+	    // Force immediate repaint of the canvas
+	    if (offscrG instanceof JComponent) {
+	        Rectangle bounds = ((JComponent) offscrG).getBounds();
+	        ((JComponent) offscrG).paintImmediately(bounds);
+	    }
+	    if (overview instanceof JComponent) {
+	        Rectangle bounds = ((JComponent) overview).getBounds();
+	        ((JComponent) overview).paintImmediately(bounds);
+	    }
 	}
+
+//	@Override
+//	public void clear() {
+//		super.clear();
+//		pstruct.MessageStart();
+//		pstruct.Clear();
+//		history = new HistoryList(new Vector());
+//		pstruct.MessageEnd();
+//	}
 
 	@Override
 	public fileSelector getFileSelector(String op) {
@@ -687,6 +710,12 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	            cs = pstruct.mouseSelect(sRect.get(), 12);
 	            cursor.move(offscrG, cs);
 	            cursor.move(overview, cs);
+	        }
+	        if (offscrG instanceof JComponent) {
+	            ((JComponent) offscrG).paintImmediately(offscrG.getOrig());
+	        }
+	        if (overview instanceof JComponent) {
+	            ((JComponent) overview).paintImmediately(overview.getOrig());
 	        }
 	    });
 	}
