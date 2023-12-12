@@ -319,13 +319,12 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 				pstruct.Insert((Point) b.v.elementAt(x));
 			redraw();
 			return true;
-		} else {
-			// Trigger the info box only if it's not already visible
-			if (!InfoBox.isCurrentlyVisible()) {
-				InfoBox.showInfoBox("Please, select a connected block. Move the cursor over a connected one and then click on it.");
-			}
-			return false;
 		}
+		// Trigger the info box only if it's not already visible
+		// if (!InfoBox.isCurrentlyVisible()) {
+		new InfoBox("Please, select a connected block. Move the cursor over a connected one and then click on it.");
+		// }
+		return false;
 	}
 
 	public void switchTree(int i, JComboBox<String> ops) {

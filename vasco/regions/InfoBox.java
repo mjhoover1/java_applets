@@ -30,25 +30,25 @@ public class InfoBox extends JDialog implements ActionListener {
         setVisible(true); // Show the dialog
     }
 
-    public static void showInfoBox(String message) {
-        if (!isVisible) {
-            new InfoBox(message); // Create and display the dialog
-            isVisible = true; // Update visibility status
-        }
-    }
+    // public static void showInfoBox(String message) {
+    //     if (!isVisible) {
+    //         new InfoBox(message); // Create and display the dialog
+    //         isVisible = true; // Update visibility status
+    //     }
+    // }
 
-	// Call this method when the InfoBox is closed
-	public static void onInfoBoxClosed() {
-		isVisible = false;
-	}
+	// // Call this method when the InfoBox is closed
+	// public static void onInfoBoxClosed() {
+	// 	isVisible = false;
+	// }
 
-	public static boolean isCurrentlyVisible() {
-		return isVisible;
-	}
+	// public static boolean isCurrentlyVisible() {
+	// 	return isVisible;
+	// }
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        onInfoBoxClosed(); // Update visibility status when dialog is closed
+        // onInfoBoxClosed(); // Update visibility status when dialog is closed
         dispose();
     }
 }
