@@ -12,7 +12,11 @@ import vasco.common.QueryObject;
 import vasco.common.VascoThread;
 
 public class ConvertThread extends VascoThread {
-	int mode;
+	int mode;	
+	private volatile boolean paused = false;
+	private volatile int delay = 1000; // Delay between animation steps
+
+
 
 	public ConvertThread(ConvertVector vv, QueryObject qo, CanvasIface c, DrawingTarget[] g) {
 		super(qo, g, vv, c);
@@ -46,43 +50,112 @@ public class ConvertThread extends VascoThread {
 	}
 	
 	@Override
-	public void run() {
-	    if (v != null && ((ConvertVector) v).size() > 0) {
-	        setProgress(0);
-	        final int delay = pc.getDelay(); // Delay in milliseconds between steps
+    public void run() {
+        try {
+            while (!interrupted()) {
+                if (paused) {
+                    synchronized (this) {
+                        while (paused) {
+                            wait();
+                        }
+                    }
+                }
 
-	        // ActionListener for the timer that will perform the animation steps
-	        ActionListener timerAction = new ActionListener() {
-	            public void actionPerformed(ActionEvent evt) {
-	                if (!drawCurrentStep()) {
-	                    if (!setProgress(getProgress() + 1)) {
-	                        ((Timer)evt.getSource()).stop(); // Stop the timer
-	                        pc.reset();
-	                    }
-	                } else {
-	                    pc.setPause();
-	                    ((Timer)evt.getSource()).stop(); // Stop the timer
-	                }
-	    	        SwingUtilities.invokeLater(new Runnable() {
-	    	            public void run() {
-	    	                redraw();
-	    	            }
-	    	        });
-	            }
-	        };
+                if (v != null && ((ConvertVector) v).size() > 0) {
+                    while (!interrupted() && !paused && getProgress() < ((ConvertVector) v).size()) {
+                        if (!drawCurrentStep(off)) {
+                            setProgress(getProgress() + 1);
+                        } else {
+                            pc.setPause();
+                            break;
+                        }
 
-	        // Create a new timer that calls the ActionListener at the specified delay
-	        Timer timer = new Timer(delay, timerAction);
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                redraw();
+                            }
+                        });
 
-	        // Start the animation
-	        timer.start();
-	    } else {
-	        for (DrawingTarget element : off) {
-	            element.redraw();
-	        }
-	        pc.reset();
+                        System.out.println("Current delay: " + delay); // Debug statement
+                        // Use Thread.sleep for handling delay
+                        Thread.sleep(delay);
+                    }
+
+                    if (!paused) {
+                        pc.reset();
+                    }
+                } else {
+                    for (DrawingTarget element : off) {
+                        element.redraw();
+                    }
+                    pc.reset();
+                }
+            }
+        } catch (InterruptedException e) {
+            // Handle interruption, potentially logging or resetting state
+        	System.out.print(e);
+        }
+    }
+
+    // Setter for the delay
+	public synchronized void setDelay(int newDelay) {
+	    delay = newDelay;
+	    System.out.println("Updated delay to: " + delay); // Debug statement
+	}
+
+	
+	// Method to pause the thread
+	public void pauseThread() {
+	    paused = true;
+	}
+
+	// Method to resume the thread
+	public void resumeThread() {
+	    synchronized (this) {
+	        paused = false;
+	        notify();
 	    }
 	}
+
+	
+//	@Override
+//	public void run() {
+//	    if (v != null && ((ConvertVector) v).size() > 0) {
+//	        setProgress(0);
+//	        final int delay = pc.getDelay(); // Delay in milliseconds between steps
+//
+//	        // ActionListener for the timer that will perform the animation steps
+//	        ActionListener timerAction = new ActionListener() {
+//	            public void actionPerformed(ActionEvent evt) {
+//	                if (!drawCurrentStep()) {
+//	                    if (!setProgress(getProgress() + 1)) {
+//	                        ((Timer)evt.getSource()).stop(); // Stop the timer
+//	                        pc.reset();
+//	                    }
+//	                } else {
+//	                    pc.setPause();
+//	                    ((Timer)evt.getSource()).stop(); // Stop the timer
+//	                }
+//	    	        SwingUtilities.invokeLater(new Runnable() {
+//	    	            public void run() {
+//	    	                redraw();
+//	    	            }
+//	    	        });
+//	            }
+//	        };
+//
+//	        // Create a new timer that calls the ActionListener at the specified delay
+//	        Timer timer = new Timer(delay, timerAction);
+//
+//	        // Start the animation
+//	        timer.start();
+//	    } else {
+//	        for (DrawingTarget element : off) {
+//	            element.redraw();
+//	        }
+//	        pc.reset();
+//	    }
+//	}
 
 //	@Override
 //	public void run() {

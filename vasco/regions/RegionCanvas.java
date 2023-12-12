@@ -190,6 +190,11 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	@Override
 	public void itemStateChanged(ItemEvent ie) {
+	    // Check if the event is a selection event
+	    if (ie.getStateChange() != ItemEvent.SELECTED) {
+	        return; // If not, exit the method
+	    }
+		
 		Object obj = ie.getSource();
 
 		// if the last operation is a to chain operation
@@ -639,50 +644,52 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	@Override
 	public void redraw() {
-		switch (redrawMode) {
+		SwingUtilities.invokeLater(() -> {
+	        switch (redrawMode) {
 
-		case OFFSCR_REDRAW:
-			offscrG.redraw();
-			redrawMode = FULL_REDRAW;
-			redraw(overview);
-			break;
+	            case OFFSCR_REDRAW:
+	                // Force immediate painting of the offscreen graphics
+	                ((DrawingCanvas) offscrG).paintImmediately(offscrG.getOrig());
+	                redrawMode = FULL_REDRAW;
+	                // Force immediate painting of the overview
+	                ((DrawingCanvas) overview).paintImmediately(overview.getOrig());
+	                break;
 
-		case DRAG_REDRAW:
-			Rectangle r = grid.getScreenCoor(draggedObj.getPos());
-			((DrawingCanvas) offscrG).drawImg(dragScr, 3, 3);
-			((DrawingCanvas) offscrG).drawImg(dragObj, r.x + 3, r.y + 3);
-			pstruct.drawNonLeafNodes(offscrG);
+	            case DRAG_REDRAW:
+	                Rectangle r = grid.getScreenCoor(draggedObj.getPos());
+	                ((DrawingCanvas) offscrG).drawImg(dragScr, 3, 3);
+	                ((DrawingCanvas) offscrG).drawImg(dragObj, r.x + 3, r.y + 3);
+	                pstruct.drawNonLeafNodes(offscrG);
 
-			offscrG.redraw();
-			redraw(overview);
-			redrawMode = FULL_REDRAW;
-			break;
+	                // Force immediate painting for dragging operation
+	                ((DrawingCanvas) offscrG).paintImmediately(offscrG.getOrig());
+	                ((DrawingCanvas) overview).paintImmediately(overview.getOrig());
+	                redrawMode = FULL_REDRAW;
+	                break;
 
-		default:
-//			if (newStruct) {
-//				((DrawingCanvas) offscrG).clearRectangles();
-//				newStruct = false;
-//			}
-			drawBackground(offscrG);
-			if (runningThread != null)
-				runningThread.refill();
-			drawGrid(offscrG);
-			drawContents(offscrG);
-			if (runningThread != null)
-				runningThread.redraw();
-			offscrG.redraw();
+	            default:
+	                drawBackground(offscrG);
+	                if (runningThread != null)
+	                    runningThread.refill();
+	                drawGrid(offscrG);
+	                drawContents(offscrG);
+	                if (runningThread != null)
+	                    runningThread.redraw();
 
-			redraw(overview);
-			break;
-		} // switch
+	                // Force immediate painting for default case
+	                ((DrawingCanvas) offscrG).paintImmediately(offscrG.getOrig());
+	                ((DrawingCanvas) overview).paintImmediately(overview.getOrig());
+	                break;
+	        }
 
-		// draw the selected area
-		if (sRect.selected) {
-			CursorStyle cs = new CursorStyle();
-			cs = pstruct.mouseSelect(sRect.get(), 12);
-			cursor.move(offscrG, cs);
-			cursor.move(overview, cs);
-		}
+	        // Update the selected area if necessary
+	        if (sRect.selected) {
+	            CursorStyle cs = new CursorStyle();
+	            cs = pstruct.mouseSelect(sRect.get(), 12);
+	            cursor.move(offscrG, cs);
+	            cursor.move(overview, cs);
+	        }
+	    });
 	}
 
 	@Override

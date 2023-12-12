@@ -13,6 +13,8 @@ public abstract class VascoThread extends Thread {
 	protected int oldStep;
 	protected CanvasIface pc;
 	protected QueryObject qo;
+	
+//    private volatile boolean paused = false;
 
 	public VascoThread(QueryObject qo, DrawingTarget[] dt, SearchVector vv, CanvasIface c) {
 		this.qo = qo;
@@ -100,6 +102,36 @@ public abstract class VascoThread extends Thread {
 	    }
 	    return false;
 	}
+	
+    // Method to pause the thread
+//    public void pauseThread() {
+//        paused = true;
+//    }
+//
+//    // Method to resume the thread
+//    public void resumeThread() {
+//        synchronized (this) {
+//            paused = false;
+//            notify();
+//        }
+//    }
+//    
+//    @Override
+//    public void run() {
+//        while (!interrupted()) {
+//            synchronized (this) {
+//                while (paused) {
+//                    try {
+//                        wait();
+//                    } catch (InterruptedException e) {
+//                        // Handle interruption
+//                    }
+//                }
+//            }
+//
+//            // Existing run logic...
+//        }
+//    }
 
 //	public synchronized boolean setProgress(int step) {
 //		if (step >= 0 && step < v.size()) {

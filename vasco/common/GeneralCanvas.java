@@ -24,6 +24,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 
+import vasco.regions.ConvertThread;
+
 // ------------- P Canvas -------------------
 
 /**
@@ -275,6 +277,8 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		final String RUNMODE_SUCCESS_S = "stop on success";
 
 		JButton start, stop, pauseresume;
+		JScrollBar ranger;
+
 		JScrollBar progress;
 		MouseHelp starthelp, pauseresumehelp, stophelp;
 		JComboBox<String> runmode = new JComboBox<>();
@@ -285,7 +289,6 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		 * @param r The panel containing the animation controls.
 		 */
 		AnimationPanel(JPanel r) {
-			JScrollBar ranger;
 			r.setLayout(new GridLayout(4, 1));
 
 			JPanel anim = new JPanel();
@@ -394,11 +397,27 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		 */
 		@Override
 		public void adjustmentValueChanged(AdjustmentEvent ae) {
-			if (ae.getSource() != progress)
-				setWaitTime(100 * (15 - ae.getValue()));
-			else
-				setProgress(progress.getValue());
+		    if (ae.getSource() == ranger) {
+		        // Assuming the slider range is 0 to 10, with 5 mapping to 1000 ms
+		        int sliderValue = ae.getValue();
+		        // Mapping the slider value to delay, such that slider value 5 gives 1000 ms
+		        // Adjust the formula as necessary
+		        int delay = 1000 + (sliderValue - 5) * -200; // 200 ms increment/decrement for each slider unit
+		        System.out.println("Slider value: " + sliderValue + ", Calculated delay: " + delay); // Debug statement
+		        setWaitTime(delay);
+		    } else if (ae.getSource() == progress) {
+		        setProgress(progress.getValue());
+		    }
 		}
+		
+		
+//		@Override
+//		public void adjustmentValueChanged(AdjustmentEvent ae) {
+//			if (ae.getSource() != progress)
+//				setWaitTime(100 * (15 - ae.getValue()));
+//			else
+//				setProgress(progress.getValue());
+//		}
 
 		/**
 		 * Sets the pause state for the animation panel.
@@ -429,6 +448,13 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 				start.setText("Restart"); // .setText instead of setLabel
 				pauseresume.setEnabled(true);
 				stop.setEnabled(true);
+				
+		        // Reset the slider to 5 when the Restart button is clicked
+		        ranger.setValue(5); 
+		        // Alternatively, use the current slider value to set the wait time
+		        // int sliderValue = ranger.getValue();
+		        // int delay = 1000 + (sliderValue - 5) * -200;
+		        // setWaitTime(delay);
 			}
 
 			if (src == pauseresume) {
@@ -436,10 +462,10 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 					pauseresume.setText("Pause"); // .setText instead of setLabel
 					pauseresumehelp.frontHelp();
 					pauseresumehelp.show();
-					resume();
+		            GeneralCanvas.this.resume(); // resume();
 				} else {
 					setPause();
-					pause();
+		            GeneralCanvas.this.pause(); // pause();
 				}
 			}
 
@@ -602,9 +628,20 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	public abstract void setTree(int str, JComboBox<String> opChoice);
 
 	// Method to set the wait time
-	void setWaitTime(int w) {
-		waitTime = w;
+	void setWaitTime(int delayValue) {
+		// Assuming 'value' is the position of your slider, ranges from 0 to 10
+		// Modify this formula as needed to achieve the desired range of delays
+		waitTime = delayValue; // Set the delay directly from the calculated value
+	
+		if (runningThread instanceof ConvertThread) {
+			((ConvertThread) runningThread).setDelay(waitTime);
+		}
 	}
+
+	// Method to set the wait time
+	// void setWaitTime(int w) {
+	// 	waitTime = w;
+	// }
 
 	// Method to set the progress step
 	void setProgress(int step) {
@@ -688,17 +725,30 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		animPanel.setPause();
 	}
 
-	// Synchronized method to pause the animation thread
 	synchronized void pause() {
-		if (runningThread != null)
-			runningThread.suspend();
+	    if (runningThread != null && runningThread instanceof ConvertThread) {
+	        ((ConvertThread)runningThread).pauseThread();
+	    }
 	}
 
-	// Synchronized method to resume the animation thread
 	synchronized void resume() {
-		if (runningThread != null)
-			runningThread.resume();
+	    if (runningThread != null && runningThread instanceof ConvertThread) {
+	        ((ConvertThread)runningThread).resumeThread();
+	    }
 	}
+
+
+	// Synchronized method to pause the animation thread
+//	synchronized void pause() {
+//		if (runningThread != null)
+//			runningThread.suspend();
+//	}
+//
+//	// Synchronized method to resume the animation thread
+//	synchronized void resume() {
+//		if (runningThread != null)
+//			runningThread.resume();
+//	}
 
 	// Synchronized method to reset the animation panel buttons
 	@Override
