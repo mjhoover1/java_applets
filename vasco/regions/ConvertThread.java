@@ -76,7 +76,7 @@ public class ConvertThread extends VascoThread {
                             }
                         });
 
-                        System.out.println("Current delay: " + delay); // Debug statement
+                        // System.out.println("Current delay: " + delay); // Debug statement
                         // Use Thread.sleep for handling delay
                         Thread.sleep(delay);
                     }
@@ -100,7 +100,7 @@ public class ConvertThread extends VascoThread {
     // Setter for the delay
 	public synchronized void setDelay(int newDelay) {
 	    delay = newDelay;
-	    System.out.println("Updated delay to: " + delay); // Debug statement
+	    // System.out.println("Updated delay to: " + delay); // Debug statement
 	}
 
 	

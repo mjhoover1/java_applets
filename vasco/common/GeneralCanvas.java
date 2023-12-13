@@ -24,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
+import javax.swing.SwingUtilities;
 
 import vasco.regions.ConvertThread;
 
@@ -404,7 +405,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		        // Mapping the slider value to delay, such that slider value 5 gives 1000 ms
 		        // Adjust the formula as necessary
 		        int delay = 1000 + (sliderValue - 5) * -200; // 200 ms increment/decrement for each slider unit
-		        System.out.println("Slider value: " + sliderValue + ", Calculated delay: " + delay); // Debug statement
+		        // System.out.println("Slider value: " + sliderValue + ", Calculated delay: " + delay); // Debug statement
 		        setWaitTime(delay);
 		    } else if (ae.getSource() == progress) {
 		        setProgress(progress.getValue());
@@ -677,17 +678,33 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	public int getSuccessMode() {
 		return animPanel.getSuccess();
 	}
+	
+	private void repaintCanvas() {
+        SwingUtilities.invokeLater(() -> {
+
+		    if (offscrG instanceof JComponent) {
+		        ((JComponent) offscrG).repaint();
+		    }
+		    if (overview instanceof JComponent) {
+		        ((JComponent) overview).repaint();
+		    }
+        });
+	}
 
 	// Method to increment the grid level
 	public void incGrid() {
-		if (gridLevel < 7)
+		if (gridLevel < 7) {
 			setGrid(gridLevel + 1);
+			repaintCanvas(); // Force the canvas to repaint immediately
+		}
 	}
 
 	// Method to decrement the grid level
 	public void decGrid() {
-		if (gridLevel > 0)
+		if (gridLevel > 0) {
 			setGrid(gridLevel - 1);
+	        repaintCanvas(); // Force the canvas to repaint immediately
+		}
 	}
 
 	// Method to set the grid level
