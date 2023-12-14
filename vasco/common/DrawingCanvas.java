@@ -121,6 +121,7 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 //		paintComponent(getGraphics());
 		// TODO need to use repaint() to make the canvas not flicker but in order to use repaint all of the 
 		// drawing logic needs to be added to paintComponent
+		updateOffscreenBuffer();
 		repaint(); // Use repaint() instead of paint() paint(getGraphics());
 	}
 
@@ -141,44 +142,74 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 //        repaint();
 //    }
     
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g); // Clears the panel
+//    @Override
+//     protected void paintComponent(Graphics g) {
+//         super.paintComponent(g); // Clears the panel
 
-        Graphics2D g2d = (Graphics2D) g;
-	    Graphics2D offGraphics = offscreenImage.createGraphics();
+//         Graphics2D g2d = (Graphics2D) g;
+// 	    Graphics2D offGraphics = offscreenImage.createGraphics();
 
-        g2d.drawImage(offscreenImage, 0, 0, this);
+//         g2d.drawImage(offscreenImage, 0, 0, this);
 
-        // Draw the rectangles from the list
-        for (ColoredRectangle cr : coloredRectanglesToDraw) {
-            g2d.setColor(cr.color);
-            Rectangle rect = cr.rectangle;
-            g2d.drawRect(rect.x, rect.y, rect.width, rect.height);
-        }
+//         // Draw the rectangles from the list
+//         for (ColoredRectangle cr : coloredRectanglesToDraw) {
+//             g2d.setColor(cr.color);
+//             Rectangle rect = cr.rectangle;
+//             g2d.drawRect(rect.x, rect.y, rect.width, rect.height);
+//         }
         
-        // Draw the lines
-        for (ColoredLine cl : coloredLinesToDraw) {
-            g2d.setColor(cl.color);
-            g2d.drawLine(cl.start.x, cl.start.y, cl.end.x, cl.end.y);
-        }
+//         // Draw the lines
+//         for (ColoredLine cl : coloredLinesToDraw) {
+//             g2d.setColor(cl.color);
+//             g2d.drawLine(cl.start.x, cl.start.y, cl.end.x, cl.end.y);
+//         }
         
-        // Set anti-aliasing for smoother graphics
-	    offGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//         // Set anti-aliasing for smoother graphics
+// 	    offGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-	    // Clear the offscreen image
-	    offGraphics.setColor(getBackground());
-	    offGraphics.fillRect(0, 0, offscreenImage.getWidth(), offscreenImage.getHeight());
+// 	    // Clear the offscreen image
+// 	    offGraphics.setColor(getBackground());
+// 	    offGraphics.fillRect(0, 0, offscreenImage.getWidth(), offscreenImage.getHeight());
 
-	    // Draw the base image
-	    offGraphics.drawImage(i, 0, 0, this);
+// 	    // Draw the base image
+// 	    offGraphics.drawImage(i, 0, 0, this);
 
-	    // Dispose of the offscreen graphics context to release resources
-	    offGraphics.dispose();
+// 	    // Dispose of the offscreen graphics context to release resources
+// 	    offGraphics.dispose();
 
-	    // Draw the offscreen image onto the component
-//	    g2d.drawImage(offscreenImage, 0, 0, this);
-    }
+// 	    // Draw the offscreen image onto the component
+// //	    g2d.drawImage(offscreenImage, 0, 0, this);
+//     }
+    
+	// Method to update the offscreen buffer with new drawings
+	private void updateOffscreenBuffer() {
+		Graphics2D offGraphics = offscreenImage.createGraphics();
+		// Set anti-aliasing for smoother graphics
+		offGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		// Clear the offscreen image
+		offGraphics.setColor(getBackground());
+		offGraphics.fillRect(0, 0, offscreenImage.getWidth(), offscreenImage.getHeight());
+		// Draw the base image
+		offGraphics.drawImage(i, 0, 0, this);
+		// Draw the rectangles and lines
+		for (ColoredRectangle cr : coloredRectanglesToDraw) {
+			offGraphics.setColor(cr.color);
+			Rectangle rect = cr.rectangle;
+			offGraphics.drawRect(rect.x, rect.y, rect.width, rect.height);
+		}
+		for (ColoredLine cl : coloredLinesToDraw) {
+			offGraphics.setColor(cl.color);
+			offGraphics.drawLine(cl.start.x, cl.start.y, cl.end.x, cl.end.y);
+		}
+		offGraphics.dispose();
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.drawImage(offscreenImage, 0, 0, this);
+	}
 
 	// Overridden paintComponent method
 //	@Override
@@ -626,7 +657,6 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
         addColoredLine(start, end, c);
 	}
 
-	// Draw a rectangle directly using the graphics object with a specified color
 	// Draw a rectangle directly using the graphics object with a specified color
 	@Override
 	public void directRect(Color c, double x, double y, double w, double h) {

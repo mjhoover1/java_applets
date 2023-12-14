@@ -16,6 +16,7 @@ import vasco.common.ColorHelp;
 import vasco.common.DLine;
 import vasco.common.DPoint;
 import vasco.common.DRectangle;
+import vasco.common.DrawingCanvas;
 import vasco.common.DrawingTarget;
 import vasco.common.FileIface;
 import vasco.common.GenericCanvas;
@@ -1142,6 +1143,8 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			if (pstruct.Insert(r))
 				historyList.addElement(r);
 			pstruct.MessageEnd();
+			((DrawingCanvas) offscrG).clearRectangles(); // Added to remove last yellow rectangle
+			
 			redraw();
 
 		}

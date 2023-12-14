@@ -2,9 +2,11 @@
 package vasco.common;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -115,7 +117,7 @@ public class ColorHelp extends JDialog implements ActionListener {
 
 		objectString = objects[obj_nr];
 
-		getContentPane().setBackground(Color.lightGray); // Use getContentPane() setBackground(Color.lightGray);
+//		getContentPane().setBackground(Color.lightGray); // Use getContentPane() setBackground(Color.lightGray);
 
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
@@ -143,7 +145,16 @@ public class ColorHelp extends JDialog implements ActionListener {
 		getContentPane().add(close); // Use getContentPane() add(close = new JButton("Close"));
 		// close.addActionListener(this);
 		pack();
+		centerDialogOnScreen();
+		setResizable(true);
 	}
+	
+    private void centerDialogOnScreen() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = Math.min(screenSize.width, getWidth());
+        int height = Math.min(screenSize.height, getHeight());
+        setLocation((screenSize.width - width) / 2, (screenSize.height - height) / 2);
+    }
 
 	protected JPanel createPanel(String text, Color c) {
 		JPanel p = new JPanel();

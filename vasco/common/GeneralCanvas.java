@@ -594,6 +594,8 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 
 	
 			redraw(overview);
+			
+			repaintCanvas();
 	}
 
 	// Method to redraw a specified DrawingTarget
@@ -607,6 +609,8 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			runningThread.redraw(overview);
 
 		overview.redraw();
+		
+//		repaintCanvas();
 	}
 
 	// Method to redraw the path by drawing orange lines between consecutive points
@@ -615,6 +619,8 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		for (int i = 0; i < polyRange.size() - 1; i++)
 			(new DLine((DPoint) (polyRange.elementAt(i)), (DPoint) (polyRange.elementAt(i + 1))))
 					.directDraw(Color.orange, offscrG);
+		
+		repaintCanvas();
 	}
 
 	// Method to redraw the polygon by drawing orange lines between consecutive
@@ -624,6 +630,8 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		for (int i = 0; i < polyRange.size(); i++)
 			(new DLine((DPoint) (polyRange.elementAt(i)), (DPoint) (polyRange.elementAt((i + 1) % polyRange.size()))))
 					.directDraw(Color.orange, offscrG);
+		
+		repaintCanvas();
 	}
 
 	/* --------------- operations on structures ------------------- */
@@ -679,7 +687,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		return animPanel.getSuccess();
 	}
 	
-	private void repaintCanvas() {
+	public void repaintCanvas() {
         SwingUtilities.invokeLater(() -> {
 
 		    if (offscrG instanceof JComponent) {
@@ -689,13 +697,17 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		        ((JComponent) overview).repaint();
 		    }
         });
+
+	    // Optionally, force a repaint on the entire container if needed
+	    // If you have a reference to the main frame or panel, call repaint() on it as well
+	    // mainFrame.repaint(); // Assuming 'mainFrame' is the JFrame or main JPanel
 	}
 
 	// Method to increment the grid level
 	public void incGrid() {
 		if (gridLevel < 7) {
 			setGrid(gridLevel + 1);
-			repaintCanvas(); // Force the canvas to repaint immediately
+//			repaintCanvas(); // Force the canvas to repaint immediately
 		}
 	}
 
@@ -703,7 +715,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	public void decGrid() {
 		if (gridLevel > 0) {
 			setGrid(gridLevel - 1);
-	        repaintCanvas(); // Force the canvas to repaint immediately
+//	        repaintCanvas(); // Force the canvas to repaint immediately
 		}
 	}
 

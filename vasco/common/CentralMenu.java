@@ -250,5 +250,6 @@ public class CentralMenu extends JPanel implements ActionListener, ItemListener 
 			// Decrease the grid level (zoom out).
 			rcanvas.decGrid();
 		}
+		// rcanvas.repaintCanvas(); // Force the canvas to repaint immediately
 	}
 }
