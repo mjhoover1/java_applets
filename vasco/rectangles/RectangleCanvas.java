@@ -2,6 +2,7 @@ package vasco.rectangles;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
@@ -645,6 +646,8 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 
 			Drawable b = pstruct.NearestFirst(new QueryObject(p));
 			if (b != null) {
+				// Call a method in DrawingCanvas to change the rectangle color
+//	            ((DrawingCanvas) offscrG).changeRectangleColor((DRectangle) b, Color.ORANGE);
 				b.directDraw(Color.orange, offscrG);
 				lastDelete = b;
 			} else
@@ -780,6 +783,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 					}
 				}
 			}
+			((DrawingCanvas) offscrG).clearRectangles(); // Added to remove last yellow rectangle
 		}
 
 		redraw();

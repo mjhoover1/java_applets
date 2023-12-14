@@ -113,6 +113,20 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	    coloredLinesToDraw.clear();
     	repaint();
     }
+    
+    public void changeRectangleColor(DRectangle rect, Color newColor) {
+        // Find the rectangle in the list and update its color
+        for (ColoredRectangle coloredRect : coloredRectanglesToDraw) {
+            if (coloredRect.rectangle.equals(rect)) {
+                coloredRect.color = newColor;
+                repaint();
+                return;
+            }
+        }
+
+        // If the rectangle is not in the list, add it with the new color
+//        addOrUpdateRectangle(rect, newColor);
+    }
 
 
 	// Redraw the canvas
@@ -672,12 +686,35 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 
 	    // Empty of current lines forming X because a new rect means the mouse moved
 	    coloredLinesToDraw.clear();
+	    coloredRectanglesToDraw.clear();
 	    // Add the rectangle to the list for redrawing
 	    Rectangle rect = new Rectangle(x1, y1, x2 - x1, y2 - y1);
 	    if (c != null) {
 	    	addOrUpdateRectangle(rect, c);
 	    }
 	}
+	
+	// Draw a rectangle directly using the graphics object with a specified color
+//	public void directMoveRect(Color c, double x, double y, double w, double h) {
+//	    Graphics cur = getGraphics();
+//	    cur.setColor(c);
+//	    Point newo = transPoint(x, y);
+//	    Point newv = transVector(w, h);
+//	    int x1 = Math.max(0, newo.x);
+//	    int y1 = Math.max(0, newo.y);
+//	    int x2 = Math.min(orig.width, newo.x + newv.x);
+//	    int y2 = Math.min(orig.height, newo.y + newv.y);
+//	    cur.drawRect(x1, y1, x2 - x1, y2 - y1);
+//
+//	    // Empty of current lines forming X because a new rect means the mouse moved
+//	    coloredLinesToDraw.clear();
+//	    coloredRectanglesToDraw.clear();
+//	    // Add the rectangle to the list for redrawing
+//	    Rectangle rect = new Rectangle(x1, y1, x2 - x1, y2 - y1);
+//	    if (c != null) {
+//	    	addOrUpdateRectangle(rect, c);
+//	    }
+//	}
 
 
 	// Draw a thick rectangle directly using the graphics object with a specified
