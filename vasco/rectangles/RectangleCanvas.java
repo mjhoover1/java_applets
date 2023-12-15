@@ -34,9 +34,11 @@ import vasco.drawable.Drawable;
 // ------------- P Canvas -------------------
 
 /**
- * The RectangleCanvas class represents a canvas for manipulating rectangles. It
- * extends the GenericCanvas class and implements the FileIface and ItemListener
- * interfaces.
+ * The RectangleCanvas class extends GenericCanvas and is designed for
+ * manipulating rectangles. It implements various operations like insert, move,
+ * delete, and show quadtree for rectangles. The class also handles file loading
+ * and saving for rectangle structures and provides functionalities for drawing
+ * and managing rectangle structures.
  */
 public class RectangleCanvas extends GenericCanvas implements FileIface, ItemListener {
 
@@ -44,13 +46,13 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	public RectangleStructure pstruct; // Current rectangle structure
 
 	/**
-	 * Constructs a RectangleCanvas with specified parameters.
+	 * Constructs a new RectangleCanvas with specified parameters.
 	 *
-	 * @param r        Initial dimensions of the canvas.
-	 * @param dt       Drawing target.
-	 * @param overview Overview drawing target.
-	 * @param animp    Animation panel.
-	 * @param ti       Top-level interface.
+	 * @param r        The initial dimensions of the canvas.
+	 * @param dt       The primary drawing target.
+	 * @param overview The overview drawing target.
+	 * @param animp    The animation panel.
+	 * @param ti       The top-level interface reference.
 	 */
 	public RectangleCanvas(DRectangle r, DrawingTarget dt, DrawingTarget overview, JPanel animp, TopInterface ti) {
 		super(r, dt, overview, animp, ti);
@@ -117,7 +119,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	}
 
 	/**
-	 * Initializes the RectangleStructure array.
+	 * Initializes the array of RectangleStructure instances.
 	 */
 	@Override
 	public synchronized void initStructs() {
@@ -189,6 +191,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	@Override
 	public void clear() {
 		super.clear();
+		((DrawingCanvas) offscrG).clearRectangles(); // Added to remove last yellow rectangle
 		pstruct.MessageStart();
 		pstruct.Clear();
 		pstruct.MessageEnd();
@@ -445,32 +448,32 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	 */
 	@Override
 	public void setTree(int i, JComboBox<String> ops) {
-	    pstruct = pstrs[i];
-	    // Temporarily remove item listeners to prevent triggering events
-	    ItemListener[] listeners = ops.getItemListeners();
-	    for (ItemListener listener : listeners) {
-	        ops.removeItemListener(listener);
-	    }
+		pstruct = pstrs[i];
+		// Temporarily remove item listeners to prevent triggering events
+		ItemListener[] listeners = ops.getItemListeners();
+		for (ItemListener listener : listeners) {
+			ops.removeItemListener(listener);
+		}
 
-	    ops.removeAllItems();
-	    pstruct.reInit(ops);
+		ops.removeAllItems();
+		pstruct.reInit(ops);
 
-	    // Re-add item listeners
-	    for (ItemListener listener : listeners) {
-	        ops.addItemListener(listener);
-	    }
+		// Re-add item listeners
+		for (ItemListener listener : listeners) {
+			ops.addItemListener(listener);
+		}
 
-	    // Set the selected item only if there are items in the JComboBox
-	    if (ops.getItemCount() > 0) {
-	        String op = (String) ops.getSelectedItem();
-	        if (op == null) {
-	            op = "Insert";
-	        }
-	        ops.setSelectedItem(op);
-	        setHelp();  // Call setHelp only if JComboBox is not empty
-	    }
+		// Set the selected item only if there are items in the JComboBox
+		if (ops.getItemCount() > 0) {
+			String op = (String) ops.getSelectedItem();
+			if (op == null) {
+				op = "Insert";
+			}
+			ops.setSelectedItem(op);
+			setHelp(); // Call setHelp only if JComboBox is not empty
+		}
 
-	    rebuild();
+		rebuild();
 	}
 
 	/**
@@ -487,6 +490,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			else if (getCurrentOperation() == OPFEATURE_WINDOW && lastWindow != null)
 				search(lastWindow, allDrawingTargets);
 		}
+		((DrawingCanvas) offscrG).clearRectangles(); // Added to remove last yellow rectangle
 		redraw();
 	}
 
@@ -502,6 +506,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 
 	moveRectangles[] lastMove; // Array to store information about the last moved rectangles.
 	Drawable lastDelete; // Represents the last deleted drawable object.
+	Drawable lastClosest; // Represents the last closest rectangle
 	// DRectangle lastInsert;
 	DPoint lastBintree; // Represents the last clicked point in a binary tree.
 	DPoint lastMoveVertex; // Represents the last moved vertex point.
@@ -518,37 +523,46 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	int lastEvent = MOUSE_MOVED; // Represents the type of the last mouse event.
 
 	/**
-	 * Handles the mouse entered event on the canvas.
+	 * Handles mouse entered events on the canvas. This method is triggered when the
+	 * mouse pointer enters the canvas area. It resets the state of any ongoing
+	 * operations like delete or bintree selection.
 	 *
-	 * @param me The MouseEvent object.
+	 * @param me The MouseEvent object containing details about the mouse event.
 	 */
 	@Override
 	public void mouseEntered(MouseEvent me) {
 		super.mouseEntered(me);
-		debugPrint("mouseEntered");
+		System.out.println("mouseEntered");
 		lastDelete = null;
 		lastBintree = null;
 	}
 
 	/**
-	 * Handles the mouse exited event on the canvas.
+	 * Handles mouse exited events on the canvas. This method is called when the
+	 * mouse pointer leaves the canvas area. It ensures any temporary visual
+	 * feedback (like highlighting a rectangle for deletion) is cleared.
 	 *
-	 * @param me The MouseEvent object.
+	 * @param me The MouseEvent object containing details about the mouse event.
 	 */
 	@Override
 	public void mouseExited(MouseEvent me) {
 		super.mouseExited(me);
-		debugPrint("mouseExited");
+		System.out.println("mouseExited");
 		if (lastDelete != null) {
-			lastDelete.directDraw(Color.red, offscrG);
+			lastDelete.directDraw(Color.red, offscrG); // Color.red
 		}
+//		((DrawingCanvas) offscrG).clearRectangles(); // Added to remove last yellow rectangle
 		lastDelete = null;
+		redraw();
 	}
 
 	/**
-	 * Handles the mouse moved event on the canvas.
+	 * Handles mouse moved events. This method is invoked when the mouse pointer is
+	 * moved over the canvas without any buttons pressed. Depending on the current
+	 * operation mode, it may highlight the nearest rectangle edge, vertex, or the
+	 * entire rectangle for operations like move, resize, or delete.
 	 *
-	 * @param me The MouseEvent object.
+	 * @param me The MouseEvent object containing details about the mouse event.
 	 */
 	@Override
 	public void mouseMoved(MouseEvent me) {
@@ -557,7 +571,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			return;
 		super.mouseMoved(me);
 
-		debugPrint("mouseMoved");
+		System.out.println("mouseMoved");
 
 		lastEvent = MOUSE_MOVED;
 		DPoint p = offscrG.transPointT(offscrG.adjustPoint(me.getPoint()));
@@ -637,22 +651,27 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			lastMoveVertex = nearest;
 		}
 
-		if (op == OPFEATURE_DELETE || op == OPFEATURE_MOVE || op == OPFEATURE_MOTIONSENSITIVITY) {
+	    if (op == OPFEATURE_DELETE || op == OPFEATURE_MOVE || op == OPFEATURE_MOTIONSENSITIVITY) {
+	        Drawable b = pstruct.NearestFirst(new QueryObject(p));
+	        System.out.println("b: " + b);
 
-			if (lastDelete != null) {
-				lastDelete.directDraw(Color.red, offscrG);
-				lastDelete = null;
-			}
-
-			Drawable b = pstruct.NearestFirst(new QueryObject(p));
-			if (b != null) {
-				// Call a method in DrawingCanvas to change the rectangle color
-//	            ((DrawingCanvas) offscrG).changeRectangleColor((DRectangle) b, Color.ORANGE);
-				b.directDraw(Color.orange, offscrG);
-				lastDelete = b;
-			} else
-				lastDelete = null;
-		}
+	        // Check if the current nearest drawable object is different from the last one
+	        if (lastClosest == null || !lastClosest.equals(b)) {
+	            // Only update if there is a change in the nearest object
+	            if (b != null) {
+	                b.directDraw(Color.orange, offscrG);
+	                lastDelete = b;
+	            } else {
+	                if (lastDelete != null) {
+	                    lastDelete.directDraw(Color.red, offscrG);
+	                }
+	                lastDelete = null;
+	            }
+	            redraw();
+	            System.out.println("Drawable object updated");
+	        }
+	        lastClosest = b;
+	    }
 
 		if (op == OPFEATURE_SHOWQUAD) {
 
@@ -690,9 +709,12 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	}
 
 	/**
-	 * Handles the mouse clicked event on the canvas.
+	 * Handles mouse clicked events. This method is called when the mouse button is
+	 * pressed and released quickly. It's currently used to check for the correct
+	 * mouse button based on the operation mode but doesn't implement further
+	 * functionality.
 	 *
-	 * @param me The MouseEvent object.
+	 * @param me The MouseEvent object containing details about the mouse event.
 	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {
@@ -701,12 +723,16 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			return; // operation doesn't use this mouse button
 
 		super.mouseClicked(me);
+		System.out.println("mouseClicked");
 	}
 
 	/**
-	 * Handles mouse events on the canvas.
+	 * Handles mouse pressed events. This method is invoked when a mouse button is
+	 * pressed down. Depending on the current operation mode, this method initiates
+	 * actions like starting the insertion of a new rectangle, moving, or deleting
+	 * an existing rectangle, or displaying bintree or quadtree structures.
 	 *
-	 * @param e The mouse event.
+	 * @param me The MouseEvent object containing details about the mouse event.
 	 */
 	@Override
 	public void mousePressed(MouseEvent me) {
@@ -716,7 +742,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			return; // operation doesn't use this mouse button
 
 		super.mousePressed(me);
-		debugPrint("mousePressed");
+		System.out.println("mousePressed");
 		lastEvent = MOUSE_PRESSED;
 		Point scrCoord = offscrG.adjustPoint(me.getPoint());
 		DPoint p = offscrG.transPointT(scrCoord);
@@ -972,14 +998,17 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	}
 
 	/**
-	 * Handles mouse drag events on the canvas.
+	 * Handles mouse dragged events. This method is called when the mouse is moved
+	 * while a button is pressed. It's responsible for handling the dragging aspect
+	 * of operations like moving a rectangle or resizing it by dragging its edges or
+	 * vertices.
 	 *
-	 * @param e The mouse event.
+	 * @param me The MouseEvent object containing details about the mouse event.
 	 */
 	@Override
 	public void mouseDragged(MouseEvent me) {
 
-		debugPrint("mouseDragged");
+		System.out.println("mouseDragged");
 
 		if ((lastEvent != MOUSE_DRAGGED && lastEvent != MOUSE_PRESSED)
 				|| ((getCurrentOpFeature().buttonMask & MouseDisplay.getMouseButtons(me)) == 0))
@@ -1098,22 +1127,27 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 
 		if (op == OPFEATURE_MOTIONSENSITIVITY && lastMove != null && lastMove.length != 0) {
 			looseMoveRectangle(p);
+			redraw();
 		}
 
 		if (op == OPFEATURE_MOVE && lastMove != null && lastMove.length != 0) {
 			moveRectangle(p);
+			redraw();
 		}
 
 	}
 
 	/**
-	 * Handles mouse release events on the canvas.
+	 * Handles mouse released events. This method is invoked when a mouse button is
+	 * released. It completes actions started by mousePressed, such as finalizing
+	 * the position of a moved rectangle or confirming the insertion of a new
+	 * rectangle.
 	 *
-	 * @param e The mouse event.
+	 * @param me The MouseEvent object containing details about the mouse event.
 	 */
 	@Override
 	public void mouseReleased(MouseEvent me) {
-		debugPrint("mouseReleased");
+		System.out.println("mouseReleased");
 
 		if (lastEvent != MOUSE_PRESSED && lastEvent != MOUSE_DRAGGED)
 			return;
@@ -1144,14 +1178,27 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			DRectangle r = new DRectangle(Math.min(last.x, p.x), Math.min(last.y, p.y),
 					Math.max(p.x, last.x) - Math.min(last.x, p.x), Math.max(last.y, p.y) - Math.min(last.y, p.y));
 			pstruct.MessageStart();
-			if (pstruct.Insert(r))
+			if (pstruct.Insert(r)) {
 				historyList.addElement(r);
+			}
 			pstruct.MessageEnd();
 			((DrawingCanvas) offscrG).clearRectangles(); // Added to remove last yellow rectangle
-			
+
 			redraw();
 
+		} else {
+			Drawable b = pstruct.NearestFirst(new QueryObject(p));
+			if (b != null) {
+				// Call a method in DrawingCanvas to change the rectangle color
+//	            ((DrawingCanvas) offscrG).changeRectangleColor((DRectangle) b, Color.ORANGE);
+				b.directDraw(Color.orange, offscrG); // b.directDraw(Color.orange, offscrG);
+				lastDelete = b;
+			} else
+				lastDelete = null;
+
+			redraw();
 		}
+//		((DrawingCanvas) offscrG).clearRectangles(); // Added to remove last yellow rectangle
 
 //      if (op.equals("Move")) {
 //  	moveRectangle(p);

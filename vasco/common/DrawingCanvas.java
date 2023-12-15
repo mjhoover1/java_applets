@@ -4,6 +4,7 @@ package vasco.common;
 import java.awt.BasicStroke;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -50,6 +51,7 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 
 	// Constructor
 	public DrawingCanvas(Rectangle o, Rectangle viewPort, Image im, MouseDisplay md) {
+		super(true);
 		i = im;
 		this.viewPort = viewPort;
 		setPreferredSize(new Dimension(viewPort.width, viewPort.height)); // setSize(viewPort.width, viewPort.height);
@@ -106,7 +108,7 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
     
     public void clearRectangles() {
     	coloredRectanglesToDraw.clear();
-    	repaint();
+    	redraw();
     }
     
     public void clearLines() {
@@ -683,15 +685,36 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	    int x2 = Math.min(orig.width, newo.x + newv.x);
 	    int y2 = Math.min(orig.height, newo.y + newv.y);
 	    cur.drawRect(x1, y1, x2 - x1, y2 - y1);
+	    
+//	    if (c == Color.blue) {
+//	    	clearAllExceptBlue();
+//	    } else {
+//		    coloredRectanglesToDraw.clear();
+//	    }
+	    clearRectangles();
 
 	    // Empty of current lines forming X because a new rect means the mouse moved
-	    coloredLinesToDraw.clear();
-	    coloredRectanglesToDraw.clear();
+	    clearLines();
+	    
 	    // Add the rectangle to the list for redrawing
 	    Rectangle rect = new Rectangle(x1, y1, x2 - x1, y2 - y1);
 	    if (c != null) {
 	    	addOrUpdateRectangle(rect, c);
 	    }
+	}
+	
+	// Method to clear all rectangles except those colored blue
+	public void clearAllExceptBlue() {
+	    // Using an iterator to avoid ConcurrentModificationException while removing elements
+	    Iterator<ColoredRectangle> iterator = coloredRectanglesToDraw.iterator();
+	    while (iterator.hasNext()) {
+	        ColoredRectangle cr = iterator.next();
+	        if (!cr.color.equals(Color.blue)) {
+	            // Remove the rectangle if it is not blue
+	            iterator.remove();
+	        }
+	    }
+	    repaint(); // Trigger repaint to reflect changes on the canvas
 	}
 	
 	// Draw a rectangle directly using the graphics object with a specified color
