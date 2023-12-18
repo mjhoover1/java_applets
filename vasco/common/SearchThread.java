@@ -40,37 +40,72 @@ public class SearchThread extends VascoThread {
 		return (pc.getSuccessMode() != CommonConstants.RUNMODE_CONTINUOUS && (re.ge.pauseMode() == GenElement.SUCCESS
 				|| (re.ge.pauseMode() == GenElement.FAIL && pc.getSuccessMode() == CommonConstants.RUNMODE_OBJECT)));
 	}
-
+	
 	@Override
 	public void run() {
-		if (v != null && v.size() > 0) {
+	    try {
+	        if (v != null && v.size() > 0) {
+	            setProgress(0);
+	            do {
+	                if (drawCurrentStep()) {
+	                    pc.setPause();
+	                    // Use higher-level concurrency utilities or Thread interruption logic
+	                } else {
+	                    Thread.sleep(pc.getDelay());
+	                }
+	            } while (setProgress(getProgress() + 1));
 
-			setProgress(0);
-			do {
-				if (drawCurrentStep()) {
-					pc.setPause();
-					suspend();
-				} else
-					try {
-						sleep(pc.getDelay());
-					} catch (Exception e) {
-					}
-			} while (setProgress(getProgress() + 1));
-
-			for (DrawingTarget element : off) {
-
-				pc.drawBackground(element);
-
-				for (int i = 0; i < v.size(); i++)
-					v.elementAt(i).ge.fillElementNext(element);
-				pc.drawContents(element);
-				drawQueryObject();
-				for (int i = 0; i < v.size(); i++)
-					v.elementAt(i).ge.drawElementNext(element);
-			}
-		}
-		for (DrawingTarget element : off)
-			element.redraw();
-		pc.reset();
+	            for (DrawingTarget element : off) {
+	                pc.drawBackground(element);
+					for (int i = 0; i < v.size(); i++)
+						v.elementAt(i).ge.fillElementNext(element);
+	                pc.drawContents(element);
+	                drawQueryObject();
+					for (int i = 0; i < v.size(); i++)
+						v.elementAt(i).ge.drawElementNext(element);
+	            }
+	        }
+	        for (DrawingTarget element : off) {
+	            element.redraw();
+	        }
+	    } catch (InterruptedException e) {
+	        Thread.currentThread().interrupt(); // Restore interrupted status
+	        // Handle interruption
+	    } finally {
+	        pc.reset();
+	    }
 	}
+
+//	@Override
+//	public void run() {
+//		if (v != null && v.size() > 0) {
+//
+//			setProgress(0);
+//			do {
+//				if (drawCurrentStep()) {
+//					pc.setPause();
+//					suspend();
+//				} else
+//					try {
+//						sleep(pc.getDelay());
+//					} catch (Exception e) {
+//					}
+//			} while (setProgress(getProgress() + 1));
+//
+//			for (DrawingTarget element : off) {
+//
+//				pc.drawBackground(element);
+//
+//				for (int i = 0; i < v.size(); i++)
+//					v.elementAt(i).ge.fillElementNext(element);
+//				pc.drawContents(element);
+//				drawQueryObject();
+//				for (int i = 0; i < v.size(); i++)
+//					v.elementAt(i).ge.drawElementNext(element);
+//			}
+//		}
+//		for (DrawingTarget element : off)
+//			element.redraw();
+//		pc.reset();
+//	}
 }

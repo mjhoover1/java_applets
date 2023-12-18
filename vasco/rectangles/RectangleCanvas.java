@@ -553,11 +553,11 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		System.out.println("mouseExited");
 		if (lastDelete != null) {
 			lastDelete.directDraw(Color.red, offscrG); // Color.red
+			redraw();
 		}
 //		((DrawingCanvas) offscrG).clearOvals(); // Added to remove the ovals if exist
 //		((DrawingCanvas) offscrG).clearRectangles(); // Added to remove last yellow rectangle
 		lastDelete = null;
-		redraw();
 	}
 
 	/**

@@ -93,11 +93,6 @@ public abstract class VascoThread extends Thread {
 	public synchronized boolean setProgress(int step) {
 	    if (step >= 0 && step < v.size()) {
 	        currentStep = step;
-//	        SwingUtilities.invokeLater(new Runnable() {
-//	            public void run() {
-//	                redraw();
-//	            }
-//	        });
 	        return true;
 	    }
 	    return false;

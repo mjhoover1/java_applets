@@ -603,6 +603,7 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 		int x2 = Math.min(orig.width, newo.x + newv.x);
 		int y2 = Math.min(orig.height, newo.y + newv.y);
 		offscr.drawRect(x1, y1, x2 - x1, y2 - y1);
+		redraw();
 	}
 
 	// Fill a rectangle with specified dimensions

@@ -12,7 +12,8 @@ public class DrawableOut extends GenDrawable {
 	@Override
 	public void drawElementNext(DrawingTarget g) {
 		g.setColor(Color.magenta);
-		drawable.draw(g);
+//		drawable.draw(g);
+		drawable.directDraw(Color.magenta, g);
 	}
 
 	@Override
