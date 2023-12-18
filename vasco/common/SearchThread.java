@@ -16,7 +16,7 @@ public class SearchThread extends VascoThread {
 
 	@Override
 	public synchronized boolean drawCurrentStep(DrawingTarget[] off) {
-		pc.setProgressBar(getProgress());
+		pc.setProgressBar(getProgress()); 
 		SVElement re = (SVElement) v.elementAt(getProgress());
 
 		for (DrawingTarget element : off) {
@@ -54,7 +54,7 @@ public class SearchThread extends VascoThread {
 	                    Thread.sleep(pc.getDelay());
 	                }
 	            } while (setProgress(getProgress() + 1));
-
+	            pc.setProgressBar(getProgress() + 1); // Added to have progress bar end
 	            for (DrawingTarget element : off) {
 	                pc.drawBackground(element);
 					for (int i = 0; i < v.size(); i++)
