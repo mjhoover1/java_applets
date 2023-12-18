@@ -46,6 +46,8 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
     
     private List<ColoredRectangle> coloredRectanglesToDraw = new ArrayList<>();
     private List<ColoredLine> coloredLinesToDraw = new ArrayList<>();
+    // Add a list to store colored ovals
+    private List<ColoredOval> coloredOvalsToDraw = new ArrayList<>();
 
 
 
@@ -111,9 +113,14 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
     	redraw();
     }
     
+    public void clearOvals() {
+    	coloredOvalsToDraw.clear();
+    	redraw();
+    }
+    
     public void clearLines() {
 	    coloredLinesToDraw.clear();
-    	repaint();
+    	redraw();
     }
     
     public void changeRectangleColor(DRectangle rect, Color newColor) {
@@ -217,6 +224,12 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 			offGraphics.setColor(cl.color);
 			offGraphics.drawLine(cl.start.x, cl.start.y, cl.end.x, cl.end.y);
 		}
+	    // Draw the ovals from the list
+	    for (ColoredOval co : coloredOvalsToDraw) {
+	    	offGraphics.setColor(co.color);
+	        Point newo = transPoint(co.x, co.y);
+	        offGraphics.fillOval(newo.x - co.width / 2, newo.y - co.height / 2, co.width, co.height);
+	    }
 		offGraphics.dispose();
 	}
 
@@ -390,6 +403,21 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 
         public Color getColor() {
             return color;
+        }
+    }
+    
+ // Class to store colored ovals
+    class ColoredOval {
+        double x, y;
+        int width, height;
+        Color color;
+
+        ColoredOval(double x, double y, int width, int height, Color color) {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.color = color;
         }
     }
 
@@ -777,10 +805,16 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	// Draw a filled oval directly using the graphics object with a specified color
 	@Override
 	public void directFillOval(Color c, double x, double y, int w, int h) {
-		Graphics cur = getGraphics();
-		cur.setColor(c);
-		Point newo = transPoint(x, y);
-		cur.fillOval(newo.x - w / 2, newo.y - h / 2, w, h);
+	    Graphics cur = getGraphics();
+	    cur.setColor(c);
+	    Point newo = transPoint(x, y);
+	    cur.fillOval(newo.x - w / 2, newo.y - h / 2, w, h);
+	    
+//	    coloredOvalsToDraw.clear(); // Remove the existing oval
+
+	    // Add the oval to the list for redrawing
+	    coloredOvalsToDraw.add(new ColoredOval(x, y, w, h, c));
+	    repaint();
 	}
 
 	// Draw an oval directly using the graphics object with a specified color
