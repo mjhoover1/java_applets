@@ -45,7 +45,14 @@ public class SearchThread extends VascoThread {
 	public void run() {
 	    try {
 	        if (v != null && v.size() > 0) {
+	        	for (DrawingTarget element : off) {
+	        		if (element instanceof DrawingCanvas) {
+	        			((DrawingCanvas) element).clearMagentaRectangles();
+	        		}
+		        }
+	        	
 	            setProgress(0);
+
 	            do {
 	                if (drawCurrentStep()) {
 	                    pc.setPause();
@@ -54,7 +61,9 @@ public class SearchThread extends VascoThread {
 	                    Thread.sleep(pc.getDelay());
 	                }
 	            } while (setProgress(getProgress() + 1));
+	            
 	            pc.setProgressBar(getProgress() + 1); // Added to have progress bar end
+	            
 	            for (DrawingTarget element : off) {
 	                pc.drawBackground(element);
 					for (int i = 0; i < v.size(); i++)

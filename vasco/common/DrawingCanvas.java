@@ -113,6 +113,14 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
     	redraw();
     }
     
+    public void clearMagentaRectangles() {
+    	for (int i = 0; i < coloredRectanglesToDraw.size(); i++) {
+    		if (coloredRectanglesToDraw.get(i).color == Color.magenta) {
+    			coloredRectanglesToDraw.remove(i);
+    		}
+    	}
+    }
+    
     public void clearOvals() {
     	coloredOvalsToDraw.clear();
     	redraw();

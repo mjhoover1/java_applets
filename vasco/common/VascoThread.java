@@ -63,6 +63,10 @@ public abstract class VascoThread extends Thread {
 	public boolean drawCurrentStep() {
 		return drawCurrentStep(off);
 	}
+	
+	public void resetMagentaRectangles() {
+//		((DrawingCanvas) off).clearMagentaRectangles();
+	}
 
 	public abstract boolean drawCurrentStep(DrawingTarget[] dt);
 
@@ -76,6 +80,10 @@ public abstract class VascoThread extends Thread {
 	public void drawQueryObject(DrawingTarget dt) {
 		dt.setColor(Color.orange);
 		qo.draw(dt);
+	}
+	
+	public void resetMagentaRects(DrawingTarget dt) {
+		
 	}
 
 	public void fillQueryObject() {

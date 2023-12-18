@@ -558,6 +558,10 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		g.setColor(c);
 		g.fillRect(wholeCanvas.x, wholeCanvas.y, wholeCanvas.width, wholeCanvas.height);
 	}
+	
+	public void resetMagentaRects(DrawingTarget g) {
+		((DrawingCanvas) g).clearMagentaRectangles();
+	}
 
 	// Abstract method to draw the contents on a specified DrawingTarget
 	@Override
