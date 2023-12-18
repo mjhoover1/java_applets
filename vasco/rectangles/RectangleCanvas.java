@@ -614,10 +614,12 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 				lastMoveEdgeIndex = EAST;
 			}
 			if (!nearest.equals(lastMoveEdge)) {
-				redraw();
+    			((DrawingCanvas) offscrG).clearLines(); // Added to remove last vertex
 				nearest.directDraw(Color.orange, offscrG);
+				redraw();
 			}
 			lastMoveEdge = nearest;
+			redraw();
 		}
 
 		if (op == OPFEATURE_MOVEVERTEX) {
@@ -653,7 +655,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	        if (lastMoveVertex == null || !lastMoveVertex.equals(nearest)) {
 	            // Only update if there is a change in the nearest vertex
 	            if (nearest != null) {
-	    			((DrawingCanvas) offscrG).clearOvals(); // Added to remove last yellow rectangle
+	    			((DrawingCanvas) offscrG).clearOvals(); // Added to remove last vertex
 	                nearest.directDraw(Color.orange, offscrG);
 	            }
 	            redraw();
@@ -1076,8 +1078,8 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 				}
 				pstruct.MessageEnd();
 			}
-			redraw();
 			fP.directDraw(Color.orange, offscrG);
+			redraw();
 			lastDelete = fP;
 		}
 
@@ -1217,6 +1219,11 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			} else
 				lastDelete = null;
 
+			redraw();
+		}
+		if (op == OPFEATURE_MOVEEDGE) {
+			mouseExited(me); // Reset the rectangle to red
+			mouseMoved(me); // Re-highlights the nearest edge
 			redraw();
 		}
 //		((DrawingCanvas) offscrG).clearRectangles(); // Added to remove last yellow rectangle
