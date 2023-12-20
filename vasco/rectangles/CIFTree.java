@@ -661,14 +661,15 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 				drawBinRectangles(cn.BIN[0], dt);
 				drawBinRectangles(cn.BIN[1], dt);
 			}
-
+			
 			/**
 			 * Paints the binary tree on the canvas.
 			 *
 			 * @param g The graphics context used for drawing.
 			 */
 			@Override
-			public void paint(Graphics g) {
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
 				bintreecounter = 1;
 				g.setColor(Color.blue);
 				g.drawString("x axis bintree", 10, 10);
@@ -676,6 +677,21 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 				drawBinTree(cn.BIN[0], g, getSize().width / 2, 10, getDepth(cn.BIN[0], 0), 1.0);
 				drawBinTree(cn.BIN[1], g, getSize().width / 2, getSize().height / 2, getDepth(cn.BIN[1], 0), 1.0);
 			}
+
+//			/**
+//			 * Paints the binary tree on the canvas.
+//			 *
+//			 * @param g The graphics context used for drawing.
+//			 */
+//			@Override
+//			public void paint(Graphics g) {
+//				bintreecounter = 1;
+//				g.setColor(Color.blue);
+//				g.drawString("x axis bintree", 10, 10);
+//				g.drawString("y axis bintree", 10, getSize().height / 2);
+//				drawBinTree(cn.BIN[0], g, getSize().width / 2, 10, getDepth(cn.BIN[0], 0), 1.0);
+//				drawBinTree(cn.BIN[1], g, getSize().width / 2, getSize().height / 2, getDepth(cn.BIN[1], 0), 1.0);
+//			}
 
 			/**
 			 * Recursively draws the rectangles contained in the binary nodes.
@@ -777,7 +793,8 @@ public class CIFTree extends RectangleStructure implements MaxDecompIface {
 			sp = new JScrollPane();
 			sp.setPreferredSize(new Dimension(300, 300));  // sp.setSize(300, 300);
 			add("Center", sp);
-			sp.add(bt);
+			sp.setViewportView(bt);
+//			sp.add(bt);
 			close = new JButton("Close");
 			close.addActionListener(this);
 			add("South", close);

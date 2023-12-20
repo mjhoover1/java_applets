@@ -241,6 +241,19 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 			terminate();
 		
 		int currOperation = getCurrentOperation();
+		
+		if (previousOpfeature == OPFEATURE_BINTREES) { // Clears the animation added during Bintree 
+			((DrawingCanvas) offscrG).clearStrings(); 
+			((DrawingCanvas) offscrG).clearOvals();
+		}
+		
+		if (previousOpfeature == OPFEATURE_MOVEVERTEX) {
+			((DrawingCanvas) offscrG).clearOvals();
+		} // Clear animated vertex
+		
+		if (previousOpfeature == OPFEATURE_MOVEEDGE) {
+			((DrawingCanvas) offscrG).clearLines();
+		} // Clear animated edge
 
 		if (currOperation != previousOpfeature) {
 			if (currOperation == OPFEATURE_WINDOW) {

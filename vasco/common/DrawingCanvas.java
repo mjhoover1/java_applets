@@ -48,6 +48,8 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
     private List<ColoredLine> coloredLinesToDraw = new ArrayList<>();
     // Add a list to store colored ovals
     private List<ColoredOval> coloredOvalsToDraw = new ArrayList<>();
+    private List<ColoredString> coloredStringsToDraw = new ArrayList<>();
+
 
 
 
@@ -109,6 +111,17 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	        }
     	}
         coloredLinesToDraw.add(new ColoredLine(start, end, color)); // Add the new line
+        repaint();
+    }
+    
+    public void addOrUpdateString(String text, double x, double y, Color color, Font font) {
+        ColoredString newString = new ColoredString(text, x, y, color, font);
+        coloredStringsToDraw.add(newString);
+        repaint();
+    }
+
+    public void clearStrings() {
+        coloredStringsToDraw.clear();
         repaint();
     }
     
@@ -242,6 +255,15 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	        Point newo = transPoint(co.x, co.y);
 	        offGraphics.fillOval(newo.x - co.width / 2, newo.y - co.height / 2, co.width, co.height);
 	    }
+	    
+	    // Draw strings
+	    for (ColoredString cs : coloredStringsToDraw) {
+	    	offGraphics.setColor(cs.color);
+	    	offGraphics.setFont(cs.font);
+	        Point stringPos = transPoint(cs.x, cs.y);
+	        offGraphics.drawString(cs.text, stringPos.x, stringPos.y);
+	    }
+	    
 		offGraphics.dispose();
 	}
 
@@ -272,6 +294,21 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
         @Override
         public int hashCode() {
             return color.hashCode();
+        }
+    }
+    
+    class ColoredString {
+        String text;
+        double x, y;
+        Color color;
+        Font font;
+
+        ColoredString(String text, double x, double y, Color color, Font font) {
+            this.text = text;
+            this.x = x;
+            this.y = y;
+            this.color = color;
+            this.font = font;
         }
     }
     
@@ -479,6 +516,7 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 		offscr.drawString(s, newo.x - POINTSIZE / 2, newo.y - POINTSIZE / 2);
 
 		offscr.setFont(oldfont);
+		addOrUpdateString(s, x, y, Color.blue, f);
 	}
 
 	// Draw an image at the specified position
@@ -536,6 +574,10 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	public void fillOval(double xx, double yy, int ww, int hh) {
 		Point newo = transPoint(xx, yy);
 		offscr.fillOval(newo.x - ww / 2, newo.y - hh / 2, ww, hh);
+		
+	    // Add the oval to the list for redrawing
+	    coloredOvalsToDraw.add(new ColoredOval(xx, yy, ww, hh, Color.blue));
+	    repaint();
 	}
 
 	// Draw an oval with specified dimensions
@@ -720,6 +762,15 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	    // Add the oval to the list for redrawing
 	    coloredOvalsToDraw.add(new ColoredOval(x, y, w, h, c));
 	    repaint();
+	}
+	
+	public boolean blueOvalExists() {
+		for (ColoredOval o: coloredOvalsToDraw) {
+			if (o.color == Color.blue) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// Draw an oval directly using the graphics object with a specified color

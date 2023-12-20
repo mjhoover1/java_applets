@@ -719,7 +719,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		if (op == OPFEATURE_BINTREES && pstruct instanceof CIFTree) {
 			DPoint b = ((CIFTree) pstruct).NearestMXCIF(p);
 			if (b != null) {
-				if (!b.equals(lastBintree)) {
+				if (!b.equals(lastBintree)) { // Doesn't account for this in app && !((DrawingCanvas) offscrG).blueOvalExists()) {
 					offscrG.redraw();
 					b.directDraw(Color.orange, offscrG);
 					lastBintree = b;
@@ -801,9 +801,9 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 
 		// Implementation for Bintrees operation
 		if (op == OPFEATURE_BINTREES && pstruct instanceof CIFTree) {
-			redraw();
 			((CIFTree) pstruct).drawBintree(p, offscrG);
 			offscrG.redraw();
+			redraw();
 			return;
 		}
 
