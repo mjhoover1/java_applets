@@ -1,5 +1,7 @@
 package vasco.drawable;
 
+import java.awt.Color;
+
 import vasco.common.DrawingTarget;
 
 public class NNDrawable extends GenDrawable {
@@ -12,7 +14,8 @@ public class NNDrawable extends GenDrawable {
 
 	@Override
 	public void drawElementNext(DrawingTarget g) {
-		drawable.draw(g);
+//		drawable.draw(g);
+		drawable.directDraw(Color.blue, g);
 		g.drawString(String.valueOf(counter), drawable.getBB().x + drawable.getBB().width / 2,
 				drawable.getBB().y + drawable.getBB().height / 2);
 	}

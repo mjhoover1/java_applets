@@ -1,6 +1,8 @@
 /* $Id: SearchThread.java,v 1.2 2002/09/25 20:55:06 brabec Exp $ */
 package vasco.common;
 
+import java.awt.Color;
+
 public class SearchThread extends VascoThread {
 	int mode;
 
@@ -47,7 +49,7 @@ public class SearchThread extends VascoThread {
 	        if (v != null && v.size() > 0) {
 	        	for (DrawingTarget element : off) {
 	        		if (element instanceof DrawingCanvas) {
-	        			((DrawingCanvas) element).clearMagentaRectangles();
+	        			((DrawingCanvas) element).clearColoredRectangles(Color.magenta);
 	        		}
 		        }
 	        	

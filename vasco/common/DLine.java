@@ -362,6 +362,11 @@ public class DLine implements Drawable {
 	public void directDraw(Color c, DrawingTarget g) {
 		g.directLine(c, p1.x, p1.y, p2.x, p2.y);
 	}
+	
+	// Draw line with max amount of visible lines 
+//	public void directDrawWithSize(Color c, DrawingTarget g, int size) {
+//		g.directLineWithSize(c, p1.x, p1.y, p2.x, p2.y, size);
+//	}
 
 	/**
 	 * Gets the bounding box of the line segment. The bounding box is the smallest

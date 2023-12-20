@@ -619,7 +619,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 //				redraw();
 			}
 			lastMoveEdge = nearest;
-//			redraw();
+			redraw();
 		}
 
 		if (op == OPFEATURE_MOVEVERTEX) {
@@ -668,6 +668,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 //				redraw();
 //			}
 			lastMoveVertex = nearest;
+            redraw();
 		}
 
 	    if (op == OPFEATURE_DELETE || op == OPFEATURE_MOVE || op == OPFEATURE_MOTIONSENSITIVITY) {
@@ -690,6 +691,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	            System.out.println("Drawable object updated");
 	        }
 	        lastClosest = b;
+	        redraw();
 	    }
 
 		if (op == OPFEATURE_SHOWQUAD) {
@@ -700,7 +702,6 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 				return;
 			}
 
-//			redraw();
 			DRectangle quad = pstruct.EnclosingQuadBlock((DRectangle) b, false);
 
 			if (quad != null) {
@@ -712,6 +713,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			DRectangle nr = (DRectangle) b;
 			offscrG.directThickRect(Color.orange, nr.x, nr.y, nr.width, nr.height, 1);
 			lastDelete = b;
+			redraw();
 		}
 
 		if (op == OPFEATURE_BINTREES && pstruct instanceof CIFTree) {
@@ -724,8 +726,24 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 				}
 			} else
 				lastBintree = null;
+			redraw();
 		}
-		redraw();
+		
+		if (op == OPFEATURE_NEAREST || op == OPFEATURE_WITHIN) {
+			showLinesWithoutFlicker();
+		}
+	}
+	
+	// Shows polygon and path lines without flicker by redrawing but doesn't redraw the point and rectangle nearest so the 
+	// blue highlighted rectangles don't dissappear 
+	public void showLinesWithoutFlicker() {
+		int current_op_mask = getCurrentOpFeature().buttonMask;
+		int polygon_mask = InputEvent.BUTTON1_MASK | InputEvent.BUTTON3_MASK;
+		int path_mask = InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK;
+		if (current_op_mask == polygon_mask || current_op_mask == path_mask) { // Conditions to only redraw for polygon and path
+			redraw();
+		}
+		System.out.println("Op MASK is: " + current_op_mask);
 	}
 
 	/**
@@ -738,12 +756,12 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {
-
+		
 		if ((getCurrentOpFeature().buttonMask & MouseDisplay.getMouseButtons(me)) == 0)
 			return; // operation doesn't use this mouse button
 
 		super.mouseClicked(me);
-		System.out.println("mouseClicked");
+		
 	}
 
 	/**

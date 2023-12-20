@@ -143,6 +143,8 @@ public class NearestThread extends VascoThread {
 					}
 			} while (setProgress(getProgress() + 1));
 
+			pc.setProgressBar(getProgress() + 1); // Added to have progress bar end
+
 			for (DrawingTarget element : off) {
 
 				pc.drawBackground(element, Color.lightGray);

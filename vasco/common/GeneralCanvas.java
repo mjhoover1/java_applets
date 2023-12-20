@@ -560,7 +560,7 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	}
 	
 	public void resetMagentaRects(DrawingTarget g) {
-		((DrawingCanvas) g).clearMagentaRectangles();
+		((DrawingCanvas) g).clearColoredRectangles(Color.magenta); // Clear the highlighted magenta rectangles from animation
 	}
 
 	// Abstract method to draw the contents on a specified DrawingTarget
@@ -620,9 +620,10 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	// Method to redraw the path by drawing orange lines between consecutive points
 	protected void redrawPath() {
 		offscrG.redraw();
+		((DrawingCanvas) offscrG).clearLines();
 		for (int i = 0; i < polyRange.size() - 1; i++)
 			(new DLine((DPoint) (polyRange.elementAt(i)), (DPoint) (polyRange.elementAt(i + 1))))
-					.directDraw(Color.orange, offscrG);
+					.directDraw(Color.green, offscrG);
 		
 		repaintCanvas();
 	}
@@ -631,9 +632,10 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	// points
 	protected void redrawPolygon() {
 		offscrG.redraw();
+		((DrawingCanvas) offscrG).clearLines();
 		for (int i = 0; i < polyRange.size(); i++)
 			(new DLine((DPoint) (polyRange.elementAt(i)), (DPoint) (polyRange.elementAt((i + 1) % polyRange.size()))))
-					.directDraw(Color.orange, offscrG);
+					.directDraw(Color.green, offscrG); // Changed to Green
 		
 		repaintCanvas();
 	}
@@ -751,6 +753,9 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 	public synchronized void terminate() {
 		// don't call from the thread itself or runningThreat won't be set to null
 		stop();
+		((DrawingCanvas) offscrG).clearRectangles(); // Clear the blue rectangles drawn
+
+//		((DrawingCanvas) offscrG).clearColoredRectangles(Color.blue); // Clear the highlighted blue rectangles
 		animPanel.initProgress(0);
 		runningThread = null;
 	}

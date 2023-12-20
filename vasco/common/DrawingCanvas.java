@@ -94,16 +94,20 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	 // Method to add or update a colored rectangle
     public void addOrUpdateRectangle(Rectangle rect, Color color) {
         ColoredRectangle newColoredRect = new ColoredRectangle(rect, color);
-        coloredRectanglesToDraw.remove(newColoredRect); // Remove existing rectangle with the same color
+        if (color != Color.blue) {
+        	coloredRectanglesToDraw.remove(newColoredRect); // Remove existing rectangle with the same color
+        }
         coloredRectanglesToDraw.add(newColoredRect); // Add the new rectangle
         repaint();
     }
     
  // Method to add a colored line for redrawing, ensuring only two lines are stored
-    public void addColoredLine(Point start, Point end, Color color) {
-        if (coloredLinesToDraw.size() >= 2) {
-            coloredLinesToDraw.clear(); // Clear last two lines forming X
-        }
+    public void addColoredLine(Point start, Point end, Color color) {    	
+    	if (color != Color.green) {
+	        if (coloredLinesToDraw.size() >= 2) {
+	            coloredLinesToDraw.clear(); // Clear last two lines forming X
+	        }
+    	}
         coloredLinesToDraw.add(new ColoredLine(start, end, color)); // Add the new line
         repaint();
     }
@@ -113,9 +117,9 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
     	redraw();
     }
     
-    public void clearMagentaRectangles() {
+    public void clearColoredRectangles(Color c) {
     	for (int i = 0; i < coloredRectanglesToDraw.size(); i++) {
-    		if (coloredRectanglesToDraw.get(i).color == Color.magenta) {
+    		if (coloredRectanglesToDraw.get(i).color == c) {
     			coloredRectanglesToDraw.remove(i);
     		}
     	}
@@ -247,116 +251,6 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.drawImage(offscreenImage, 0, 0, this);
 	}
-
-	// Overridden paintComponent method
-//	@Override
-//	protected void paintComponent(Graphics g) {
-//	    super.paintComponent(g); // Clears the panel
-
-	    // Cast to Graphics2D for more advanced graphics capabilities
-//	    Graphics2D g2d = (Graphics2D) g;
-//
-//	    // Draw onto the offscreen image
-//	    Graphics2D offGraphics = offscreenImage.createGraphics();
-//
-//	    // Set anti-aliasing for smoother graphics
-//	    offGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//
-//	    // Clear the offscreen image
-//	    offGraphics.setColor(getBackground());
-//	    offGraphics.fillRect(0, 0, offscreenImage.getWidth(), offscreenImage.getHeight());
-//
-//	    // Draw the base image
-//	    offGraphics.drawImage(i, 0, 0, this);
-//
-//	    // Dispose of the offscreen graphics context to release resources
-//	    offGraphics.dispose();
-//
-//	    // Draw the offscreen image onto the component
-//	    g2d.drawImage(offscreenImage, 0, 0, this);
-//	}
-
-// 	private void highlightGridElements(Graphics2D g) {
-// 	    // Logic to highlight grid elements based on the cursor position and state
-// 	    // This might involve drawing rectangles, lines, or points on the grid
-// 	    Point mousePosition = getMousePosition(); // Get current mouse position
-
-// 	    if (mousePosition != null) {
-// 	        // Convert screen coordinates to grid coordinates
-// //	        Point gridPosition = transScrToGrid(mousePosition);
-
-// 	        // Check if the mouse is over a valid grid cell or connected block
-// 	        // and highlight if necessary
-// 	        // You might need to access the state of the grid or cursor to determine
-// 	        // what needs to be highlighted
-// 	        // For example:
-// 	        // g.setColor(Color.RED);
-// 	        // g.drawRect(gridPosition.x, gridPosition.y, cellSize, cellSize);
-// 	        // ...
-
-// 	        // You can also use the cursor's current style to determine what to draw
-// 	        // For example, if the cursor indicates a selected area, draw that area
-// 	    }
-	    
-//	    CursorStyle cs;
-//
-//	    // If a conversion operation is in progress, the mouse cursor display is bypassed.
-////	    if (runningThread != null)
-////	        return;
-//
-//	    // Adjusts the mouse point coordinates to the offscreen graphics context.
-//	    Point mCor = offscrG.adjustPoint(me.getPoint());
-//	    // Translates the mouse coordinates from screen to the actual canvas coordinates.
-//	    Point rCor = transMouseToScr(mCor);
-//	    // Translates the canvas coordinates to grid coordinates.
-//	    Point gCor = transScrToGrid(mCor);
-//
-//	    // Retrieves the current operation mode.
-//	    int op = getCurrentOperation();
-//	    
-//	    System.out.println("Mouse Coordinates in Canvas: " + mCor.x + " " + mCor.y);
-//	    System.out.println("Translated Screen Coordinates: " + rCor.x + " " + rCor.y);
-//	    System.out.println("Translated Grid Coordinates: " + gCor.x + " " + gCor.y);
-//	    System.out.println("Current Operation: " + op);
-//
-//	    // Checks if the user is interacting with a connected block.
-//	    if (cb != null) {
-//	        CBlock b;
-//
-//	        cs = new CursorStyle();
-//	        // If the mouse is over a valid connected block, updates the cursor style.
-//	        if (((b = ConnectedBlocks.inBlock(cb, grid, gCor.x, gCor.y)) != null) && b.valid)
-//	            cs.add(new PolygonCursor(b.p, Colors.SELECTED_CELL));
-//
-//	        // If the cursor style has changed, triggers a redraw of the canvas.
-//	        if (cursor.isDifferentCursor(cs)) {
-//	            redrawMode = OFFSCR_REDRAW;
-//	            redraw();
-//
-//	            cursor.move(offscrG, cs);
-//	            cursor.move(overview, cs);
-//	        }
-//	        System.out.println("Mouse is over a connected block: " + b);
-//	    } else {
-//	        // If the cursor style is different based on the current operation and mouse location, triggers a redraw.
-//	    	boolean isCursorDifferent = cursor.isDifferentCursor(pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect));
-//	        System.out.println("Is Cursor Different: " + isCursorDifferent);	        
-//	        if (isCursorDifferent) {
-//	            redrawMode = OFFSCR_REDRAW;
-//	            redraw();
-//	            cs = pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect);
-//	            cursor.move(offscrG, cs);
-//	            cursor.move(overview, cs);
-//	        }
-//	    }
-	// }
-
-	// // Paint method to draw on the canvas
-	// public void paint(Graphics g) {
-	// if (g == null)
-	// return;
-	// g.drawImage(i, 0, 0, this);
-	// }
     
     class ColoredRectangle {
         Rectangle rectangle;
@@ -728,7 +622,9 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 //	    } else {
 //		    coloredRectanglesToDraw.clear();
 //	    }
-	    clearRectangles();
+	    if (c != Color.blue) {
+	    	clearRectangles();
+	    }
 
 	    // Empty of current lines forming X because a new rect means the mouse moved
 	    clearLines();
