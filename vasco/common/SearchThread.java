@@ -21,24 +21,30 @@ public class SearchThread extends VascoThread {
 		pc.setProgressBar(getProgress()); 
 		SVElement re = (SVElement) v.elementAt(getProgress());
 
-		for (DrawingTarget element : off) {
-			pc.drawBackground(element);
-
-			re.drawCyan(element);
-			for (int j = 0; j < getProgress(); j++)
-				v.elementAt(j).ge.fillElementNext(element);
-			re.ge.fillElementFirst(element);
-
-			pc.drawGrid(element);
-			drawQueryObject(element);
-			pc.drawContents(element);
-
-			for (int j = 0; j < getProgress(); j++)
-				v.elementAt(j).ge.drawElementNext(element);
-			re.ge.drawElementFirst(element);
-
-			element.redraw();
-		}
+//		if (setProgress(getProgress() + 1)) {
+			for (DrawingTarget element : off) {
+				pc.drawBackground(element);
+	
+				if (setProgress(getProgress() + 1)) {
+					re.drawCyan(element);
+				}
+				for (int j = 0; j < getProgress(); j++)
+					v.elementAt(j).ge.fillElementNext(element);
+				if (setProgress(getProgress() + 1)) {
+					re.ge.fillElementFirst(element);
+				}
+				
+				pc.drawGrid(element);
+				drawQueryObject(element);
+				pc.drawContents(element);
+	
+				for (int j = 0; j < getProgress(); j++)
+					v.elementAt(j).ge.drawElementNext(element);
+				re.ge.drawElementFirst(element);
+	
+				element.redraw();
+			}
+//		}
 		return (pc.getSuccessMode() != CommonConstants.RUNMODE_CONTINUOUS && (re.ge.pauseMode() == GenElement.SUCCESS
 				|| (re.ge.pauseMode() == GenElement.FAIL && pc.getSuccessMode() == CommonConstants.RUNMODE_OBJECT)));
 	}
@@ -55,14 +61,14 @@ public class SearchThread extends VascoThread {
 	        	
 	            setProgress(0);
 
-	            do {
+	            while(setProgress(getProgress() + 1)) {
 	                if (drawCurrentStep()) {
 	                    pc.setPause();
 	                    // Use higher-level concurrency utilities or Thread interruption logic
 	                } else {
 	                    Thread.sleep(pc.getDelay());
 	                }
-	            } while (setProgress(getProgress() + 1));
+	            } 
 	            
 	            pc.setProgressBar(getProgress() + 1); // Added to have progress bar end
 	            
