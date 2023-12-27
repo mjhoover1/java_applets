@@ -1567,12 +1567,16 @@ public class RTree extends SpatialStructure implements ItemListener {
 				((RTreeLeaf) r).geom.draw(g);
 			} else
 				g.drawRect(r.boundingBox.x, r.boundingBox.y, r.boundingBox.width, r.boundingBox.height);
+			((DrawingCanvas) g).clearAllExceptBlue();
+			((DrawingCanvas) g).clearStrings();
 			if (splitMode.equals("Hilbert nonpacked") || splitMode.equals("Hilbert packed")
 					|| splitMode.equals("Morton nonpacked") || splitMode.equals("Morton packed")
 					|| splitMode.equals("packed")) {
 				g.fillOval(r.boundingBox.x + r.boundingBox.width / 2, r.boundingBox.y + r.boundingBox.height / 2, 4, 4);
 				g.drawString(String.valueOf(counter[0]++), r.boundingBox.x + r.boundingBox.width / 2,
 						r.boundingBox.y + r.boundingBox.height / 2);
+			} else {
+				((DrawingCanvas) g).clearOvals();
 			}
 			// System.out.println(r.boundingBox.getMorton());
 		} else

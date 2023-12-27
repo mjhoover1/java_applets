@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.util.Vector;
 
 // import java.awt.*;
@@ -729,8 +730,14 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			redraw();
 		}
 		
-		if (op == OPFEATURE_NEAREST || op == OPFEATURE_WITHIN) {
+		if (op == OPFEATURE_NEAREST || op == OPFEATURE_WITHIN || op == OPFEATURE_WINDOW) {
 			showLinesWithoutFlicker();
+		}
+		
+		if (op == OPFEATURE_WINDOW) {
+			if (pstruct instanceof LOOSETree) {
+				redraw();	
+			}
 		}
 	}
 	
@@ -1013,25 +1020,37 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 					updateFromParams();
 				}
 			}
-			redraw();
 			lastMove[0].rect.directDraw(Color.orange, offscrG);
 			if (pstruct instanceof LOOSETree) { // Draw Centroid
+				((DrawingCanvas) offscrG).clearOvals(); // Clear last Centroid
 				DRectangle bb = lastMove[0].rect;
 				DPoint pnt = new DPoint(bb.x + bb.width / 2, bb.y + bb.height / 2);
 				pnt.directDraw(Color.orange, offscrG);
 				DRectangle quad = pstruct.EnclosingQuadBlock(lastMove[0].rect, false);
 
 				if (quad != null) {
-
-					offscrG.directThickRect(Color.blue, quad.x, quad.y, quad.width, quad.height, 2);
-
+					
+					List<Integer> vertices = ((DrawingCanvas) offscrG).getVertices(quad.x, quad.y, quad.width, quad.height);
+					Rectangle newRect = new Rectangle(vertices.get(0), vertices.get(1), vertices.get(2), vertices.get(3));
+					boolean exist = ((DrawingCanvas) offscrG).ThickRectAlreadyExist(newRect, Color.blue, 2);
+					
+					if (!exist) {
+						((DrawingCanvas) offscrG).clearThickRectangles();
+						offscrG.directThickRect(Color.blue, quad.x, quad.y, quad.width, quad.height, 2);
+					}
+					
 					quad = pstruct.expand(quad);
-
-					offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, quad.height, 2);
+					
+					exist = ((DrawingCanvas) offscrG).ThickRectAlreadyExist(newRect, Color.green, 2);
+					
+					if (!exist) {
+						offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, quad.height, 2);
+					}
+					vertices = null;
 				}
 			}
 			lastDelete = lastMove[0].rect;
-
+			redraw();
 		}
 	}
 
@@ -1098,8 +1117,8 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 				pstruct.MessageEnd();
 			}
 			fP.directDraw(Color.orange, offscrG);
-//			redraw();
 			lastDelete = fP;
+			redraw();
 		}
 
 		// Implementation for move vertex operation
@@ -1146,12 +1165,10 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 				}
 				pstruct.MessageEnd();
 			}
-//			redraw();
 			fP.directDraw(Color.orange, offscrG);
 			((DrawingCanvas) offscrG).clearOvals(); // Added to remove last yellow rectangle
 			lastDelete = fP;
-//			redraw();
-
+			redraw();
 		}
 
 		// Implementation for insert operation
@@ -1164,20 +1181,24 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			offscrG.redraw();
 			offscrG.directRect(Color.orange, Math.min(last.x, p.x), Math.min(last.y, p.y), Math.abs(p.x - last.x),
 					Math.abs(last.y - p.y));
-//			redraw();
+			redraw();
 		}
 
 		if (op == OPFEATURE_MOTIONSENSITIVITY && lastMove != null && lastMove.length != 0) {
 			looseMoveRectangle(p);
-//			redraw();
+			redraw();
 		}
 
 		if (op == OPFEATURE_MOVE && lastMove != null && lastMove.length != 0) {
 			moveRectangle(p);
-//			redraw();
+			redraw();
 		}
-		redraw();
-
+		
+		if (op == OPFEATURE_WINDOW) {
+			if (pstruct instanceof LOOSETree) {
+				redraw();	
+			}
+		}
 	}
 
 	/**
@@ -1246,6 +1267,14 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			mouseMoved(me); // Re-highlights the nearest edge
 			redraw();
 		}
+		
+		if (op == OPFEATURE_MOVE) {
+			if (pstruct instanceof LOOSETree) {
+				((DrawingCanvas) offscrG).clearOvals(); // Added to remove last centroid
+				((DrawingCanvas) offscrG).clearThickRectangles();
+			}
+		}
+	
 //		((DrawingCanvas) offscrG).clearRectangles(); // Added to remove last yellow rectangle
 
 //      if (op.equals("Move")) {

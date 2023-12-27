@@ -49,6 +49,8 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
     // Add a list to store colored ovals
     private List<ColoredOval> coloredOvalsToDraw = new ArrayList<>();
     private List<ColoredString> coloredStringsToDraw = new ArrayList<>();
+    private List<ColoredThickRectangle> coloredThickRectanglesToDraw = new ArrayList<>();
+
 
 
 
@@ -148,6 +150,11 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
     	redraw();
     }
     
+    public void clearThickRectangles() {
+    	coloredThickRectanglesToDraw.clear();
+    	redraw();
+    }
+    
     public void changeRectangleColor(DRectangle rect, Color newColor) {
         // Find the rectangle in the list and update its color
         for (ColoredRectangle coloredRect : coloredRectanglesToDraw) {
@@ -165,69 +172,9 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 
 	// Redraw the canvas
 	public void redraw() {
-		// paint(getGraphics());
-//		paintComponent(getGraphics());
-		// TODO need to use repaint() to make the canvas not flicker but in order to use repaint all of the 
-		// drawing logic needs to be added to paintComponent
 		updateOffscreenBuffer();
 		repaint(); // Use repaint() instead of paint() paint(getGraphics());
 	}
-
-	  // Override update() and make sure the 
- 	 // background is not cleared. 
-//	 @Override
-//	public void update (Graphics g) {
-//		paint (g);
-//	}
-	
-//    public void addRectangleToDraw(Rectangle rect) {
-//    	coloredRectanglesToDraw.add(rect);
-//        repaint();
-//    }
-//
-//    public void clearRectangles() {
-//    	coloredRectanglesToDraw.clear();
-//        repaint();
-//    }
-    
-//    @Override
-//     protected void paintComponent(Graphics g) {
-//         super.paintComponent(g); // Clears the panel
-
-//         Graphics2D g2d = (Graphics2D) g;
-// 	    Graphics2D offGraphics = offscreenImage.createGraphics();
-
-//         g2d.drawImage(offscreenImage, 0, 0, this);
-
-//         // Draw the rectangles from the list
-//         for (ColoredRectangle cr : coloredRectanglesToDraw) {
-//             g2d.setColor(cr.color);
-//             Rectangle rect = cr.rectangle;
-//             g2d.drawRect(rect.x, rect.y, rect.width, rect.height);
-//         }
-        
-//         // Draw the lines
-//         for (ColoredLine cl : coloredLinesToDraw) {
-//             g2d.setColor(cl.color);
-//             g2d.drawLine(cl.start.x, cl.start.y, cl.end.x, cl.end.y);
-//         }
-        
-//         // Set anti-aliasing for smoother graphics
-// 	    offGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-// 	    // Clear the offscreen image
-// 	    offGraphics.setColor(getBackground());
-// 	    offGraphics.fillRect(0, 0, offscreenImage.getWidth(), offscreenImage.getHeight());
-
-// 	    // Draw the base image
-// 	    offGraphics.drawImage(i, 0, 0, this);
-
-// 	    // Dispose of the offscreen graphics context to release resources
-// 	    offGraphics.dispose();
-
-// 	    // Draw the offscreen image onto the component
-// //	    g2d.drawImage(offscreenImage, 0, 0, this);
-//     }
     
 	// Method to update the offscreen buffer with new drawings
 	private void updateOffscreenBuffer() {
@@ -264,6 +211,14 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	        offGraphics.drawString(cs.text, stringPos.x, stringPos.y);
 	    }
 	    
+        // Draw thick rectangles
+        for (ColoredThickRectangle ctr : coloredThickRectanglesToDraw) {
+        	offGraphics.setColor(ctr.color);
+        	offGraphics.setStroke(new BasicStroke(ctr.thickness));
+            Rectangle r = ctr.rectangle;
+            offGraphics.drawRect(r.x, r.y, r.width, r.height);
+        }
+	    
 		offGraphics.dispose();
 	}
 
@@ -294,6 +249,34 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
         @Override
         public int hashCode() {
             return color.hashCode();
+        }
+    }
+    
+    class ColoredThickRectangle {
+        Rectangle rectangle;
+        Color color;
+        int thickness;
+
+        ColoredThickRectangle(Rectangle rectangle, Color color, int thickness) {
+            this.rectangle = rectangle;
+            this.color = color;
+            this.thickness = thickness;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            ColoredThickRectangle that = (ColoredThickRectangle) obj;
+            return thickness == that.thickness && rectangle.equals(that.rectangle) && color.equals(that.color);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = rectangle.hashCode();
+            result = 31 * result + color.hashCode();
+            result = 31 * result + thickness;
+            return result;
         }
     }
     
@@ -732,6 +715,21 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 		int y2 = Math.min(orig.height, newo.y + newv.y);
 		g2d.drawRect(x1, y1, x2 - x1, y2 - y1);
 		g2d.setStroke(sk);
+		
+
+		Rectangle newRect = new Rectangle(x1, y1, x2 - x1, y2 - y1);
+		coloredThickRectanglesToDraw.add(new ColoredThickRectangle(newRect, c, thk));
+		repaint();
+	}
+	
+	public boolean ThickRectAlreadyExist(Rectangle cTR, Color c, int thk) {
+		ColoredThickRectangle newThickRect = new ColoredThickRectangle(cTR, c, thk);
+		for (ColoredThickRectangle curr: coloredThickRectanglesToDraw) {
+			if (curr.equals(newThickRect)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// Draw a filled rectangle directly using the graphics object with a specified
@@ -747,6 +745,17 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 		int x2 = Math.min(orig.width, newo.x + newv.x);
 		int y2 = Math.min(orig.height, newo.y + newv.y);
 		cur.fillRect(x1, y1, x2 - x1, y2 - y1);
+	}
+	
+	public List<Integer> getVertices(double x, double y, double w, double h) {
+		List<Integer> vertices = new ArrayList<>();
+		Point newo = transPoint(x, y);
+		Point newv = transVector(w, h);
+		vertices.add(0, Math.max(0, newo.x));
+		vertices.add(1, Math.max(0, newo.y));
+		vertices.add(2, Math.min(orig.width, newo.x + newv.x));
+		vertices.add(3, Math.min(orig.height, newo.y + newv.y));
+		return vertices;
 	}
 
 	// Draw a filled oval directly using the graphics object with a specified color
