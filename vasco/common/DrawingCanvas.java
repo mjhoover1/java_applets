@@ -154,6 +154,15 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
     	redraw();
     }
     
+    public boolean RedOvalsLeft() {
+    	for (ColoredOval o: coloredOvalsToDraw) {
+    		if (o.color == Color.red) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     public void clearOvals(Color c) {
     	
     	for (int i = 0; i < coloredOvalsToDraw.size(); i++) {
