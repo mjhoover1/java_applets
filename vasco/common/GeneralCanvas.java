@@ -252,13 +252,18 @@ public abstract class GeneralCanvas implements CanvasIface, CommonConstants, Mou
 		}
 		
 		if (previousOpfeature == OPFEATURE_MOVEVERTEX || previousOpfeature == OPFEATURE_WINDOW ||
-				previousOpfeature == OPFEATURE_NEAREST) {
+				previousOpfeature == OPFEATURE_NEAREST || previousOpfeature == OPFEATURE_WITHIN) {
 			((DrawingCanvas) offscrG).clearOvals();
+			((DrawingCanvas) offscrG).clearLines();
 		} // Clear animated vertex
 		
 		if (previousOpfeature == OPFEATURE_MOVEEDGE) {
 			((DrawingCanvas) offscrG).clearLines();
 		} // Clear animated edge
+		
+//		if (previousOpfeature == OPFEATURE_WITHIN) {
+//			((DrawingCanvas) offscrG).clearLines();
+//		}
 
 		if (currOperation != previousOpfeature) {
 			if (currOperation == OPFEATURE_WINDOW) {

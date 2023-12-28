@@ -83,42 +83,76 @@ public class NearestThread extends VascoThread {
 
 	@Override
 	public synchronized boolean drawCurrentStep(DrawingTarget[] off) {
-		pc.setProgressBar(getProgress());
+		int progress = getProgress();
+		boolean done = progress + 1 >= v.size();
 		NNElement re = (NNElement) v.elementAt(getProgress());
-
-		for (DrawingTarget element : off) {
-			pc.drawBackground(element, Color.lightGray);
-			qo.fillBuffer(Color.yellow, Color.lightGray, element, re.dist);
-			for (int j = 0; j < getProgress(); j++)
-				v.elementAt(j).ge.fillElementNext(element);
-			re.fillQueue(element);
-			re.ge.fillElementFirst(element);
-
-			pc.drawGrid(element);
-			qo.drawBuffer(Color.yellow, element, re.dist);
-			drawQueryObject(element);
-			pc.drawContents(element);
-
-			re.drawQueue(element);
-
-			int counter = 0;
-			for (int j = 0; j < getProgress(); j++) {
-				NNElement ne = (NNElement) v.elementAt(j);
-				if (blend) {
-					// System.out.println((sr + counter * dr) + " " + (sg + counter * dg) + " " +
-					// (sb + counter * db));
-					element.setColor(
-							new Color((int) (sr + counter * dr), (int) (sg + counter * dg), (int) (sb + counter * db)));
-					if (ne.isElement())
-						counter++;
-					// System.out.println("onFly counter" + counter);
-				} else
-					element.setColor(Color.blue);
-				ne.ge.drawElementNext(element);
+		
+		if (!done) {
+	
+			pc.setProgressBar(getProgress());
+			for (DrawingTarget element : off) {
+				pc.drawBackground(element, Color.lightGray);
+				qo.fillBuffer(Color.yellow, Color.lightGray, element, re.dist);
+				for (int j = 0; j < getProgress(); j++)
+					v.elementAt(j).ge.fillElementNext(element);
+				re.fillQueue(element);
+				re.ge.fillElementFirst(element);
+	
+				pc.drawGrid(element);
+				qo.drawBuffer(Color.yellow, element, re.dist);
+				drawQueryObject(element);
+				pc.drawContents(element);
+	
+				re.drawQueue(element);
+	
+				int counter = 0;
+				for (int j = 0; j < getProgress(); j++) {
+					NNElement ne = (NNElement) v.elementAt(j);
+					if (blend) {
+						// System.out.println((sr + counter * dr) + " " + (sg + counter * dg) + " " +
+						// (sb + counter * db));
+						element.setColor(
+								new Color((int) (sr + counter * dr), (int) (sg + counter * dg), (int) (sb + counter * db)));
+						if (ne.isElement())
+							counter++;
+						// System.out.println("onFly counter" + counter);
+					} else
+						element.setColor(Color.blue);
+					ne.ge.drawElementNext(element);
+				}
+				re.ge.drawElementFirst(element);
+	
+				element.redraw();
 			}
-			re.ge.drawElementFirst(element);
+		} else {
+			pc.setProgressBar(getProgress() + 1); // Added to have progress bar end
 
-			element.redraw();
+			for (DrawingTarget element : off) {
+
+				pc.drawBackground(element, Color.lightGray);
+
+				qo.fillBuffer(Color.gray, Color.lightGray, element, dist);
+
+				for (int j = 0; j < v.size(); j++)
+					v.elementAt(j).ge.fillElementNext(element);
+
+				qo.drawBuffer(Color.gray, element, dist);
+				pc.drawContents(element);
+				drawQueryObject(element);
+				int counter = 0;
+				for (int j = 0; j < v.size(); j++) {
+					NNElement ne = (NNElement) v.elementAt(j);
+					if (blend) {
+						element.setColor(new Color((int) (sr + counter * dr), (int) (sg + counter * dg),
+								(int) (sb + counter * db)));
+						if (ne.isElement())
+							counter++;
+					} else
+						element.setColor(Color.blue);
+					ne.ge.drawElementNext(element);
+				}
+				element.redraw();
+			}
 		}
 		return (pc.getSuccessMode() != CommonConstants.RUNMODE_CONTINUOUS && (re.ge.pauseMode() == GenElement.SUCCESS
 				|| (re.ge.pauseMode() == GenElement.FAIL && pc.getSuccessMode() == CommonConstants.RUNMODE_OBJECT)));
