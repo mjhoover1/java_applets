@@ -662,6 +662,20 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	}
 	
 	// Method to clear all rectangles except those colored blue
+	public void clearAllThickOrange() {
+	    // Using an iterator to avoid ConcurrentModificationException while removing elements
+	    Iterator<ColoredThickRectangle> iterator = coloredThickRectanglesToDraw.iterator();
+	    while (iterator.hasNext()) {
+	    	ColoredThickRectangle cr = iterator.next();
+	        if (cr.color.equals(Color.orange)) {
+	            // Remove the rectangle if it is not blue
+	            iterator.remove();
+	        }
+	    }
+	    repaint(); // Trigger repaint to reflect changes on the canvas
+	}
+	
+	// Method to clear all rectangles except those colored blue
 	public void clearAllExceptBlue() {
 	    // Using an iterator to avoid ConcurrentModificationException while removing elements
 	    Iterator<ColoredRectangle> iterator = coloredRectanglesToDraw.iterator();

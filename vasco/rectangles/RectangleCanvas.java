@@ -194,6 +194,7 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	public void clear() {
 		super.clear();
 		((DrawingCanvas) offscrG).clearRectangles(); // Added to remove last yellow rectangle
+		((DrawingCanvas) offscrG).clearThickRectangles(); // Added to remove last yellow rectangle
 		pstruct.MessageStart();
 		pstruct.Clear();
 		pstruct.MessageEnd();
@@ -551,13 +552,12 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	@Override
 	public void mouseExited(MouseEvent me) {
 		super.mouseExited(me);
+
 		System.out.println("mouseExited");
 		if (lastDelete != null) {
 			lastDelete.directDraw(Color.red, offscrG); // Color.red
 			redraw();
 		}
-//		((DrawingCanvas) offscrG).clearOvals(); // Added to remove the ovals if exist
-//		((DrawingCanvas) offscrG).clearRectangles(); // Added to remove last yellow rectangle
 		lastDelete = null;
 	}
 
@@ -688,7 +688,6 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 	                }
 	                lastDelete = null;
 	            }
-//	            redraw();
 	            System.out.println("Drawable object updated");
 	        }
 	        lastClosest = b;
@@ -706,9 +705,23 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 			DRectangle quad = pstruct.EnclosingQuadBlock((DRectangle) b, false);
 
 			if (quad != null) {
-				offscrG.directThickRect(Color.blue, quad.x, quad.y, quad.width, quad.height, 2);
+				
+				List<Integer> vertices = ((DrawingCanvas) offscrG).getVertices(quad.x, quad.y, quad.width, quad.height);
+				Rectangle newRect = new Rectangle(vertices.get(0), vertices.get(1), vertices.get(2), vertices.get(3));
+				boolean exist = ((DrawingCanvas) offscrG).ThickRectAlreadyExist(newRect, Color.blue, 2);
+				if (!exist) {
+					((DrawingCanvas) offscrG).clearThickRectangles();
+					offscrG.directThickRect(Color.blue, quad.x, quad.y, quad.width, quad.height, 2);
+				}
+
 				quad = pstruct.expand(quad);
-				offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, quad.height, 2);
+				
+				exist = ((DrawingCanvas) offscrG).ThickRectAlreadyExist(newRect, Color.green, 2);
+
+				if (!exist) {
+					offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, quad.height, 2);
+				}
+				vertices = null;
 			}
 
 			DRectangle nr = (DRectangle) b;
@@ -936,40 +949,60 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 
 		DRectangle nr = new DRectangle(newloc.x - lastMove[0].rect.width / 2, newloc.y - lastMove[0].rect.height / 2,
 				lastMove[0].rect.width, lastMove[0].rect.height);
+		
+		System.out.println("Entered looseMoveRectangle");
 
 		if (!(pstruct instanceof LOOSETree) || !(wholeCanvas.contains(nr)) || (lastMove[0].rect == null)
 				|| lastMove[0].rect.equals(nr))
 			return;
 
 		global_count_1++;
+		
+		System.out.println("Global count is: " + global_count_1);
 
 		if (global_count_1 < 3)
 			return;
 
 		global_count_1 = 0;
+		
+
+		System.out.println("Made passed second if");
 
 		if (!(pstruct.ReplaceRectangles(lastMove[0].rect, nr))) {
 			pstruct.DeleteDirect(lastMove[0].rect);
 			pstruct.Insert(nr);
 		}
+		
+		System.out.println("Made passed third if");
+
 
 		DRectangle quad = pstruct.EnclosingQuadBlock(nr, false);
-		redraw();
 
 		if (quad != null) {
+			List<Integer> vertices = ((DrawingCanvas) offscrG).getVertices(quad.x, quad.y, quad.width, quad.height);
+	        Rectangle newRect = new Rectangle(vertices.get(0), vertices.get(1), vertices.get(2), vertices.get(3));
+	        boolean exist = ((DrawingCanvas) offscrG).ThickRectAlreadyExist(newRect, Color.blue, 2);
 
-			offscrG.directThickRect(Color.blue, quad.x, quad.y, quad.width, quad.height, 2);
+	        if (!exist) {
+	            ((DrawingCanvas) offscrG).clearThickRectangles();
+	            offscrG.directThickRect(Color.blue, quad.x, quad.y, quad.width, quad.height, 2);
+	        }
 
-			quad = pstruct.expand(quad);
+	        quad = pstruct.expand(quad);
 
-			offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, quad.height, 2);
+	        exist = ((DrawingCanvas) offscrG).ThickRectAlreadyExist(newRect, Color.green, 2);
+
+	        if (!exist) {
+	            offscrG.directThickRect(Color.green, quad.x, quad.y, quad.width, quad.height, 2);
+	        }
 		}
 
-		offscrG.directThickRect(Color.orange, nr.x, nr.y, nr.width, nr.height, 1);
+		nr.directDraw(Color.orange, offscrG);
 
 		lastMove[0].rect = nr;
 		lastDelete = null;
 		historyList.setElementAt(lastMove[0].rect, lastMove[0].index);
+		
 		return;
 	}
 
@@ -1050,7 +1083,6 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 				}
 			}
 			lastDelete = lastMove[0].rect;
-			redraw();
 		}
 	}
 
@@ -1185,6 +1217,8 @@ public class RectangleCanvas extends GenericCanvas implements FileIface, ItemLis
 		}
 
 		if (op == OPFEATURE_MOTIONSENSITIVITY && lastMove != null && lastMove.length != 0) {
+			System.out.print("Entered 1st if");
+//			((DrawingCanvas) offscrG).clearAllThickOrange(); // Added to remove last orange rectangle
 			looseMoveRectangle(p);
 			redraw();
 		}
