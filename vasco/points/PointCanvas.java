@@ -23,6 +23,7 @@ import vasco.common.ColorHelp;
 import vasco.common.DLine;
 import vasco.common.DPoint;
 import vasco.common.DRectangle;
+import vasco.common.DrawingCanvas;
 import vasco.common.DrawingTarget;
 import vasco.common.FileIface;
 import vasco.common.GenericCanvas;
@@ -58,6 +59,9 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 	public DrawingTarget dt;
 	public JPanel animp;
 	public TopInterface ti;
+	
+	Drawable lastClosest; // Represents the last closest Point
+
 
 	PointCanvas(DRectangle can, DrawingTarget dt, DrawingTarget overview, JPanel animp, TopInterface ti) {
 		super(can, dt, overview, animp, ti);
@@ -160,6 +164,9 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 	@Override
 	public void clear() {
 		super.clear();
+		
+		((DrawingCanvas) offscrG).clearOvals(); // Added to remove last yellow rectangle
+		
 		pstruct.MessageStart();
 		pstruct.Clear();
 		pstruct.MessageEnd();
@@ -401,6 +408,8 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 
 	@Override
 	public void mouseEntered(MouseEvent me) {
+		System.out.println("mouseEntered");
+
 		if (handler != null) {
 			handler.mouseEntered(me);
 		} else {
@@ -411,12 +420,14 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 
 	@Override
 	public void mouseExited(MouseEvent me) {
+		System.out.println("mouseExited");
+
 		if (handler != null) {
 			handler.mouseExited(me);
 		} else {
 			super.mouseExited(me);
 			if (lastDelete != null) {
-				lastDelete.directDraw(Color.red, offscrG);
+//				lastDelete.directDraw(Color.red, offscrG);
 				lastDelete = null;
 			}
 		}
@@ -424,6 +435,8 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 
 	@Override
 	public void mouseMoved(MouseEvent me) {
+		System.out.println("mouseMoved");
+
 		if (handler != null) {
 			handler.mouseMoved(me);
 		} else {
@@ -433,22 +446,32 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 			QueryObject qo = new QueryObject(p);
 
 			if (op == OPFEATURE_DELETE || op == OPFEATURE_MOVE) {
-				if (lastDelete != null) {
-					lastDelete.directDraw(Color.red, offscrG);
-				}
 				Drawable b = pstruct.NearestFirst(qo);
-				if (b != null) {
-					b.directDraw(Color.orange, offscrG);
-					lastDelete = b;
-				} else
-					lastDelete = null;
+				
+		        // Check if the current nearest drawable object is different from the last one
+		        if (lastClosest == null || !lastClosest.equals(b)) {
+		            // Only update if there is a change in the nearest object
+		            if (b != null) {
+		        		((DrawingCanvas) offscrG).clearOvals(Color.orange); // Added to remove last yellow rectangle
+		                b.directDraw(Color.orange, offscrG);
+		                lastDelete = b;
+		            } else {
+		                if (lastDelete != null) {
+		                    lastDelete.directDraw(Color.red, offscrG);
+		                }
+		                lastDelete = null;
+		            }
+		            System.out.println("Drawable object updated");
+		        }
+		        lastClosest = b;
+		        redraw();
 			}
-
 		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent me) {
+		System.out.println("mouseClicked");
 		if (handler != null) {
 			handler.mouseClicked(me);
 		} else {
@@ -460,6 +483,7 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 
 	@Override
 	public void mousePressed(MouseEvent me) {
+		System.out.println("mousePressed");
 		if (handler != null) {
 			handler.mousePressed(me);
 		} else {
@@ -492,6 +516,7 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 							lastInsert = i;
 					}
 				}
+				redraw();
 			}
 
 			if (op == OPFEATURE_DELETE) {
@@ -500,8 +525,8 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 				historyList.addElement(new DeletePoint(p));
 				lastDelete = null;
 				pstruct.MessageEnd();
-				redraw();
 				mouseMoved(me);
+				redraw();
 			}
 
 			mouseDragged(me);
@@ -510,6 +535,7 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 
 	@Override
 	public void mouseDragged(MouseEvent me) {
+		System.out.println("mouseDragged");
 		if (handler != null) {
 			handler.mouseDragged(me);
 		} else {
@@ -532,6 +558,7 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 							historyList.setElementAt(previous, lastInsert);
 							updateFromParams();
 						}
+						((DrawingCanvas) offscrG).clearOval(previous); // Added to remove last yellow oval
 					} else {
 						pstruct.MessageStart();
 						pstruct.DeleteDirect((DPoint) historyList.elementAt(lastInsert));
@@ -542,10 +569,11 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 							historyList.setElementAt(p, lastInsert);
 						pstruct.MessageEnd();
 					}
-					redraw();
 					lastDelete = pstruct.NearestFirst(new QueryObject(p));
+	        		((DrawingCanvas) offscrG).clearOvals(Color.orange); // Added to remove last yellow oval
 					lastDelete.directDraw(Color.orange, offscrG);
 				}
+				redraw();
 			}
 		}
 		// System.out.println("OUT");
@@ -553,6 +581,7 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 
 	@Override
 	public void mouseReleased(MouseEvent me) {
+		System.out.println("mouseReleased");
 		if (handler != null) {
 			handler.mouseReleased(me);
 		} else {
@@ -570,6 +599,7 @@ public class PointCanvas extends GenericCanvas implements FileIface {
 					lastDelete.directDraw(Color.red, offscrG);
 				lastDelete = null;
 				lastInsert = -1;
+				redraw();
 			}
 		}
 	}

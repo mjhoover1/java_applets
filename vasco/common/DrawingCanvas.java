@@ -145,6 +145,35 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
     	redraw();
     }
     
+    public void clearOval(DPoint d) {
+    	for (int i = 0; i < coloredOvalsToDraw.size(); i++) {
+    		if (coloredOvalsToDraw.get(i).x == d.x && coloredOvalsToDraw.get(i).y == d.y && coloredOvalsToDraw.get(i).color == Color.red) {
+    			coloredOvalsToDraw.remove(i);
+    		}
+    	}
+    	redraw();
+    }
+    
+    public void clearOvals(Color c) {
+    	
+    	for (int i = 0; i < coloredOvalsToDraw.size(); i++) {
+    		if (coloredOvalsToDraw.get(i).color == c) {
+    			coloredOvalsToDraw.remove(i);
+    		}
+    	}
+    	redraw();
+    }
+    
+//    public boolean containsOval(ColoredOval co) {
+//    	return co.conti
+//    	for (int i = 0; i < coloredOvalsToDraw.size(); i++) {
+//    		if (coloredOvalsToDraw.get(i).color == c) {
+//    			coloredOvalsToDraw.remove(i);
+//    		}
+//    	}
+//    	redraw();
+//    }
+    
     public void clearLines() {
 	    coloredLinesToDraw.clear();
     	redraw();
@@ -340,6 +369,19 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
             this.width = width;
             this.height = height;
             this.color = color;
+        }
+        
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            ColoredOval that = (ColoredOval) obj;
+            return x == that.x && y == that.y && width == that.width && height == that.height && color.equals(that.color);
+        }
+
+        @Override
+        public int hashCode() {
+            return 31 * color.hashCode();
         }
     }
 
@@ -559,8 +601,11 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 		offscr.fillOval(newo.x - ww / 2, newo.y - hh / 2, ww, hh);
 		
 	    // Add the oval to the list for redrawing
-	    coloredOvalsToDraw.add(new ColoredOval(xx, yy, ww, hh, Color.blue));
-	    repaint();
+		ColoredOval newOval = new ColoredOval(xx, yy, ww, hh, offscr.getColor());
+		if (!coloredOvalsToDraw.contains(newOval)) {
+		    coloredOvalsToDraw.add(new ColoredOval(xx, yy, ww, hh, offscr.getColor()));
+		    repaint();
+		}
 	}
 
 	// Draw an oval with specified dimensions
