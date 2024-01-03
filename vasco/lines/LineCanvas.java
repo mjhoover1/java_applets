@@ -71,7 +71,8 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 
 	LineStructure[] pstrs;
 	public LineStructure pstruct;
-	Drawable lastClosest; // Represents the last closest Point
+	Drawable lastClosest = null; // Represents the last closest Point
+	DLine lastClosestLine = null; // Represents the last closest Point
 
 
 	public LineCanvas(DRectangle can, DrawingTarget dt, DrawingTarget over, JPanel animp, TopInterface ti) {
@@ -415,6 +416,11 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 
 		super.mouseEntered(me);
 		lastDelete = null;
+		
+		if (getCurrentOperation() == OPFEATURE_INSERT) {
+			lastClosest = null;
+    		mouseMoved(me);
+		}
 	}
 
 	@Override
@@ -426,7 +432,9 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 			lastDelete.directDraw(Color.red, offscrG);
 			lastDelete = null;
 		}
+		
 		if (getCurrentOperation() == OPFEATURE_INSERT && lastInsert != null) {
+    		((DrawingCanvas) offscrG).clearOvals(); // Added to remove last yellow rectangle
 			redraw();
 			lastInsert = null;
 		}
@@ -466,13 +474,23 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 
 		if (op == OPFEATURE_DELETE || op == OPFEATURE_MOVE) {
 			Drawable b = pstruct.NearestFirst(new QueryObject(p));
-			mouseExited(me);
-			if (b != null) {
-				b.directDraw(Color.orange, offscrG);
-				lastDelete = b;
-			} else {
-				lastDelete = null;
+			DLine currLine = null;
+			
+			if (b instanceof DLine) {
+				currLine = (DLine) b;
 			}
+
+			if (lastClosestLine == null || !lastClosestLine.equals(currLine)) {
+	            // Only update if there is a change in the nearest object
+				mouseExited(me);
+				if (b != null) {
+					b.directDraw(Color.orange, offscrG);
+					lastDelete = b;
+				} else {
+					lastDelete = null;
+				}
+			}
+			lastClosestLine = currLine;
 			redraw();
 		}
 	}

@@ -1,5 +1,5 @@
 package vasco.common;
 
 public class CompileDate {
-   public final static String compileDate = "Compiled on Dec 28, 2023";
+   public final static String compileDate = "Compiled on Jan 03, 2024";
 }
