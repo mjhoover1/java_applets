@@ -413,12 +413,18 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 	@Override
 	public void mouseEntered(MouseEvent me) {
 		System.out.println("mouseEntered");
+		int currOp = getCurrentOperation();
 
 		super.mouseEntered(me);
 		lastDelete = null;
 		
-		if (getCurrentOperation() == OPFEATURE_INSERT) {
+		if (currOp == OPFEATURE_INSERT || currOp == OPFEATURE_MOVEVERTEX) {
 			lastClosest = null;
+    		mouseMoved(me);
+		}
+		
+		if (currOp == OPFEATURE_MOVE) {
+			lastClosestLine = null;
     		mouseMoved(me);
 		}
 	}
@@ -426,6 +432,7 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 	@Override
 	public void mouseExited(MouseEvent me) {
 		System.out.println("mouseExited");
+		int currOp = getCurrentOperation();
 
 		super.mouseExited(me);
 		if (lastDelete != null) {
@@ -433,10 +440,15 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 			lastDelete = null;
 		}
 		
-		if (getCurrentOperation() == OPFEATURE_INSERT && lastInsert != null) {
+		if ((currOp == OPFEATURE_INSERT || currOp == OPFEATURE_MOVEVERTEX) && lastInsert != null) {
     		((DrawingCanvas) offscrG).clearOvals(); // Added to remove last yellow rectangle
 			redraw();
 			lastInsert = null;
+		}
+		
+		if (currOp == OPFEATURE_MOVE) {
+    		((DrawingCanvas) offscrG).clearLines(); // Added to remove last yellow rectangle
+			redraw();
 		}
 	}
 
@@ -771,6 +783,7 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 				}
 			}
 			lastInsert = p;
+			((DrawingCanvas) offscrG).clearOvals();
 			p.directDraw(Color.orange, offscrG);
 			redraw();
 		}
