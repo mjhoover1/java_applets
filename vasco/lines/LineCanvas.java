@@ -423,7 +423,7 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
     		mouseMoved(me);
 		}
 		
-		if (currOp == OPFEATURE_MOVE) {
+		if (currOp == OPFEATURE_MOVE || currOp == OPFEATURE_DELETE) {
 			lastClosestLine = null;
     		mouseMoved(me);
 		}
@@ -446,7 +446,7 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 			lastInsert = null;
 		}
 		
-		if (currOp == OPFEATURE_MOVE) {
+		if (currOp == OPFEATURE_MOVE || currOp == OPFEATURE_DELETE) {
     		((DrawingCanvas) offscrG).clearLines(); // Added to remove last yellow rectangle
 			redraw();
 		}
@@ -505,6 +505,10 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 			lastClosestLine = currLine;
 			redraw();
 		}
+		
+		if (op == OPFEATURE_WINDOW || op == OPFEATURE_NEAREST || op == OPFEATURE_WITHIN) {
+			redraw();
+		}
 	}
 
 	@Override
@@ -518,9 +522,14 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 	@Override
 	public void mousePressed(MouseEvent me) {
 		System.out.println("mousePressed");
+		int op = getCurrentOperation();
+		if (op == OPFEATURE_NEAREST) {
+			((DrawingCanvas) offscrG).clearOvals();
+		}
+		
 		if ((getCurrentOpFeature().buttonMask & MouseDisplay.getMouseButtons(me)) == 0)
 			return; // operation doesn't use this mouse button
-
+		
 		super.mousePressed(me);
 
 		Point scrCoord = offscrG.adjustPoint(me.getPoint());
@@ -528,7 +537,6 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 
 		moveStart = p;
 
-		int op = getCurrentOperation();
 
 		if (op == OPFEATURE_INSERT) {
 			if (me.isControlDown()) {
@@ -634,6 +642,7 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 			historyList.addElement(new DeletePoint(p));
 			lastDelete = null;
 			pstruct.MessageEnd();
+			mouseEntered(me); // Call so that the nearest resets and a new one is found
 			redraw();
 		}
 
@@ -873,6 +882,7 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 					allvalid = false;
 					break;
 				}
+				redraw();
 			}
 
 			if (allvalid) {
@@ -907,11 +917,14 @@ public class LineCanvas extends GenericCanvas implements FileIface, ItemListener
 						updateFromParams();
 					}
 				}
-//				redraw();
 			} else {
 				for (int i = 0; i < lastMove.length; i++)
 					lastMove[i].line = oldset[i];
 			}
+			redraw();
+		}
+		
+		if (op == OPFEATURE_WINDOW || op == OPFEATURE_NEAREST || op == OPFEATURE_WITHIN) {
 			redraw();
 		}
 

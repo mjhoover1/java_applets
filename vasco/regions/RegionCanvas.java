@@ -82,6 +82,8 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	
 	private Point currentMousePosition;
 	
+	public static String currentAction = "";
+	
 //	private boolean newStruct = false;
 
 
@@ -584,18 +586,20 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	@Override
 	public void mouseEntered(MouseEvent me) {
-
+		currentAction = "mouseEntered";
+		System.out.println("mouseEntered");
 	}
 
 	@Override
 	public void mouseExited(MouseEvent me) {
-		// System.out.println("Mouse Exited");
+		currentAction = "mouseExited";
+		System.out.println("mouseExited");
 		redrawMode = OFFSCR_REDRAW;
-		redraw();
 		cursor.move(offscrG, null);
 		cursor.move(overview, null);
 		((DrawingCanvas) offscrG).clearRectangles();
 		((DrawingCanvas) offscrG).clearLines();
+		redraw();
 	}
 
 	/**
@@ -606,6 +610,8 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	 */
 	@Override
 	synchronized public void mouseMoved(MouseEvent me) {
+		currentAction = "mouseMoved";
+		System.out.println("mouseMoved");
 	    CursorStyle cs;
 
 	    // If a conversion operation is in progress, the mouse cursor display is bypassed.
@@ -639,11 +645,12 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	        // If the cursor style has changed, triggers a redraw of the canvas.
 	        if (cursor.isDifferentCursor(cs)) {
 	            redrawMode = OFFSCR_REDRAW;
-	            redraw();
+//	            redraw();
 
 	            cursor.move(offscrG, cs);
 	            cursor.move(overview, cs);
 	        }
+	        redraw();
 	        // System.out.println("Mouse is over a connected block: " + b);
 	    } else {
 	        // If the cursor style is different based on the current operation and mouse location, triggers a redraw.
@@ -651,21 +658,25 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	        // System.out.println("Is Cursor Different: " + isCursorDifferent);	        
 	        if (isCursorDifferent) {
 	            redrawMode = OFFSCR_REDRAW;
-	            redraw();
+//	            redraw();
 	            cs = pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect);
 	            cursor.move(offscrG, cs);
 	            cursor.move(overview, cs);
+//	            redraw();
 	        }
+	        redraw();
 	    }
 	    // Update the current mouse position
 	    currentMousePosition = offscrG.adjustPoint(me.getPoint());
 	    
 	    // Trigger a redraw to update the highlight
-	    redraw();
+//	    redraw();
 	}
 
 	@Override
 	public void redraw() {
+	    int op = getCurrentOperation();
+
 		SwingUtilities.invokeLater(() -> {
 	        switch (redrawMode) {
 
@@ -722,6 +733,8 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	@Override
 	synchronized public void mouseClicked(MouseEvent me) {
+		currentAction = "mouseClicked";
+		System.out.println("mouseClicked");
 		if ((getCurrentOpFeature().buttonMask & MouseDisplay.getMouseButtons(me)) == 0)
 			return; // operation doesn't use this mouse button
 
@@ -730,6 +743,8 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	@Override
 	synchronized public void mousePressed(MouseEvent me) {
+		currentAction = "mousePressed";
+		System.out.println("mousePressed");
 		Rectangle selected, s;
 		CursorStyle cs;
 		boolean isConversion = true;
@@ -880,6 +895,8 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	@Override
 	public void mouseDragged(MouseEvent me) {
+		currentAction = "mouseDragged";
+		System.out.println("mouseDragged");
 		if ((getCurrentOpFeature().buttonMask & MouseDisplay.getMouseButtons(me)) == 0)
 			return;
 
@@ -898,10 +915,10 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 			if (cursor.isDifferentCursor(pstruct.mouseSelect(sRect.get(), op))) {
 				redrawMode = OFFSCR_REDRAW;
-				redraw();
 				cs = pstruct.mouseSelect(sRect.get(), op);
 				cursor.move(offscrG, cs);
 				cursor.move(overview, cs);
+				redraw();
 			}
 
 			return;
@@ -923,6 +940,8 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	@Override
 	synchronized public void mouseReleased(MouseEvent me) {
+		currentAction = "mouseReleased";
+		System.out.println("mouseReleased");
 		if ((getCurrentOpFeature().buttonMask & MouseDisplay.getMouseButtons(me)) == 0)
 			return;
 

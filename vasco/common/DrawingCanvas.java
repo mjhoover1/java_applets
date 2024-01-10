@@ -660,6 +660,7 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 		Point new1 = transPoint(x1, y1);
 		Point new2 = transPoint(x2, y2);
 		offscr.drawLine(new1.x, new1.y, new2.x, new2.y);
+		redraw();
 	}
 
 	// Set the drawing color
@@ -681,6 +682,7 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 		
         // Add the line to the list for redrawing
         addColoredLine(start, end, c);
+        redraw();
 	}
 
 	// Draw a rectangle directly using the graphics object with a specified color
@@ -713,6 +715,7 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	    if (c != null) {
 	    	addOrUpdateRectangle(rect, c);
 	    }
+	    redraw();
 	}
 	
 	// Method to clear all rectangles except those colored blue
