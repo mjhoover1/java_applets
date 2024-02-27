@@ -58,6 +58,8 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	// Constructor
 	public DrawingCanvas(Rectangle o, Rectangle viewPort, Image im, MouseDisplay md) {
 		super(true);
+        // Enable double buffering for this frame
+        setDoubleBuffered(true);
 		i = im;
 		this.viewPort = viewPort;
 		setPreferredSize(new Dimension(viewPort.width, viewPort.height)); // setSize(viewPort.width, viewPort.height);
@@ -590,6 +592,7 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 		int x2 = Math.min(orig.width, newo.x + newv.x);
 		int y2 = Math.min(orig.height, newo.y + newv.y);
 		offscr.fillRect(x1, y1, x2 - x1, y2 - y1);
+		redraw();
 	}
 
 	// Fill a polygon

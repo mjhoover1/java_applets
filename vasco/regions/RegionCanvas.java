@@ -79,13 +79,12 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	private int sIndex = -1;
 	private JComboBox sChoice = null;
-	
-	private Point currentMousePosition;
-	
-	public static String currentAction = "";
-	
-//	private boolean newStruct = false;
 
+	private Point currentMousePosition;
+
+	public static String currentAction = "";
+
+//	private boolean newStruct = false;
 
 	public RegionCanvas(DRectangle can, DrawingTarget dt, DrawingTarget over, JPanel animp, TopInterface ti) {// ,
 																												// CentralMenu
@@ -193,11 +192,11 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	@Override
 	public void itemStateChanged(ItemEvent ie) {
-	    // Check if the event is a selection event
-	    if (ie.getStateChange() != ItemEvent.SELECTED) {
-	        return; // If not, exit the method
-	    }
-		
+		// Check if the event is a selection event
+		if (ie.getStateChange() != ItemEvent.SELECTED) {
+			return; // If not, exit the method
+		}
+
 		Object obj = ie.getSource();
 
 		// if the last operation is a to chain operation
@@ -264,27 +263,27 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	public String getCurrentName() {
 		return pstruct.getName();
 	}
-	
+
 	@Override
 	public void clear() {
-	    super.clear();
-	    pstruct.MessageStart();
-	    pstruct.Clear();
-	    history = new HistoryList(new Vector());
-	    pstruct.MessageEnd();
-	    
-	    // Redraw the canvas
-	    redraw();
+		super.clear();
+		pstruct.MessageStart();
+		pstruct.Clear();
+		history = new HistoryList(new Vector());
+		pstruct.MessageEnd();
 
-	    // Force immediate repaint of the canvas
-	    if (offscrG instanceof JComponent) {
-	        Rectangle bounds = ((JComponent) offscrG).getBounds();
-	        ((JComponent) offscrG).paintImmediately(bounds);
-	    }
-	    if (overview instanceof JComponent) {
-	        Rectangle bounds = ((JComponent) overview).getBounds();
-	        ((JComponent) overview).paintImmediately(bounds);
-	    }
+		// Redraw the canvas
+		redraw();
+
+		// Force immediate repaint of the canvas
+		if (offscrG instanceof JComponent) {
+			Rectangle bounds = ((JComponent) offscrG).getBounds();
+			((JComponent) offscrG).paintImmediately(bounds);
+		}
+		if (overview instanceof JComponent) {
+			Rectangle bounds = ((JComponent) overview).getBounds();
+			((JComponent) overview).paintImmediately(bounds);
+		}
 	}
 
 //	@Override
@@ -301,10 +300,9 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 		return new RegionFileSelector(this, op, topInterface);
 	}
 
-	
 	@Override
 	public void drawContents(DrawingTarget g) {
-	    pstruct.drawContents(g, g.getView());
+		pstruct.drawContents(g, g.getView());
 	}
 
 	@Override
@@ -318,7 +316,7 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 	public boolean selectCBlock(int i, JComboBox<String> ops, Vector cb) {
 		int no, x, index;
-	
+
 		// find the number of valid connected blocks
 		no = 0;
 		index = 0;
@@ -328,7 +326,7 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 				no++;
 			}
 		}
-	
+
 		if (no == 0) {
 			if (ops != null) // only if I am changing the region structure
 				switchTree(i, ops);
@@ -362,31 +360,31 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 		}
 
 		pstruct = pstrs[i];
-		
+
 		// Temporarily remove item listeners to prevent triggering events
-	    ItemListener[] listeners = ops.getItemListeners();
-	    for (ItemListener listener : listeners) {
-	        ops.removeItemListener(listener);
-	    }
+		ItemListener[] listeners = ops.getItemListeners();
+		for (ItemListener listener : listeners) {
+			ops.removeItemListener(listener);
+		}
 
 		ops.removeAllItems();
 		pstruct.reInit(ops);
-		
-	    // Re-add item listeners
-	    for (ItemListener listener : listeners) {
-	        ops.addItemListener(listener);
-	    }
-		
-	 // Set the selected item only if there are items in the JComboBox
-	    if (ops.getItemCount() > 0) {
-	        String op = (String) ops.getSelectedItem();
-	        if (op == null) {
-	            op = "Insert";
-	        }
-	        ops.setSelectedItem(op);
+
+		// Re-add item listeners
+		for (ItemListener listener : listeners) {
+			ops.addItemListener(listener);
+		}
+
+		// Set the selected item only if there are items in the JComboBox
+		if (ops.getItemCount() > 0) {
+			String op = (String) ops.getSelectedItem();
+			if (op == null) {
+				op = "Insert";
+			}
+			ops.setSelectedItem(op);
 //	        setHelp();  // Call setHelp only if JComboBox is not empty
-	    }
-	    
+		}
+
 		if (runningThread != null) {
 			terminate();
 			runningThread = null;
@@ -439,13 +437,13 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 			historyList = history.switchGrid(oldRes, oldCellSize, oldGrid, grid);
 			rebuild();
-		
-	        // Use paintImmediately to update the canvas immediately
-	        SwingUtilities.invokeLater(() -> {
-	        	((DrawingCanvas) offscrG).paintImmediately(orig);
+
+			// Use paintImmediately to update the canvas immediately
+			SwingUtilities.invokeLater(() -> {
+				((DrawingCanvas) offscrG).paintImmediately(orig);
 //	            ((DrawingCanvas) offscrG).paintImmediately(((DrawingCanvas) offscrG).getBounds());
-	            ((DrawingCanvas) overview).paintImmediately(((DrawingCanvas) overview).getBounds());
-	        });
+				((DrawingCanvas) overview).paintImmediately(((DrawingCanvas) overview).getBounds());
+			});
 		}
 	}
 
@@ -538,11 +536,11 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	public void undo() {
 		history.undo();
 		rebuild();
-        SwingUtilities.invokeLater(() -> {
-        	((DrawingCanvas) offscrG).paintImmediately(orig);
+		SwingUtilities.invokeLater(() -> {
+			((DrawingCanvas) offscrG).paintImmediately(orig);
 //            ((DrawingCanvas) offscrG).paintImmediately(((DrawingCanvas) offscrG).getBounds());
-            ((DrawingCanvas) overview).paintImmediately(((DrawingCanvas) overview).getBounds());
-        });
+			((DrawingCanvas) overview).paintImmediately(((DrawingCanvas) overview).getBounds());
+		});
 	}
 
 	boolean updateFromParams(Point newIns) {
@@ -603,132 +601,138 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 	}
 
 	/**
-	 * Handles the mouse moved event within the canvas.
-	 * This method is synchronized to ensure thread safety during event handling.
+	 * Handles the mouse moved event within the canvas. This method is synchronized
+	 * to ensure thread safety during event handling.
 	 *
-	 * @param me The MouseEvent object that contains information about the mouse movement.
+	 * @param me The MouseEvent object that contains information about the mouse
+	 *           movement.
 	 */
 	@Override
 	synchronized public void mouseMoved(MouseEvent me) {
 		currentAction = "mouseMoved";
 		System.out.println("mouseMoved");
-	    CursorStyle cs;
+		CursorStyle cs;
 
-	    // If a conversion operation is in progress, the mouse cursor display is bypassed.
-	    if (runningThread != null)
-	        return;
+		// If a conversion operation is in progress, the mouse cursor display is
+		// bypassed.
+		if (runningThread != null)
+			return;
 
-	    // Adjusts the mouse point coordinates to the offscreen graphics context.
-	    Point mCor = offscrG.adjustPoint(me.getPoint());
-	    // Translates the mouse coordinates from screen to the actual canvas coordinates.
-	    Point rCor = transMouseToScr(mCor);
-	    // Translates the canvas coordinates to grid coordinates.
-	    Point gCor = transScrToGrid(mCor);
+		// Adjusts the mouse point coordinates to the offscreen graphics context.
+		Point mCor = offscrG.adjustPoint(me.getPoint());
+		// Translates the mouse coordinates from screen to the actual canvas
+		// coordinates.
+		Point rCor = transMouseToScr(mCor);
+		// Translates the canvas coordinates to grid coordinates.
+		Point gCor = transScrToGrid(mCor);
 
-	    // Retrieves the current operation mode.
-	    int op = getCurrentOperation();
-	    
-	    // System.out.println("Mouse Coordinates in Canvas: " + mCor.x + " " + mCor.y);
-	    // System.out.println("Translated Screen Coordinates: " + rCor.x + " " + rCor.y);
-	    // System.out.println("Translated Grid Coordinates: " + gCor.x + " " + gCor.y);
-	    // System.out.println("Current Operation: " + op);
+		// Retrieves the current operation mode.
+		int op = getCurrentOperation();
 
-	    // Checks if the user is interacting with a connected block.
-	    if (cb != null) {
-	        CBlock b;
+		// System.out.println("Mouse Coordinates in Canvas: " + mCor.x + " " + mCor.y);
+		// System.out.println("Translated Screen Coordinates: " + rCor.x + " " +
+		// rCor.y);
+		// System.out.println("Translated Grid Coordinates: " + gCor.x + " " + gCor.y);
+		// System.out.println("Current Operation: " + op);
 
-	        cs = new CursorStyle();
-	        // If the mouse is over a valid connected block, updates the cursor style.
-	        if (((b = ConnectedBlocks.inBlock(cb, grid, gCor.x, gCor.y)) != null) && b.valid)
-	            cs.add(new PolygonCursor(b.p, Colors.SELECTED_CELL));
+		// Checks if the user is interacting with a connected block.
+		if (cb != null) {
+			CBlock b;
 
-	        // If the cursor style has changed, triggers a redraw of the canvas.
-	        if (cursor.isDifferentCursor(cs)) {
-	            redrawMode = OFFSCR_REDRAW;
+			cs = new CursorStyle();
+			// If the mouse is over a valid connected block, updates the cursor style.
+			if (((b = ConnectedBlocks.inBlock(cb, grid, gCor.x, gCor.y)) != null) && b.valid)
+				cs.add(new PolygonCursor(b.p, Colors.SELECTED_CELL));
+
+			// If the cursor style has changed, triggers a redraw of the canvas.
+			if (cursor.isDifferentCursor(cs)) {
+				redrawMode = OFFSCR_REDRAW;
 //	            redraw();
 
-	            cursor.move(offscrG, cs);
-	            cursor.move(overview, cs);
-	        }
-	        redraw();
-	        // System.out.println("Mouse is over a connected block: " + b);
-	    } else {
-	        // If the cursor style is different based on the current operation and mouse location, triggers a redraw.
-	    	boolean isCursorDifferent = cursor.isDifferentCursor(pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect));
-	        // System.out.println("Is Cursor Different: " + isCursorDifferent);	        
-	        if (isCursorDifferent) {
-	            redrawMode = OFFSCR_REDRAW;
+				cursor.move(offscrG, cs);
+				cursor.move(overview, cs);
+			}
+			redraw();
+			// System.out.println("Mouse is over a connected block: " + b);
+		} else {
+			// If the cursor style is different based on the current operation and mouse
+			// location, triggers a redraw.
+			boolean isCursorDifferent = cursor
+					.isDifferentCursor(pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect));
+			// System.out.println("Is Cursor Different: " + isCursorDifferent);
+			if (isCursorDifferent) {
+				redrawMode = OFFSCR_REDRAW;
 //	            redraw();
-	            cs = pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect);
-	            cursor.move(offscrG, cs);
-	            cursor.move(overview, cs);
+				cs = pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect);
+				cursor.move(offscrG, cs);
+				cursor.move(overview, cs);
 //	            redraw();
-	        }
-	        redraw();
-	    }
-	    // Update the current mouse position
-	    currentMousePosition = offscrG.adjustPoint(me.getPoint());
-	    
-	    // Trigger a redraw to update the highlight
+			}
+			redraw();
+		}
+		// Update the current mouse position
+		currentMousePosition = offscrG.adjustPoint(me.getPoint());
+
+		// Trigger a redraw to update the highlight
 //	    redraw();
 	}
 
 	@Override
 	public void redraw() {
-	    int op = getCurrentOperation();
+		int op = getCurrentOperation();
 
 		SwingUtilities.invokeLater(() -> {
-	        switch (redrawMode) {
+			switch (redrawMode) {
 
-	            case OFFSCR_REDRAW:
-	                // Force immediate painting of the offscreen graphics
-	                ((DrawingCanvas) offscrG).paintImmediately(offscrG.getOrig());
-	                redrawMode = FULL_REDRAW;
-	                // Force immediate painting of the overview
-	                ((DrawingCanvas) overview).paintImmediately(overview.getOrig());
-	                break;
+			case OFFSCR_REDRAW:
+				// Force immediate painting of the offscreen graphics
+				((DrawingCanvas) offscrG).paintImmediately(offscrG.getOrig());
+				redrawMode = FULL_REDRAW;
+				// Force immediate painting of the overview
+				((DrawingCanvas) overview).paintImmediately(overview.getOrig());
+				break;
 
-	            case DRAG_REDRAW:
-	                Rectangle r = grid.getScreenCoor(draggedObj.getPos());
-	                ((DrawingCanvas) offscrG).drawImg(dragScr, 3, 3);
-	                ((DrawingCanvas) offscrG).drawImg(dragObj, r.x + 3, r.y + 3);
-	                pstruct.drawNonLeafNodes(offscrG);
+			case DRAG_REDRAW:
+				Rectangle r = grid.getScreenCoor(draggedObj.getPos());
+				((DrawingCanvas) offscrG).drawImg(dragScr, 3, 3);
+				((DrawingCanvas) offscrG).drawImg(dragObj, r.x + 3, r.y + 3);
+				pstruct.drawNonLeafNodes(offscrG);
 
-	                // Force immediate painting for dragging operation
-	                ((DrawingCanvas) offscrG).paintImmediately(offscrG.getOrig());
-	                ((DrawingCanvas) overview).paintImmediately(overview.getOrig());
-	                redrawMode = FULL_REDRAW;
-	                break;
+				// Force immediate painting for dragging operation
+				((DrawingCanvas) offscrG).paintImmediately(offscrG.getOrig());
+				((DrawingCanvas) overview).paintImmediately(overview.getOrig());
+				redrawMode = FULL_REDRAW;
+				break;
 
-	            default:
-	                drawBackground(offscrG);
-	                if (runningThread != null)
-	                    runningThread.refill();
-	                drawGrid(offscrG);
-	                drawContents(offscrG);
-	                if (runningThread != null)
-	                    runningThread.redraw();
+			default:
+				drawBackground(offscrG);
+				if (runningThread != null)
+					runningThread.refill();
+				drawGrid(offscrG);
+				drawContents(offscrG);
+				if (runningThread != null)
+					runningThread.redraw();
 
-	                // Force immediate painting for default case
-	                ((DrawingCanvas) offscrG).paintImmediately(offscrG.getOrig());
-	                ((DrawingCanvas) overview).paintImmediately(overview.getOrig());
-	                break;
-	        }
+				// Force immediate painting for default case
+				((DrawingCanvas) offscrG).paintImmediately(offscrG.getOrig());
+				((DrawingCanvas) overview).paintImmediately(overview.getOrig());
+				break;
+			}
 
-	        // Update the selected area if necessary
-	        if (sRect.selected) {
-	            CursorStyle cs = new CursorStyle();
-	            cs = pstruct.mouseSelect(sRect.get(), 12);
-	            cursor.move(offscrG, cs);
-	            cursor.move(overview, cs);
-	        }
-	        if (offscrG instanceof JComponent) {
-	            ((JComponent) offscrG).paintImmediately(offscrG.getOrig());
-	        }
-	        if (overview instanceof JComponent) {
-	            ((JComponent) overview).paintImmediately(overview.getOrig());
-	        }
-	    });
+			// Update the selected area if necessary
+			if (sRect.selected) {
+				CursorStyle cs = new CursorStyle();
+				cs = pstruct.mouseSelect(sRect.get(), 12);
+				cursor.move(offscrG, cs);
+				cursor.move(overview, cs);
+			}
+			if (offscrG instanceof JComponent) {
+				((JComponent) offscrG).paintImmediately(offscrG.getOrig());
+			}
+			if (overview instanceof JComponent) {
+				((JComponent) overview).paintImmediately(overview.getOrig());
+			}
+		});
 	}
 
 	@Override
@@ -812,11 +816,11 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 
 				if (cursor.isDifferentCursor(pstruct.mouseSelect(sRect.get(), op))) {
 					redrawMode = OFFSCR_REDRAW;
-					redraw();
 					cs = pstruct.mouseSelect(sRect.get(), op);
 					cursor.move(offscrG, cs);
 					cursor.move(overview, cs);
 				}
+				redraw();
 			} else
 				sRect = new SelectedRect();
 		} else
@@ -929,6 +933,7 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 		case OPFEATURE_UMOVE:
 		case OPFEATURE_COPY:
 		case OPFEATURE_MOVE:
+			((DrawingCanvas) offscrG).clearRectangles();
 			if (draggedObj != null && !gCor.equals(draggedObj.getPos())) {
 				draggedObj.move(grid, gCor, pstruct, dragObj);
 				redrawMode = DRAG_REDRAW;

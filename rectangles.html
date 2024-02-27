@@ -95,12 +95,36 @@
     <h2>Spatial Datastructures Visualization</h2>
     <p>Instructions and further information about the visualization tool can be found below.</p>
     
-        <script align="center" src="https://cjrtnc.leaningtech.com/2.3/loader.js"></script>
-        <script>cheerpjInit({enablePreciseAppletArchives:true});</script>
-        <cheerpj-applet archive="rectangles.jar" code="vasco.rectangles.main" height="900" width="900">
-            <!-- <param name="treetype" value="R-Tree"> -->
-            <p>not able to load Java applet</p>
-        </cheerpj-applet>
+      <div style="display: flex; justify-content: center; align-items: center;">
+
+        <!-- <cheerpj-applet
+        archive="rectangles.jar" code="vasco.rectangles.main" height="700" width="900"
+        >
+          Your browser cannot handle the applet tag!
+        </cheerpj-applet> -->
+
+      <!-- Cheerpj2.3 setup -->
+      <script src="https://cjrtnc.leaningtech.com/2.3/loader.js"></script>
+      <script>cheerpjInit({enablePreciseAppletArchives:true});</script>
+      <cheerpj-applet archive="rectangles.jar" code="vasco.rectangles.main" height="900" width="1200">
+          <param name="treetype" value="R-Tree">
+          <p>not able to load Java applet</p>
+      </cheerpj-applet>
+
+      <!-- <script src="https://cjrtnc.leaningtech.com/3.0/cj3loader.js"></script>
+      <applet
+        codebase="./" 
+        archive="rectangles.jar"
+        code="vasco.rectangles.main"
+        height="900"
+        width="900"
+        ></applet>
+      <script>
+        cheerpjInit();
+      </script> -->
+
+
+    </div>
     
     <!-- <p>You may use the <b>appletviewer</b>,
        a tool included in Java SE Development Kit 8 (JDK 8), to view the 

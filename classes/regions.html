@@ -1,8 +1,7 @@
 <HTML>
     <head>
     <title>Spatial Index Demos</title>
-    <meta name="description" content="The site dedicated to demo applets
-    of various spatial data structures.">
+    <meta name="description" content="The site dedicated to demo applets of various spatial data structures.">
     <meta name="keywords" content="quadtree, spatial, data, structure, java, applet">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     </head>
@@ -94,12 +93,18 @@
     <hr>
     <h2>Spatial Datastructures Visualization</h2>
     <p>Instructions and further information about the visualization tool can be found below.</p>
-    
-        <script align="center" src="https://cjrtnc.leaningtech.com/2.3/loader.js"></script>
-        <script>cheerpjInit({enablePreciseAppletArchives:true});</script>
-        <cheerpj-applet archive="regions.jar" code="vasco.regions.main" height="900" width="900">
-            <p>not able to load Java applet</p>
-        </cheerpj-applet>
+
+      <div style="display: flex; justify-content: center; align-items: center;">
+
+      <!-- Cheerpj2.3 setup -->
+      <script src="https://cjrtnc.leaningtech.com/2.3/loader.js"></script>
+      <!-- <script align="center" src="https://cjrtnc.leaningtech.com/2.3/loader.js"></script> -->
+      <script>cheerpjInit({enablePreciseAppletArchives:true});</script>
+      <cheerpj-applet archive="regions.jar" code="vasco.regions.main" height="900" width="1200">
+          <p>not able to load Java applet</p>
+      </cheerpj-applet>
+      
+      </div>
     
     <!-- <p>You may use the <b>appletviewer</b>,
        a tool included in Java SE Development Kit 8 (JDK 8), to view the 

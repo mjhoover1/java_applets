@@ -1,5 +1,7 @@
 <HTML>
     <head>
+      
+    <!-- <script src="https://cjrtnc.leaningtech.com/3.0/cj3loader.js"></script> Cheerpj3.0 setup -->
     <title>Spatial Index Demos</title>
     <meta name="description" content="The site dedicated to demo applets
     of various spatial data structures.">
@@ -98,13 +100,32 @@
       <!-- <div style="display: flex; justify-content: center; align-items: center; height: 100vh;"> -->
         <div style="display: flex; justify-content: center; align-items: center;">
 
+          <!-- <cheerpj-applet
+          archive="rectangles.jar" code="vasco.rectangles.main" height="700" width="900"
+          >
+            Your browser cannot handle the applet tag!
+          </cheerpj-applet> -->
 
+        <!-- Cheerpj2.3 setup -->
         <script src="https://cjrtnc.leaningtech.com/2.3/loader.js"></script>
         <script>cheerpjInit({enablePreciseAppletArchives:true});</script>
-        <cheerpj-applet archive="rectangles.jar" code="vasco.rectangles.main" height="700" width="900">
+        <cheerpj-applet archive="rectangles.jar" code="vasco.rectangles.main" height="900" width="1200">
             <param name="treetype" value="R-Tree">
             <p>not able to load Java applet</p>
         </cheerpj-applet>
+
+        <!-- <script src="https://cjrtnc.leaningtech.com/3.0/cj3loader.js"></script>
+        <applet
+          codebase="./" 
+          archive="rectangles.jar"
+          code="vasco.rectangles.main"
+          height="900"
+          width="900"
+          ></applet>
+        <script>
+          cheerpjInit();
+        </script> -->
+
 
       </div>
         <!-- <script>cheerpjInit({enablePreciseAppletArchives:true});</script> -->
@@ -343,6 +364,9 @@
     href="http://www.amazon.com/exec/obidos/redirect-home/spatialindexdemo"><img
     src="90X29-w-logo.gif"></a>.
     -->
-    </HTML>
+    <!-- <script type="module">
+      await cheerpjInit();
+    </script> -->
+</HTML>
     
     
