@@ -20,6 +20,7 @@ all:  rectangles.jar points.jar lines.jar regions.jar
 
 clean:
 	-rm *.jar
+	-rm *.js
 	-rm -R $(CLASSDIR)/*
 	-rm */*~
 

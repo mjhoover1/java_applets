@@ -1,3 +1,5 @@
+/.classpath
+/.project
 /Applet.ser
 /Makefile
 /README.md
@@ -5,13 +7,10 @@
 /index.html
 /java.policy.applet
 /lines.html
-/lines.jar.js
 /loosequad.html
 /points.html
-/points.jar.js
 /rectangles.html
-/rectangles.jar.js
 /regions.html
-/regions.jar.js
 /replay_pid6380.log
 /vasco/
+/test/

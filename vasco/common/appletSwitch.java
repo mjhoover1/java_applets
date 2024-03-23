@@ -22,10 +22,20 @@ public class appletSwitch extends JPanel implements ItemListener {
 	public final static int AREA = 3;
 
 	// URLs corresponding to different applets
-	final static String[] urls = { "/quadtree/points.html", "/quadtree/lines.html", "/quadtree/rectangles.html",
-			"/quadtree/regions.html" };
+	final static String[] urls = { 
+			"/quadtree/points.html", 
+			"/quadtree/lines.html", 
+			"/quadtree/rectangles.html",
+			"/quadtree/regions.html" 
+		};
+	// final static String[] urls = {
+	//         "/final/points.html", 
+	//         "/final/lines.html", 
+	//         "/final/rectangles.html",
+	//         "/final/regions.html"
+	// 	};
 
-	JComboBox ch; // Choice component for selecting applets
+	JComboBox<String> ch; // Choice component for selecting applets
 	JApplet applet; // Reference to the parent applet
 	int initValue; // Initial value for the choice component
 
@@ -37,7 +47,7 @@ public class appletSwitch extends JPanel implements ItemListener {
 	 * @param ti TopInterface instance for accessing mouse display.
 	 */
 	public appletSwitch(int iv, JApplet ac, TopInterface ti) {
-		JComboBox<String> ch = new JComboBox<>();
+		ch = new JComboBox<>();
 		new MouseHelp(ch, ti.getMouseDisplay(), "Go to other spatial demo applets", "", "");
 		ch.addItem("Point Applet");
 		ch.addItem("Line Applet");
@@ -58,14 +68,18 @@ public class appletSwitch extends JPanel implements ItemListener {
 	@Override
 	public void itemStateChanged(ItemEvent ie) {
 		try {
-			// Navigate to the selected applet's URL
-			applet.getAppletContext()
-					.showDocument(new java.net.URL(applet.getCodeBase() + urls[ch.getSelectedIndex()]));
+			// Navigate to the selected applet's URL, ensuring proper URL formation
+            applet.getAppletContext().showDocument(
+                new java.net.URL(applet.getCodeBase(), urls[ch.getSelectedIndex()])
+            );
+			
 		} catch (MalformedURLException e) {
-			// Handle potential MalformedURLException
-		}
+            // Handle potential MalformedURLException by printing the stack trace
+            e.printStackTrace();
+        }
+		// System.out.println(initValue);
 		// Reset the choice component to its initial value
-		ch.setSelectedIndex(initValue); // ch.select(initValue);
+		// ch.setSelectedIndex(initValue); // ch.select(initValue);
 	}
 
 }
