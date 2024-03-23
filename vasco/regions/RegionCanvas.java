@@ -629,12 +629,6 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 		// Retrieves the current operation mode.
 		int op = getCurrentOperation();
 
-		// System.out.println("Mouse Coordinates in Canvas: " + mCor.x + " " + mCor.y);
-		// System.out.println("Translated Screen Coordinates: " + rCor.x + " " +
-		// rCor.y);
-		// System.out.println("Translated Grid Coordinates: " + gCor.x + " " + gCor.y);
-		// System.out.println("Current Operation: " + op);
-
 		// Checks if the user is interacting with a connected block.
 		if (cb != null) {
 			CBlock b;
@@ -659,11 +653,13 @@ public class RegionCanvas extends GenericCanvas implements FileIface, ItemListen
 			// location, triggers a redraw.
 			boolean isCursorDifferent = cursor
 					.isDifferentCursor(pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect));
-			// System.out.println("Is Cursor Different: " + isCursorDifferent);
 			if (isCursorDifferent) {
 				redrawMode = OFFSCR_REDRAW;
+				// Clear the last rectangle
+				((DrawingCanvas) offscrG).clearColoredRectangles(Color.blue);
 //	            redraw();
 				cs = pstruct.mouseMoved(rCor.x, rCor.y, mCor.x, mCor.y, op, sRect);
+				
 				cursor.move(offscrG, cs);
 				cursor.move(overview, cs);
 //	            redraw();

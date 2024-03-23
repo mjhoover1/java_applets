@@ -72,8 +72,9 @@ public class MyCursor {
      * @param dt The drawing target where the cursor will be displayed.
      */
     public void move(DrawingTarget dt) {
-        if (currCursor != null)
+        if (currCursor != null) {
             currCursor.display(dt);
+        }
     }
 
     /**
