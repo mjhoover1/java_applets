@@ -42,7 +42,7 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 	private MouseHelp mh;
 	private MouseDisplay mouseDisplay;
 	
-    private BufferedImage offscreenImage;
+//    private BufferedImage offscreenImage;
     
     private List<ColoredRectangle> coloredRectanglesToDraw = new ArrayList<>();
     private List<ColoredLine> coloredLinesToDraw = new ArrayList<>();
@@ -68,7 +68,7 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 		mh = null;
 		mouseDisplay = md;
         // Initialize the offscreen image
-        offscreenImage = new BufferedImage(viewPort.width, viewPort.height, BufferedImage.TYPE_INT_ARGB);
+//        offscreenImage = new BufferedImage(viewPort.width, viewPort.height, BufferedImage.TYPE_INT_ARGB);
     }
 
 	// Set the mouse display
@@ -212,61 +212,109 @@ public class DrawingCanvas extends JPanel implements DrawingTarget {
 
 	// Redraw the canvas
 	public void redraw() {
-		updateOffscreenBuffer();
+//		updateOffscreenBuffer();
 		repaint(); // Use repaint() instead of paint() paint(getGraphics());
 	}
     
 	// Method to update the offscreen buffer with new drawings
-	private void updateOffscreenBuffer() {
-		Graphics2D offGraphics = offscreenImage.createGraphics();
-		// Set anti-aliasing for smoother graphics
-		offGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		// Clear the offscreen image
-		offGraphics.setColor(getBackground());
-		offGraphics.fillRect(0, 0, offscreenImage.getWidth(), offscreenImage.getHeight());
-		// Draw the base image
-		offGraphics.drawImage(i, 0, 0, this);
-		// Draw the rectangles and lines
-		for (ColoredRectangle cr : coloredRectanglesToDraw) {
-			offGraphics.setColor(cr.color);
-			Rectangle rect = cr.rectangle;
-			offGraphics.drawRect(rect.x, rect.y, rect.width, rect.height);
-		}
-		for (ColoredLine cl : coloredLinesToDraw) {
-			offGraphics.setColor(cl.color);
-			offGraphics.drawLine(cl.start.x, cl.start.y, cl.end.x, cl.end.y);
-		}
-	    // Draw the ovals from the list
-	    for (ColoredOval co : coloredOvalsToDraw) {
-	    	offGraphics.setColor(co.color);
-	        Point newo = transPoint(co.x, co.y);
-	        offGraphics.fillOval(newo.x - co.width / 2, newo.y - co.height / 2, co.width, co.height);
-	    }
-	    
-	    // Draw strings
-	    for (ColoredString cs : coloredStringsToDraw) {
-	    	offGraphics.setColor(cs.color);
-	    	offGraphics.setFont(cs.font);
-	        Point stringPos = transPoint(cs.x, cs.y);
-	        offGraphics.drawString(cs.text, stringPos.x, stringPos.y);
-	    }
-	    
-        // Draw thick rectangles
-        for (ColoredThickRectangle ctr : coloredThickRectanglesToDraw) {
-        	offGraphics.setColor(ctr.color);
-        	offGraphics.setStroke(new BasicStroke(ctr.thickness));
-            Rectangle r = ctr.rectangle;
-            offGraphics.drawRect(r.x, r.y, r.width, r.height);
-        }
-	    
-		offGraphics.dispose();
-	}
+//	private void updateOffscreenBuffer() {
+//		Graphics2D offGraphics = offscreenImage.createGraphics();
+//		// Set anti-aliasing for smoother graphics
+//		offGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//		// Clear the offscreen image
+//		offGraphics.setColor(getBackground());
+//		offGraphics.fillRect(0, 0, offscreenImage.getWidth(), offscreenImage.getHeight());
+//		// Draw the base image
+//		offGraphics.drawImage(i, 0, 0, this);
+//		// Draw the rectangles and lines
+//		for (ColoredRectangle cr : coloredRectanglesToDraw) {
+//			offGraphics.setColor(cr.color);
+//			Rectangle rect = cr.rectangle;
+//			offGraphics.drawRect(rect.x, rect.y, rect.width, rect.height);
+//		}
+//		for (ColoredLine cl : coloredLinesToDraw) {
+//			offGraphics.setColor(cl.color);
+//			offGraphics.drawLine(cl.start.x, cl.start.y, cl.end.x, cl.end.y);
+//		}
+//	    // Draw the ovals from the list
+//	    for (ColoredOval co : coloredOvalsToDraw) {
+//	    	offGraphics.setColor(co.color);
+//	        Point newo = transPoint(co.x, co.y);
+//	        offGraphics.fillOval(newo.x - co.width / 2, newo.y - co.height / 2, co.width, co.height);
+//	    }
+//	    
+//	    // Draw strings
+//	    for (ColoredString cs : coloredStringsToDraw) {
+//	    	offGraphics.setColor(cs.color);
+//	    	offGraphics.setFont(cs.font);
+//	        Point stringPos = transPoint(cs.x, cs.y);
+//	        offGraphics.drawString(cs.text, stringPos.x, stringPos.y);
+//	    }
+//	    
+//        // Draw thick rectangles
+//        for (ColoredThickRectangle ctr : coloredThickRectanglesToDraw) {
+//        	offGraphics.setColor(ctr.color);
+//        	offGraphics.setStroke(new BasicStroke(ctr.thickness));
+//            Rectangle r = ctr.rectangle;
+//            offGraphics.drawRect(r.x, r.y, r.width, r.height);
+//        }
+//	    
+//		offGraphics.dispose();
+//	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.drawImage(offscreenImage, 0, 0, this);
+	    super.paintComponent(g);
+	    Graphics2D g2d = (Graphics2D) g;
+
+	    // Apply anti-aliasing for smoother graphics
+	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+	    // Clear the background
+	    g2d.setColor(getBackground());
+	    g2d.fillRect(0, 0, getWidth(), getHeight());
+
+	    // Draw the base image directly onto the component
+	    g2d.drawImage(i, 0, 0, this);
+
+	    // Draw rectangles
+	    for (ColoredRectangle cr : coloredRectanglesToDraw) {
+	        g2d.setColor(cr.color);
+	        Rectangle rect = cr.rectangle;
+	        g2d.drawRect(rect.x, rect.y, rect.width, rect.height);
+	    }
+
+	    // Draw lines
+	    for (ColoredLine cl : coloredLinesToDraw) {
+	        g2d.setColor(cl.color);
+	        g2d.drawLine(cl.start.x, cl.start.y, cl.end.x, cl.end.y);
+	    }
+
+	    // Draw ovals
+	    for (ColoredOval co : coloredOvalsToDraw) {
+	        g2d.setColor(co.color);
+	        // Assuming transPoint is a method that transforms the point (not provided in the snippet)
+	        // If transPoint simply adjusts the position, ensure it's defined or adjust as necessary
+	        Point newo = transPoint(co.x, co.y);
+	        g2d.fillOval(newo.x - co.width / 2, newo.y - co.height / 2, co.width, co.height);
+	    }
+
+	    // Draw strings
+	    for (ColoredString cs : coloredStringsToDraw) {
+	        g2d.setColor(cs.color);
+	        g2d.setFont(cs.font);
+	        // Again, assuming transPoint is defined elsewhere
+	        Point stringPos = transPoint(cs.x, cs.y);
+	        g2d.drawString(cs.text, stringPos.x, stringPos.y);
+	    }
+
+	    // Draw thick rectangles
+	    for (ColoredThickRectangle ctr : coloredThickRectanglesToDraw) {
+	        g2d.setColor(ctr.color);
+	        g2d.setStroke(new BasicStroke(ctr.thickness));
+	        Rectangle r = ctr.rectangle;
+	        g2d.drawRect(r.x, r.y, r.width, r.height);
+	    }
 	}
     
     class ColoredRectangle {
